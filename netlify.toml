@@ -1,0 +1,10 @@
+# Netlify continuous deploy for the FreightPOP presentation kit.
+# `npm run netlify` runs the deck build (bakes in the sync bridge) and stages
+# the static site into dist/netlify. Zero npm dependencies — the build is just
+# Node scripts, so it's fast and needs no install step.
+[build]
+  command = "npm run netlify"
+  publish = "dist/netlify"
+
+[build.environment]
+  NODE_VERSION = "20"
