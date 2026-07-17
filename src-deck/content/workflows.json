@@ -1,0 +1,15 @@
+{
+  "abbr": "SWF",
+  "name": "Standard Shipping Workflows",
+  "kicker": "Animated Flow Library",
+  "intro": "Seven standard flows, end to end — watch each one run as an animated timeline, exactly how it executes inside FreightPOP.",
+  "items": [
+    { "slug": "01-freightpop-outbound", "num": "01", "name": "Standard Outbound", "tag": "Order to delivered — plan, rate, book, track in one pass" },
+    { "slug": "02-freightpop-inbound", "num": "02", "name": "Inbound Receiving", "tag": "POs routed, scheduled and received without the phone calls" },
+    { "slug": "03-parcel-shipping", "num": "03", "name": "Parcel Shipping", "tag": "High-volume small parcel, rate-shopped on every label" },
+    { "slug": "04-ltl-workflow", "num": "04", "name": "LTL Freight", "tag": "Contract + spot LTL with BOLs, pickups and tracking handled" },
+    { "slug": "05-ocean-freight", "num": "05", "name": "Ocean Freight", "tag": "Containers from booking to port to door, milestone by milestone" },
+    { "slug": "06-returns-workflow", "num": "06", "name": "Returns & Reverse Logistics", "tag": "Self-service labels and dispositions — no tickets, no calls" },
+    { "slug": "07-spot-quote", "num": "07", "name": "Spot Quote & Truckload", "tag": "Tender full loads to your network and award in minutes" }
+  ]
+}

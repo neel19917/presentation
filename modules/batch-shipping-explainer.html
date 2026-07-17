@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Batch Shipping, Step by Step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP brand tokens (BRANDING.md + freightpop.com freight-shipping)
+   Every timeline-driven property is set from JS seek(t) — NO CSS animations
+   on story elements, so headless frame rendering is deterministic.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729;
+  --navy-2: #0b2340;
+  --blue: #4c8dde;
+  --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9;
+  --bg: #f7f9fc;
+  --ink: #051729;
+  --sub: rgba(5, 23, 41, 0.72);
+  --green: #1f7a54;
+  --success: #22c55e;
+  --amber: #b45309;
+  --amber-bg: rgba(245, 158, 11, 0.14);
+  --card-line: rgba(5, 23, 41, 0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', -apple-system, sans-serif; }
+
+/* ── 1920×1080 stage scaled to the window ─────────────────────────────── */
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--bg); transform-origin: center center; flex: 0 0 auto;
+}
+
+/* faint blueprint grid like the website hero panels */
+#stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* ── Title / end cards ────────────────────────────────────────────────── */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.02em; color: #fff; }
+.logo b { color: var(--blue); }
+.logo-img { display: block; }
+.logo-img.logo-sm { height: 26px; }
+.logo-img.logo-md { height: 40px; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 118px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+
+/* ── Step caption (lower-left third) ─────────────────────────────────── */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(5,23,41,0.25); }
+
+/* ── Dashboard frame (mirrors the site's product shots) ───────────────── */
+#dash { position: absolute; right: 80px; top: 78px; width: 1040px; height: 780px; background: #fff; border: 3px solid var(--navy); border-radius: 26px; box-shadow: 0 30px 70px rgba(5,23,41,0.18); overflow: hidden; z-index: 10; }
+#dash .titlebar { height: 64px; background: var(--navy); display: flex; align-items: center; padding: 0 26px; border-radius: 22px 22px 0 0; }
+#dash .apphead { padding: 16px 26px 12px; }
+#dash .apphead .row1 { display: flex; align-items: baseline; justify-content: space-between; }
+#dash .apphead .h { font-family: 'Manrope'; font-weight: 800; font-size: 21px; letter-spacing: 0.02em; color: var(--ink); }
+#dash .apphead #imp-count { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--blue-deep); font-weight: 500; }
+#dash .apphead .strip { height: 14px; border-radius: 7px; background: var(--blue); margin-top: 12px; position: relative; overflow: hidden; }
+#dash .apphead .strip .fill { position: absolute; inset: 0; width: 0%; background: linear-gradient(90deg, var(--blue-deep), #6fb2ff); }
+#dash .body { display: flex; flex-direction: column; height: calc(100% - 64px - 82px); padding: 0 20px; }
+
+/* ── the batch grid — the "filled placeholders" ───────────────────────── */
+#grid { flex: 1; display: flex; flex-direction: column; position: relative; }
+.ghead { display: grid; grid-template-columns: 96px 1fr 92px 210px 118px; gap: 10px; padding: 8px 8px 6px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; color: var(--sub); border-bottom: 1.5px solid var(--card-line); }
+.ghead span:nth-child(3) { text-align: right; }
+#gridrows { position: relative; }
+.grow { display: grid; grid-template-columns: 96px 1fr 92px 210px 118px; gap: 10px; align-items: center; height: 46px; padding: 0 8px; border-bottom: 1px solid var(--card-line); background: #fff; }
+.grow .oid { font-family: 'DM Mono', monospace; font-size: 12.5px; color: var(--blue-deep); }
+.grow .who .nm { font-weight: 700; font-size: 14px; color: var(--ink); line-height: 1.15; }
+.grow .who .ln { font-size: 11.5px; color: var(--sub); line-height: 1.15; }
+.grow .wt { font-family: 'DM Mono', monospace; font-size: 12.5px; color: var(--ink); text-align: right; }
+.grow .rate { position: relative; height: 100%; display: flex; align-items: center; }
+.grow .rate .rc-dash { color: rgba(5,23,41,0.3); font-size: 13px; }
+.grow .rate .rc-val { position: absolute; left: 0; top: 50%; white-space: nowrap; font-size: 13.5px; color: var(--ink); }
+.grow .rate .rc-val b { font-weight: 700; }
+.grow .rate .rc-val .pr { color: var(--green); font-weight: 700; margin-left: 6px; }
+.grow .rate .rc-val .best { font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border-radius: 999px; padding: 2px 7px; margin-left: 7px; vertical-align: 2px; }
+.pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 11px; border-radius: 999px; background: rgba(5,23,41,0.07); color: var(--sub); white-space: nowrap; }
+.pill.rated { background: rgba(76,141,222,0.13); color: var(--blue-deep); }
+.pill.ok { background: rgba(34,197,94,0.14); color: var(--green); }
+.pill.warn { background: var(--amber-bg); color: var(--amber); }
+/* scanline sweeping down the grid while rating */
+#scanline { position: absolute; left: 0; right: 0; height: 46px; background: rgba(76,141,222,0.10); border-radius: 8px; pointer-events: none; }
+/* drop zone before the upload lands */
+#dropzone { position: absolute; inset: 46px 8px 8px; border: 2px dashed rgba(5,23,41,0.22); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--sub); font-size: 17px; font-weight: 500; }
+#dropzone .dz-h { font-weight: 700; color: var(--ink); font-size: 19px; }
+#gridfoot { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; font-size: 13px; color: var(--sub); }
+#gridfoot b { color: var(--ink); }
+
+/* the CSV file card flying in (scene 1) */
+#file-chip { position: absolute; z-index: 40; background: #fff; border: 2.5px solid var(--navy); border-radius: 16px; padding: 16px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 18px 40px rgba(5,23,41,0.28); white-space: nowrap; }
+#file-chip .fc-name { font-weight: 700; font-size: 18px; color: var(--ink); }
+#file-chip .fc-sub { font-size: 13px; color: var(--sub); margin-top: 2px; }
+
+/* batch rate counter (scene 2) — navy tile under the dash */
+#rated { position: absolute; right: 110px; top: 878px; z-index: 45; background: var(--navy); color: #fff; border-radius: 16px; padding: 16px 26px; box-shadow: 0 16px 36px rgba(5,23,41,0.3); }
+#rated .lbl { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: var(--light-blue); }
+#rated .val { font-family: 'Manrope'; font-size: 34px; font-weight: 800; margin-top: 2px; }
+#rated .val b { color: #7fd4ae; }
+#rated .note { font-size: 11px; color: rgba(193,212,233,0.75); margin-top: 3px; }
+
+/* the one-click dispatch button (scene 3) */
+#dispatch-btn { position: absolute; left: 1320px; top: 468px; z-index: 55; background: var(--navy); color: #fff; border-radius: 18px; padding: 24px 46px; text-align: center; box-shadow: 0 26px 60px rgba(5,23,41,0.45); }
+#dispatch-btn .d1 { font-family: 'Manrope'; font-weight: 800; font-size: 27px; letter-spacing: 0.04em; }
+#dispatch-btn .d2 { font-size: 14px; color: var(--light-blue); margin-top: 5px; }
+
+/* label / BOL spool (scene 3) — upper-left mini-scene */
+#spool { position: absolute; left: 170px; top: 128px; width: 520px; z-index: 45; background: #fff; border: 2.5px solid var(--navy); border-radius: 18px; padding: 20px 24px 18px; box-shadow: 0 22px 50px rgba(5,23,41,0.2); }
+#spool .sp-h { font-size: 13px; font-weight: 800; letter-spacing: 0.18em; color: var(--blue-deep); }
+#spool .printer { margin-top: 12px; height: 46px; border-radius: 12px; background: var(--navy); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+#spool .printer .pl { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--light-blue); }
+#spool .printer .slot { width: 170px; height: 6px; border-radius: 3px; background: rgba(193,212,233,0.35); }
+#spool .docs { position: relative; height: 188px; margin-top: 10px; }
+#spool .doc { position: absolute; width: 138px; height: 78px; background: #fff; border: 1.5px solid var(--card-line); border-radius: 8px; box-shadow: 0 6px 14px rgba(5,23,41,0.12); padding: 8px 10px; }
+#spool .doc .bar { height: 20px; background: repeating-linear-gradient(90deg, var(--navy) 0 2px, transparent 2px 5px); border-radius: 2px; }
+#spool .doc .dm { font-family: 'DM Mono', monospace; font-size: 9.5px; color: var(--sub); margin-top: 6px; }
+#spool .doc .tag { position: absolute; right: 8px; bottom: 6px; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; color: var(--blue-deep); }
+#spool .sp-count { display: flex; align-items: baseline; gap: 12px; margin-top: 4px; }
+#spool .sp-count .n { font-family: 'Manrope'; font-weight: 800; font-size: 36px; color: var(--ink); }
+#spool .sp-count .l { font-size: 13.5px; color: var(--sub); }
+
+/* exceptions panel (scene 4) — same slot as the spool */
+#review-panel { position: absolute; left: 170px; top: 128px; width: 520px; z-index: 46; background: #fff; border: 2.5px solid var(--navy); border-radius: 18px; padding: 20px 24px 18px; box-shadow: 0 22px 50px rgba(5,23,41,0.2); }
+#review-panel .rp-h { font-size: 13px; font-weight: 800; letter-spacing: 0.18em; color: var(--amber); }
+#review-panel .rp-row { display: flex; align-items: center; gap: 12px; padding: 12px 4px; border-bottom: 1px solid var(--card-line); }
+#review-panel .rp-row .id { font-family: 'DM Mono', monospace; font-size: 12.5px; color: var(--blue-deep); flex: 0 0 86px; }
+#review-panel .rp-row .nm { font-weight: 700; font-size: 15px; color: var(--ink); flex: 1; }
+#review-panel .rp-row .why { font-size: 11.5px; font-weight: 700; color: var(--amber); background: var(--amber-bg); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+#review-panel .rp-foot { display: flex; align-items: center; gap: 10px; padding-top: 14px; font-size: 15.5px; font-weight: 700; color: var(--green); }
+
+/* dispatcher toast */
+#toast { position: absolute; right: 120px; top: 108px; z-index: 60; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--success); border-radius: 14px; padding: 14px 22px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); width: 470px; display: flex; gap: 14px; align-items: center; }
+#toast .tk { flex: 0 0 auto; }
+#toast .t1 { font-weight: 800; font-size: 17px; color: var(--ink); }
+#toast .t2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+
+/* ── End card stats ───────────────────────────────────────────────────── */
+.stats-row { display: flex; gap: 34px; margin: 54px 0 60px; }
+.stat-tile { width: 360px; background: rgba(255,255,255,0.055); border: 1px solid rgba(193,212,233,0.22); border-radius: 20px; padding: 34px 32px; text-align: left; }
+.stat-num { font-size: 52px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.stat-num b { color: var(--blue); }
+.stat-lbl { font-size: 19px; color: var(--light-blue); margin-top: 10px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; box-shadow: 0 18px 44px rgba(76,141,222,0.35); }
+.cta-url { margin-top: 22px; font-size: 21px; color: var(--light-blue); letter-spacing: 0.02em; }
+
+/* ── Player chrome (hidden in render mode) ───────────────────────────── */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 15px; cursor: pointer; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+
+/* ── embed=1 — living inside a demo panel (TMS deck module). The player
+      controls become a dedicated always-visible bottom bar (never floating
+      over content), with fullscreen, and story text is bumped up so it stays
+      readable at panel scale. ─────────────────────────────────────────── */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls {
+  left: 0; right: 0; bottom: 0; transform: none; border-radius: 0;
+  padding: 10px 18px; gap: 14px; opacity: 1 !important; pointer-events: auto !important;
+  background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3);
+}
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #timecode { font-size: 15px; }
+body.embed #btn-play { width: 44px; height: 44px; flex: 0 0 auto; }
+#btn-theme, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+body.embed #btn-theme, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+#btn-fs { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-fs:hover { border-color: #fff; }
+body.embed #btn-fs { width: 44px; height: 44px; }
+/* bigger story text at embed scale */
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); line-height: 1.45; }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed #rated .lbl { font-size: calc(12px * var(--fpb, 1.35)); }
+body.embed #rated .val { font-size: calc(31px * var(--fpb, 1.35)); }
+body.embed #rated .note { font-size: 13px; }
+body.embed #file-chip .fc-name { font-size: calc(17px * var(--fpb, 1.35)); }
+body.embed #file-chip .fc-sub { font-size: calc(12px * var(--fpb, 1.35)); }
+body.embed #toast .t1 { font-size: calc(16px * var(--fpb, 1.35)); }
+body.embed #toast .t2 { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed #toast { width: 560px; }
+body.embed .title-sub { font-size: calc(30px * var(--fpb, 1.35)); }
+body.embed .kicker { font-size: calc(20px * var(--fpb, 1.35)); }
+body.embed .stat-num { font-size: calc(44px * var(--fpb, 1.35)); }
+body.embed .stat-lbl { font-size: calc(17px * var(--fpb, 1.35)); }
+body.embed .cta { font-size: calc(24px * var(--fpb, 1.35)); }
+body.embed .cta-url { font-size: calc(19px * var(--fpb, 1.35)); }
+
+/* ── theme=deck — matches the TMS interactive deck (navy #051729 + teal
+      #3DD6B5 + DM Mono kickers). Product mocks stay light like the deck's
+      own product screens. ─────────────────────────────────────────────── */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before {
+  background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+}
+body.theme-deck .kicker,
+body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: #3dd6b5; letter-spacing: 0.18em; font-weight: 500; }
+/* deck headings are LIGHT-weight Manrope (like the module library screen) */
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; letter-spacing: -0.02em; }
+body.theme-deck .stat-num { font-weight: 600; }
+body.theme-deck #caption .step-body { color: #b5cde0; font-weight: 400; }
+body.theme-deck #caption .step-num { background: #3dd6b5; color: var(--navy); }
+body.theme-deck .fullcard { background: radial-gradient(1300px 700px at 72% -10%, #0e3050 0%, var(--navy) 55%); }
+body.theme-deck .title-sub { color: #b5cde0; }
+body.theme-deck .stat-num b { color: #3dd6b5; }
+body.theme-deck .cta { background: #3dd6b5; color: var(--navy); box-shadow: 0 18px 44px rgba(61,214,181,0.3); }
+body.theme-deck #rated .val b { color: #3dd6b5; }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: #3dd6b5; color: var(--navy); }
+body.theme-deck #dash { border-color: #0a2540; box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 64px rgba(61,214,181,0.10); }
+body.theme-deck #file-chip, body.theme-deck #spool, body.theme-deck #review-panel { box-shadow: 0 22px 50px rgba(0,0,0,0.55); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ persistent product stage ═══ -->
+  <div class="layer" id="scene-product">
+
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — UPLOAD</div>
+      <div class="step-title" id="cap-title">Hundreds of orders, one drop</div>
+      <div class="step-body" id="cap-body">Upload your address list and shipment details.</div>
+    </div>
+
+    <div id="dash">
+      <div class="titlebar"><img class="logo-img logo-sm" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="></div>
+      <div class="apphead">
+        <div class="row1">
+          <div class="h">BATCH SHIPPING</div>
+          <div id="imp-count">0 / 240 imported</div>
+        </div>
+        <div class="strip"><div class="fill" id="rate-strip"></div></div>
+      </div>
+      <div class="body">
+        <div id="grid">
+          <div class="ghead"><span>ORDER</span><span>CONSIGNEE / LANE</span><span>WEIGHT</span><span>CARRIER · RATE</span><span>STATUS</span></div>
+          <div id="gridrows">
+            <div id="scanline"></div>
+          </div>
+          <div id="dropzone">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#2d6cc0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15l3 3 3-3"/></svg>
+            <div class="dz-h">Drop your address list + shipment details</div>
+            <div>CSV, spreadsheet or straight from your ERP — no re-keying</div>
+          </div>
+        </div>
+        <div id="gridfoot">
+          <span>…and <b>228 more rows</b> in this batch</span>
+          <span><b>240 orders</b> · parcel + LTL · illustrative data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSV file card flying in -->
+    <div id="file-chip">
+      <svg width="40" height="48" viewBox="0 0 24 28" fill="none" stroke="#1f7a54" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 14h8M8 18h8M8 22h5"/></svg>
+      <div>
+        <div class="fc-name">orders_batch_0417.csv</div>
+        <div class="fc-sub">240 rows · address list + shipment details</div>
+      </div>
+    </div>
+
+    <!-- batch rate counter -->
+    <div id="rated">
+      <div class="lbl">BATCH RATE COMPARE</div>
+      <div class="val"><span id="rated-n">0</span> / 240 <b>rated</b></div>
+      <div class="note">instant compare across your carriers · 0 manual quotes · illustrative rates</div>
+    </div>
+
+    <!-- one-click dispatch -->
+    <div id="dispatch-btn">
+      <div class="d1">DISPATCH ENTIRE BATCH</div>
+      <div class="d2">240 shipments · 1 click</div>
+    </div>
+
+    <!-- label / BOL spool -->
+    <div id="spool">
+      <div class="sp-h">SINGLE RUN — LABELS &amp; BOLS</div>
+      <div class="printer"><span class="pl">DOCUMENT ENGINE</span><span class="slot"></span><span class="pl">AUTO</span></div>
+      <div class="docs">
+        <div class="doc"><div class="bar"></div><div class="dm">1Z 4E8 W20 0391</div><div class="tag">LABEL</div></div>
+        <div class="doc"><div class="bar"></div><div class="dm">PRO 771-482-306</div><div class="tag">BOL</div></div>
+        <div class="doc"><div class="bar"></div><div class="dm">1Z 4E8 W20 0417</div><div class="tag">LABEL</div></div>
+        <div class="doc"><div class="bar"></div><div class="dm">PRO 771-482-341</div><div class="tag">BOL</div></div>
+        <div class="doc"><div class="bar"></div><div class="dm">1Z 4E8 W20 0438</div><div class="tag">LABEL</div></div>
+      </div>
+      <div class="sp-count"><span class="n" id="doc-n">0</span><span class="l">labels + BOL documents · generated in one run</span></div>
+    </div>
+
+    <!-- exceptions panel -->
+    <div id="review-panel">
+      <div class="rp-h">NEEDS REVIEW — 3 OF 240</div>
+      <div class="rp-row"><span class="id">SO-48115</span><span class="nm">Harbor Lighting Co.</span><span class="why">Address: suite # missing</span></div>
+      <div class="rp-row"><span class="id">SO-48119</span><span class="nm">BlueCrest Labs</span><span class="why">Hazmat docs required</span></div>
+      <div class="rp-row"><span class="id">SO-48122</span><span class="nm">Sierra Auto Parts</span><span class="why">Invalid destination ZIP</span></div>
+      <div class="rp-foot" id="rp-foot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f7a54" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span>237 of 240 dispatched clean — your team works the exceptions</span>
+      </div>
+    </div>
+
+    <div id="toast">
+      <span class="tk"><svg width="34" height="34" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#22c55e" stroke-width="2"/><path id="chk-path" d="M7.5 12.5l3 3 6-6.5" stroke="#22c55e" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>
+        <span class="t1" style="display:block">Batch complete — 237 dispatched · 3 held for review</span>
+        <span class="t2" style="display:block">Address &amp; compliance errors caught before they ship</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ═══ title card ═══ -->
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">HIGH-VOLUME SHIPPING</div>
+    <h1 class="title-h1">Batch Shipping,<br>step by step.</h1>
+    <div class="title-sub">Process hundreds of shipments in minutes — upload your list, compare every rate instantly, and dispatch the entire batch with a single click.</div>
+  </div>
+
+  <!-- ═══ end card ═══ -->
+  <div class="fullcard" id="scene-end">
+    <img class="logo-img logo-md" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:36px"></div>
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">Hundreds of shipments.<br>Minutes, not hours.</h1>
+    <div class="stats-row">
+      <div class="stat-tile"><div class="stat-num">1 <b>click</b></div><div class="stat-lbl">Book and dispatch an entire batch in a single action.</div></div>
+      <div class="stat-tile"><div class="stat-num">0 <b>manual quotes</b></div><div class="stat-lbl">Every order rate-shopped instantly across your carrier network.</div></div>
+      <div class="stat-tile"><div class="stat-num">Hundreds <b>in minutes</b></div><div class="stat-lbl">Throughput scales with order volume, not headcount.</div></div>
+    </div>
+    <div class="cta">SCHEDULE A DEMO →</div>
+    <div class="cta-url">freightpop.com/freight-shipping</div>
+  </div>
+
+</div></div>
+
+<!-- ═══ player chrome ═══ -->
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button><button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════════════════════
+   Deterministic timeline engine.
+   apply(t) computes EVERY visual property from absolute time t — no CSS
+   animations, no free-running state — so:
+     • window.FPVideo.seek(t) renders any frame exactly (MP4 rendering)
+     • presenter & audience windows stay in sync over BroadcastChannel
+   ═════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);   // living inside the TMS deck's demo panel
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  // ── chapters ───────────────────────────────────────────────────────────
+  const CH = [
+    { id: 'title',    label: 'Intro',    start: 0,  end: 6 },
+    { id: 'upload',   label: 'Upload',   start: 6,  end: 19 },
+    { id: 'rate',     label: 'Rate',     start: 19, end: 32 },
+    { id: 'dispatch', label: 'Dispatch', start: 32, end: 45 },
+    { id: 'review',   label: 'Review',   start: 45, end: 58 },
+    { id: 'end',      label: 'Result',   start: 58, end: 72 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  // ── batch rows (the "filled placeholders") — 12 visible of 240 ────────
+  const ORDERS = [
+    { id: 'SO-48112', name: 'Beacon Tool & Die',      lane: 'Anaheim, CA → Reno, NV',          wt: '2,140 lb', carrier: 'XPO',           rate: '$186.20', flag: false },
+    { id: 'SO-48113', name: 'Rivera Farms Packing',   lane: 'Fresno, CA → Portland, OR',       wt: '940 lb',   carrier: 'Old Dominion',  rate: '$164.75', flag: false },
+    { id: 'SO-48114', name: 'Cascade Bike Supply',    lane: 'Irvine, CA → Boise, ID',          wt: '38 lb',    carrier: 'UPS Ground',    rate: '$14.92',  flag: false },
+    { id: 'SO-48115', name: 'Harbor Lighting Co.',    lane: 'Long Beach, CA → Mesa, AZ',       wt: '620 lb',   carrier: 'Estes',         rate: '$138.40', flag: true  },
+    { id: 'SO-48116', name: 'Summit Ridge Outdoors',  lane: 'Ontario, CA → Denver, CO',        wt: '1,480 lb', carrier: 'Saia',          rate: '$172.10', flag: false },
+    { id: 'SO-48117', name: 'Vail Medical Supply',    lane: 'Carlsbad, CA → Salt Lake City, UT', wt: '54 lb',  carrier: 'FedEx Express', rate: '$22.61',  flag: false },
+    { id: 'SO-48118', name: 'Ironwood Cabinetry',     lane: 'Riverside, CA → Tucson, AZ',      wt: '3,260 lb', carrier: 'R+L Carriers',  rate: '$205.87', flag: false },
+    { id: 'SO-48119', name: 'BlueCrest Labs',         lane: 'San Diego, CA → Las Vegas, NV',   wt: '17 lb',    carrier: 'UPS Ground',    rate: '$11.38',  flag: true  },
+    { id: 'SO-48120', name: 'Pacific Coast Textiles', lane: 'Vernon, CA → Sacramento, CA',     wt: '880 lb',   carrier: 'Old Dominion',  rate: '$149.66', flag: false },
+    { id: 'SO-48121', name: 'Redwood Paper Goods',    lane: 'Fontana, CA → Phoenix, AZ',       wt: '1,120 lb', carrier: 'XPO',           rate: '$158.33', flag: false },
+    { id: 'SO-48122', name: 'Sierra Auto Parts',      lane: 'Torrance, CA → Albuquerque, NM',  wt: '2,750 lb', carrier: 'Estes',         rate: '$214.09', flag: true  },
+    { id: 'SO-48123', name: 'Lakeshore Home Goods',   lane: 'Chino, CA → Seattle, WA',         wt: '46 lb',    carrier: 'UPS Ground',    rate: '$16.75',  flag: false },
+  ];
+  const rowsEl = $('#gridrows');
+  ORDERS.forEach((o) => {
+    const d = document.createElement('div');
+    d.className = 'grow' + (o.flag ? ' flagged' : '');
+    d.innerHTML = '<span class="oid"></span><span class="who"><span class="nm"></span><br><span class="ln"></span></span><span class="wt"></span><span class="rate"><span class="rc-dash">—</span><span class="rc-val"></span></span><span class="st"><span class="pill">Queued</span></span>';
+    d.querySelector('.oid').textContent = o.id;
+    d.querySelector('.nm').textContent = o.name;
+    d.querySelector('.ln').textContent = o.lane;
+    d.querySelector('.wt').textContent = o.wt;
+    const rv = d.querySelector('.rc-val');
+    rv.innerHTML = '<b></b><span class="pr"></span><span class="best">BEST</span>';
+    rv.querySelector('b').textContent = o.carrier;
+    rv.querySelector('.pr').textContent = o.rate;
+    rowsEl.appendChild(d);
+  });
+  const nonFlagRank = [];
+  { let r = 0; ORDERS.forEach((o, i) => { nonFlagRank[i] = o.flag ? -1 : r++; }); }
+  const flagOrder = [];
+  ORDERS.forEach((o, i) => { if (o.flag) flagOrder.push(i); });
+
+  const CAPTIONS = {
+    upload:   { n: '1', k: 'STEP 1 — UPLOAD THE BATCH',      t: 'Hundreds of orders, one drop', b: 'Upload your address list and shipment details — no re-keying, no one-label-at-a-time. Every order lands in the grid with lanes, weights and services attached.' },
+    rate:     { n: '2', k: 'STEP 2 — RATE THE WHOLE BATCH',  t: 'Every order rate-shopped at once', b: 'FreightPOP instantly compares rates across your carriers and flags the most cost-effective option on every line. 0 manual quotes required.' },
+    dispatch: { n: '3', k: 'STEP 3 — ONE CLICK TO DISPATCH', t: 'Book the entire batch in a single action', b: 'One click books every shipment and generates all labels and documents in a single run — the whole batch handed to your carriers at once.' },
+    review:   { n: '4', k: 'STEP 4 — EXCEPTIONS SURFACED',   t: 'Errors caught before they ship', b: 'Address and compliance issues are held for review while the rest of the batch sails through — your team works exceptions, not routine bookings.' },
+  };
+
+  // ── easing helpers ─────────────────────────────────────────────────────
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const easeOut = (x) => 1 - Math.pow(1 - clamp01(x), 3);
+  // progress through [a,b] at time t
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  // path helpers (dash-draw)
+  function prepPath(sel) {
+    const p = document.querySelector(sel);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    return { p, L };
+  }
+  const chkPath = prepPath('#chk-path');
+
+  const el = {
+    title: $('#scene-title'), end: $('#scene-end'), product: $('#scene-product'),
+    caption: $('#caption'), capNum: $('#cap-num'), capKicker: $('#cap-kicker'), capTitle: $('#cap-title'), capBody: $('#cap-body'),
+    dash: $('#dash'), rateStrip: $('#rate-strip'), impCount: $('#imp-count'),
+    rows: $$('#gridrows .grow'),
+    rateVals: $$('#gridrows .rc-val'), rateDashes: $$('#gridrows .rc-dash'),
+    pills: $$('#gridrows .pill'),
+    scanline: $('#scanline'), dropzone: $('#dropzone'), gridfoot: $('#gridfoot'),
+    fileChip: $('#file-chip'),
+    rated: $('#rated'), ratedN: $('#rated-n'),
+    dispatchBtn: $('#dispatch-btn'),
+    spool: $('#spool'), docs: $$('#spool .doc'), docN: $('#doc-n'),
+    review: $('#review-panel'), rpRows: $$('#review-panel .rp-row'), rpFoot: $('#rp-foot'),
+    toast: $('#toast'),
+  };
+
+  let currentCaption = '';
+  function setCaption(key) {
+    if (key === currentCaption) return;
+    currentCaption = key;
+    if (!key) return;
+    const c = CAPTIONS[key];
+    el.capNum.textContent = c.n;
+    el.capKicker.textContent = c.k;
+    el.capTitle.textContent = c.t;
+    el.capBody.textContent = c.b;
+  }
+
+  // ── the whole film as a function of t ──────────────────────────────────
+  function apply(t) {
+    // title / end cards — title is fully composed at t=0 (no fade-in) so the
+    // first rendered frame is never blank; it settles with a gentle scale.
+    const titleOut = seg(t, 5.2, 6.0);
+    el.title.style.opacity = String(1 - titleOut);
+    el.title.style.transform = `scale(${1.035 - 0.035 * easeOut(seg(t, 0, 1.2))})`;
+    el.title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+    const endIn = seg(t, 58, 58.9);
+    el.end.style.opacity = String(endIn);
+    el.end.style.visibility = t > 57.9 ? 'visible' : 'hidden';
+    el.end.querySelectorAll('.stat-tile').forEach((tile, i) => {
+      const p = ease(seg(t, 59 + i * 0.5, 59.9 + i * 0.5));
+      tile.style.opacity = String(p);
+      tile.style.transform = `translateY(${24 * (1 - p)}px)`;
+    });
+    const ctaP = ease(seg(t, 61.2, 62));
+    el.end.querySelector('.cta').style.opacity = String(ctaP);
+    el.end.querySelector('.cta').style.transform = `scale(${0.9 + 0.1 * ctaP})`;
+    el.end.querySelector('.cta-url').style.opacity = String(ctaP);
+
+    // product stage visible between title and end
+    const prodIn = ease(seg(t, 5.6, 6.6));
+    const prodOut = seg(t, 57.4, 58.2);
+    el.product.style.opacity = String(Math.min(prodIn, 1 - prodOut));
+    el.product.style.visibility = (t > 5.5 && t < 58.3) ? 'visible' : 'hidden';
+
+    // dashboard entrance
+    const dashP = ease(seg(t, 6.0, 7.2));
+    el.dash.style.transform = `translateY(${60 * (1 - dashP)}px)`;
+
+    // ── captions per chapter ──
+    let cap = '';
+    if (t >= 6 && t < 19) cap = 'upload';
+    else if (t < 32) cap = 'rate';
+    else if (t < 45) cap = 'dispatch';
+    else if (t < 58) cap = 'review';
+    setCaption(cap);
+    const capStarts = { upload: 6.4, rate: 19, dispatch: 32, review: 45 };
+    if (cap) {
+      const p = ease(seg(t, capStarts[cap], capStarts[cap] + 0.7));
+      el.caption.style.opacity = String(p);
+      el.caption.style.transform = `translateY(${26 * (1 - p)}px)`;
+    } else el.caption.style.opacity = '0';
+
+    // ── S1 upload (6–19): drop zone, CSV card flies in, rows stream ──
+    el.dropzone.style.opacity = String(Math.min(ease(seg(t, 6.6, 7.2)), 1 - seg(t, 8.2, 8.8)));
+    // file card: lower-left → into the grid
+    const fly = ease(seg(t, 7.0, 8.4));
+    const fx = 170 + (1150 - 170) * fly, fy = 890 - (890 - 330) * fly;
+    el.fileChip.style.left = fx + 'px'; el.fileChip.style.top = fy + 'px';
+    el.fileChip.style.opacity = String(Math.min(seg(t, 7.0, 7.3), 1 - seg(t, 8.4, 8.9)));
+    el.fileChip.style.transform = `scale(${1 - 0.42 * fly})`;
+    // rows stream in
+    el.rows.forEach((row, i) => {
+      const a = 8.4 + i * 0.5, p = ease(seg(t, a, a + 0.6));
+      row.style.opacity = String(p);
+      row.style.transform = `translateX(${-30 * (1 - p)}px)`;
+    });
+    // imported counter races to 240
+    const imp = Math.round(240 * ease(seg(t, 8.4, 15.2)));
+    el.impCount.textContent = imp + ' / 240 imported';
+    // footer totals
+    const footP = ease(seg(t, 15.4, 16.1));
+    el.gridfoot.style.opacity = String(footP);
+    el.gridfoot.style.transform = `translateY(${12 * (1 - footP)}px)`;
+
+    // ── S2 rate (19–32): rates fill down the grid, counter races up ──
+    const scanP = seg(t, 20, 26.6);
+    el.scanline.style.opacity = String(Math.min(seg(t, 19.8, 20.2), 1 - seg(t, 26.6, 27.2)) * 0.9);
+    el.scanline.style.transform = `translateY(${(ORDERS.length - 1) * 46 * scanP}px)`;
+    el.rateVals.forEach((rv, i) => {
+      const a = 20 + i * 0.55, p = ease(seg(t, a, a + 0.5));
+      rv.style.opacity = String(p);
+      rv.style.transform = `translateY(-50%) scale(${0.75 + 0.25 * p})`;
+      rv.style.transformOrigin = 'left center';
+      el.rateDashes[i].style.opacity = String(1 - p);
+    });
+    // strip + navy counter tile
+    el.rateStrip.style.width = (ease(seg(t, 20, 28.8)) * 100) + '%';
+    const ratedP = ease(seg(t, 19.6, 20.4));
+    el.rated.style.opacity = String(Math.min(ratedP, 1 - seg(t, 31, 31.8)));
+    el.rated.style.transform = `translateY(${20 * (1 - ratedP)}px)`;
+    el.ratedN.textContent = String(Math.round(240 * ease(seg(t, 20, 28.8))));
+
+    // ── S3 dispatch (32–45): one click, rows flip green, docs spool ──
+    const btnIn = ease(seg(t, 32.4, 33.2));
+    const press = Math.sin(Math.PI * seg(t, 34.3, 35.0));
+    const btnOut = seg(t, 35.2, 35.9);
+    el.dispatchBtn.style.opacity = String(Math.min(btnIn, 1 - btnOut));
+    el.dispatchBtn.style.transform = `translate(-50%, -50%) translateY(${26 * (1 - btnIn)}px) scale(${1 - 0.07 * press})`;
+    el.dispatchBtn.style.background = press > 0.5 ? '#2d6cc0' : 'var(--navy)';
+    // label / BOL spool mini-scene
+    const spoolP = ease(seg(t, 36.2, 37.0));
+    el.spool.style.opacity = String(Math.min(spoolP, 1 - seg(t, 44.4, 45.2)));
+    el.spool.style.transform = `translateY(${28 * (1 - spoolP)}px)`;
+    el.spool.style.visibility = (t > 36 && t < 45.3) ? 'visible' : 'hidden';
+    el.docs.forEach((doc, k) => {
+      const a = 37 + k * 0.85, p = ease(seg(t, a, a + 0.8));
+      const col = k % 3, row = Math.floor(k / 3);
+      doc.style.left = (col * 160 + 6) + 'px';
+      doc.style.top = (row * 94 + 4) + 'px';
+      doc.style.opacity = String(p);
+      doc.style.transform = `translateY(${-52 * (1 - p)}px) rotate(${(col - 1) * 1.6 * (1 - p)}deg)`;
+    });
+    el.docN.textContent = String(Math.round(240 * ease(seg(t, 37, 42.5))));
+
+    // ── S4 review (45–58): 3 rows held, 237 sail through ──
+    const rvIn = ease(seg(t, 45.6, 46.4));
+    el.review.style.opacity = String(Math.min(rvIn, 1 - seg(t, 57, 57.6)));
+    el.review.style.transform = `translateY(${28 * (1 - rvIn)}px)`;
+    el.review.style.visibility = (t > 45.4 && t < 57.7) ? 'visible' : 'hidden';
+    el.rpRows.forEach((r, j) => {
+      const p = ease(seg(t, 46.4 + j * 0.8, 47.1 + j * 0.8));
+      r.style.opacity = String(p);
+      r.style.transform = `translateX(${-20 * (1 - p)}px)`;
+    });
+    const rpfP = ease(seg(t, 49.4, 50.2));
+    el.rpFoot.style.opacity = String(rpfP);
+    el.rpFoot.style.transform = `translateY(${12 * (1 - rpfP)}px)`;
+
+    // status pills + flagged-row tint — fully computed from t
+    el.rows.forEach((row, i) => {
+      const o = ORDERS[i];
+      const pill = el.pills[i];
+      const ratedT = 20.3 + i * 0.55;
+      let txt = 'Queued', cls = 'pill';
+      if (o.flag) {
+        const j = flagOrder.indexOf(i);
+        const flagT = 46.0 + j * 0.7;
+        if (t >= flagT) { txt = 'Review'; cls = 'pill warn'; }
+        else if (t >= ratedT) { txt = 'Rated'; cls = 'pill rated'; }
+        const pulse = Math.sin(Math.PI * seg(t, flagT, flagT + 0.8));
+        row.style.background = t >= flagT ? `rgba(245,158,11,${0.07 + 0.1 * pulse})` : '#fff';
+      } else {
+        const dispT = 35.8 + nonFlagRank[i] * 0.45;
+        if (t >= dispT) { txt = 'Dispatched'; cls = 'pill ok'; }
+        else if (t >= ratedT) { txt = 'Rated'; cls = 'pill rated'; }
+        const pop = 1 + 0.12 * Math.sin(Math.PI * seg(t, dispT, dispT + 0.5));
+        pill.style.transform = `scale(${t >= dispT ? pop : 1})`;
+        row.style.background = '#fff';
+      }
+      if (pill.textContent !== txt) pill.textContent = txt;
+      if (pill.className !== cls) pill.className = cls;
+    });
+
+    // completion toast + check dash-draw
+    const toastP = ease(seg(t, 52, 52.8));
+    el.toast.style.opacity = String(Math.min(toastP, 1 - seg(t, 57, 57.6)));
+    el.toast.style.transform = `translateY(${-24 * (1 - toastP)}px)`;
+    chkPath.p.style.strokeDashoffset = String(chkPath.L * (1 - ease(seg(t, 52.4, 53.4))));
+  }
+
+  // hide everything that pops later (first paint at t=0)
+  ['#file-chip', '#rated', '#dispatch-btn', '#spool', '#review-panel', '#toast', '#gridfoot', '#dropzone', '#scanline'].forEach((s) => { $(s).style.opacity = '0'; });
+
+  // ── player / transport ─────────────────────────────────────────────────
+  let T = 0, playing = false, lastTick = 0, raf = null;
+  function step(now) {
+    if (playing) {
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      if (T >= DURATION) {
+        if (EMBED) { T = 0; } // booth-friendly: loop when embedded in the deck
+        else { playing = false; updatePlayBtn(); }
+      }
+      apply(T);
+      updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); raf = requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  // ── chrome ─────────────────────────────────────────────────────────────
+  const chaptersEl = $('#chapters');
+  CH.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); broadcast(); });
+    chaptersEl.appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => {
+      const c = CH[i];
+      cel.querySelector('.fill').style.width = (seg(T, c.start, c.end) * 100) + '%';
+    });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); broadcast(); });
+
+  // auto-hide controls while playing (mouse move brings back)
+  let hideTimer = null;
+  function scheduleHide() {
+    if (EMBED) return; // embed bar is a dedicated strip — always visible
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  }
+  document.addEventListener('mousemove', scheduleHide);
+
+  // keyboard: Space play/pause, ←/→ chapter jump; deck-level keys forwarded up.
+  // In EMBED mode (inside the TMS deck's demo panel) arrows belong to the
+  // DECK's step navigation — re-dispatch them on the parent document
+  // (same-origin) so featNext/featPrev keep working while the video has focus.
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); broadcast(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) { /* cross-origin host */ }
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); broadcast(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const prev = [...CH].reverse().find((c) => c.start < T - 0.5); seek(prev ? prev.start : 0); play(); broadcast(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*');
+      e.preventDefault();
+    }
+  });
+
+  // ── presenter ↔ audience sync (same-origin BroadcastChannel) ──────────
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  // try/catch: file:// documents have opaque origins where BroadcastChannel
+  // may throw — the video must still play standalone from a double-clicked file.
+  try {
+  if (!RENDER && 'BroadcastChannel' in window) {
+    bc = new BroadcastChannel('fp-roadmap-video-sync');
+    bc.onmessage = (e) => {
+      const m = e.data || {};
+      // presenter-console transport commands
+      if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+      if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+      if (m.cmd === 'play') { play(true); return; }
+      if (m.cmd === 'pause') { pause(true); return; }
+      // a late-mounting copy asks where everyone is
+      if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+      if (typeof m.t !== 'number') return;
+      authority = false; lastRemoteState = Date.now(); // someone else is driving
+      applyingRemote = true;
+      // tolerate small drift — snapping for sub-0.6s deltas is what read as a
+      // "refresh"; only real seeks (chapters) or play-state changes apply
+      if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+        T = m.t; playing = !!m.playing; lastTick = performance.now();
+        apply(T); updateChrome(); updatePlayBtn();
+      }
+      applyingRemote = false;
+    };
+    // periodic drift correction while playing
+    setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+  }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  // ── stage scaling ──────────────────────────────────────────────────────
+  function fit() {
+    if (EMBED) {
+      // dynamic text formatting: small panels get a readability boost,
+      // full-size panels use the design sizes (1.0)
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty("--fpb", String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ── render contract ────────────────────────────────────────────────────
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    // ?seek=<seconds> — static preview of any timestamp (QA / thumbnails)
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    // autoplay silently, then adopt any peer that is already mid-flight
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

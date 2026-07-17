@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Warehouse &amp; Bin Setup, Step by Step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP brand tokens (BRANDING.md + freightpop.com warehouse-management-system)
+   Every timeline-driven property is set from JS seek(t) — NO CSS animations
+   on story elements, so headless frame rendering is deterministic.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729;
+  --navy-2: #0b2340;
+  --blue: #4c8dde;
+  --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9;
+  --bg: #f7f9fc;
+  --ink: #051729;
+  --sub: rgba(5, 23, 41, 0.72);
+  --green: #1f7a54;
+  --success: #22c55e;
+  --card-line: rgba(5, 23, 41, 0.10);
+  --floor-bg: #f2f5f9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', -apple-system, sans-serif; }
+
+/* ── 1920×1080 stage scaled to the window ─────────────────────────────── */
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--bg); transform-origin: center center; flex: 0 0 auto;
+}
+
+/* faint blueprint grid like the website hero panels */
+#stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* ── Title / end cards ────────────────────────────────────────────────── */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.02em; color: #fff; }
+.logo b { color: var(--blue); }
+.logo-img { display: block; }
+.logo-img.logo-sm { height: 26px; }
+.logo-img.logo-md { height: 40px; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 110px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+
+/* ── Step caption (lower-left third — this column stays CLEAR of overlays) */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(5,23,41,0.25); }
+
+/* ── Dashboard frame (mirrors the site's product shots) ───────────────── */
+#dash { position: absolute; right: 80px; top: 78px; width: 1040px; height: 780px; background: #fff; border: 3px solid var(--navy); border-radius: 26px; box-shadow: 0 30px 70px rgba(5,23,41,0.18); overflow: hidden; z-index: 10; }
+#dash .titlebar { height: 64px; background: var(--navy); display: flex; align-items: center; padding: 0 26px; border-radius: 22px 22px 0 0; }
+#dash .apphead { padding: 16px 26px 12px; }
+#dash .apphead .h { font-family: 'Manrope'; font-weight: 800; font-size: 21px; letter-spacing: 0.02em; color: var(--ink); }
+#dash .apphead .strip { height: 14px; border-radius: 7px; background: var(--blue); margin-top: 12px; position: relative; overflow: hidden; }
+#dash .apphead .strip .fill { position: absolute; inset: 0; width: 0%; background: linear-gradient(90deg, var(--blue-deep), #6fb2ff); }
+#dash .body { display: flex; height: calc(100% - 64px - 70px); }
+#dash .sidebar { width: 300px; border-right: 1px solid var(--card-line); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+#dash .search { height: 42px; border: 1.5px solid var(--card-line); border-radius: 21px; display: flex; align-items: center; padding: 0 16px; color: rgba(5,23,41,0.45); font-size: 15px; justify-content: space-between; }
+#dash .floorwrap { flex: 1; position: relative; background: var(--floor-bg); }
+
+/* setup checklist cards — the "filled placeholders" (sidebar, scene 2) */
+.setupcard { border: 1.5px solid var(--card-line); border-radius: 12px; padding: 10px 12px; background: #fff; box-shadow: 0 2px 6px rgba(5,23,41,0.05); display: flex; gap: 10px; align-items: flex-start; }
+.setupcard .tick { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(5,23,41,0.2); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; margin-top: 2px; }
+.setupcard .name { font-weight: 700; font-size: 15px; color: var(--ink); line-height: 1.25; }
+.setupcard .meta { font-size: 12.5px; color: var(--sub); margin-top: 3px; line-height: 1.35; }
+
+/* quote card (scene 1, inside the dash — clear of the caption column) */
+#quote { position: absolute; left: 40px; right: 40px; top: 96px; z-index: 44; background: #fff; border: 2px solid var(--navy); border-left: 9px solid var(--blue); border-radius: 16px; padding: 22px 28px; box-shadow: 0 20px 46px rgba(5,23,41,0.22); }
+#quote .q1 { font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1.4; font-style: italic; }
+#quote .q2 { font-size: 14.5px; color: var(--sub); margin-top: 8px; }
+
+/* bin-config chips (scene 2, bottom-left INSIDE the dash floor area) */
+.rule-chips { position: absolute; left: 20px; bottom: 18px; z-index: 45; display: flex; flex-wrap: wrap; gap: 8px; width: 470px; }
+.rule-chips .rchip { font-size: 14px; font-weight: 700; padding: 8px 15px; border-radius: 999px; background: #fff; border: 1.5px solid var(--navy); color: var(--navy); box-shadow: 0 6px 16px rgba(5,23,41,0.12); }
+.rule-chips .rchip b { color: var(--blue-deep); }
+
+/* build counter (scene 2, bottom-right inside the dash floor area) */
+#savings { position: absolute; right: 20px; bottom: 18px; z-index: 45; background: var(--navy); color: #fff; border-radius: 16px; padding: 14px 22px; box-shadow: 0 16px 36px rgba(5,23,41,0.3); }
+#savings .lbl { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: var(--light-blue); }
+#savings .val { font-family: 'Manrope'; font-size: 32px; font-weight: 800; margin-top: 2px; }
+#savings .val b { color: #7fd4ae; }
+#savings .note { font-size: 11px; color: rgba(193,212,233,0.75); margin-top: 3px; }
+
+/* bin detail card (scene 3, right side of the floor area) */
+#bin-card { position: absolute; right: 20px; top: 64px; width: 330px; z-index: 46; background: #fff; border: 2.5px solid var(--navy); border-radius: 18px; box-shadow: 0 22px 50px rgba(5,23,41,0.25); overflow: hidden; }
+#bin-card .bc-head { background: var(--navy); color: #fff; padding: 13px 18px; display: flex; align-items: center; justify-content: space-between; }
+#bin-card .bc-head .addr { font-family: 'Manrope'; font-weight: 800; font-size: 19px; letter-spacing: 0.02em; }
+#bin-card .bc-head .type { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 11px; border-radius: 999px; background: var(--blue); color: #fff; }
+#bin-card .bc-row { padding: 11px 18px; border-top: 1px solid var(--card-line); }
+#bin-card .bc-row .lbl { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: var(--sub); }
+#bin-card .bc-row .val { font-size: 16.5px; font-weight: 700; color: var(--ink); margin-top: 3px; }
+#bin-card .bc-row .val small { font-weight: 500; color: var(--sub); }
+#bin-card .bc-row .val .qty { font-family: 'Manrope'; font-size: 27px; font-weight: 800; color: var(--blue-deep); }
+#bin-card .bc-foot { padding: 10px 18px; background: var(--bg); font-size: 12.5px; color: var(--sub); border-top: 1px solid var(--card-line); }
+#bin-card .bc-foot b { color: var(--ink); }
+
+/* search pill + result (scene 4, top of the floor area) */
+#search-pill { position: absolute; left: 50%; transform: translateX(-50%); top: 14px; z-index: 46; width: 520px; background: #fff; border: 2.5px solid var(--navy); border-radius: 999px; padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 18px 40px rgba(5,23,41,0.22); }
+#search-pill .mag { font-size: 18px; color: var(--sub); }
+#search-pill .typed { font-family: 'DM Mono', monospace; font-size: 19px; font-weight: 500; color: var(--ink); }
+#search-pill .caret { display: inline-block; width: 2px; height: 22px; background: var(--blue-deep); vertical-align: -4px; }
+#search-pill .hint { margin-left: auto; font-size: 12px; color: var(--sub); letter-spacing: 0.06em; font-weight: 700; }
+#result-card { position: absolute; left: 50%; transform: translateX(-50%); top: 78px; z-index: 46; width: 560px; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--success); border-radius: 14px; padding: 13px 20px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); }
+#result-card .r1 { font-weight: 800; font-size: 17px; color: var(--ink); }
+#result-card .r2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+#result-card .r2 b { color: var(--blue-deep); }
+
+/* multi-facility strip (scene 4, bottom of the floor area) */
+#sites { position: absolute; left: 20px; right: 20px; bottom: 18px; z-index: 45; }
+#sites .s-lbl { font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: var(--sub); margin-bottom: 7px; }
+#sites .s-row { display: flex; gap: 12px; }
+#sites .site { flex: 1; background: #fff; border: 2px solid var(--navy); border-radius: 14px; padding: 11px 15px; box-shadow: 0 10px 26px rgba(5,23,41,0.15); }
+#sites .site .sn { font-weight: 800; font-size: 15.5px; color: var(--ink); }
+#sites .site .sm { font-size: 12.5px; color: var(--sub); margin-top: 2px; }
+#sites .site .sl { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: var(--green); margin-top: 6px; }
+#sites .site .sl .dotl { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+
+/* payoff toast (top-right of the stage, over the dash — clear of the caption) */
+#toast { position: absolute; right: 120px; top: 108px; z-index: 60; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--success); border-radius: 14px; padding: 14px 22px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); width: 470px; }
+#toast .t1 { font-weight: 800; font-size: 17px; color: var(--ink); }
+#toast .t2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+
+/* ── End card stats ───────────────────────────────────────────────────── */
+.stats-row { display: flex; gap: 34px; margin: 54px 0 60px; }
+.stat-tile { width: 360px; background: rgba(255,255,255,0.055); border: 1px solid rgba(193,212,233,0.22); border-radius: 20px; padding: 34px 32px; text-align: left; }
+.stat-num { font-size: 52px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.stat-num b { color: var(--blue); }
+.stat-lbl { font-size: 19px; color: var(--light-blue); margin-top: 10px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; box-shadow: 0 18px 44px rgba(76,141,222,0.35); }
+.cta-url { margin-top: 22px; font-size: 21px; color: var(--light-blue); letter-spacing: 0.02em; }
+
+/* ── Player chrome (hidden in render mode) ───────────────────────────── */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 15px; cursor: pointer; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+
+/* ── embed=1 — living inside a demo panel (deck module). Dedicated bottom
+      bar, larger story text at panel scale. ──────────────────────────── */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls {
+  left: 0; right: 0; bottom: 0; transform: none; border-radius: 0;
+  padding: 10px 18px; gap: 14px; opacity: 1 !important; pointer-events: auto !important;
+  background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3);
+}
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #timecode { font-size: 15px; }
+body.embed #btn-play { width: 44px; height: 44px; flex: 0 0 auto; }
+#btn-theme, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+body.embed #btn-theme, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+#btn-fs { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-fs:hover { border-color: #fff; }
+body.embed #btn-fs { width: 44px; height: 44px; }
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); line-height: 1.45; }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed .rule-chips .rchip { font-size: calc(13px * var(--fpb, 1.35)); padding: 10px 18px; }
+body.embed #savings .lbl { font-size: calc(12px * var(--fpb, 1.35)); }
+body.embed #savings .val { font-size: calc(29px * var(--fpb, 1.35)); }
+body.embed #savings .note { font-size: 13px; }
+body.embed #quote .q1 { font-size: calc(21px * var(--fpb, 1.35)); }
+body.embed #quote .q2 { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed #toast .t1 { font-size: calc(16px * var(--fpb, 1.35)); }
+body.embed #toast .t2 { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed #toast { width: 520px; }
+body.embed .title-sub { font-size: calc(30px * var(--fpb, 1.35)); }
+body.embed .kicker { font-size: calc(20px * var(--fpb, 1.35)); }
+body.embed .stat-num { font-size: calc(44px * var(--fpb, 1.35)); }
+body.embed .stat-lbl { font-size: calc(17px * var(--fpb, 1.35)); }
+body.embed .cta { font-size: calc(24px * var(--fpb, 1.35)); }
+body.embed .cta-url { font-size: calc(19px * var(--fpb, 1.35)); }
+
+/* ── theme=deck — matches the interactive deck (navy + teal + DM Mono). ── */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before {
+  background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+}
+body.theme-deck .kicker,
+body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: #3dd6b5; letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; letter-spacing: -0.02em; }
+body.theme-deck .stat-num { font-weight: 600; }
+body.theme-deck #caption .step-body { color: #b5cde0; font-weight: 400; }
+body.theme-deck #caption .step-num { background: #3dd6b5; color: var(--navy); }
+body.theme-deck .fullcard { background: radial-gradient(1300px 700px at 72% -10%, #0e3050 0%, var(--navy) 55%); }
+body.theme-deck .title-sub { color: #b5cde0; }
+body.theme-deck .stat-num b { color: #3dd6b5; }
+body.theme-deck .cta { background: #3dd6b5; color: var(--navy); box-shadow: 0 18px 44px rgba(61,214,181,0.3); }
+body.theme-deck #savings .val b { color: #3dd6b5; }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: #3dd6b5; color: var(--navy); }
+body.theme-deck #dash { border-color: #0a2540; box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 64px rgba(61,214,181,0.10); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ persistent product stage ═══ -->
+  <div class="layer" id="scene-product">
+
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE UNMAPPED FLOOR</div>
+      <div class="step-title" id="cap-title">The system's warehouse isn't your warehouse</div>
+      <div class="step-body" id="cap-body">Bins, lots and license plates exist on the floor but not in the software.</div>
+    </div>
+
+    <div id="dash">
+      <div class="titlebar"><img class="logo-img logo-sm" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="></div>
+      <div class="apphead">
+        <div class="h">WAREHOUSE &amp; BIN SETUP</div>
+        <div class="strip"><div class="fill" id="build-strip"></div></div>
+      </div>
+      <div class="body">
+        <div class="sidebar">
+          <div class="search"><span>Search items, lots, LPs…</span><span>⌕</span></div>
+          <div id="setup-cards"></div>
+        </div>
+        <div class="floorwrap">
+          <!-- abstract brand-styled warehouse floor plan -->
+          <svg id="floor" viewBox="0 0 712 636" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="712" height="636" fill="#f2f5f9"/>
+
+            <!-- ghost floor: the layout that exists only in someone's head -->
+            <g id="ghost" stroke="#9aa9b6" fill="none" stroke-width="2.5" stroke-dasharray="10 8">
+              <rect x="36" y="56" width="304" height="244" rx="8"/>
+              <rect x="372" y="56" width="304" height="244" rx="8"/>
+              <rect x="36" y="332" width="640" height="210" rx="8"/>
+              <path d="M52,140 h270 M52,204 h270 M388,140 h270 M388,204 h270 M52,420 h600"/>
+            </g>
+            <g id="qmarks" font-family="Manrope, sans-serif" font-weight="800" font-size="46" fill="#9aa9b6" text-anchor="middle">
+              <text x="160" y="125">?</text>
+              <text x="510" y="185">?</text>
+              <text x="300" y="425">?</text>
+              <text x="560" y="470">?</text>
+              <text x="120" y="265">?</text>
+            </g>
+
+            <!-- the modeled plan: outline draw, zones, bins built by JS -->
+            <path id="plan-outline" d="M36,56 h304 v244 h-304 z M372,56 h304 v244 h-304 z M36,332 h640 v210 h-640 z" fill="none" stroke="#4c8dde" stroke-width="3.5" stroke-linejoin="round"/>
+            <g id="zones" font-family="Manrope, sans-serif" font-weight="800">
+              <g class="zone" data-z="0">
+                <rect x="36" y="56" width="304" height="244" rx="8" fill="rgba(76,141,222,0.09)" stroke="rgba(76,141,222,0.55)" stroke-width="2"/>
+                <text x="50" y="80" font-size="15" fill="#2d6cc0" letter-spacing="1.5">ZONE A · PICKING</text>
+              </g>
+              <g class="zone" data-z="1">
+                <rect x="372" y="56" width="304" height="244" rx="8" fill="rgba(5,23,41,0.05)" stroke="rgba(5,23,41,0.35)" stroke-width="2"/>
+                <text x="386" y="80" font-size="15" fill="#051729" letter-spacing="1.5">ZONE B · STANDARD</text>
+              </g>
+              <g class="zone" data-z="2">
+                <rect x="36" y="332" width="640" height="210" rx="8" fill="rgba(31,122,84,0.07)" stroke="rgba(31,122,84,0.45)" stroke-width="2"/>
+                <text x="50" y="356" font-size="15" fill="#1f7a54" letter-spacing="1.5">ZONE C · OVERFLOW</text>
+              </g>
+            </g>
+            <g id="aisle">
+              <path d="M356,64 v228" stroke="rgba(5,23,41,0.25)" stroke-width="2" stroke-dasharray="6 7"/>
+              <text x="356" y="178" font-family="Manrope" font-weight="800" font-size="11" fill="rgba(5,23,41,0.45)" text-anchor="middle" transform="rotate(90 356 178)">AISLE 1</text>
+              <rect x="36" y="582" width="640" height="36" rx="8" fill="#dbe7f4"/>
+              <text x="356" y="605" font-family="Manrope" font-weight="800" font-size="14" fill="#2d6cc0" text-anchor="middle" letter-spacing="2">INBOUND DOCK — DOORS 1–4</text>
+            </g>
+            <g id="bins"></g>
+            <!-- bin-level drill-in highlight -->
+            <rect id="bin-target" x="144" y="92" width="38" height="30" rx="4" fill="#4c8dde" stroke="#2d6cc0" stroke-width="2"/>
+            <circle id="bin-ring" cx="163" cy="107" r="30" fill="none" stroke="#4c8dde" stroke-width="4"/>
+          </svg>
+
+          <!-- scene 1 — the quote from the floor -->
+          <div id="quote">
+            <div class="q1">“Our system says the part is ‘in the warehouse.’ Which shelf? Nobody knows.”</div>
+            <div class="q2">— Inventory Manager, Industrial Distribution</div>
+          </div>
+
+          <!-- scene 2 — bin-config chips -->
+          <div class="rule-chips" id="rule-chips">
+            <span class="rchip">Bins: <b>Standard</b></span>
+            <span class="rchip"><b>Overflow</b></span>
+            <span class="rchip"><b>Picking</b></span>
+            <span class="rchip">License Plates <b>ON</b></span>
+            <span class="rchip">Lot IDs <b>+ expiration</b></span>
+            <span class="rchip">Custom IDs <b>3 of 3</b></span>
+          </div>
+
+          <!-- scene 2 — build counter -->
+          <div id="savings">
+            <div class="lbl">BINS CONFIGURED</div>
+            <div class="val"><b id="bin-count">0</b></div>
+            <div class="note">DC-01 · Anaheim, CA · illustrative site</div>
+          </div>
+
+          <!-- scene 3 — bin detail card -->
+          <div id="bin-card">
+            <div class="bc-head"><span class="addr">BIN A-03-B2</span><span class="type">PICKING</span></div>
+            <div class="bc-row" data-r="0"><div class="lbl">ITEM</div><div class="val">44810 — Hydraulic Pump Seal Kit</div></div>
+            <div class="bc-row" data-r="1"><div class="lbl">LOT</div><div class="val">LOT 24-118 <small>· expires 09/2027</small></div></div>
+            <div class="bc-row" data-r="2"><div class="lbl">ON HAND</div><div class="val"><span class="qty" id="bin-qty">0</span> <small>EA</small></div></div>
+            <div class="bc-row" data-r="3"><div class="lbl">LICENSE PLATE</div><div class="val">LP-000482</div></div>
+            <div class="bc-foot" data-r="4">Custom identifiers: <b>Aisle A · Rack 03 · Shelf B2</b></div>
+          </div>
+
+          <!-- scene 4 — search + result -->
+          <div id="search-pill"><span class="mag">⌕</span><span class="typed" id="typed"></span><span class="caret" id="caret"></span><span class="hint">ALL FACILITIES</span></div>
+          <div id="result-card">
+            <div class="r1">Hydraulic Pump Seal Kit — 144 EA</div>
+            <div class="r2"><b>DC-01 Anaheim · Bin A-03-B2</b> · LOT 24-118 · LP-000482</div>
+          </div>
+
+          <!-- scene 4 — multi-facility strip -->
+          <div id="sites">
+            <div class="s-lbl">EVERY FACILITY — ONE LIVE VIEW</div>
+            <div class="s-row">
+              <div class="site" data-s="0"><div class="sn">DC-01 · Anaheim, CA</div><div class="sm">1,240 bins · 3 zones</div><div class="sl"><span class="dotl"></span>LIVE</div></div>
+              <div class="site" data-s="1"><div class="sn">DC-02 · Reno, NV</div><div class="sm">860 bins · 2 zones</div><div class="sl"><span class="dotl"></span>LIVE</div></div>
+              <div class="site" data-s="2"><div class="sn">DC-03 · Dallas, TX</div><div class="sm">620 bins · 2 zones</div><div class="sl"><span class="dotl"></span>LIVE</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast">
+      <div class="t1">Found on the first search</div>
+      <div class="t2">New hires locate any item, lot or license plate — day one</div>
+    </div>
+  </div>
+
+  <!-- ═══ title card ═══ -->
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">WAREHOUSE MANAGEMENT</div>
+    <h1 class="title-h1">Warehouse &amp; Bin Setup,<br>step by step.</h1>
+    <div class="title-sub">Configure a digital layout that mirrors the floor — warehouses, bins, license plates and lots, matched 1:1 to reality — so every downstream scan means something.</div>
+  </div>
+
+  <!-- ═══ end card ═══ -->
+  <div class="fullcard" id="scene-end">
+    <img class="logo-img logo-md" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:36px"></div>
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">The floor you actually run — modeled 1:1.</h1>
+    <div class="stats-row">
+      <div class="stat-tile"><div class="stat-num"><b>1:1</b> layout</div><div class="stat-lbl">Digital layout to physical floor — bins, lots and license plates mirror reality, so every downstream scan means something.</div></div>
+      <div class="stat-tile"><div class="stat-num">Full <b>traceability</b></div><div class="stat-lbl">License plate and lot tracking — with lot expiration — for operations that need detailed compliance reporting.</div></div>
+      <div class="stat-tile"><div class="stat-num">One <b>record</b></div><div class="stat-lbl">The warehouse shares one record with shipping, so stock and freight stay in sync across every facility.</div></div>
+    </div>
+    <div class="cta">SCHEDULE A DEMO →</div>
+    <div class="cta-url">freightpop.com/warehouse-management-system</div>
+  </div>
+
+</div></div>
+
+<!-- ═══ player chrome ═══ -->
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button><button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════════════════════
+   Deterministic timeline engine.
+   apply(t) computes EVERY visual property from absolute time t — no CSS
+   animations, no free-running state — so:
+     • window.FPVideo.seek(t) renders any frame exactly (MP4 rendering)
+     • presenter & audience windows stay in sync over BroadcastChannel
+   ═════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);   // living inside the deck's demo panel
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  // ── chapters ───────────────────────────────────────────────────────────
+  const CH = [
+    { id: 'title',  label: 'Intro',  start: 0,  end: 6 },
+    { id: 'floor',  label: 'Floor',  start: 6,  end: 18 },
+    { id: 'model',  label: 'Model',  start: 18, end: 31 },
+    { id: 'bins',   label: 'Bins',   start: 31, end: 44 },
+    { id: 'payoff', label: 'Payoff', start: 44, end: 57 },
+    { id: 'end',    label: 'Result', start: 57, end: 70 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  // ── setup checklist data (the "filled placeholders") ───────────────────
+  const SETUP = [
+    { name: 'Warehouse — DC-01',        meta: 'Anaheim, CA · 3 zones · dock doors 1–4' },
+    { name: 'Bin types',                meta: 'Standard · Overflow · Picking' },
+    { name: 'License Plates',           meta: 'Enabled · LP-000001 sequence live' },
+    { name: 'Lot IDs',                  meta: 'Enabled · expiration tracking on' },
+    { name: 'Custom identifiers',       meta: 'Aisle · Rack · Shelf (3 of 3)' },
+  ];
+  const cardsEl = $('#setup-cards');
+  SETUP.forEach((s) => {
+    const d = document.createElement('div');
+    d.className = 'setupcard';
+    d.innerHTML = '<div class="tick">✓</div><div><div class="name"></div><div class="meta"></div></div>';
+    d.querySelector('.name').textContent = s.name;
+    d.querySelector('.meta').textContent = s.meta;
+    cardsEl.appendChild(d);
+  });
+
+  // ── bin grid, generated deterministically at load ──────────────────────
+  const binsEl = $('#bins');
+  const NS = 'http://www.w3.org/2000/svg';
+  const BINS = [];
+  function addBin(x, y, w, h) {
+    const r = document.createElementNS(NS, 'rect');
+    r.setAttribute('x', x); r.setAttribute('y', y);
+    r.setAttribute('width', w); r.setAttribute('height', h);
+    r.setAttribute('rx', 4);
+    r.setAttribute('fill', '#ffffff');
+    r.setAttribute('stroke', 'rgba(5,23,41,0.4)');
+    r.setAttribute('stroke-width', '1.6');
+    binsEl.appendChild(r);
+    BINS.push(r);
+  }
+  // Zone A (picking): 3 rows × 6 bins   Zone B (standard): 3 rows × 6 bins
+  [92, 156, 220].forEach((y) => { for (let c = 0; c < 6; c++) addBin(52 + c * 46, y, 38, 30); });
+  [92, 156, 220].forEach((y) => { for (let c = 0; c < 6; c++) addBin(388 + c * 46, y, 38, 30); });
+  // Zone C (overflow): 2 rows × 10 wider bins
+  [372, 440].forEach((y) => { for (let c = 0; c < 10; c++) addBin(52 + c * 62, y, 52, 34); });
+  const TARGET_I = 2; // bin A-03-B2 = zone A, row 1, col 3
+
+  const CAPTIONS = {
+    floor:  { n: '1', k: 'STEP 1 — THE UNMAPPED FLOOR', t: "The system's warehouse isn't your warehouse", b: 'Aisles, racks and bins exist on the floor — but only in someone’s head. When the digital layout doesn’t match the physical one, every downstream scan, count and pick inherits the gap.' },
+    model:  { n: '2', k: 'STEP 2 — MODEL IT 1:1',       t: 'Zones, racks and bins snap into place', b: 'Set up multiple warehouses with Standard, Overflow and Picking bins. Enable license plates and lot IDs with expiration — plus up to three custom identifiers per site.' },
+    bins:   { n: '3', k: 'STEP 3 — BIN-LEVEL TRACKING', t: 'Every SKU lives at an address', b: 'Drill into any bin and see exactly what’s there — item, lot, quantity and license plate. Tracked at the bin level, not “somewhere in the warehouse.”' },
+    payoff: { n: '4', k: 'STEP 4 — THE PAYOFF',         t: 'Anyone finds anything — day one', b: 'Search any item, lot or license plate across every facility. And because the warehouse shares one record with shipping, stock and freight stay in sync.' },
+  };
+
+  // ── easing helpers ─────────────────────────────────────────────────────
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const easeOut = (x) => 1 - Math.pow(1 - clamp01(x), 3);
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  // path helpers (dash-draw)
+  function prepPath(sel) {
+    const p = document.querySelector(sel);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    return { p, L };
+  }
+  const outline = prepPath('#plan-outline');
+
+  const el = {
+    title: $('#scene-title'), end: $('#scene-end'), product: $('#scene-product'),
+    caption: $('#caption'), capNum: $('#cap-num'), capKicker: $('#cap-kicker'), capTitle: $('#cap-title'), capBody: $('#cap-body'),
+    dash: $('#dash'), strip: $('#build-strip'),
+    setupCards: $$('#setup-cards .setupcard'),
+    ghost: $('#ghost'), qmarks: $$('#qmarks text'),
+    zones: $$('#zones .zone'), aisle: $('#aisle'),
+    quote: $('#quote'),
+    ruleChips: $$('#rule-chips .rchip'),
+    savings: $('#savings'), binCount: $('#bin-count'),
+    binTarget: $('#bin-target'), binRing: $('#bin-ring'),
+    binCard: $('#bin-card'), binRows: $$('#bin-card [data-r]'), binQty: $('#bin-qty'),
+    searchPill: $('#search-pill'), typed: $('#typed'), caret: $('#caret'),
+    resultCard: $('#result-card'),
+    sites: $('#sites'), siteTiles: $$('#sites .site'),
+    toast: $('#toast'),
+  };
+
+  let currentCaption = '';
+  function setCaption(key) {
+    if (key === currentCaption) return;
+    currentCaption = key;
+    if (!key) return;
+    const c = CAPTIONS[key];
+    el.capNum.textContent = c.n;
+    el.capKicker.textContent = c.k;
+    el.capTitle.textContent = c.t;
+    el.capBody.textContent = c.b;
+  }
+
+  // ── the whole film as a function of t ──────────────────────────────────
+  function apply(t) {
+    // title card — FULLY visible at t=0 (fade OUT only, never in from blank)
+    const titleOut = seg(t, 5.2, 6.0);
+    el.title.style.opacity = String(1 - titleOut);
+    el.title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+    // end card
+    const endIn = seg(t, 57, 57.9);
+    el.end.style.opacity = String(endIn);
+    el.end.style.visibility = t > 56.9 ? 'visible' : 'hidden';
+    el.end.querySelectorAll('.stat-tile').forEach((tile, i) => {
+      const p = ease(seg(t, 58 + i * 0.5, 58.9 + i * 0.5));
+      tile.style.opacity = String(p);
+      tile.style.transform = `translateY(${24 * (1 - p)}px)`;
+    });
+    const ctaP = ease(seg(t, 60.2, 61));
+    el.end.querySelector('.cta').style.opacity = String(ctaP);
+    el.end.querySelector('.cta').style.transform = `scale(${0.9 + 0.1 * ctaP})`;
+    el.end.querySelector('.cta-url').style.opacity = String(ctaP);
+
+    // product stage visible between title and end
+    const prodIn = ease(seg(t, 5.6, 6.6));
+    const prodOut = seg(t, 56.4, 57.2);
+    el.product.style.opacity = String(Math.min(prodIn, 1 - prodOut));
+    el.product.style.visibility = (t > 5.5 && t < 57.3) ? 'visible' : 'hidden';
+
+    // dashboard entrance
+    const dashP = ease(seg(t, 6.0, 7.2));
+    el.dash.style.transform = `translateY(${60 * (1 - dashP)}px)`;
+
+    // ── captions per chapter ──
+    let cap = '';
+    if (t >= 6 && t < 18) cap = 'floor';
+    else if (t < 31) cap = 'model';
+    else if (t < 44) cap = 'bins';
+    else if (t < 57) cap = 'payoff';
+    setCaption(cap);
+    const capStarts = { floor: 6.4, model: 18, bins: 31, payoff: 44 };
+    if (cap) {
+      const p = ease(seg(t, capStarts[cap], capStarts[cap] + 0.7));
+      el.caption.style.opacity = String(p);
+      el.caption.style.transform = `translateY(${26 * (1 - p)}px)`;
+    } else el.caption.style.opacity = '0';
+
+    // ── S1 the unmapped floor (6–18): ghost grid + question marks + quote ──
+    const ghostIn = ease(seg(t, 6.6, 7.6));
+    const ghostOut = seg(t, 18, 19.4);
+    el.ghost.style.opacity = String(Math.min(ghostIn, 1 - ghostOut) * 0.85);
+    el.qmarks.forEach((q, i) => {
+      const a = 7.6 + i * 0.85;
+      const pop = easeOut(seg(t, a, a + 0.6));
+      q.style.opacity = String(Math.min(pop, 1 - ghostOut));
+      q.style.transformBox = 'fill-box';
+      q.style.transformOrigin = 'center';
+      q.style.transform = `scale(${0.5 + 0.5 * pop})`;
+    });
+    const quoteP = ease(seg(t, 11.5, 12.4));
+    el.quote.style.opacity = String(Math.min(quoteP, 1 - seg(t, 16.8, 17.6)));
+    el.quote.style.transform = `translateY(${-22 * (1 - quoteP)}px)`;
+
+    // ── S2 model it 1:1 (18–31): outline draws, zones land, bins build ──
+    const outlineP = ease(seg(t, 18.4, 20.6));
+    outline.p.style.strokeDashoffset = String(outline.L * (1 - outlineP));
+    outline.p.style.opacity = t < 18.2 ? '0' : String(1 - seg(t, 29.5, 31) * 0.4);
+    el.zones.forEach((z, i) => {
+      const p = ease(seg(t, 19.6 + i * 0.7, 20.4 + i * 0.7));
+      z.style.opacity = String(p);
+    });
+    const aisleP = ease(seg(t, 20.8, 21.6));
+    // dock band ducks under the multi-facility strip in S4 (no glyphs peeking between tiles)
+    el.aisle.style.opacity = String(aisleP * (1 - 0.9 * seg(t, 48.4, 49.2)));
+    // the grid builds in — bins pop row by row
+    const dim = 1 - 0.55 * Math.min(seg(t, 31.5, 32.2), 1 - seg(t, 43.2, 43.9));
+    BINS.forEach((b, i) => {
+      const a = 21 + i * 0.1;
+      const p = ease(seg(t, a, a + 0.55));
+      const isTarget = (i === TARGET_I); // zone A row 1, col 3 → visual anchor for A-03-B2
+      b.style.opacity = String(p * (isTarget ? 1 : dim));
+      b.style.transformBox = 'fill-box';
+      b.style.transformOrigin = 'center';
+      b.style.transform = `translateY(${8 * (1 - p)}px)`;
+    });
+    // progress strip + bin counter count-up
+    el.strip.style.width = (ease(seg(t, 21, 27.5)) * 100) + '%';
+    const cnt = Math.round(1240 * ease(seg(t, 21.5, 27.5)));
+    el.binCount.textContent = cnt.toLocaleString('en-US');
+    const savP = ease(seg(t, 21.4, 22.2));
+    el.savings.style.opacity = String(Math.min(savP, 1 - seg(t, 30, 30.8)));
+    el.savings.style.transform = `translateY(${20 * (1 - savP)}px)`;
+    // config chips
+    el.ruleChips.forEach((rc, i) => {
+      const a = 23.6 + i * 0.55, p = ease(seg(t, a, a + 0.6));
+      rc.style.opacity = String(Math.min(p, 1 - seg(t, 30, 30.8)));
+      rc.style.transform = `translateY(${18 * (1 - p)}px)`;
+    });
+    // sidebar checklist cards check off
+    el.setupCards.forEach((card, i) => {
+      const a = 19.5 + i * 1.5, p = ease(seg(t, a, a + 0.8));
+      card.style.opacity = String(p);
+      card.style.transform = `translateX(${-26 * (1 - p)}px)`;
+      const done = t > a + 0.6;
+      const tick = card.querySelector('.tick');
+      tick.style.background = done ? 'var(--success)' : 'transparent';
+      tick.style.borderColor = done ? 'var(--success)' : 'rgba(5,23,41,0.2)';
+      tick.style.color = done ? '#fff' : 'transparent';
+    });
+
+    // ── S3 bin-level tracking (31–44): drill into A-03-B2 ──
+    // target bin lights up + pulsing ring (deterministic pulse from t)
+    const tgtP = ease(seg(t, 31.8, 32.4));
+    el.binTarget.style.opacity = String(tgtP * (t < 44 ? 1 : 1)); // stays lit through S4
+    const ringOn = Math.min(ease(seg(t, 31.8, 32.4)), 1 - seg(t, 55.6, 56.4));
+    const pulse = 1 + 0.14 * Math.sin(2 * Math.PI * 0.7 * Math.max(0, t - 31.8));
+    el.binRing.style.opacity = String(ringOn * 0.9);
+    el.binRing.style.transformBox = 'fill-box';
+    el.binRing.style.transformOrigin = 'center';
+    el.binRing.style.transform = `scale(${tgtP < 1 ? 0.6 + 0.4 * tgtP : pulse})`;
+    // bin detail card + staggered rows + qty count-up
+    const bcP = ease(seg(t, 32.4, 33.3));
+    el.binCard.style.opacity = String(Math.min(bcP, 1 - seg(t, 43, 43.8)));
+    el.binCard.style.transform = `translateX(${36 * (1 - bcP)}px)`;
+    el.binRows.forEach((row) => {
+      const i = parseInt(row.getAttribute('data-r'), 10);
+      const a = 33.4 + i * 0.75;
+      row.style.opacity = String(ease(seg(t, a, a + 0.55)));
+    });
+    el.binQty.textContent = String(Math.round(144 * ease(seg(t, 34.9, 36.6))));
+
+    // ── S4 the payoff (44–57): search across every facility ──
+    const spP = ease(seg(t, 44.4, 45.1));
+    el.searchPill.style.opacity = String(spP);
+    el.searchPill.style.transform = `translateX(-50%) translateY(${-18 * (1 - spP)}px)`;
+    const q = '44810';
+    el.typed.textContent = q.slice(0, Math.round(q.length * seg(t, 45.4, 46.6)));
+    el.caret.style.opacity = t >= 44.4 && t < 57 ? String(Math.round(t * 2) % 2 ? 1 : 0.15) : '0';
+    const resP = ease(seg(t, 47, 47.8));
+    el.resultCard.style.opacity = String(resP);
+    el.resultCard.style.transform = `translateX(-50%) translateY(${-14 * (1 - resP)}px)`;
+    // multi-facility strip
+    const sitesP = ease(seg(t, 48.8, 49.5));
+    el.sites.style.opacity = String(sitesP);
+    el.siteTiles.forEach((s, i) => {
+      const p = ease(seg(t, 49 + i * 0.6, 49.8 + i * 0.6));
+      s.style.opacity = String(p);
+      s.style.transform = `translateY(${22 * (1 - p)}px)`;
+    });
+    // day-one toast
+    const toastP = ease(seg(t, 52, 52.8));
+    el.toast.style.opacity = String(Math.min(toastP, 1 - seg(t, 56, 56.7)));
+    el.toast.style.transform = `translateY(${-24 * (1 - toastP)}px)`;
+  }
+
+  // hide everything that pops later (first paint at t=0)
+  ['#quote', '#savings', '#bin-card', '#search-pill', '#result-card', '#sites', '#toast', '#ghost', '#aisle', '#bin-target', '#bin-ring'].forEach((s) => { $(s).style.opacity = '0'; });
+  $$('#rule-chips .rchip, #zones .zone, #qmarks text').forEach((n) => { n.style.opacity = '0'; });
+  $('#plan-outline').style.opacity = '0';
+
+  // ── player / transport ─────────────────────────────────────────────────
+  let T = 0, playing = false, lastTick = 0, raf = null;
+  function step(now) {
+    if (playing) {
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      if (T >= DURATION) {
+        if (EMBED) { T = 0; } // booth-friendly: loop when embedded in the deck
+        else { playing = false; updatePlayBtn(); }
+      }
+      apply(T);
+      updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); raf = requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  // ── chrome ─────────────────────────────────────────────────────────────
+  const chaptersEl = $('#chapters');
+  CH.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); broadcast(); });
+    chaptersEl.appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => {
+      const c = CH[i];
+      cel.querySelector('.fill').style.width = (seg(T, c.start, c.end) * 100) + '%';
+    });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); broadcast(); });
+
+  // auto-hide controls while playing (mouse move brings back)
+  let hideTimer = null;
+  function scheduleHide() {
+    if (EMBED) return; // embed bar is a dedicated strip — always visible
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  }
+  document.addEventListener('mousemove', scheduleHide);
+
+  // keyboard: Space play/pause, ←/→ chapter jump; deck-level keys forwarded up.
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); broadcast(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) { /* cross-origin host */ }
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); broadcast(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const prev = [...CH].reverse().find((c) => c.start < T - 0.5); seek(prev ? prev.start : 0); play(); broadcast(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*');
+      e.preventDefault();
+    }
+  });
+
+  // ── presenter ↔ audience sync (same-origin BroadcastChannel) ──────────
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  // try/catch: file:// documents have opaque origins where BroadcastChannel
+  // may throw — the video must still play standalone from a double-clicked file.
+  try {
+  if (!RENDER && 'BroadcastChannel' in window) {
+    bc = new BroadcastChannel('fp-roadmap-video-sync');
+    bc.onmessage = (e) => {
+      const m = e.data || {};
+      if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+      if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+      if (m.cmd === 'play') { play(true); return; }
+      if (m.cmd === 'pause') { pause(true); return; }
+      if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+      if (typeof m.t !== 'number') return;
+      authority = false; lastRemoteState = Date.now();
+      applyingRemote = true;
+      if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+        T = m.t; playing = !!m.playing; lastTick = performance.now();
+        apply(T); updateChrome(); updatePlayBtn();
+      }
+      applyingRemote = false;
+    };
+    setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+  }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  // ── stage scaling ──────────────────────────────────────────────────────
+  function fit() {
+    if (EMBED) {
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty("--fpb", String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ── render contract ────────────────────────────────────────────────────
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "company": "FreightPOP", "tagline": "Returns Made Effortless",
+    "title": "Returns & Reverse Logistics Workflow", "phone": "(888) 726-4464",
+    "email": "sales@freightpop.com", "website": "https://www.freightpop.com",
+    "primaryColor": "#ef4444"
+  },
+  "phases": [
+    { "label": "RMA", "title": "Return Authorization", "icon": "clipboard", "badge": null, "color": "#64748b",
+      "desc": "Customer requests a return and an RMA is issued through the system.",
+      "steps": ["Customer submits return request", "RMA number generated and emailed", "Return shipping label created in FreightPOP"], "branches": null },
+    { "label": "Transit", "title": "Return In-Transit", "icon": "truck", "badge": null, "color": "#ef4444",
+      "desc": "Inbound return tracked from customer location to warehouse.",
+      "steps": ["Customer drops off or schedules pickup", "Return shipment tracked in real time", "Expected arrival date communicated to warehouse"], "branches": null },
+    { "label": "Receive", "title": "Returns Receiving & Inspection", "icon": "package", "badge": "Decision Point", "color": "#f59e0b",
+      "desc": "Warehouse inspects returned item and routes it based on condition.",
+      "steps": null,
+      "branches": [
+        { "label": "Resellable", "color": "#22c55e", "steps": ["Item inspected and approved", "Relabeled and returned to stock", "Credit issued to customer"] },
+        { "label": "Damaged", "color": "#ef4444", "steps": ["Damage documented with photos", "Item quarantined for disposition", "Customer refund or replacement issued"] },
+        { "label": "Vendor RMA", "color": "#f59e0b", "steps": ["Item flagged for vendor return", "Vendor RMA generated", "Outbound return shipment scheduled"] }
+      ]
+    },
+    { "label": "Close", "title": "Close Loop in ERP", "icon": "integration", "badge": null, "color": "#a78bfa",
+      "desc": "ERP updated to close the return and credit the customer.",
+      "steps": ["Inventory adjustments posted", "Customer account credited", "Return metrics recorded for analytics"], "branches": null }
+  ]
+}

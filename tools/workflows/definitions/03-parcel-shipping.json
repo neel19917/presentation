@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "company": "FreightPOP", "tagline": "Parcel Made Simple",
+    "title": "Parcel Shipping Workflow", "phone": "(888) 726-4464",
+    "email": "sales@freightpop.com", "website": "https://www.freightpop.com",
+    "primaryColor": "#4088cf"
+  },
+  "phases": [
+    { "label": "Orders", "title": "Order Import", "icon": "clipboard", "badge": null, "color": "#64748b",
+      "desc": "Orders flow in from e-commerce platforms and ERPs automatically.",
+      "steps": ["Orders auto-imported from Shopify / NetSuite / SAP", "Duplicate and error orders flagged", "Orders queued for rate shopping"], "branches": null },
+    { "label": "Rate Shop", "title": "Parcel Rate Shopping", "icon": "package", "badge": null, "color": "#4088cf",
+      "desc": "FreightPOP compares rates across UPS, FedEx, USPS, regional carriers, and DHL in real time.",
+      "steps": ["Rates pulled from all contracted parcel accounts", "Lowest-cost carrier selected per rules engine", "Service level and delivery window confirmed"], "branches": null },
+    { "label": "Print", "title": "Label Generation & Print", "icon": "printer", "badge": null, "color": "#22c55e",
+      "desc": "Labels printed automatically in batch or individually from any connected printer.",
+      "steps": ["Carrier label generated in 1 click", "Label routed to configured printer", "Packing slip attached if configured"], "branches": null },
+    { "label": "Manifest", "title": "End-of-Day Manifest", "icon": "truck", "badge": null, "color": "#f59e0b",
+      "desc": "End-of-day manifests submitted electronically to all carriers.",
+      "steps": ["All shipments batched for EOD manifest", "Manifest transmitted to each carrier", "Pickup confirmation captured and stored"], "branches": null },
+    { "label": "Tracking", "title": "Post-Ship Tracking", "icon": "integration", "badge": null, "color": "#a78bfa",
+      "desc": "Automated tracking events keep your team and customers informed.",
+      "steps": ["Tracking events ingested from carriers", "Exception alerts sent to ops team", "Delivery confirmation synced to ERP and OMS"], "branches": null }
+  ]
+}

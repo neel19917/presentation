@@ -1,0 +1,73 @@
+{
+  "wms": {
+    "abbr": "WMS",
+    "name": "Warehouse Management",
+    "kicker": "Capability Library",
+    "intro": "A warehouse layer built natively into FreightPOP — receiving, picking, packing and inventory share one record with your shipping, so stock and freight never fall out of sync.",
+    "cards": [
+      {
+        "num": "01",
+        "title": "Warehouse & Bin Setup",
+        "tag": "Configure multiple warehouses and bins (Standard, Overflow, Picking), then enable License Plates, Lot IDs, lot expiration and up to three custom identifiers per site."
+      },
+      {
+        "num": "02",
+        "title": "Receiving",
+        "tag": "Import POs from TMS inbound, capture carrier, PRO, dock and arrival, then allocate to bins with license-plate and lot tracking. Approval posts a purchase receipt to your ERP."
+      },
+      {
+        "num": "03",
+        "title": "Picking",
+        "tag": "Turn open sales orders into picking tickets at header or line level. Mobile-first scan or License-Plate picking with take-full-bin, splits and Ready-to-Pick → Pick Completed status."
+      },
+      {
+        "num": "04",
+        "title": "Pick & Pack",
+        "tag": "Scan-to-verify packing into packages, scale-driven weights and saved package types, with close-pack control and documents printed to match what was packed."
+      },
+      {
+        "num": "05",
+        "title": "Inventory & Bin Transfers",
+        "tag": "Read-only inventory across every warehouse with cross-field search and Excel export, plus bin-to-bin moves — single-item splits or many-to-one — with license-plate support."
+      }
+    ]
+  },
+  "oms": {
+    "abbr": "OMS",
+    "name": "Order Management",
+    "kicker": "Capability Library",
+    "intro": "The workspace where every sales order is captured, detailed and prepared — then handed to warehouse picking and to the TMS for rating and booking, with no re-entry.",
+    "cards": [
+      {
+        "num": "01",
+        "title": "Sales Order Management",
+        "tag": "Create or import sales orders in one workspace. Ship From/To pull from your address book, Google or an integration, with US, Canada and Mexico address validation."
+      },
+      {
+        "num": "02",
+        "title": "Product & Shipment Detail",
+        "tag": "Pull items from the product catalog with ERP serial numbers; auto freight class/NMFC, saved package types, hazmat (UN/NA catalog, DG, BOL) and ocean container details."
+      },
+      {
+        "num": "03",
+        "title": "Order Consolidation",
+        "tag": "Combine multiple orders heading to the same destination into a single, lower-cost shipment."
+      },
+      {
+        "num": "04",
+        "title": "Auto Pack",
+        "tag": "Auto-calculate packaging, handling units and weight — with fulfillment kits and rules — so every order is quote-ready and accurate."
+      },
+      {
+        "num": "05",
+        "title": "Returns & Portals",
+        "tag": "Generate parcel return labels with default return processing, and give customers and vendors permission-scoped self-service portals."
+      },
+      {
+        "num": "06",
+        "title": "Order-to-Fulfillment Handoff",
+        "tag": "Open sales orders flow into WMS picking and into the TMS for rate shopping, booking and tracking — one record, no re-keying."
+      }
+    ]
+  }
+}

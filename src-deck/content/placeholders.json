@@ -1,0 +1,17 @@
+{
+  "wms": {
+    "abbr": "WMS",
+    "name": "Warehouse Management System",
+    "tag": "Receiving, putaway, picking and real-time inventory across every location. The WMS module library is being built next."
+  },
+  "oms": {
+    "abbr": "OMS",
+    "name": "Order Management System",
+    "tag": "Capture, orchestrate and fulfill orders from every channel in one place. The OMS module library is being built next."
+  },
+  "erp": {
+    "abbr": "ERP",
+    "name": "Enterprise Resource Planning",
+    "tag": "Finance, procurement and operations on one connected backbone. The ERP module library is being built next."
+  }
+}

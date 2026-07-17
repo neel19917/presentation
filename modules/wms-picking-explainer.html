@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Picking, Step by Step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP brand tokens (BRANDING.md + freightpop.com warehouse-management)
+   Every timeline-driven property is set from JS seek(t) — NO CSS animations
+   on story elements, so headless frame rendering is deterministic.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729;
+  --navy-2: #0b2340;
+  --blue: #4c8dde;
+  --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9;
+  --bg: #f7f9fc;
+  --ink: #051729;
+  --sub: rgba(5, 23, 41, 0.72);
+  --green: #1f7a54;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --card-line: rgba(5, 23, 41, 0.10);
+  --floor-bg: #f2f6fa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', -apple-system, sans-serif; }
+
+/* ── 1920×1080 stage scaled to the window ─────────────────────────────── */
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--bg); transform-origin: center center; flex: 0 0 auto;
+}
+
+/* faint blueprint grid like the website hero panels */
+#stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* ── Title / end cards ────────────────────────────────────────────────── */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 70; }
+.logo { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.02em; color: #fff; }
+.logo b { color: var(--blue); }
+.logo-img { display: block; }
+.logo-img.logo-sm { height: 26px; }
+.logo-img.logo-md { height: 40px; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 112px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+
+/* ── Step caption (lower-left third) ─────────────────────────────────── */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(5,23,41,0.25); }
+
+/* ── Dashboard frame (mirrors the site's product shots) ───────────────── */
+#dash { position: absolute; right: 80px; top: 78px; width: 1040px; height: 780px; background: #fff; border: 3px solid var(--navy); border-radius: 26px; box-shadow: 0 30px 70px rgba(5,23,41,0.18); overflow: hidden; z-index: 10; }
+#dash .titlebar { height: 64px; background: var(--navy); display: flex; align-items: center; padding: 0 26px; border-radius: 22px 22px 0 0; }
+#dash .apphead { padding: 16px 26px 12px; }
+#dash .apphead .h { font-family: 'Manrope'; font-weight: 800; font-size: 21px; letter-spacing: 0.02em; color: var(--ink); }
+#dash .apphead .strip { height: 14px; border-radius: 7px; background: var(--blue); margin-top: 12px; position: relative; overflow: hidden; }
+#dash .apphead .strip .fill { position: absolute; inset: 0; width: 0%; background: linear-gradient(90deg, var(--blue-deep), #6fb2ff); }
+#dash .body { display: flex; height: calc(100% - 64px - 70px); }
+#dash .sidebar { width: 300px; border-right: 1px solid var(--card-line); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+#dash .search { height: 42px; border: 1.5px solid var(--card-line); border-radius: 21px; display: flex; align-items: center; padding: 0 16px; color: rgba(5,23,41,0.45); font-size: 15px; justify-content: space-between; }
+#dash .floorwrap { flex: 1; position: relative; background: var(--floor-bg); }
+
+/* picking-ticket cards — the "filled placeholders" */
+.stopcard { border: 1.5px solid var(--card-line); border-radius: 12px; padding: 10px 12px; background: #fff; box-shadow: 0 2px 6px rgba(5,23,41,0.05); }
+.stopcard .r1 { display: flex; justify-content: space-between; align-items: baseline; }
+.stopcard .name { font-weight: 700; font-size: 15.5px; color: var(--ink); }
+.stopcard .eta { font-size: 12.5px; font-weight: 700; color: var(--blue-deep); white-space: nowrap; }
+.stopcard .r2 { font-size: 12.5px; color: var(--sub); margin-top: 3px; }
+.stopcard .r3 { display: flex; gap: 6px; margin-top: 7px; }
+.stopcard .chip { font-size: 10.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: rgba(76,141,222,0.12); color: var(--blue-deep); }
+.stopcard .chip.win { background: rgba(31,122,84,0.12); color: var(--green); }
+.stopcard .chip.st-ready { background: rgba(76,141,222,0.12); color: var(--blue-deep); }
+.stopcard .chip.st-active { background: rgba(245,158,11,0.15); color: #92400e; }
+.stopcard .chip.st-done { background: rgba(34,197,94,0.16); color: #16803c; }
+
+/* sales-order chips flying into the queue (scene 2) */
+.src-chip { position: absolute; z-index: 40; font-weight: 700; font-size: 17px; padding: 12px 24px; border-radius: 999px; background: var(--navy); color: #fff; box-shadow: 0 12px 26px rgba(5,23,41,0.28); white-space: nowrap; }
+.src-chip small { color: var(--light-blue); font-weight: 500; margin-left: 8px; }
+
+/* ticket-generation rule chips (scene 2, bottom of floor map) */
+.rule-chips { position: absolute; left: 26px; bottom: 24px; z-index: 45; display: flex; flex-wrap: wrap; gap: 10px; width: 620px; }
+.rule-chips .rchip { font-size: 15px; font-weight: 700; padding: 9px 18px; border-radius: 999px; background: #fff; border: 1.5px solid var(--navy); color: var(--navy); box-shadow: 0 6px 16px rgba(5,23,41,0.12); }
+.rule-chips .rchip b { color: var(--blue-deep); }
+
+/* paper pick list (scene 1 — the old way) */
+#paper { position: absolute; left: 46px; top: 56px; width: 300px; z-index: 44; background: #fffdf6; border: 1px solid rgba(5,23,41,0.18); border-radius: 6px; padding: 16px 18px 14px; box-shadow: 0 18px 40px rgba(5,23,41,0.22); transform: rotate(-3deg); }
+#paper .ph { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 14px; color: var(--ink); letter-spacing: 0.04em; border-bottom: 1.5px dashed rgba(5,23,41,0.25); padding-bottom: 8px; }
+#paper .ph small { display: block; font-size: 11px; color: var(--sub); margin-top: 2px; }
+#paper .prow { font-family: 'DM Mono', monospace; font-size: 12.5px; color: var(--ink); display: flex; justify-content: space-between; margin-top: 9px; }
+#paper .prow .note { color: #dc2626; font-size: 11px; font-weight: 500; }
+#paper .prow .ok { color: var(--green); }
+#paper .pfoot { margin-top: 11px; font-family: 'DM Mono', monospace; font-size: 11px; color: #dc2626; border-top: 1.5px dashed rgba(5,23,41,0.25); padding-top: 8px; }
+
+/* AI pick-path chip (scene 4) */
+#aichip { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 45; display: flex; align-items: center; gap: 10px; background: var(--navy); color: #fff; border-radius: 999px; padding: 11px 22px; font-weight: 800; font-size: 14.5px; letter-spacing: 0.08em; box-shadow: 0 14px 32px rgba(5,23,41,0.3); white-space: nowrap; }
+#aichip svg { flex: 0 0 auto; }
+#aichip b { color: #7fd4ae; }
+
+/* pick-path savings readout (scene 4) */
+#savings { position: absolute; right: 26px; top: 66px; z-index: 45; background: var(--navy); color: #fff; border-radius: 16px; padding: 16px 24px; box-shadow: 0 16px 36px rgba(5,23,41,0.3); }
+#savings .lbl { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: var(--light-blue); }
+#savings .val { font-family: 'Manrope'; font-size: 34px; font-weight: 800; margin-top: 2px; }
+#savings .val b { color: #7fd4ae; }
+#savings .note { font-size: 11px; color: rgba(193,212,233,0.75); margin-top: 3px; }
+
+/* ── Scanner phone mockup ─────────────────────────────────────────────── */
+#phone { position: absolute; left: 830px; top: 250px; width: 340px; height: 700px; z-index: 50; }
+#phone .shell { position: absolute; inset: 0; background: #0a0a0c; border-radius: 52px; box-shadow: 0 34px 80px rgba(5,23,41,0.4), inset 0 0 0 3px #2a2a30; padding: 16px; }
+#phone .screen { position: relative; width: 100%; height: 100%; background: #fff; border-radius: 38px; overflow: hidden; }
+#phone .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 110px; height: 26px; border-radius: 999px; background: #0a0a0c; z-index: 5; }
+.pscreen { position: absolute; inset: 0; background: #fff; }
+.pscreen .phead { height: 92px; background: var(--navy); color: #fff; display: flex; align-items: flex-end; padding: 0 18px 12px; font-weight: 700; font-size: 15.5px; }
+.pscreen .phead .stat { color: #7fd4ae; margin-left: 6px; }
+/* scan target box */
+#scanbox { margin: 14px 16px 6px; border: 2.5px solid var(--card-line); border-radius: 14px; padding: 12px 14px; position: relative; }
+#scanbox .sb-lbl { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: var(--sub); }
+#scanbox .sb-val { font-family: 'Manrope'; font-size: 23px; font-weight: 800; color: var(--ink); margin-top: 3px; }
+#scanbox.ok { border-color: var(--success); background: rgba(34,197,94,0.08); }
+#scanbox.ok .sb-lbl, #scanbox.ok .sb-val { color: #16803c; }
+#scanbox.err { border-color: var(--danger); background: rgba(239,68,68,0.08); }
+#scanbox.err .sb-lbl, #scanbox.err .sb-val { color: #dc2626; }
+/* wrong-scan banner */
+#redbanner { position: absolute; bottom: 104px; left: 14px; right: 14px; z-index: 6; background: var(--danger); color: #fff; font-weight: 800; font-size: 13.5px; padding: 12px 16px; letter-spacing: 0.03em; border-radius: 12px; box-shadow: 0 10px 24px rgba(239,68,68,0.35); }
+#redbanner small { display: block; font-weight: 500; font-size: 11.5px; color: rgba(255,255,255,0.85); margin-top: 2px; }
+/* pick lines */
+.pline { display: flex; align-items: center; gap: 10px; margin: 9px 16px; }
+.pline .tick { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--card-line); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; }
+.pline .tick.on { background: var(--success); border-color: var(--success); }
+.pline .li b { display: block; font-size: 12.5px; color: var(--ink); font-weight: 700; }
+.pline .li small { display: block; font-size: 11px; color: var(--sub); }
+#pprog { margin: 12px 16px 0; font-size: 12.5px; font-weight: 800; color: var(--blue-deep); letter-spacing: 0.04em; }
+/* completion screen */
+#done-circle { width: 86px; height: 86px; border-radius: 50%; background: var(--success); color: #fff; font-size: 42px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 42px auto 18px; box-shadow: 0 14px 32px rgba(34,197,94,0.35); }
+.done-h { text-align: center; font-family: 'Manrope'; font-size: 22px; font-weight: 800; color: var(--ink); }
+.done-sub { text-align: center; font-size: 13px; color: var(--sub); margin-top: 8px; padding: 0 22px; line-height: 1.45; }
+.done-pill { margin: 18px 24px 0; height: 42px; border-radius: 12px; background: rgba(34,197,94,0.12); color: #16803c; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.04em; }
+
+/* mispick alert card (scene 1) + completion toast (scene 5) */
+#errcard { position: absolute; right: 120px; top: 108px; z-index: 60; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--danger); border-radius: 14px; padding: 14px 22px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); width: 450px; }
+#errcard .t1 { font-weight: 800; font-size: 17px; color: #dc2626; }
+#errcard .t2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+#toast { position: absolute; right: 120px; top: 108px; z-index: 60; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--success); border-radius: 14px; padding: 14px 22px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); width: 450px; }
+#toast .t1 { font-weight: 800; font-size: 17px; color: var(--ink); }
+#toast .t2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+
+/* ── End card stats ───────────────────────────────────────────────────── */
+.stats-row { display: flex; gap: 34px; margin: 54px 0 60px; }
+.stat-tile { width: 360px; background: rgba(255,255,255,0.055); border: 1px solid rgba(193,212,233,0.22); border-radius: 20px; padding: 34px 32px; text-align: left; }
+.stat-num { font-size: 52px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.stat-num b { color: var(--blue); }
+.stat-lbl { font-size: 19px; color: var(--light-blue); margin-top: 10px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; box-shadow: 0 18px 44px rgba(76,141,222,0.35); }
+.cta-url { margin-top: 22px; font-size: 21px; color: var(--light-blue); letter-spacing: 0.02em; }
+
+/* ── Player chrome (hidden in render mode) ───────────────────────────── */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 15px; cursor: pointer; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+
+/* ── embed=1 — living inside a demo panel (deck module). The player
+      controls become a dedicated always-visible bottom bar (never floating
+      over content), with fullscreen, and story text is bumped up so it stays
+      readable at panel scale. ─────────────────────────────────────────── */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls {
+  left: 0; right: 0; bottom: 0; transform: none; border-radius: 0;
+  padding: 10px 18px; gap: 14px; opacity: 1 !important; pointer-events: auto !important;
+  background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3);
+}
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #timecode { font-size: 15px; }
+body.embed #btn-play { width: 44px; height: 44px; flex: 0 0 auto; }
+#btn-theme, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+body.embed #btn-theme, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+#btn-fs { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-fs:hover { border-color: #fff; }
+body.embed #btn-fs { width: 44px; height: 44px; }
+/* bigger story text at embed scale */
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); line-height: 1.45; }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed .rule-chips .rchip { font-size: calc(14px * var(--fpb, 1.35)); padding: 11px 20px; }
+body.embed #savings .lbl { font-size: calc(12px * var(--fpb, 1.35)); }
+body.embed #savings .val { font-size: calc(31px * var(--fpb, 1.35)); }
+body.embed #savings .note { font-size: 13px; }
+body.embed .src-chip { font-size: calc(16px * var(--fpb, 1.35)); padding: 14px 28px; }
+body.embed #toast .t1, body.embed #errcard .t1 { font-size: calc(16px * var(--fpb, 1.35)); }
+body.embed #toast .t2, body.embed #errcard .t2 { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed #toast, body.embed #errcard { width: 520px; }
+body.embed .title-sub { font-size: calc(30px * var(--fpb, 1.35)); }
+body.embed .kicker { font-size: calc(20px * var(--fpb, 1.35)); }
+body.embed .stat-num { font-size: calc(44px * var(--fpb, 1.35)); }
+body.embed .stat-lbl { font-size: calc(17px * var(--fpb, 1.35)); }
+body.embed .cta { font-size: calc(24px * var(--fpb, 1.35)); }
+body.embed .cta-url { font-size: calc(19px * var(--fpb, 1.35)); }
+
+/* ── theme=deck — matches the interactive deck (navy #051729 + teal
+      #3DD6B5 + DM Mono kickers). Product mocks stay light like the deck's
+      own product screens. ─────────────────────────────────────────────── */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before {
+  background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+}
+body.theme-deck .kicker,
+body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: #3dd6b5; letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; letter-spacing: -0.02em; }
+body.theme-deck .stat-num { font-weight: 600; }
+body.theme-deck #caption .step-body { color: #b5cde0; font-weight: 400; }
+body.theme-deck #caption .step-num { background: #3dd6b5; color: var(--navy); }
+body.theme-deck .fullcard { background: radial-gradient(1300px 700px at 72% -10%, #0e3050 0%, var(--navy) 55%); }
+body.theme-deck .title-sub { color: #b5cde0; }
+body.theme-deck .stat-num b { color: #3dd6b5; }
+body.theme-deck .cta { background: #3dd6b5; color: var(--navy); box-shadow: 0 18px 44px rgba(61,214,181,0.3); }
+body.theme-deck .src-chip { background: #0a2540; border: 1px solid rgba(61,214,181,0.4); }
+body.theme-deck #savings .val b { color: #3dd6b5; }
+body.theme-deck #aichip b { color: #3dd6b5; }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: #3dd6b5; color: var(--navy); }
+body.theme-deck #dash { border-color: #0a2540; box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 64px rgba(61,214,181,0.10); }
+body.theme-deck #phone .shell { box-shadow: 0 34px 80px rgba(0,0,0,0.6), inset 0 0 0 3px #2a2a30; }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ persistent product stage ═══ -->
+  <div class="layer" id="scene-product">
+
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE OLD WAY</div>
+      <div class="step-title" id="cap-title">Picking from memory and a printout</div>
+      <div class="step-body" id="cap-body">Paper pick lists can't verify anything.</div>
+    </div>
+
+    <div id="dash">
+      <div class="titlebar"><img class="logo-img logo-sm" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="></div>
+      <div class="apphead">
+        <div class="h">PICKING — OPEN SALES ORDERS &rarr; PICKING TICKETS</div>
+        <div class="strip"><div class="fill" id="opt-strip"></div></div>
+      </div>
+      <div class="body">
+        <div class="sidebar">
+          <div class="search"><span>Search pick tickets…</span><span>&#8981;</span></div>
+          <div id="ticket-cards" style="display:flex;flex-direction:column;gap:12px;"></div>
+        </div>
+        <div class="floorwrap">
+          <!-- abstract brand-styled warehouse floor map -->
+          <svg id="floor" viewBox="0 0 712 636" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id="slots" width="27" height="60" patternUnits="userSpaceOnUse">
+                <path d="M26.5 5 V55" stroke="rgba(5,23,41,0.10)" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="712" height="636" fill="#f2f6fa"/>
+            <!-- rack rows A–D (two racks per row, aisles between) -->
+            <g>
+              <rect x="60" y="100" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="60" y="100" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="380" y="100" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="380" y="100" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="60" y="220" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="60" y="220" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="380" y="220" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="380" y="220" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="60" y="340" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="60" y="340" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="380" y="340" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="380" y="340" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="60" y="460" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="60" y="460" width="270" height="52" rx="6" fill="url(#slots)"/>
+              <rect x="380" y="460" width="270" height="52" rx="6" fill="#dfe8f1" stroke="#bfcfdf" stroke-width="1.5"/><rect x="380" y="460" width="270" height="52" rx="6" fill="url(#slots)"/>
+            </g>
+            <g font-family="Manrope, sans-serif" font-weight="800" font-size="15" fill="rgba(5,23,41,0.35)">
+              <text x="30" y="132" text-anchor="middle">A</text>
+              <text x="30" y="252" text-anchor="middle">B</text>
+              <text x="30" y="372" text-anchor="middle">C</text>
+              <text x="30" y="492" text-anchor="middle">D</text>
+            </g>
+            <!-- pack / ship station -->
+            <rect x="230" y="556" width="250" height="56" rx="10" fill="rgba(76,141,222,0.08)" stroke="#4c8dde" stroke-width="2" stroke-dasharray="7 6"/>
+            <text x="355" y="589" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="13" letter-spacing="2" fill="#2d6cc0">PACK / SHIP</text>
+            <!-- start point -->
+            <circle cx="80" cy="586" r="8" fill="#051729"/>
+            <text x="80" y="614" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="10.5" letter-spacing="1.5" fill="rgba(5,23,41,0.5)">START</text>
+
+            <!-- scene 1: memory-based wander (chaotic, cuts through racks) -->
+            <path id="path-memory" d="M80,586 L480,288 L150,168 L560,408 L240,408 L400,528 L355,586" fill="none" stroke="#9aa9b6" stroke-width="4.5" stroke-dasharray="12 9" opacity="0"/>
+            <!-- scene 3: as-generated pick route (aisle-following, with backtracks) -->
+            <path id="path-scan" fill="none" stroke="#9fc0e8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+            <!-- scene 4: the same route shown as "before" -->
+            <path id="path-before4" fill="none" stroke="#9aa9b6" stroke-width="4.5" stroke-dasharray="12 9" stroke-linejoin="round" opacity="0"/>
+            <!-- scene 4: AI-optimized pick path -->
+            <path id="path-opt" fill="none" stroke="#4c8dde" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+
+            <!-- pick bins -->
+            <g id="bins" font-family="Manrope, sans-serif" font-weight="800"></g>
+            <!-- scene 1 mispick marker at C-09 -->
+            <g id="missX" opacity="0">
+              <path d="M548,403 L572,427 M572,403 L548,427" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+              <text x="560" y="450" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="12" fill="#dc2626">wrong item</text>
+            </g>
+            <!-- worker dot (scene 3) + AI ghost dot (scene 4) -->
+            <circle id="walker" r="10" fill="#22c55e" stroke="#fff" stroke-width="3.5" opacity="0"/>
+            <circle id="ghost" r="8" fill="#4c8dde" stroke="#fff" stroke-width="3" opacity="0"/>
+          </svg>
+
+          <!-- scene 1: the paper pick list -->
+          <div id="paper">
+            <div class="ph">PICK LIST — SO-10471<small>printed 6:04 AM · verified by: nobody</small></div>
+            <div class="prow"><span>A-03 &middot; 21877 &middot; &times;4</span><span class="ok">done</span></div>
+            <div class="prow"><span>C-09 &middot; 74120 &middot; &times;2</span><span class="note">grabbed 74102</span></div>
+            <div class="prow"><span>D-06 &middot; 90114 &middot; &times;1</span><span class="note">skipped — not found</span></div>
+            <div class="pfoot">errors found at packing… or at the customer</div>
+          </div>
+
+          <!-- scene 4: AI chip -->
+          <div id="aichip">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7fd4ae" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14.2 9.8 L22 12 L14.2 14.2 L12 22 L9.8 14.2 L2 12 L9.8 9.8 Z"/></svg>
+            <span>FREIGHTPOP <b>AI</b> — PICK-PATH OPTIMIZATION</span>
+          </div>
+
+          <div class="rule-chips" id="rule-chips">
+            <span class="rchip">Ticket per order <b>header level</b></span>
+            <span class="rchip">Ticket per line <b>line level</b></span>
+            <span class="rchip">Take-full-bin <b>picks</b></span>
+            <span class="rchip">Split picks <b>no workarounds</b></span>
+          </div>
+
+          <div id="savings">
+            <div class="lbl">PICK PATH — THIS TICKET</div>
+            <div class="val"><span id="ft-before">420</span> ft &rarr; <b id="ft-after">420 ft</b></div>
+            <div class="note">illustrative pick path · recommendations learn from your operations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- open sales orders flying into the pick queue (scene 2) -->
+    <div class="src-chip" data-s="0">SO-10482 <small>Cascade Outdoor Supply</small></div>
+    <div class="src-chip" data-s="1">SO-10485 <small>Beacon Medical Group</small></div>
+    <div class="src-chip" data-s="2">SO-10486 <small>Ridgeline Tools &amp; Supply</small></div>
+    <div class="src-chip" data-s="3">SO-10488 <small>Harbor Point Foods</small></div>
+
+    <!-- picker's mobile scanner -->
+    <div id="phone">
+      <div class="shell"><div class="screen">
+        <div class="notch"></div>
+        <!-- scan-pick screen -->
+        <div class="pscreen" id="pscreen-scan">
+          <div class="phead">PT-2214 <span class="stat">&middot; Cascade Outdoor Supply</span></div>
+          <div id="redbanner">WRONG ITEM — SKU 55710<small>This item is not on line 1. Re-scan bin A-12.</small></div>
+          <div id="scanbox"><div class="sb-lbl" id="sb-lbl">SCAN BIN</div><div class="sb-val" id="sb-val">A-12</div></div>
+          <div id="plines"></div>
+          <div id="pprog">0 of 5 lines picked</div>
+        </div>
+        <!-- completion screen -->
+        <div class="pscreen" id="pscreen-done">
+          <div class="phead">Status: <span class="stat">Pick Completed</span></div>
+          <div id="done-circle">&#10003;</div>
+          <div class="done-h">Pick Completed</div>
+          <div class="done-sub">5 lines &middot; 12 units — every pick scan-verified at the bin.</div>
+          <div class="done-pill">STATUS SYNCED — READY FOR PACKING</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- scene 1 mispick alert -->
+    <div id="errcard">
+      <div class="t1">Wrong item &middot; short pick — SO-10471</div>
+      <div class="t2">Found at the customer's dock, not at the shelf. RMA opened.</div>
+    </div>
+
+    <!-- scene 5 completion toast -->
+    <div id="toast">
+      <div class="t1">PT-2214 &middot; Pick Completed — 11:42 AM</div>
+      <div class="t2">Live status synced — packing and shipping can start</div>
+    </div>
+  </div>
+
+  <!-- ═══ title card ═══ -->
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">INTELLIGENT WAREHOUSE MANAGEMENT</div>
+    <h1 class="title-h1">Scan-verified picking,<br>step by step.</h1>
+    <div class="title-sub">From open sales orders to scan-verified picks and AI-optimized pick paths — errors stop at the shelf, not at the customer's dock.</div>
+  </div>
+
+  <!-- ═══ end card ═══ -->
+  <div class="fullcard" id="scene-end">
+    <img class="logo-img logo-md" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:36px"></div>
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">Errors stop at the shelf.</h1>
+    <div class="stats-row">
+      <div class="stat-tile"><div class="stat-num">Scan-<b>verified</b></div><div class="stat-lbl">Every pick checked at the bin — a wrong item can't be scanned.</div></div>
+      <div class="stat-tile"><div class="stat-num">Live <b>status</b></div><div class="stat-lbl">Ready to Pick &rarr; Pick Completed, visible on every ticket upstream.</div></div>
+      <div class="stat-tile"><div class="stat-num">AI <b>pick paths</b></div><div class="stat-lbl">Picking routes optimized with recommendations that learn from your operations.</div></div>
+    </div>
+    <div class="cta">SCHEDULE A DEMO &rarr;</div>
+    <div class="cta-url">freightpop.com/warehouse-management-system</div>
+  </div>
+
+</div></div>
+
+<!-- ═══ player chrome ═══ -->
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button><button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════════════════════
+   Deterministic timeline engine.
+   apply(t) computes EVERY visual property from absolute time t — no CSS
+   animations, no free-running state — so:
+     • window.FPVideo.seek(t) renders any frame exactly (MP4 rendering)
+     • presenter & audience windows stay in sync over BroadcastChannel
+   ═════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);   // living inside the deck's demo panel
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  // ── chapters ───────────────────────────────────────────────────────────
+  const CH = [
+    { id: 'title',   label: 'Intro',    start: 0,  end: 6 },
+    { id: 'oldway',  label: 'Old Way',  start: 6,  end: 18 },
+    { id: 'tickets', label: 'Tickets',  start: 18, end: 30 },
+    { id: 'scan',    label: 'Scan',     start: 30, end: 44 },
+    { id: 'aipath',  label: 'AI Path',  start: 44, end: 56 },
+    { id: 'status',  label: 'Status',   start: 56, end: 68 },
+    { id: 'end',     label: 'Result',   start: 68, end: 80 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  // ── pick-queue data (the "filled placeholders") ────────────────────────
+  const TICKETS = [
+    { pt: 'PT-2214', so: 'SO-10482', meta: 'Cascade Outdoor Supply · 5 lines · 12 units', type: 'header-level' },
+    { pt: 'PT-2215', so: 'SO-10485', meta: 'Beacon Medical Group · 3 lines · 6 units',    type: 'line-level' },
+    { pt: 'PT-2216', so: 'SO-10486', meta: 'Ridgeline Tools & Supply · 8 lines · 20 units', type: 'LP pick' },
+    { pt: 'PT-2217', so: 'SO-10488', meta: 'Harbor Point Foods · 2 lines · full bin',     type: 'take-full-bin' },
+    { pt: 'PT-2218', so: 'SO-10490', meta: 'Bluff City Electronics · 4 lines · 9 units',  type: 'split pick' },
+  ];
+  const cardsEl = $('#ticket-cards');
+  const statusChips = [];
+  TICKETS.forEach((s) => {
+    const d = document.createElement('div');
+    d.className = 'stopcard';
+    d.innerHTML = '<div class="r1"><span class="name"></span><span class="eta"></span></div><div class="r2"></div><div class="r3"></div>';
+    d.querySelector('.name').textContent = s.pt;
+    d.querySelector('.eta').textContent = s.so;
+    d.querySelector('.r2').textContent = s.meta;
+    const st = document.createElement('span');
+    st.className = 'chip st-ready';
+    st.textContent = 'Ready to Pick';
+    d.querySelector('.r3').appendChild(st);
+    statusChips.push(st);
+    const ty = document.createElement('span');
+    ty.className = 'chip win';
+    ty.textContent = s.type;
+    d.querySelector('.r3').appendChild(ty);
+    cardsEl.appendChild(d);
+  });
+
+  // ── pick lines on the scanner (PT-2214, in walk order) ────────────────
+  const LINES = [
+    { bin: 'A-12', sku: '88410', item: 'Trail Dome 4P Tent',  qty: 2, tick: 36.8 },
+    { bin: 'C-09', sku: '74102', item: 'Basecamp Lantern',    qty: 2, tick: 38.8 },
+    { bin: 'B-07', sku: '61780', item: 'Alpine Stove Kit',    qty: 3, tick: 39.9 },
+    { bin: 'D-11', sku: '90233', item: 'Summit Sleep Pad',    qty: 4, tick: 41.0 },
+    { bin: 'C-03', sku: '55214', item: 'Ridgeline Hatchet',   qty: 1, tick: 41.9 },
+  ];
+  const plinesEl = $('#plines');
+  const lineTicks = [];
+  LINES.forEach((l, i) => {
+    const d = document.createElement('div');
+    d.className = 'pline';
+    d.innerHTML = '<div class="tick"></div><div class="li"><b></b><small></small></div>';
+    d.querySelector('b').textContent = l.bin + ' · SKU ' + l.sku;
+    d.querySelector('small').textContent = l.item + ' · qty ' + l.qty;
+    lineTicks.push(d.querySelector('.tick'));
+    plinesEl.appendChild(d);
+  });
+
+  // ── warehouse floor geometry ───────────────────────────────────────────
+  const BINS = [
+    { id: 'A-12', x: 150, y: 168 },
+    { id: 'C-09', x: 560, y: 415 },
+    { id: 'B-07', x: 480, y: 295 },
+    { id: 'D-11', x: 400, y: 535 },
+    { id: 'C-03', x: 240, y: 415 },
+  ];
+  // AI-optimized visit order (scene 4 badges): A-12, B-07, C-09, C-03, D-11
+  const OPT_ORDER = { 'A-12': 1, 'B-07': 2, 'C-09': 3, 'C-03': 4, 'D-11': 5 };
+  const binsG = $('#bins');
+  const binTicks = [], binSeq = [];
+  let binPulse = null;
+  BINS.forEach((b) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.innerHTML =
+      '<rect x="' + (b.x - 9) + '" y="' + (b.y - 9) + '" width="18" height="18" rx="4" fill="#fff" stroke="#051729" stroke-width="2"/>' +
+      '<text x="' + (b.x + 15) + '" y="' + (b.y + 4) + '" font-size="11.5" fill="#33475f">' + b.id + '</text>' +
+      '<g class="btick" opacity="0"><circle cx="' + b.x + '" cy="' + b.y + '" r="12" fill="#22c55e"/>' +
+      '<path d="M' + (b.x - 5) + ',' + b.y + ' l3.5,4 l7,-8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></g>' +
+      '<g class="bseq" opacity="0"><circle cx="' + (b.x - 20) + '" cy="' + (b.y - 20) + '" r="11" fill="#051729"/>' +
+      '<text x="' + (b.x - 20) + '" y="' + (b.y - 15.5) + '" font-size="12" fill="#fff" text-anchor="middle">' + OPT_ORDER[b.id] + '</text></g>';
+    binsG.appendChild(g);
+    binTicks.push(g.querySelector('.btick'));
+    binSeq.push(g.querySelector('.bseq'));
+    if (b.id === 'A-12') {
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ring.setAttribute('cx', b.x); ring.setAttribute('cy', b.y); ring.setAttribute('r', 18);
+      ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', '#ef4444'); ring.setAttribute('stroke-width', '3.5');
+      ring.setAttribute('opacity', '0');
+      binsG.appendChild(ring);
+      binPulse = ring;
+    }
+  });
+
+  // aisle-following routes as waypoint polylines
+  const W_SCAN = [ // as-generated order: A-12, C-09, B-07, D-11, C-03 (backtracks)
+    [80,586],[40,586],[40,175],[150,175],[355,175],[355,415],[560,415],[670,415],[670,295],
+    [480,295],[670,295],[670,535],[400,535],[355,535],[355,415],[240,415],[355,415],[355,586]
+  ];
+  const SCAN_BIN_IDX = { 'A-12': 3, 'C-09': 6, 'B-07': 9, 'D-11': 12, 'C-03': 15 };
+  const W_OPT = [ // AI order: A-12, B-07, C-09, C-03, D-11 — one tight serpentine
+    [80,586],[40,586],[40,175],[150,175],[355,175],[355,295],[480,295],[670,295],[670,415],
+    [560,415],[240,415],[355,415],[355,535],[400,535],[355,535],[355,586]
+  ];
+  function buildPoly(W) {
+    let d = 'M' + W[0][0] + ',' + W[0][1];
+    const cum = [0];
+    for (let i = 1; i < W.length; i++) {
+      d += ' L' + W[i][0] + ',' + W[i][1];
+      cum.push(cum[i - 1] + Math.hypot(W[i][0] - W[i - 1][0], W[i][1] - W[i - 1][1]));
+    }
+    return { W, d, cum, total: cum[cum.length - 1] };
+  }
+  const scanPoly = buildPoly(W_SCAN);
+  const optPoly = buildPoly(W_OPT);
+  $('#path-scan').setAttribute('d', scanPoly.d);
+  $('#path-before4').setAttribute('d', scanPoly.d);
+  $('#path-opt').setAttribute('d', optPoly.d);
+  function polyPoint(poly, frac) {
+    const L = Math.max(0, Math.min(1, frac)) * poly.total;
+    let i = 1;
+    while (i < poly.cum.length - 1 && poly.cum[i] < L) i++;
+    const seg0 = poly.cum[i - 1], seg1 = poly.cum[i];
+    const k = seg1 > seg0 ? (L - seg0) / (seg1 - seg0) : 0;
+    return {
+      x: poly.W[i - 1][0] + (poly.W[i][0] - poly.W[i - 1][0]) * k,
+      y: poly.W[i - 1][1] + (poly.W[i][1] - poly.W[i - 1][1]) * k,
+    };
+  }
+  const fracOf = (id) => scanPoly.cum[SCAN_BIN_IDX[id]] / scanPoly.total;
+
+  // pick-path readout (illustrative, scaled from the actual drawn routes)
+  const FT_BEFORE = 420;
+  const FT_AFTER = Math.round(FT_BEFORE * optPoly.total / scanPoly.total);
+
+  const CAPTIONS = {
+    oldway:  { n: '1', k: 'STEP 1 — THE OLD WAY',      t: 'Picking from memory and a printout', b: 'Paper pick lists can’t verify anything. Wrong items and short picks slip through — and surface at packing, or at the customer’s dock.' },
+    tickets: { n: '2', k: 'STEP 2 — GENERATE TICKETS', t: 'Open orders become a pick queue', b: 'Open sales orders turn into picking tickets — at header or line level — and land in a live Ready-to-Pick queue. No re-keying, no printouts.' },
+    scan:    { n: '3', k: 'STEP 3 — SCAN-VERIFIED',    t: 'A wrong item can’t be scanned', b: 'Mobile scan picking verifies the bin and the item at the shelf. A wrong scan bounces on the spot — with License-Plate, take-full-bin and split picks built in.' },
+    aipath:  { n: '4', k: 'STEP 4 — AI PICK PATHS',    t: 'The walk through the warehouse tightens', b: 'AI-enhanced picking optimizes the route from bin to bin with recommendations that learn from your operations — less travel between picks.' },
+    status:  { n: '5', k: 'STEP 5 — LIVE STATUS',      t: 'Ready to Pick → Pick Completed', b: 'Every ticket carries live status, so upstream teams see what’s picked and what’s still waiting. Completed picks flow straight to packing and shipping.' },
+  };
+
+  // ── easing helpers ─────────────────────────────────────────────────────
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const easeOut = (x) => 1 - Math.pow(1 - clamp01(x), 3);
+  // progress through [a,b] at time t
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  // path helpers (dash-draw)
+  function prepPath(sel) {
+    const p = document.querySelector(sel);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    return { p, L };
+  }
+  const memPath = prepPath('#path-memory');
+  const scanPath = prepPath('#path-scan');
+  const optPath = prepPath('#path-opt');
+
+  const el = {
+    title: $('#scene-title'), end: $('#scene-end'), product: $('#scene-product'),
+    caption: $('#caption'), capNum: $('#cap-num'), capKicker: $('#cap-kicker'), capTitle: $('#cap-title'), capBody: $('#cap-body'),
+    dash: $('#dash'), optStrip: $('#opt-strip'),
+    cards: $$('#ticket-cards .stopcard'),
+    srcChips: $$('.src-chip'),
+    ruleChips: $$('#rule-chips .rchip'),
+    paper: $('#paper'), missX: $('#missX'), errcard: $('#errcard'),
+    before4: $('#path-before4'),
+    walker: $('#walker'), ghost: $('#ghost'),
+    aichip: $('#aichip'),
+    savings: $('#savings'), ftBefore: $('#ft-before'), ftAfter: $('#ft-after'),
+    phone: $('#phone'), scanScr: $('#pscreen-scan'), doneScr: $('#pscreen-done'),
+    scanbox: $('#scanbox'), sbLbl: $('#sb-lbl'), sbVal: $('#sb-val'),
+    redbanner: $('#redbanner'), pprog: $('#pprog'),
+    toast: $('#toast'),
+  };
+
+  let currentCaption = '';
+  function setCaption(key) {
+    if (key === currentCaption) return;
+    currentCaption = key;
+    if (!key) return;
+    const c = CAPTIONS[key];
+    el.capNum.textContent = c.n;
+    el.capKicker.textContent = c.k;
+    el.capTitle.textContent = c.t;
+    el.capBody.textContent = c.b;
+  }
+
+  // scanner prompt as a pure function of t
+  function promptFor(t) {
+    if (t < 32.6) return { l: 'SCAN BIN', v: 'A-12', c: '' };
+    if (t < 33.3) return { l: 'BIN VERIFIED', v: 'A-12 ✓', c: 'ok' };
+    if (t < 33.8) return { l: 'SCAN ITEM', v: 'SKU 88410', c: '' };
+    if (t < 35.3) return { l: 'WRONG ITEM', v: 'SKU 55710 — re-scan', c: 'err' };
+    if (t < 36.8) return { l: 'SCAN ITEM', v: 'SKU 88410', c: '' };
+    if (t < 37.6) return { l: 'PICKED', v: '88410 · 2 units ✓', c: 'ok' };
+    if (t < 38.8) return { l: 'SCAN BIN', v: 'C-09', c: '' };
+    if (t < 39.2) return { l: 'PICKED', v: '74102 · 2 units ✓', c: 'ok' };
+    if (t < 39.9) return { l: 'SCAN BIN', v: 'B-07', c: '' };
+    if (t < 40.3) return { l: 'PICKED', v: '61780 · 3 units ✓', c: 'ok' };
+    if (t < 41.0) return { l: 'SCAN BIN', v: 'D-11', c: '' };
+    if (t < 41.3) return { l: 'PICKED', v: '90233 · 4 units ✓', c: 'ok' };
+    if (t < 41.9) return { l: 'SCAN BIN', v: 'C-03', c: '' };
+    if (t < 42.3) return { l: 'PICKED', v: '55214 · 1 unit ✓', c: 'ok' };
+    return { l: 'ALL LINES PICKED', v: '5 of 5 verified ✓', c: 'ok' };
+  }
+
+  // walker distance schedule: [time, fraction along W_SCAN]
+  const WALK = [
+    [32.0, 0],
+    [33.3, fracOf('A-12')],
+    [37.6, fracOf('A-12')],   // dwell during the wrong-scan drama
+    [38.8, fracOf('C-09')],
+    [39.9, fracOf('B-07')],
+    [41.0, fracOf('D-11')],
+    [41.9, fracOf('C-03')],
+    [43.0, 1],
+  ];
+  function walkFrac(t) {
+    if (t <= WALK[0][0]) return 0;
+    for (let i = 1; i < WALK.length; i++) {
+      if (t <= WALK[i][0]) {
+        const p = ease(seg(t, WALK[i - 1][0], WALK[i][0]));
+        return WALK[i - 1][1] + (WALK[i][1] - WALK[i - 1][1]) * p;
+      }
+    }
+    return 1;
+  }
+
+  // per-ticket queue status as a function of t
+  function statusFor(i, t) {
+    if (i === 0) return t < 30.5 ? ['Ready to Pick', 'st-ready'] : t < 57.5 ? ['Picking', 'st-active'] : ['Pick Completed', 'st-done'];
+    if (i === 1) return t < 59.2 ? ['Ready to Pick', 'st-ready'] : ['Pick Completed', 'st-done'];
+    if (i === 2) return t < 60.8 ? ['Ready to Pick', 'st-ready'] : ['Picking', 'st-active'];
+    return ['Ready to Pick', 'st-ready'];
+  }
+
+  const show = (node, on, y) => {
+    node.style.opacity = String(typeof on === 'number' ? on : (on ? 1 : 0));
+    if (y !== undefined) node.style.transform = `translateY(${y}px)`;
+  };
+
+  // ── the whole film as a function of t ──────────────────────────────────
+  function apply(t) {
+    // title card: FULLY visible at t=0 — fade OUT only
+    const titleOut = seg(t, 5.2, 6.0);
+    el.title.style.opacity = String(1 - titleOut);
+    el.title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+    // end card
+    const endIn = seg(t, 68, 68.9);
+    el.end.style.opacity = String(endIn);
+    el.end.style.visibility = t > 67.9 ? 'visible' : 'hidden';
+    el.end.querySelectorAll('.stat-tile').forEach((tile, i) => {
+      const p = ease(seg(t, 69 + i * 0.5, 69.9 + i * 0.5));
+      tile.style.opacity = String(p);
+      tile.style.transform = `translateY(${24 * (1 - p)}px)`;
+    });
+    const ctaP = ease(seg(t, 71.2, 72));
+    el.end.querySelector('.cta').style.opacity = String(ctaP);
+    el.end.querySelector('.cta').style.transform = `scale(${0.9 + 0.1 * ctaP})`;
+    el.end.querySelector('.cta-url').style.opacity = String(ctaP);
+
+    // product stage visible between title and end
+    const prodIn = ease(seg(t, 5.6, 6.6));
+    const prodOut = seg(t, 67.4, 68.2);
+    el.product.style.opacity = String(Math.min(prodIn, 1 - prodOut));
+    el.product.style.visibility = (t > 5.5 && t < 68.3) ? 'visible' : 'hidden';
+
+    // dashboard entrance
+    const dashP = ease(seg(t, 6.0, 7.2));
+    el.dash.style.transform = `translateY(${60 * (1 - dashP)}px)`;
+
+    // ── captions per chapter ──
+    let cap = '';
+    if (t >= 6 && t < 18) cap = 'oldway';
+    else if (t < 30) cap = 'tickets';
+    else if (t < 44) cap = 'scan';
+    else if (t < 56) cap = 'aipath';
+    else if (t < 68) cap = 'status';
+    setCaption(cap);
+    const capStarts = { oldway: 6.4, tickets: 18, scan: 30, aipath: 44, status: 56 };
+    if (cap) {
+      const p = ease(seg(t, capStarts[cap], capStarts[cap] + 0.7));
+      el.caption.style.opacity = String(p);
+      el.caption.style.transform = `translateY(${26 * (1 - p)}px)`;
+    } else el.caption.style.opacity = '0';
+
+    // ── S1 old way (6–18): paper list, memory wander, mispick ──
+    const papP = ease(seg(t, 6.8, 7.8)), papOut = seg(t, 17.0, 17.8);
+    el.paper.style.opacity = String(Math.min(papP, 1 - papOut));
+    el.paper.style.transform = `rotate(-3deg) translateY(${20 * (1 - papP)}px)`;
+    // memory wander dash-draws, then dissolves with the chapter
+    const memDraw = ease(seg(t, 7.5, 11.5));
+    memPath.p.style.strokeDashoffset = String(memPath.L * (1 - memDraw));
+    memPath.p.style.opacity = String(t < 6 ? 0 : 0.85 * Math.min(1, 1 - seg(t, 17.0, 17.8)) * (t < 18 ? 1 : 0));
+    // red X mispick at C-09
+    const xP = ease(seg(t, 12.3, 12.9));
+    const xPop = 1 + 0.4 * Math.sin(Math.PI * seg(t, 12.3, 13.1));
+    el.missX.style.opacity = String(Math.min(xP, 1 - seg(t, 17.0, 17.6)));
+    el.missX.style.transformOrigin = '560px 415px';
+    el.missX.style.transform = `scale(${xPop})`;
+    // mispick alert card
+    const errP = ease(seg(t, 13.2, 14.0));
+    el.errcard.style.opacity = String(Math.min(errP, 1 - seg(t, 17.2, 17.9)));
+    el.errcard.style.transform = `translateY(${-24 * (1 - errP)}px)`;
+
+    // ── S2 tickets (18–30): sales orders fly in, queue populates ──
+    el.srcChips.forEach((chip, i) => {
+      const a = 18.6 + i * 1.05, fly = ease(seg(t, a, a + 1.4));
+      const gone = seg(t, a + 1.5, a + 2.0);
+      const x = 120 + (690 - 120) * fly, y = 980 - (980 - 240 - i * 26) * fly;
+      chip.style.left = x + 'px'; chip.style.top = y + 'px';
+      chip.style.opacity = String(Math.min(seg(t, a, a + 0.3), 1 - gone) * (t >= 18 && t < 30 ? 1 : 0));
+      chip.style.transform = `scale(${1 - 0.35 * fly})`;
+    });
+    el.cards.forEach((card, i) => {
+      const a = 19.6 + i * 1.2, p = ease(seg(t, a, a + 0.8));
+      card.style.opacity = String(p);
+      card.style.transform = `translateX(${-26 * (1 - p)}px)`;
+    });
+    el.ruleChips.forEach((rc, i) => {
+      const a = 24 + i * 1.0, p = ease(seg(t, a, a + 0.7));
+      rc.style.opacity = String(Math.min(p, 1 - seg(t, 29.2, 30)));
+      rc.style.transform = `translateY(${18 * (1 - p)}px)`;
+    });
+    // live queue statuses (Ready to Pick → Picking → Pick Completed)
+    statusChips.forEach((chipEl, i) => {
+      const [txt, cls] = statusFor(i, t);
+      if (chipEl.textContent !== txt) chipEl.textContent = txt;
+      const want = 'chip ' + cls;
+      if (chipEl.className !== want) chipEl.className = want;
+    });
+
+    // ── S3 scan-verified (30–44): scanner walks the route ──
+    const phoneP = ease(seg(t, 30.3, 31.5));
+    const phoneOut = seg(t, 67.0, 67.9);
+    el.phone.style.opacity = String(Math.min(phoneP, 1 - phoneOut));
+    el.phone.style.transform = `translateY(${120 * (1 - phoneP)}px)`;
+    // planned route draws ahead of the walker
+    const scanDraw = ease(seg(t, 31.2, 32.4));
+    scanPath.p.style.strokeDashoffset = String(scanPath.L * (1 - scanDraw));
+    scanPath.p.style.opacity = String((t >= 30.8 && t < 44.2) ? Math.min(seg(t, 30.8, 31.2), 1 - seg(t, 43.6, 44.2)) : 0);
+    // walker
+    const wf = walkFrac(t);
+    if (t >= 31.8 && t < 43.8) {
+      const pt = polyPoint(scanPoly, wf);
+      el.walker.setAttribute('cx', pt.x); el.walker.setAttribute('cy', pt.y);
+      el.walker.style.opacity = String(Math.min(seg(t, 31.8, 32.2), 1 - seg(t, 43.2, 43.8)));
+    } else el.walker.style.opacity = '0';
+    // bin ticks pop as lines verify; cleared before the AI chapter re-uses the map
+    binTicks.forEach((g, i) => {
+      const tt = LINES[i].tick;
+      const p = ease(seg(t, tt, tt + 0.4)) * (1 - seg(t, 44.0, 44.5));
+      const pop = 1 + 0.35 * Math.sin(Math.PI * seg(t, tt, tt + 0.6));
+      g.style.opacity = String(p);
+      g.style.transformOrigin = BINS[i].x + 'px ' + BINS[i].y + 'px';
+      g.style.transform = `scale(${pop})`;
+    });
+    // wrong-scan red pulse at A-12
+    const pulseOn = (t >= 33.8 && t < 35.3) ? (0.55 + 0.45 * Math.sin((t - 33.8) * 14)) : 0;
+    binPulse.style.opacity = String(pulseOn);
+    // scanner prompt + red banner (deterministic shake)
+    const pr = promptFor(t);
+    if (el.sbLbl.textContent !== pr.l) el.sbLbl.textContent = pr.l;
+    if (el.sbVal.textContent !== pr.v) el.sbVal.textContent = pr.v;
+    const wantSb = pr.c;
+    if (el.scanbox.className !== wantSb) el.scanbox.className = wantSb;
+    const bannerIn = (t >= 33.8 && t < 35.3) ? 1 : 0;
+    const shake = bannerIn ? Math.sin((t - 33.8) * 34) * 7 * (1 - seg(t, 33.8, 34.5)) : 0;
+    el.redbanner.style.opacity = String(bannerIn * Math.min(seg(t, 33.8, 33.95), 1 - seg(t, 35.1, 35.3)));
+    el.redbanner.style.transform = `translateX(${shake}px)`;
+    // line ticks + progress text
+    let done = 0;
+    lineTicks.forEach((tk, i) => {
+      const on = t >= LINES[i].tick;
+      if (on) done++;
+      tk.classList.toggle('on', on);
+      tk.textContent = on ? '✓' : '';
+    });
+    const progTxt = done + ' of 5 lines picked';
+    if (el.pprog.textContent !== progTxt) el.pprog.textContent = progTxt;
+
+    // ── S4 AI pick paths (44–56): the route tightens ──
+    const beforeP = Math.min(ease(seg(t, 44.6, 45.2)), 1 - seg(t, 47.5, 48.8));
+    el.before4.style.opacity = String((t >= 44 && t < 56) ? beforeP * 0.8 : 0);
+    const aiP = ease(seg(t, 44.8, 45.6));
+    el.aichip.style.opacity = String((t >= 44 && t < 56) ? Math.min(aiP, 1 - seg(t, 55.2, 56)) : 0);
+    el.aichip.style.transform = `translateX(-50%) translateY(${-20 * (1 - aiP)}px)`;
+    el.optStrip.style.width = (ease(seg(t, 45, 49)) * 100) + '%';
+    // optimized route draws
+    const optDraw = ease(seg(t, 46.5, 50.5));
+    optPath.p.style.strokeDashoffset = String(optPath.L * (1 - (t < 44 ? 0 : optDraw)));
+    if (t < 44) optPath.p.style.strokeDashoffset = String(optPath.L);
+    optPath.p.style.opacity = String((t >= 44 && t < 56.4) ? Math.min(seg(t, 46.5, 46.9), 1 - seg(t, 55.4, 56.4)) : 0);
+    // numbered visit badges in the new order
+    binSeq.forEach((g, i) => {
+      const a = 46.8 + (OPT_ORDER[BINS[i].id] - 1) * 0.55;
+      const p = ease(seg(t, a, a + 0.5)) * (t >= 44 && t < 56 ? 1 : 0) * (1 - seg(t, 55.2, 56));
+      const pop = 1 + 0.3 * Math.sin(Math.PI * seg(t, a, a + 0.7));
+      g.style.opacity = String(p);
+      g.style.transformOrigin = (BINS[i].x - 20) + 'px ' + (BINS[i].y - 20) + 'px';
+      g.style.transform = `scale(${pop})`;
+    });
+    // ghost picker glides down the optimized path
+    if (t >= 51.2 && t < 55.4) {
+      const gp = polyPoint(optPoly, ease(seg(t, 51.2, 55.0)));
+      el.ghost.setAttribute('cx', gp.x); el.ghost.setAttribute('cy', gp.y);
+      el.ghost.style.opacity = String(Math.min(seg(t, 51.2, 51.6), 1 - seg(t, 55.0, 55.4)));
+    } else el.ghost.style.opacity = '0';
+    // travel readout counts down as the path tightens
+    const ftCur = Math.round(FT_BEFORE - (FT_BEFORE - FT_AFTER) * ease(seg(t, 46.5, 50.5)));
+    el.ftBefore.textContent = String(FT_BEFORE);
+    el.ftAfter.textContent = ftCur + ' ft (−' + Math.round((1 - ftCur / FT_BEFORE) * 100) + '%)';
+    const savP = ease(seg(t, 46.2, 47.0));
+    el.savings.style.opacity = String((t >= 44 && t < 56) ? Math.min(savP, 1 - seg(t, 55.2, 56)) : 0);
+    el.savings.style.transform = `translateY(${20 * (1 - savP)}px)`;
+
+    // ── S5 live status (56–68): completion flows upstream ──
+    const swap = ease(seg(t, 56.2, 56.9));
+    el.scanScr.style.opacity = String(1 - swap);
+    el.doneScr.style.opacity = String(swap);
+    el.doneScr.style.visibility = t > 56 ? 'visible' : 'hidden';
+    const toastP = ease(seg(t, 61.5, 62.3));
+    el.toast.style.opacity = String(Math.min(toastP, 1 - seg(t, 67.0, 67.7)));
+    el.toast.style.transform = `translateY(${-24 * (1 - toastP)}px)`;
+  }
+
+  // hide everything that pops later (first paint at t=0)
+  ['#paper', '#errcard', '#aichip', '#savings', '#toast', '#phone', '#redbanner'].forEach((s) => { $(s).style.opacity = '0'; });
+  $$('#rule-chips .rchip, .src-chip').forEach((n) => { n.style.opacity = '0'; });
+
+  // ── player / transport ─────────────────────────────────────────────────
+  let T = 0, playing = false, lastTick = 0, raf = null;
+  function step(now) {
+    if (playing) {
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      if (T >= DURATION) {
+        if (EMBED) { T = 0; } // booth-friendly: loop when embedded in the deck
+        else { playing = false; updatePlayBtn(); }
+      }
+      apply(T);
+      updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); raf = requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  // ── chrome ─────────────────────────────────────────────────────────────
+  const chaptersEl = $('#chapters');
+  CH.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); broadcast(); });
+    chaptersEl.appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => {
+      const c = CH[i];
+      cel.querySelector('.fill').style.width = (seg(T, c.start, c.end) * 100) + '%';
+    });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); broadcast(); });
+
+  // auto-hide controls while playing (mouse move brings back)
+  let hideTimer = null;
+  function scheduleHide() {
+    if (EMBED) return; // embed bar is a dedicated strip — always visible
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  }
+  document.addEventListener('mousemove', scheduleHide);
+
+  // keyboard: Space play/pause, ←/→ chapter jump; deck-level keys forwarded up.
+  // In EMBED mode (inside the deck's demo panel) arrows belong to the DECK's
+  // step navigation — re-dispatch them on the parent document (same-origin)
+  // so featNext/featPrev keep working while the video has focus.
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); broadcast(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) { /* cross-origin host */ }
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); broadcast(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const prev = [...CH].reverse().find((c) => c.start < T - 0.5); seek(prev ? prev.start : 0); play(); broadcast(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*');
+      e.preventDefault();
+    }
+  });
+
+  // ── presenter ↔ audience sync (same-origin BroadcastChannel) ──────────
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  // try/catch: file:// documents have opaque origins where BroadcastChannel
+  // may throw — the video must still play standalone from a double-clicked file.
+  try {
+  if (!RENDER && 'BroadcastChannel' in window) {
+    bc = new BroadcastChannel('fp-roadmap-video-sync');
+    bc.onmessage = (e) => {
+      const m = e.data || {};
+      // presenter-console transport commands
+      if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+      if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+      if (m.cmd === 'play') { play(true); return; }
+      if (m.cmd === 'pause') { pause(true); return; }
+      // a late-mounting copy asks where everyone is
+      if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+      if (typeof m.t !== 'number') return;
+      authority = false; lastRemoteState = Date.now(); // someone else is driving
+      applyingRemote = true;
+      // tolerate small drift — snapping for sub-0.6s deltas is what read as a
+      // "refresh"; only real seeks (chapters) or play-state changes apply
+      if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+        T = m.t; playing = !!m.playing; lastTick = performance.now();
+        apply(T); updateChrome(); updatePlayBtn();
+      }
+      applyingRemote = false;
+    };
+    // periodic drift correction while playing
+    setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+  }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  // ── stage scaling ──────────────────────────────────────────────────────
+  function fit() {
+    if (EMBED) {
+      // dynamic text formatting: small panels get a readability boost,
+      // full-size panels use the design sizes (1.0)
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty("--fpb", String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ── render contract ────────────────────────────────────────────────────
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    // ?seek=<seconds> — static preview of any timestamp (QA / thumbnails)
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    // autoplay silently, then adopt any peer that is already mid-flight
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

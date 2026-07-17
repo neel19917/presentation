@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Dock Scheduling, Step by Step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP brand tokens (BRANDING.md + freightpop.com dock-scheduling)
+   Every timeline-driven property is set from JS seek(t) — NO CSS animations
+   on story elements, so headless frame rendering is deterministic.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729;
+  --navy-2: #0b2340;
+  --blue: #4c8dde;
+  --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9;
+  --bg: #f7f9fc;
+  --ink: #051729;
+  --sub: rgba(5, 23, 41, 0.72);
+  --green: #1f7a54;
+  --success: #22c55e;
+  --amber: #b45309;
+  --card-line: rgba(5, 23, 41, 0.10);
+  --cal-bg: #fbfdff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', -apple-system, sans-serif; }
+
+/* ── 1920×1080 stage scaled to the window ─────────────────────────────── */
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--bg); transform-origin: center center; flex: 0 0 auto;
+}
+
+/* faint blueprint grid like the website hero panels */
+#stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* ── Title / end cards ────────────────────────────────────────────────── */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.02em; color: #fff; }
+.logo b { color: var(--blue); }
+.logo-img { display: block; }
+.logo-img.logo-sm { height: 26px; }
+.logo-img.logo-md { height: 40px; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 112px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+
+/* ── Step caption (lower-left third) ─────────────────────────────────── */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(5,23,41,0.25); }
+
+/* ── Dashboard frame (mirrors the site's product shots) ───────────────── */
+#dash { position: absolute; right: 80px; top: 78px; width: 1040px; height: 780px; background: #fff; border: 3px solid var(--navy); border-radius: 26px; box-shadow: 0 30px 70px rgba(5,23,41,0.18); overflow: hidden; z-index: 10; }
+#dash .titlebar { height: 64px; background: var(--navy); display: flex; align-items: center; padding: 0 26px; border-radius: 22px 22px 0 0; }
+#dash .apphead { padding: 16px 26px 12px; display: flex; align-items: center; justify-content: space-between; }
+#dash .apphead .h { font-family: 'Manrope'; font-weight: 800; font-size: 21px; letter-spacing: 0.02em; color: var(--ink); }
+#dash .apphead .live { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 800; letter-spacing: 0.12em; color: var(--green); }
+#dash .apphead .live .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--success); }
+#dash .apphead .strip { height: 14px; border-radius: 7px; background: var(--blue); position: relative; overflow: hidden; width: 280px; margin-left: 24px; }
+#dash .apphead .strip .fill { position: absolute; inset: 0; width: 0%; background: linear-gradient(90deg, var(--blue-deep), #6fb2ff); }
+#dash .body { display: flex; height: calc(100% - 64px - 70px); }
+#dash .sidebar { width: 300px; border-right: 1px solid var(--card-line); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+#dash .search { height: 42px; border: 1.5px solid var(--card-line); border-radius: 21px; display: flex; align-items: center; padding: 0 16px; color: rgba(5,23,41,0.45); font-size: 15px; justify-content: space-between; flex: 0 0 auto; }
+#dash .calwrap { flex: 1; position: relative; background: var(--cal-bg); overflow: hidden; }
+
+/* appointment cards — the "filled placeholders" */
+.apptcard { border: 1.5px solid var(--card-line); border-radius: 12px; padding: 10px 12px; background: #fff; box-shadow: 0 2px 6px rgba(5,23,41,0.05); flex: 0 0 auto; }
+.apptcard .r1 { display: flex; justify-content: space-between; align-items: baseline; }
+.apptcard .name { font-weight: 700; font-size: 15px; color: var(--ink); }
+.apptcard .eta { font-size: 12.5px; font-weight: 700; color: var(--blue-deep); white-space: nowrap; }
+.apptcard .r2 { font-size: 12.5px; color: var(--sub); margin-top: 3px; }
+.apptcard .r3 { display: flex; gap: 6px; margin-top: 7px; }
+.apptcard .chip { font-size: 10.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: rgba(76,141,222,0.12); color: var(--blue-deep); }
+.apptcard .chip.win { background: rgba(31,122,84,0.12); color: var(--green); }
+
+/* ── dock calendar (built by JS at init) ─────────────────────────────── */
+#calhead { position: absolute; top: 0; left: 0; right: 0; height: 44px; display: flex; background: #fff; border-bottom: 2px solid var(--card-line); z-index: 3; }
+#calhead .tg { width: 64px; flex: 0 0 auto; }
+#calhead .door { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid var(--card-line); }
+#calhead .door .dn { font-family: 'Manrope'; font-weight: 800; font-size: 14.5px; color: var(--ink); letter-spacing: 0.04em; }
+#calhead .door small { font-size: 10px; color: var(--sub); font-weight: 700; letter-spacing: 0.08em; }
+#calgrid { position: absolute; top: 44px; left: 0; right: 0; bottom: 0; }
+.hline { position: absolute; left: 0; right: 0; border-top: 1px dashed rgba(5,23,41,0.09); }
+.hlbl { position: absolute; left: 8px; transform: translateY(-55%); font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(5,23,41,0.5); background: var(--cal-bg); padding: 0 3px; }
+.vline { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(5,23,41,0.07); }
+.blk { position: absolute; border-radius: 10px; padding: 7px 10px; overflow: hidden; border: 1.5px solid var(--blue-deep); background: rgba(76,141,222,0.14); box-shadow: 0 3px 10px rgba(5,23,41,0.08); z-index: 2; }
+.blk.out { border-color: var(--green); background: rgba(31,122,84,0.11); }
+.blk.delayed { border-color: var(--amber); background: rgba(245,158,11,0.16); }
+.blk .bt { font-family: 'DM Mono', monospace; font-size: 10.5px; font-weight: 500; color: var(--blue-deep); letter-spacing: 0.02em; }
+.blk.out .bt { color: var(--green); }
+.blk.delayed .bt { color: var(--amber); }
+.blk .bn { font-weight: 800; font-size: 13.5px; color: var(--ink); margin-top: 1px; white-space: nowrap; }
+.blk .bm { font-size: 11px; color: var(--sub); margin-top: 1px; white-space: nowrap; }
+.blk .dtag { position: absolute; top: 6px; right: 6px; font-size: 9.5px; font-weight: 800; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 999px; background: var(--amber); color: #fff; }
+#pulse { position: absolute; border-radius: 12px; border: 3px solid var(--blue); z-index: 1; pointer-events: none; }
+
+/* today status box (bottom-right of calendar) */
+#daystat { position: absolute; right: 14px; bottom: 12px; z-index: 5; background: var(--navy); color: #fff; border-radius: 14px; padding: 12px 20px; box-shadow: 0 14px 32px rgba(5,23,41,0.3); }
+#daystat .lbl { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--light-blue); }
+#daystat .val { font-family: 'Manrope'; font-size: 24px; font-weight: 800; margin-top: 2px; }
+#daystat .val b { color: #7fd4ae; }
+
+/* notification chips (scene 3) */
+.rule-chips { position: absolute; left: 96px; bottom: 20px; z-index: 45; display: flex; flex-wrap: wrap; gap: 10px; width: 600px; }
+.rule-chips .rchip { font-size: 15px; font-weight: 700; padding: 9px 18px; border-radius: 999px; background: #fff; border: 1.5px solid var(--navy); color: var(--navy); box-shadow: 0 6px 16px rgba(5,23,41,0.12); }
+.rule-chips .rchip b { color: var(--blue-deep); }
+
+/* data source chips flying in (scene 1) */
+.src-chip { position: absolute; z-index: 40; font-weight: 700; font-size: 17px; padding: 12px 24px; border-radius: 999px; background: var(--navy); color: #fff; box-shadow: 0 12px 26px rgba(5,23,41,0.28); white-space: nowrap; }
+.src-chip small { color: var(--light-blue); font-weight: 500; margin-left: 8px; }
+
+/* ── yard scene overlay (scene 4) ─────────────────────────────────────── */
+#yard { position: absolute; inset: 0; z-index: 6; background: #f4f8fb; }
+#yard svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ylab { position: absolute; left: 18px; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; padding: 6px 12px; border-radius: 8px; z-index: 2; }
+.ylab.bad { top: 14px; color: var(--amber); background: rgba(245,158,11,0.12); border: 1px solid rgba(180,83,9,0.35); }
+.ylab.good { top: calc(50% + 14px); color: var(--green); background: rgba(31,122,84,0.10); border: 1px solid rgba(31,122,84,0.3); }
+
+/* ── performance panel overlay (scene 5) ─────────────────────────────── */
+#perf { position: absolute; inset: 0; z-index: 7; background: #fff; padding: 22px 26px; }
+#perf .phead2 { font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.16em; color: var(--blue-deep); font-weight: 500; }
+#perf .pgrid { display: flex; gap: 30px; margin-top: 20px; }
+#perf .pcol { flex: 1; }
+#perf .plbl { font-family: 'Manrope'; font-weight: 800; font-size: 16px; color: var(--ink); letter-spacing: 0.04em; margin-bottom: 16px; }
+.brow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.brow .bname { width: 150px; font-size: 14px; font-weight: 700; color: var(--ink); flex: 0 0 auto; }
+.brow .btrack { flex: 1; height: 22px; border-radius: 4px; background: rgba(5,23,41,0.07); position: relative; overflow: hidden; }
+.brow .bfill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--blue); border-radius: 0 4px 4px 0; }
+.brow .bpct { width: 52px; font-family: 'Manrope'; font-weight: 800; font-size: 16px; color: var(--ink); text-align: right; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+#spark { width: 100%; height: 180px; }
+.sp-lbl { font-family: 'Manrope'; font-weight: 800; font-size: 15px; }
+#perf .pnote { margin-top: 10px; font-size: 12.5px; color: var(--sub); }
+#perf .pfoot { margin-top: 26px; display: flex; gap: 10px; }
+#perf .pfoot .rchip { font-size: 14px; font-weight: 700; padding: 8px 16px; border-radius: 999px; background: #fff; border: 1.5px solid var(--navy); color: var(--navy); }
+
+/* ── Phone mockup (carrier portal) ────────────────────────────────────── */
+#phone { position: absolute; left: 830px; top: 250px; width: 340px; height: 700px; z-index: 50; }
+#phone .shell { position: absolute; inset: 0; background: #0a0a0c; border-radius: 52px; box-shadow: 0 34px 80px rgba(5,23,41,0.4), inset 0 0 0 3px #2a2a30; padding: 16px; }
+#phone .screen { position: relative; width: 100%; height: 100%; background: #fff; border-radius: 38px; overflow: hidden; }
+#phone .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 110px; height: 26px; border-radius: 999px; background: #0a0a0c; z-index: 5; }
+.pscreen { position: absolute; inset: 0; }
+.pscreen .phead { height: 92px; background: var(--navy); color: #fff; display: flex; align-items: flex-end; padding: 0 18px 12px; font-weight: 700; font-size: 15px; }
+.pscreen .phead .stat { color: #7fd4ae; margin-left: 6px; }
+.pfac { margin: 12px 16px 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--sub); background: var(--bg); padding: 7px 10px; border-radius: 6px; }
+.slotrow { display: flex; align-items: center; justify-content: space-between; margin: 9px 16px 0; padding: 11px 13px; border: 1.5px solid var(--card-line); border-radius: 12px; }
+.slotrow .st { font-weight: 800; font-size: 14.5px; color: var(--ink); }
+.slotrow .st small { display: block; font-weight: 500; color: var(--sub); font-size: 11.5px; margin-top: 1px; }
+.slotrow .open { font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 999px; background: rgba(31,122,84,0.12); color: var(--green); }
+.pbook { margin: 14px 16px 0; height: 44px; border-radius: 10px; background: var(--navy); color: #fff; font-weight: 800; font-size: 13.5px; letter-spacing: 0.06em; display: flex; align-items: center; justify-content: center; }
+.pbanner { margin: 12px 16px 0; padding: 10px 12px; border-radius: 10px; background: rgba(245,158,11,0.14); border: 1.5px solid var(--amber); color: var(--amber); font-size: 12.5px; font-weight: 700; line-height: 1.35; }
+.pmove { margin: 12px 16px 0; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.pmove .old { text-decoration: line-through; color: var(--sub); font-weight: 500; }
+.pmove .arrow { color: var(--blue-deep); }
+.pconfirm { position: absolute; inset: 0; background: rgba(255,255,255,0.96); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 24px; z-index: 6; }
+.pconfirm svg { width: 84px; height: 84px; margin-bottom: 16px; }
+.pconfirm .c1 { font-family: 'Manrope'; font-weight: 800; font-size: 20px; color: var(--ink); }
+.pconfirm .c2 { font-size: 13.5px; color: var(--sub); margin-top: 8px; line-height: 1.45; }
+.pconfirm .c2 b { color: var(--green); }
+
+/* dispatcher toast */
+#toast { position: absolute; right: 120px; top: 108px; z-index: 60; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--success); border-radius: 14px; padding: 14px 22px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); width: 470px; }
+#toast .t1 { font-weight: 800; font-size: 17px; color: var(--ink); }
+#toast .t2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+
+/* ── End card stats ───────────────────────────────────────────────────── */
+.stats-row { display: flex; gap: 34px; margin: 54px 0 60px; }
+.stat-tile { width: 360px; background: rgba(255,255,255,0.055); border: 1px solid rgba(193,212,233,0.22); border-radius: 20px; padding: 34px 32px; text-align: left; }
+.stat-num { font-size: 52px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.stat-num b { color: var(--blue); }
+.stat-lbl { font-size: 19px; color: var(--light-blue); margin-top: 10px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; box-shadow: 0 18px 44px rgba(76,141,222,0.35); }
+.cta-url { margin-top: 22px; font-size: 21px; color: var(--light-blue); letter-spacing: 0.02em; }
+
+/* ── Player chrome (hidden in render mode) ───────────────────────────── */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 15px; cursor: pointer; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+
+/* ── embed=1 — living inside a demo panel (TMS deck module). The player
+      controls become a dedicated always-visible bottom bar (never floating
+      over content), with fullscreen, and story text is bumped up so it stays
+      readable at panel scale. ─────────────────────────────────────────── */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls {
+  left: 0; right: 0; bottom: 0; transform: none; border-radius: 0;
+  padding: 10px 18px; gap: 14px; opacity: 1 !important; pointer-events: auto !important;
+  background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3);
+}
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #timecode { font-size: 15px; }
+body.embed #btn-play { width: 44px; height: 44px; flex: 0 0 auto; }
+#btn-theme, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+body.embed #btn-theme, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+#btn-fs { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-fs:hover { border-color: #fff; }
+body.embed #btn-fs { width: 44px; height: 44px; }
+/* bigger story text at embed scale */
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); line-height: 1.45; }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed .rule-chips .rchip { font-size: calc(14px * var(--fpb, 1.35)); padding: 11px 20px; }
+body.embed #daystat .lbl { font-size: calc(11px * var(--fpb, 1.35)); }
+body.embed #daystat .val { font-size: calc(22px * var(--fpb, 1.35)); }
+body.embed .src-chip { font-size: calc(16px * var(--fpb, 1.35)); padding: 14px 28px; }
+body.embed #toast .t1 { font-size: calc(16px * var(--fpb, 1.35)); }
+body.embed #toast .t2 { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed #toast { width: 560px; }
+body.embed .title-sub { font-size: calc(30px * var(--fpb, 1.35)); }
+body.embed .kicker { font-size: calc(20px * var(--fpb, 1.35)); }
+body.embed .stat-num { font-size: calc(44px * var(--fpb, 1.35)); }
+body.embed .stat-lbl { font-size: calc(17px * var(--fpb, 1.35)); }
+body.embed .cta { font-size: calc(24px * var(--fpb, 1.35)); }
+body.embed .cta-url { font-size: calc(19px * var(--fpb, 1.35)); }
+
+/* ── theme=deck — matches the TMS interactive deck (navy #051729 + teal
+      #3DD6B5 + DM Mono kickers). Product mocks stay light like the deck's
+      own product screens. ─────────────────────────────────────────────── */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before {
+  background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+}
+body.theme-deck .kicker,
+body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: #3dd6b5; letter-spacing: 0.18em; font-weight: 500; }
+/* deck headings are LIGHT-weight Manrope (like the module library screen) */
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; letter-spacing: -0.02em; }
+body.theme-deck .stat-num { font-weight: 600; }
+body.theme-deck #caption .step-body { color: #b5cde0; font-weight: 400; }
+body.theme-deck #caption .step-num { background: #3dd6b5; color: var(--navy); }
+body.theme-deck .fullcard { background: radial-gradient(1300px 700px at 72% -10%, #0e3050 0%, var(--navy) 55%); }
+body.theme-deck .title-sub { color: #b5cde0; }
+body.theme-deck .stat-num b { color: #3dd6b5; }
+body.theme-deck .cta { background: #3dd6b5; color: var(--navy); box-shadow: 0 18px 44px rgba(61,214,181,0.3); }
+body.theme-deck .src-chip { background: #0a2540; border: 1px solid rgba(61,214,181,0.4); }
+body.theme-deck #daystat .val b { color: #3dd6b5; }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: #3dd6b5; color: var(--navy); }
+body.theme-deck #dash { border-color: #0a2540; box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 64px rgba(61,214,181,0.10); }
+body.theme-deck #phone .shell { box-shadow: 0 34px 80px rgba(0,0,0,0.6), inset 0 0 0 3px #2a2a30; }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ persistent product stage ═══ -->
+  <div class="layer" id="scene-product">
+
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — CONNECT</div>
+      <div class="step-title" id="cap-title">One live calendar for every door</div>
+      <div class="step-body" id="cap-body">TMS, WMS and ERP data in one dock calendar.</div>
+    </div>
+
+    <div id="dash">
+      <div class="titlebar"><img class="logo-img logo-sm" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="></div>
+      <div class="apphead">
+        <div class="h">DOCK SCHEDULING — ANAHEIM DC</div>
+        <div style="display:flex;align-items:center;">
+          <div class="live"><span class="dot" id="live-dot"></span>LIVE</div>
+          <div class="strip"><div class="fill" id="sync-strip"></div></div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="sidebar">
+          <div class="search"><span>Search appointments…</span><span>⌕</span></div>
+          <div id="appt-cards" style="display:flex;flex-direction:column;gap:12px;"></div>
+        </div>
+        <div class="calwrap">
+          <div id="calhead">
+            <div class="tg"></div>
+            <div class="door"><span class="dn">DOOR 1</span><small>RECEIVING</small></div>
+            <div class="door"><span class="dn">DOOR 2</span><small>RECEIVING</small></div>
+            <div class="door"><span class="dn">DOOR 3</span><small>RECEIVING</small></div>
+            <div class="door"><span class="dn">DOOR 4</span><small>SHIPPING</small></div>
+          </div>
+          <div id="calgrid">
+            <div id="pulse"></div>
+          </div>
+
+          <div id="daystat">
+            <div class="lbl">TODAY</div>
+            <div class="val"><b id="appt-count">6</b> appointments · 4 doors</div>
+          </div>
+
+          <!-- notification chips (scene 3) -->
+          <div class="rule-chips" id="notif-chips">
+            <span class="rchip">Dock team <b>notified</b></span>
+            <span class="rchip">Carrier <b>confirmed 12:00 PM</b></span>
+            <span class="rchip">10:30 slot <b>released</b></span>
+          </div>
+
+          <!-- yard scene (scene 4) -->
+          <div id="yard">
+            <div class="ylab bad">WITHOUT SCHEDULING — FIRST COME, FIRST SERVED</div>
+            <div class="ylab good">WITH FREIGHTPOP — ENFORCED ARRIVAL WINDOWS</div>
+            <svg viewBox="0 0 740 600" preserveAspectRatio="none">
+              <rect width="740" height="600" fill="#f4f8fb"/>
+              <!-- top: the old way -->
+              <rect x="0" y="170" width="740" height="78" fill="#e4ebf1"/>
+              <line x1="0" y1="209" x2="740" y2="209" stroke="#fff" stroke-width="3" stroke-dasharray="22 18"/>
+              <rect x="668" y="140" width="10" height="140" rx="3" fill="#051729"/>
+              <text x="673" y="128" text-anchor="middle" font-family="DM Mono, monospace" font-size="12" fill="#051729" font-weight="500">GATE</text>
+              <g id="yq"></g>
+              <g id="dettag" opacity="0">
+                <rect x="230" y="255" width="240" height="30" rx="15" fill="#b45309"/>
+                <text x="350" y="275" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="13" fill="#fff">DETENTION CLOCK RUNNING</text>
+              </g>
+              <line x1="0" y1="300" x2="740" y2="300" stroke="rgba(5,23,41,0.15)" stroke-width="2"/>
+              <!-- bottom: scheduled flow -->
+              <rect x="0" y="470" width="740" height="78" fill="#e4ebf1"/>
+              <line x1="0" y1="509" x2="740" y2="509" stroke="#fff" stroke-width="3" stroke-dasharray="22 18"/>
+              <rect x="668" y="440" width="10" height="140" rx="3" fill="#1f7a54"/>
+              <text x="673" y="428" text-anchor="middle" font-family="DM Mono, monospace" font-size="12" fill="#1f7a54" font-weight="500">DOCK</text>
+              <g id="yf"></g>
+            </svg>
+          </div>
+
+          <!-- performance panel (scene 5) -->
+          <div id="perf">
+            <div class="phead2">DOCK PERFORMANCE — LAST 30 DAYS</div>
+            <div class="pgrid">
+              <div class="pcol">
+                <div class="plbl">CARRIER PUNCTUALITY</div>
+                <div id="brows"></div>
+              </div>
+              <div class="pcol">
+                <div class="plbl">AVG DOCK TURNAROUND</div>
+                <svg id="spark" viewBox="0 0 320 180">
+                  <line x1="10" y1="150" x2="310" y2="150" stroke="rgba(5,23,41,0.12)" stroke-width="1.5"/>
+                  <path id="spark-path" d="M14,42 C40,48 58,40 84,56 C112,73 132,62 158,84 C186,107 208,98 234,112 C258,125 284,120 306,128" fill="none" stroke="#2d6cc0" stroke-width="3" stroke-linecap="round"/>
+                  <circle id="spark-a" cx="14" cy="42" r="6" fill="#2d6cc0" stroke="#fff" stroke-width="2.5"/>
+                  <circle id="spark-b" cx="306" cy="128" r="6" fill="#1f7a54" stroke="#fff" stroke-width="2.5"/>
+                  <text id="spark-la" x="24" y="34" class="sp-lbl" font-family="Manrope, sans-serif" font-weight="800" font-size="15" fill="#051729">62 min</text>
+                  <text id="spark-lb" x="300" y="115" text-anchor="end" class="sp-lbl" font-family="Manrope, sans-serif" font-weight="800" font-size="15" fill="#1f7a54">41 min</text>
+                </svg>
+                <div class="pnote" id="perf-note">Illustrative metrics — your facility will vary. Turnaround, punctuality and throughput are tracked automatically.</div>
+              </div>
+            </div>
+            <div class="pfoot" id="perf-foot">
+              <span class="rchip">Carrier punctuality <b>scored</b></span>
+              <span class="rchip">Turnaround <b>trending down</b></span>
+              <span class="rchip">Bottlenecks <b>flagged</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- data source chips -->
+    <div class="src-chip" data-s="0">TMS <small>shipments</small></div>
+    <div class="src-chip" data-s="1">WMS <small>inventory & labor</small></div>
+    <div class="src-chip" data-s="2">ERP <small>purchase orders</small></div>
+
+    <!-- carrier phone — the self-service portal -->
+    <div id="phone">
+      <div class="shell"><div class="screen">
+        <div class="notch"></div>
+        <!-- slot booking screen -->
+        <div class="pscreen" id="pscreen-slots">
+          <div class="phead">Carrier Portal <span class="stat">· Ridgeline Freight</span></div>
+          <div class="pfac">ANAHEIM DC — OPEN DOCK SLOTS · TODAY</div>
+          <div class="slotrow" data-slot="0"><div class="st">10:30 AM<small>Door 3 · Receiving</small></div><span class="open">OPEN</span></div>
+          <div class="slotrow" data-slot="1"><div class="st">11:00 AM<small>Door 4 · Shipping</small></div><span class="open">OPEN</span></div>
+          <div class="slotrow" data-slot="2"><div class="st">12:00 PM<small>Door 3 · Receiving</small></div><span class="open">OPEN</span></div>
+          <div class="slotrow" data-slot="3"><div class="st">1:30 PM<small>Door 2 · Receiving</small></div><span class="open">OPEN</span></div>
+          <div class="pbook" id="p-book">REQUEST 10:30 AM · DOOR 3</div>
+          <div class="pconfirm" id="p-confirm1">
+            <svg viewBox="0 0 84 84"><circle id="cc1" cx="42" cy="42" r="36" fill="none" stroke="#22c55e" stroke-width="5"/><path id="ck1" d="M26 43 L38 55 L60 31" fill="none" stroke="#22c55e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="c1">Appointment confirmed</div>
+            <div class="c2">Door 3 · 10:30 – 11:30 AM · PO 4477<br><b>Dock team notified automatically</b></div>
+          </div>
+        </div>
+        <!-- reschedule screen -->
+        <div class="pscreen" id="pscreen-resched">
+          <div class="phead">Running late? <span class="stat">· Reschedule</span></div>
+          <div class="pbanner" id="p-banner">Traffic delay reported — I-15 N incident. Your 10:30 AM window is at risk.</div>
+          <div class="pmove"><span class="old">10:30 AM · Door 3</span><span class="arrow">→</span><span id="p-newtime">Pick a new slot</span></div>
+          <div class="slotrow" data-rslot="0"><div class="st">11:30 AM<small>Door 4 · Shipping</small></div><span class="open">OPEN</span></div>
+          <div class="slotrow" data-rslot="1"><div class="st">12:00 PM<small>Door 3 · Receiving</small></div><span class="open">OPEN</span></div>
+          <div class="slotrow" data-rslot="2"><div class="st">1:30 PM<small>Door 2 · Receiving</small></div><span class="open">OPEN</span></div>
+          <div class="pbook" id="p-resched">CONFIRM 12:00 PM · DOOR 3</div>
+          <div class="pconfirm" id="p-confirm2">
+            <svg viewBox="0 0 84 84"><circle id="cc2" cx="42" cy="42" r="36" fill="none" stroke="#22c55e" stroke-width="5"/><path id="ck2" d="M26 43 L38 55 L60 31" fill="none" stroke="#22c55e" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="c1">Rescheduled — everyone knows</div>
+            <div class="c2">Door 3 · 12:00 – 1:00 PM<br><b>Warehouse team + carrier notified — zero phone calls</b></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div id="toast">
+      <div class="t1" id="toast-1">Appointment confirmed — Door 3 · 10:30 AM</div>
+      <div class="t2" id="toast-2">Ridgeline Freight booked via carrier portal — dock team notified automatically</div>
+    </div>
+  </div>
+
+  <!-- ═══ title card ═══ -->
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">WAREHOUSE EFFICIENCY</div>
+    <h1 class="title-h1">Dock Scheduling,<br>step by step.</h1>
+    <div class="title-sub">Eliminate dock congestion and detention fees with a centralized, collaborative calendar — one source of truth for your team and every carrier.</div>
+  </div>
+
+  <!-- ═══ end card ═══ -->
+  <div class="fullcard" id="scene-end">
+    <img class="logo-img logo-md" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:36px"></div>
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">One calendar. Zero chaos.</h1>
+    <div class="stats-row">
+      <div class="stat-tile"><div class="stat-num">1 <b>calendar</b></div><div class="stat-lbl">Shared by your team, your docks and every carrier — a single source of truth.</div></div>
+      <div class="stat-tile"><div class="stat-num">Fewer <b>detention fees</b></div><div class="stat-lbl">Predictable, enforced arrival windows cut driver wait times and surprise charges.</div></div>
+      <div class="stat-tile"><div class="stat-num">Live <b>visibility</b></div><div class="stat-lbl">The floor sees exactly what is arriving and when — inbound and outbound.</div></div>
+    </div>
+    <div class="cta">SCHEDULE A DEMO →</div>
+    <div class="cta-url">freightpop.com/dock-scheduling</div>
+  </div>
+
+</div></div>
+
+<!-- ═══ player chrome ═══ -->
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button><button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════════════════════
+   Deterministic timeline engine.
+   apply(t) computes EVERY visual property from absolute time t — no CSS
+   animations, no free-running state — so:
+     • window.FPVideo.seek(t) renders any frame exactly (MP4 rendering)
+     • presenter & audience windows stay in sync over BroadcastChannel
+   ═════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);   // living inside the TMS deck's demo panel
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  // ── chapters ───────────────────────────────────────────────────────────
+  const CH = [
+    { id: 'title',    label: 'Intro',    start: 0,  end: 6 },
+    { id: 'connect',  label: 'Connect',  start: 6,  end: 18 },
+    { id: 'book',     label: 'Book',     start: 18, end: 31 },
+    { id: 'adjust',   label: 'Adjust',   start: 31, end: 44 },
+    { id: 'yard',     label: 'Yard',     start: 44, end: 56 },
+    { id: 'optimize', label: 'Optimize', start: 56, end: 68 },
+    { id: 'end',      label: 'Result',   start: 68, end: 80 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  // ── dock calendar data (the "filled placeholders") ─────────────────────
+  // hours axis: 7:00 AM → 3:00 PM across doors 1–4
+  const HOURS = [7, 8, 9, 10, 11, 12, 13, 14];
+  const hlbl = (h) => (h > 12 ? h - 12 : h) + ':00 ' + (h >= 12 ? 'PM' : 'AM');
+  const BOOKINGS = [
+    { door: 0, s: 7,    d: 1.5, name: 'Cascade Carriers',     time: '7:00 – 8:30 AM',   meta: 'PO 4462 · 18 pallets', type: 'in'  },
+    { door: 2, s: 7.5,  d: 1,   name: 'Blue Summit Logistics', time: '7:30 – 8:30 AM',  meta: 'SO 2204 · 9 pallets',  type: 'out' },
+    { door: 1, s: 8,    d: 1.5, name: 'Harbor Line Transport', time: '8:00 – 9:30 AM',  meta: 'PO 4458 · 22 pallets', type: 'in'  },
+    { door: 3, s: 9,    d: 1.5, name: 'Pacific Crest Freight', time: '9:00 – 10:30 AM', meta: 'SO 2211 · 14 pallets', type: 'out' },
+    { door: 0, s: 11,   d: 1,   name: 'Meridian Haulage',      time: '11:00 – 12:00',   meta: 'PO 4470 · 12 pallets', type: 'in'  },
+    { door: 1, s: 13,   d: 1.5, name: 'Westgate Distribution', time: '1:00 – 2:30 PM',  meta: 'SO 2215 · 20 pallets', type: 'out' },
+  ];
+  // the carrier that self-books in scene 2, then reschedules in scene 3
+  const RIDGE = { door: 2, s0: 10.5, s1: 12, d: 1, name: 'Ridgeline Freight', meta: 'PO 4477 · 16 pallets' };
+
+  const APPTS = [
+    { name: 'Cascade Carriers',      eta: '7:00 AM · D1',  meta: 'Inbound · PO 4462 · 18 plt',  chips: ['Inbound', 'live unload'] },
+    { name: 'Blue Summit Logistics', eta: '7:30 AM · D3',  meta: 'Outbound · SO 2204 · 9 plt',  chips: ['Outbound', 'drop trailer'] },
+    { name: 'Harbor Line Transport', eta: '8:00 AM · D2',  meta: 'Inbound · PO 4458 · 22 plt',  chips: ['Inbound', 'liftgate'] },
+    { name: 'Pacific Crest Freight', eta: '9:00 AM · D4',  meta: 'Outbound · SO 2211 · 14 plt', chips: ['Outbound', 'appt req'] },
+  ];
+  const cardsEl = $('#appt-cards');
+  function makeCard(a) {
+    const d = document.createElement('div');
+    d.className = 'apptcard';
+    d.innerHTML = '<div class="r1"><span class="name"></span><span class="eta"></span></div><div class="r2"></div><div class="r3"></div>';
+    d.querySelector('.name').textContent = a.name;
+    d.querySelector('.eta').textContent = a.eta;
+    d.querySelector('.r2').textContent = a.meta;
+    a.chips.forEach((c, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'chip' + (i === 1 ? ' win' : '');
+      chip.textContent = c;
+      d.querySelector('.r3').appendChild(chip);
+    });
+    cardsEl.appendChild(d);
+    return d;
+  }
+  APPTS.forEach(makeCard);
+  const ridgeCard = makeCard({ name: 'Ridgeline Freight', eta: '10:30 AM · D3', meta: 'Inbound · PO 4477 · 16 plt', chips: ['Inbound', 'portal booking'] });
+
+  // ── build the calendar grid in JS so lines & blocks share one geometry ──
+  const grid = $('#calgrid');
+  const GUT = 64;
+  let GW = 0, GH = 0, colW = 0, rowH = 0;
+  const yFor = (h) => (h - 7) * rowH;
+  const blockEls = [];
+  function buildGrid() {
+    GW = grid.clientWidth; GH = grid.clientHeight;
+    colW = (GW - GUT) / 4; rowH = GH / HOURS.length;
+    HOURS.forEach((h, i) => {
+      if (i === 0) return;
+      const ln = document.createElement('div');
+      ln.className = 'hline'; ln.style.top = yFor(h) + 'px';
+      grid.appendChild(ln);
+      const lb = document.createElement('div');
+      lb.className = 'hlbl'; lb.style.top = yFor(h) + 'px'; lb.textContent = hlbl(h);
+      grid.appendChild(lb);
+    });
+    for (let c = 0; c <= 4; c++) {
+      const v = document.createElement('div');
+      v.className = 'vline'; v.style.left = (GUT + c * colW) + 'px';
+      grid.appendChild(v);
+    }
+    BOOKINGS.forEach((b) => {
+      const el = document.createElement('div');
+      el.className = 'blk' + (b.type === 'out' ? ' out' : '');
+      el.innerHTML = '<div class="bt"></div><div class="bn"></div><div class="bm"></div>';
+      el.querySelector('.bt').textContent = b.time;
+      el.querySelector('.bn').textContent = b.name;
+      el.querySelector('.bm').textContent = b.meta;
+      el.style.left = (GUT + b.door * colW + 5) + 'px';
+      el.style.width = (colW - 10) + 'px';
+      el.style.top = (yFor(b.s) + 4) + 'px';
+      el.style.height = (b.d * rowH - 8) + 'px';
+      grid.appendChild(el);
+      blockEls.push(el);
+    });
+    // Ridgeline's block (appears scene 2, moves scene 3)
+    const rb = document.createElement('div');
+    rb.className = 'blk';
+    rb.id = 'ridge-blk';
+    rb.innerHTML = '<div class="bt" id="ridge-time">10:30 – 11:30 AM</div><div class="bn">Ridgeline Freight</div><div class="bm">PO 4477 · 16 pallets</div><div class="dtag" id="ridge-tag">DELAYED</div>';
+    rb.style.left = (GUT + RIDGE.door * colW + 5) + 'px';
+    rb.style.width = (colW - 10) + 'px';
+    rb.style.height = (RIDGE.d * rowH - 8) + 'px';
+    grid.appendChild(rb);
+  }
+  buildGrid();
+
+  // ── punctuality bars (scene 5) ─────────────────────────────────────────
+  const PUNCT = [
+    { name: 'Ridgeline Freight', v: 96 },
+    { name: 'Cascade Carriers',  v: 93 },
+    { name: 'Harbor Line',       v: 89 },
+    { name: 'Blue Summit',       v: 84 },
+  ];
+  const browsEl = $('#brows');
+  PUNCT.forEach((b) => {
+    const d = document.createElement('div');
+    d.className = 'brow';
+    d.innerHTML = '<div class="bname"></div><div class="btrack"><div class="bfill"></div></div><div class="bpct">0%</div>';
+    d.querySelector('.bname').textContent = b.name;
+    browsEl.appendChild(d);
+  });
+
+  const CAPTIONS = {
+    connect: { n: '1', k: 'STEP 1 — CONNECT & CENTRALIZE', t: 'One live calendar for every door',   b: 'FreightPOP connects to your TMS, WMS or ERP and pulls every shipment into a real-time dock calendar — a single source of truth instead of spreadsheets and whiteboards.' },
+    book:    { n: '2', k: 'STEP 2 — CARRIER SELF-SERVICE', t: 'Carriers book their own slots',      b: 'From the carrier portal, carriers see your real-time availability and self-schedule against your actual door and labor capacity. No phone calls, no back-and-forth.' },
+    adjust:  { n: '3', k: 'STEP 3 — ADJUST ON THE FLY',    t: 'Delays happen. The calendar keeps up.', b: 'Reschedule or cancel in a few clicks — automated notifications keep your team and the carrier aligned the moment anything changes.' },
+    yard:    { n: '4', k: 'STEP 4 — PREDICTABLE ARRIVALS', t: 'The yard stays clear',               b: 'Enforced arrival windows replace the first-come pile-up. Trucks arrive when the dock is ready — driver wait times and detention fees go down.' },
+    optimize:{ n: '5', k: 'STEP 5 — TRACK & OPTIMIZE',     t: 'Measure punctuality. Improve every week.', b: 'Dock performance metrics track carrier punctuality, turnaround times and throughput — so you can spot bottlenecks and keep raising the bar.' },
+  };
+
+  // ── easing helpers ─────────────────────────────────────────────────────
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const easeOut = (x) => 1 - Math.pow(1 - clamp01(x), 3);
+  // progress through [a,b] at time t
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  // path helpers (dash-draw)
+  function prepPath(sel) {
+    const p = document.querySelector(sel);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    return { p, L };
+  }
+  const ck1 = prepPath('#ck1');
+  const cc1 = prepPath('#cc1');
+  const ck2 = prepPath('#ck2');
+  const cc2 = prepPath('#cc2');
+  const spark = prepPath('#spark-path');
+
+  // ── yard trucks (built in JS, SVG coordinate space 740×600) ────────────
+  const yq = $('#yq'), yf = $('#yf');
+  const NS = 'http://www.w3.org/2000/svg';
+  function truck(parent, good) {
+    const g = document.createElementNS(NS, 'g');
+    g.innerHTML =
+      '<rect x="0" y="4" width="46" height="22" rx="3" fill="' + (good ? '#ffffff' : '#8ea3b5') + '" stroke="' + (good ? '#2d6cc0' : '#66798c') + '" stroke-width="2"/>' +
+      '<rect x="48" y="10" width="15" height="16" rx="3" fill="' + (good ? '#4c8dde' : '#66798c') + '"/>' +
+      '<circle cx="12" cy="28" r="4.5" fill="#33475f"/><circle cx="34" cy="28" r="4.5" fill="#33475f"/><circle cx="55" cy="28" r="4.5" fill="#33475f"/>';
+    const chip = document.createElementNS(NS, 'g');
+    chip.setAttribute('class', 'ychip');
+    const w = good ? 118 : 68;
+    chip.innerHTML =
+      '<rect x="' + (32 - w / 2) + '" y="-28" width="' + w + '" height="20" rx="10" fill="' + (good ? '#1f7a54' : '#b45309') + '"/>' +
+      '<text x="32" y="-14" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="10.5" fill="#fff"></text>';
+    g.appendChild(chip);
+    parent.appendChild(g);
+    return { g, chip, txt: chip.querySelector('text') };
+  }
+  const QTRUCKS = [], FTRUCKS = [];
+  for (let i = 0; i < 5; i++) { const tr = truck(yq, false); tr.txt.textContent = 'WAITING'; QTRUCKS.push(tr); }
+  const FTIMES = ['ON TIME · 7:00 AM', 'ON TIME · 8:00 AM', 'ON TIME · 9:00 AM', 'ON TIME · 10:30 AM'];
+  for (let i = 0; i < 4; i++) { const tr = truck(yf, true); tr.txt.textContent = FTIMES[i]; FTRUCKS.push(tr); }
+
+  const el = {
+    title: $('#scene-title'), end: $('#scene-end'), product: $('#scene-product'),
+    caption: $('#caption'), capNum: $('#cap-num'), capKicker: $('#cap-kicker'), capTitle: $('#cap-title'), capBody: $('#cap-body'),
+    dash: $('#dash'), syncStrip: $('#sync-strip'), liveDot: $('#live-dot'),
+    cards: $$('#appt-cards .apptcard'),
+    srcChips: $$('.src-chip'),
+    hlines: $$('#calgrid .hline, #calgrid .hlbl, #calgrid .vline'),
+    daystat: $('#daystat'), apptCount: $('#appt-count'),
+    ridgeBlk: $('#ridge-blk'), ridgeTime: $('#ridge-time'), ridgeTag: $('#ridge-tag'), pulse: $('#pulse'),
+    notifChips: $$('#notif-chips .rchip'),
+    phone: $('#phone'), scrSlots: $('#pscreen-slots'), scrResched: $('#pscreen-resched'),
+    slotRows: $$('#pscreen-slots .slotrow'), rslotRows: $$('#pscreen-resched .slotrow'),
+    pBook: $('#p-book'), pResched: $('#p-resched'),
+    pConfirm1: $('#p-confirm1'), pConfirm2: $('#p-confirm2'),
+    pNewtime: $('#p-newtime'), pBanner: $('#p-banner'),
+    toast: $('#toast'), toast1: $('#toast-1'), toast2: $('#toast-2'),
+    yard: $('#yard'), dettag: $('#dettag'), ylabs: $$('.ylab'),
+    perf: $('#perf'), bfills: $$('#brows .bfill'), bpcts: $$('#brows .bpct'),
+    sparkA: $('#spark-a'), sparkB: $('#spark-b'), sparkLa: $('#spark-la'), sparkLb: $('#spark-lb'),
+    perfNote: $('#perf-note'), perfFoot: $$('#perf .pfoot .rchip'),
+  };
+
+  let currentCaption = '';
+  function setCaption(key) {
+    if (key === currentCaption) return;
+    currentCaption = key;
+    if (!key) return;
+    const c = CAPTIONS[key];
+    el.capNum.textContent = c.n;
+    el.capKicker.textContent = c.k;
+    el.capTitle.textContent = c.t;
+    el.capBody.textContent = c.b;
+  }
+  let toastMode = '';
+  function setToast(mode) {
+    if (mode === toastMode) return;
+    toastMode = mode;
+    if (mode === 'book') {
+      el.toast1.textContent = 'Appointment confirmed — Door 3 · 10:30 AM';
+      el.toast2.textContent = 'Ridgeline Freight booked via carrier portal — dock team notified automatically';
+      el.toast.style.borderLeftColor = 'var(--success)';
+    } else if (mode === 'move') {
+      el.toast1.textContent = 'Rescheduled — Ridgeline Freight · 12:00 PM · Door 3';
+      el.toast2.textContent = 'Automated notifications sent — warehouse team and carrier stay in sync';
+      el.toast.style.borderLeftColor = 'var(--blue)';
+    }
+  }
+
+  // ── the whole film as a function of t ──────────────────────────────────
+  function apply(t) {
+    // title / end cards — title starts fully visible so frame 0 is never blank
+    const titleOut = seg(t, 5.2, 6.0);
+    el.title.style.opacity = String(1 - titleOut);
+    el.title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+    const endIn = seg(t, 68, 68.9);
+    el.end.style.opacity = String(endIn);
+    el.end.style.visibility = t > 67.9 ? 'visible' : 'hidden';
+    el.end.querySelectorAll('.stat-tile').forEach((tile, i) => {
+      const p = ease(seg(t, 69 + i * 0.5, 69.9 + i * 0.5));
+      tile.style.opacity = String(p);
+      tile.style.transform = `translateY(${24 * (1 - p)}px)`;
+    });
+    const ctaP = ease(seg(t, 71.2, 72));
+    el.end.querySelector('.cta').style.opacity = String(ctaP);
+    el.end.querySelector('.cta').style.transform = `scale(${0.9 + 0.1 * ctaP})`;
+    el.end.querySelector('.cta-url').style.opacity = String(ctaP);
+
+    // product stage visible between title and end
+    const prodIn = ease(seg(t, 5.6, 6.6));
+    const prodOut = seg(t, 67.4, 68.2);
+    el.product.style.opacity = String(Math.min(prodIn, 1 - prodOut));
+    el.product.style.visibility = (t > 5.5 && t < 68.3) ? 'visible' : 'hidden';
+
+    // dashboard entrance
+    const dashP = ease(seg(t, 6.0, 7.2));
+    el.dash.style.transform = `translateY(${60 * (1 - dashP)}px)`;
+
+    // ── captions per chapter ──
+    let cap = '';
+    if (t >= 6 && t < 18) cap = 'connect';
+    else if (t < 31) cap = 'book';
+    else if (t < 44) cap = 'adjust';
+    else if (t < 56) cap = 'yard';
+    else if (t < 68) cap = 'optimize';
+    setCaption(cap);
+    const capStarts = { connect: 6.4, book: 18, adjust: 31, yard: 44, optimize: 56 };
+    if (cap) {
+      const p = ease(seg(t, capStarts[cap], capStarts[cap] + 0.7));
+      el.caption.style.opacity = String(p);
+      el.caption.style.transform = `translateY(${26 * (1 - p)}px)`;
+    } else el.caption.style.opacity = '0';
+
+    // live dot pulse (deterministic — pure function of t)
+    const lp = 0.55 + 0.45 * Math.abs(Math.sin(t * Math.PI / 0.9));
+    el.liveDot.style.opacity = String(lp);
+
+    // ── S1 connect (6–18): src chips fly, calendar populates ──
+    el.srcChips.forEach((chip, i) => {
+      const a = 7.0 + i * 1.2, fly = ease(seg(t, a, a + 1.4));
+      const gone = seg(t, a + 1.5, a + 2.0);
+      // from the empty upper-left, gliding into the dashboard (clear of the caption)
+      const sx = 140, sy = 60 + i * 86;
+      const x = sx + (690 - sx) * fly, y = sy + (240 + i * 26 - sy) * fly;
+      chip.style.left = x + 'px'; chip.style.top = y + 'px';
+      chip.style.opacity = String(Math.min(seg(t, a, a + 0.3), 1 - gone) * (t < 18 ? 1 : 0));
+      chip.style.transform = `scale(${1 - 0.35 * fly})`;
+    });
+    // sync strip sweeps while systems connect
+    el.syncStrip.style.width = (ease(seg(t, 7.2, 11)) * 100) + '%';
+    // grid lines fade in
+    const gp = ease(seg(t, 6.8, 7.8));
+    el.hlines.forEach((ln) => { ln.style.opacity = String(gp); });
+    // booked blocks pop in sequence
+    blockEls.forEach((blk, i) => {
+      const a = 8.4 + i * 0.75, p = ease(seg(t, a, a + 0.7));
+      blk.style.opacity = String(p);
+      blk.style.transform = `scale(${0.86 + 0.14 * p})`;
+    });
+    // sidebar cards slide in
+    el.cards.forEach((card, i) => {
+      if (card === ridgeCard) return;
+      const a = 8.6 + i * 0.9, p = ease(seg(t, a, a + 0.8));
+      card.style.opacity = String(p);
+      card.style.transform = `translateX(${-26 * (1 - p)}px)`;
+    });
+    // today status box — shows during connect, returns after the new booking
+    const dsP = ease(seg(t, 13.6, 14.4));
+    let dsOp = 0;
+    if (t < 18) dsOp = Math.min(dsP, 1 - seg(t, 17.2, 18));
+    else if (t >= 25.4 && t < 30.4) dsOp = Math.min(ease(seg(t, 25.4, 26.1)), 1 - seg(t, 29.6, 30.4));
+    el.daystat.style.opacity = String(dsOp);
+    el.daystat.style.transform = `translateY(${16 * (1 - dsP)}px)`;
+    el.apptCount.textContent = t < 24.6 ? '6' : '7';
+
+    // ── S2 book (18–31): phone in, carrier self-books ──
+    const phoneP = ease(seg(t, 18.3, 19.5));
+    const phoneOut = seg(t, 43.0, 43.9);
+    el.phone.style.opacity = String(Math.min(phoneP, 1 - phoneOut));
+    el.phone.style.transform = `translateY(${120 * (1 - phoneP)}px)`;
+    // slot rows appear
+    el.slotRows.forEach((row, i) => {
+      const a = 19.6 + i * 0.45, p = ease(seg(t, a, a + 0.5));
+      row.style.opacity = String(p);
+      row.style.transform = `translateX(${18 * (1 - p)}px)`;
+      // selection highlight on the 10:30 slot
+      const selP = i === 0 ? ease(seg(t, 21.2, 21.8)) : 0;
+      row.style.borderColor = selP > 0.4 ? 'var(--blue-deep)' : 'var(--card-line)';
+      row.style.background = selP > 0.4 ? 'rgba(76,141,222,0.10)' : '#fff';
+      row.style.borderWidth = selP > 0.4 ? '2px' : '1.5px';
+    });
+    const bookBtnP = ease(seg(t, 21.6, 22.2));
+    el.pBook.style.opacity = String(bookBtnP);
+    // press effect
+    const press1 = Math.sin(Math.PI * seg(t, 22.8, 23.4));
+    el.pBook.style.transform = `scale(${1 - 0.06 * press1})`;
+    el.pBook.style.background = press1 > 0.5 ? '#2d6cc0' : 'var(--navy)';
+    // confirmation overlay + check draw
+    const conf1 = ease(seg(t, 23.6, 24.3));
+    el.pConfirm1.style.opacity = String(conf1 * (t < 31.6 ? 1 : 0));
+    el.pConfirm1.style.visibility = (t > 23.5 && t < 31.7) ? 'visible' : 'hidden';
+    cc1.p.style.strokeDashoffset = String(cc1.L * (1 - ease(seg(t, 23.7, 24.6))));
+    ck1.p.style.strokeDashoffset = String(ck1.L * (1 - ease(seg(t, 24.1, 24.9))));
+
+    // Ridgeline block pops onto the calendar
+    const ridgeIn = ease(seg(t, 24.6, 25.3));
+    // block position: slides from 10:30 slot to 12:00 slot during the reschedule
+    const moveP = ease(seg(t, 36.8, 38.2));
+    const ridgeS = RIDGE.s0 + (RIDGE.s1 - RIDGE.s0) * moveP;
+    el.ridgeBlk.style.top = (yFor(ridgeS) + 4) + 'px';
+    el.ridgeBlk.style.opacity = String(ridgeIn);
+    el.ridgeBlk.style.transform = `scale(${0.86 + 0.14 * ridgeIn})`;
+    // delayed state between 32.8 and the confirmed move
+    const isDelayed = t >= 32.8 && t < 38.2;
+    el.ridgeBlk.classList.toggle('delayed', isDelayed);
+    el.ridgeTag.style.opacity = isDelayed ? String(ease(seg(t, 32.8, 33.3))) : '0';
+    el.ridgeTime.textContent = t < 37.5 ? '10:30 – 11:30 AM' : '12:00 – 1:00 PM';
+    // pulse ring around the new booking (two beats, pure function of t)
+    if (t >= 24.6 && t < 27.4) {
+      const beat = ((t - 24.6) % 1.4) / 1.4;
+      const gx = GUT + RIDGE.door * colW + 5, gy = yFor(ridgeS) + 4;
+      el.pulse.style.left = (gx - 8 * beat) + 'px';
+      el.pulse.style.top = (gy - 8 * beat) + 'px';
+      el.pulse.style.width = (colW - 10 + 16 * beat) + 'px';
+      el.pulse.style.height = (RIDGE.d * rowH - 8 + 16 * beat) + 'px';
+      el.pulse.style.opacity = String(0.9 * (1 - beat));
+    } else el.pulse.style.opacity = '0';
+    // Ridgeline sidebar card
+    const rcP = ease(seg(t, 25.2, 25.9));
+    ridgeCard.style.opacity = String(rcP);
+    ridgeCard.style.transform = `translateX(${-26 * (1 - rcP)}px)`;
+    ridgeCard.querySelector('.eta').textContent = t < 37.5 ? '10:30 AM · D3' : '12:00 PM · D3';
+
+    // dispatcher toast — booking confirmation, then reschedule notice
+    setToast(t < 31 ? 'book' : 'move');
+    let toastOp = 0, toastY = -24;
+    if (t >= 25.8 && t < 30.6) {
+      const p = ease(seg(t, 25.8, 26.6));
+      toastOp = Math.min(p, 1 - seg(t, 29.8, 30.6)); toastY = -24 * (1 - p);
+    } else if (t >= 39.8 && t < 43.8) {
+      const p = ease(seg(t, 39.8, 40.6));
+      toastOp = Math.min(p, 1 - seg(t, 43.0, 43.8)); toastY = -24 * (1 - p);
+    }
+    el.toast.style.opacity = String(toastOp);
+    el.toast.style.transform = `translateY(${toastY}px)`;
+
+    // ── S3 adjust (31–44): delay, reschedule, everyone notified ──
+    const swap = ease(seg(t, 31.6, 32.3));
+    el.scrSlots.style.opacity = String(1 - swap);
+    el.scrResched.style.opacity = String(swap);
+    el.scrResched.style.visibility = t > 31.5 ? 'visible' : 'hidden';
+    const banP = ease(seg(t, 32.2, 32.9));
+    el.pBanner.style.opacity = String(banP);
+    el.pBanner.style.transform = `translateY(${12 * (1 - banP)}px)`;
+    el.rslotRows.forEach((row, i) => {
+      const a = 33.0 + i * 0.45, p = ease(seg(t, a, a + 0.5));
+      row.style.opacity = String(p);
+      row.style.transform = `translateX(${18 * (1 - p)}px)`;
+      const selP = i === 1 ? ease(seg(t, 34.5, 35.1)) : 0;
+      row.style.borderColor = selP > 0.4 ? 'var(--blue-deep)' : 'var(--card-line)';
+      row.style.background = selP > 0.4 ? 'rgba(76,141,222,0.10)' : '#fff';
+      row.style.borderWidth = selP > 0.4 ? '2px' : '1.5px';
+    });
+    el.pNewtime.textContent = t < 34.8 ? 'Pick a new slot' : '12:00 PM · Door 3';
+    el.pNewtime.style.color = t < 34.8 ? 'var(--sub)' : 'var(--blue-deep)';
+    const reBtnP = ease(seg(t, 34.9, 35.5));
+    el.pResched.style.opacity = String(reBtnP);
+    const press2 = Math.sin(Math.PI * seg(t, 35.7, 36.3));
+    el.pResched.style.transform = `scale(${1 - 0.06 * press2})`;
+    el.pResched.style.background = press2 > 0.5 ? '#2d6cc0' : 'var(--navy)';
+    const conf2 = ease(seg(t, 36.3, 37.0));
+    el.pConfirm2.style.opacity = String(conf2);
+    el.pConfirm2.style.visibility = t > 36.2 ? 'visible' : 'hidden';
+    cc2.p.style.strokeDashoffset = String(cc2.L * (1 - ease(seg(t, 36.4, 37.3))));
+    ck2.p.style.strokeDashoffset = String(ck2.L * (1 - ease(seg(t, 36.8, 37.6))));
+    // notification chips
+    el.notifChips.forEach((rc, i) => {
+      const a = 38.6 + i * 0.9, p = ease(seg(t, a, a + 0.7));
+      rc.style.opacity = String(Math.min(p, 1 - seg(t, 43.2, 44)));
+      rc.style.transform = `translateY(${18 * (1 - p)}px)`;
+    });
+
+    // ── S4 yard (44–56): pile-up vs scheduled flow ──
+    const yardIn = ease(seg(t, 44.3, 45.2)), yardOut = seg(t, 55.5, 56.2);
+    el.yard.style.opacity = String(Math.min(yardIn, 1 - yardOut));
+    el.yard.style.visibility = (t > 44.2 && t < 56.3) ? 'visible' : 'hidden';
+    el.ylabs.forEach((lb, i) => {
+      const p = ease(seg(t, 44.8 + i * 0.4, 45.5 + i * 0.4));
+      lb.style.opacity = String(p);
+    });
+    // top lane: trucks crawl in and bunch at the gate
+    QTRUCKS.forEach((tr, i) => {
+      const qx = 660 - 52 - i * 84;               // queue position (bumper to bumper)
+      const sx = -140 - i * 70;                   // off-screen start
+      const p = ease(seg(t, 45.2 + i * 0.35, 47.8 + i * 0.55));
+      const x = sx + (qx - sx) * p;
+      tr.g.setAttribute('transform', `translate(${x}, 175)`);
+      const chipP = ease(seg(t, 48.0 + i * 0.4, 48.6 + i * 0.4));
+      tr.chip.setAttribute('opacity', String(i === 0 ? 0 : chipP)); // front truck is at the door; the rest wait
+    });
+    el.dettag.setAttribute('opacity', String(ease(seg(t, 50.2, 51.0))));
+    // bottom lane: one truck at a time, arriving on its window — the previous
+    // truck clears the dock before the next one gets close
+    FTRUCKS.forEach((tr, i) => {
+      const a = 45.6 + i * 2.6, b = a + 2.8;
+      const p = seg(t, a, b);
+      const x = -80 + (660 - 52 + 80) * easeOut(p);
+      const vis = (t >= a && t < b + 1.0) ? 1 : 0;
+      tr.g.setAttribute('transform', `translate(${x}, 475)`);
+      tr.g.setAttribute('opacity', String(vis * (p >= 1 ? 1 - seg(t, b + 0.5, b + 1.0) : 1)));
+      tr.chip.setAttribute('opacity', String(ease(seg(t, a + 1.0, a + 1.5)) * (p >= 1 ? 1 - seg(t, b + 0.5, b + 1.0) : 1)));
+    });
+
+    // ── S5 optimize (56–68): punctuality + turnaround analytics ──
+    const perfIn = ease(seg(t, 56.3, 57.2));
+    el.perf.style.opacity = String(perfIn);
+    el.perf.style.visibility = t > 56.2 ? 'visible' : 'hidden';
+    el.bfills.forEach((f, i) => {
+      const p = ease(seg(t, 57.4 + i * 0.5, 59.2 + i * 0.5));
+      f.style.width = (PUNCT[i].v * p) + '%';
+      el.bpcts[i].textContent = Math.round(PUNCT[i].v * p) + '%';
+    });
+    // turnaround sparkline dash-draws downward
+    const spP = ease(seg(t, 60.0, 62.8));
+    spark.p.style.strokeDashoffset = String(spark.L * (1 - spP));
+    el.sparkA.style.opacity = String(ease(seg(t, 60.0, 60.4)));
+    el.sparkLa.style.opacity = String(ease(seg(t, 60.2, 60.7)));
+    el.sparkB.style.opacity = String(ease(seg(t, 62.6, 63.1)));
+    el.sparkLb.style.opacity = String(ease(seg(t, 62.8, 63.3)));
+    const noteP = ease(seg(t, 63.4, 64.0));
+    el.perfNote.style.opacity = String(noteP);
+    el.perfFoot.forEach((rc, i) => {
+      const p = ease(seg(t, 64.2 + i * 0.6, 64.9 + i * 0.6));
+      rc.style.opacity = String(p);
+      rc.style.transform = `translateY(${14 * (1 - p)}px)`;
+    });
+  }
+
+  // hide everything that pops later (first paint at t=0)
+  ['#phone', '#toast', '#daystat', '#yard', '#perf', '#ridge-blk', '#pulse', '#p-confirm1', '#p-confirm2', '#p-book', '#p-resched', '#p-banner', '#pscreen-resched'].forEach((s) => { $(s).style.opacity = '0'; });
+  $$('#notif-chips .rchip, .src-chip, .slotrow, #perf .pfoot .rchip').forEach((n) => { n.style.opacity = '0'; });
+  $('#perf-note').style.opacity = '0';
+  ['#spark-a', '#spark-b', '#spark-la', '#spark-lb'].forEach((s) => { $(s).style.opacity = '0'; });
+
+  // ── player / transport ─────────────────────────────────────────────────
+  let T = 0, playing = false, lastTick = 0, raf = null;
+  function step(now) {
+    if (playing) {
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      if (T >= DURATION) {
+        if (EMBED) { T = 0; } // booth-friendly: loop when embedded in the deck
+        else { playing = false; updatePlayBtn(); }
+      }
+      apply(T);
+      updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); raf = requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  // ── chrome ─────────────────────────────────────────────────────────────
+  const chaptersEl = $('#chapters');
+  CH.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); broadcast(); });
+    chaptersEl.appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => {
+      const c = CH[i];
+      cel.querySelector('.fill').style.width = (seg(T, c.start, c.end) * 100) + '%';
+    });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); broadcast(); });
+
+  // auto-hide controls while playing (mouse move brings back)
+  let hideTimer = null;
+  function scheduleHide() {
+    if (EMBED) return; // embed bar is a dedicated strip — always visible
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  }
+  document.addEventListener('mousemove', scheduleHide);
+
+  // keyboard: Space play/pause, ←/→ chapter jump; deck-level keys forwarded up.
+  // In EMBED mode (inside the TMS deck's demo panel) arrows belong to the
+  // DECK's step navigation — re-dispatch them on the parent document
+  // (same-origin) so featNext/featPrev keep working while the video has focus.
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); broadcast(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) { /* cross-origin host */ }
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); broadcast(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const prev = [...CH].reverse().find((c) => c.start < T - 0.5); seek(prev ? prev.start : 0); play(); broadcast(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*');
+      e.preventDefault();
+    }
+  });
+
+  // ── presenter ↔ audience sync (same-origin BroadcastChannel) ──────────
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  // try/catch: file:// documents have opaque origins where BroadcastChannel
+  // may throw — the video must still play standalone from a double-clicked file.
+  try {
+  if (!RENDER && 'BroadcastChannel' in window) {
+    bc = new BroadcastChannel('fp-roadmap-video-sync');
+    bc.onmessage = (e) => {
+      const m = e.data || {};
+      // presenter-console transport commands
+      if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+      if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+      if (m.cmd === 'play') { play(true); return; }
+      if (m.cmd === 'pause') { pause(true); return; }
+      // a late-mounting copy asks where everyone is
+      if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+      if (typeof m.t !== 'number') return;
+      authority = false; lastRemoteState = Date.now(); // someone else is driving
+      applyingRemote = true;
+      // tolerate small drift — snapping for sub-0.6s deltas is what read as a
+      // "refresh"; only real seeks (chapters) or play-state changes apply
+      if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+        T = m.t; playing = !!m.playing; lastTick = performance.now();
+        apply(T); updateChrome(); updatePlayBtn();
+      }
+      applyingRemote = false;
+    };
+    // periodic drift correction while playing
+    setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+  }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  // ── stage scaling ──────────────────────────────────────────────────────
+  function fit() {
+    if (EMBED) {
+      // dynamic text formatting: small panels get a readability boost,
+      // full-size panels use the design sizes (1.0)
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty("--fpb", String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ── render contract ────────────────────────────────────────────────────
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    // ?seek=<seconds> — static preview of any timestamp (QA / thumbnails)
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    // autoplay silently, then adopt any peer that is already mid-flight
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

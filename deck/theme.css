@@ -1,0 +1,114 @@
+/* FreightPOP LocalDemo — slide theme.
+   Slides are designed at a fixed 1920×1080 canvas; the framework scales them.
+   System fonts only — the whole deck works with zero internet. */
+
+:root {
+  --navy: #0f2044;
+  --navy-2: #1e3a8a;
+  --blue: #2563eb;
+  --blue-soft: #dbeafe;
+  --sky: #38bdf8;
+  --ink: #0f172a;
+  --sub: #475569;
+  --muted: #94a3b8;
+  --line: #e2e8f0;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --good: #059669;
+  --warn: #d97706;
+  --bad: #dc2626;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
+.slide { width: 1920px; height: 1080px; padding: 90px 110px 120px; display: flex; flex-direction: column; position: relative; }
+.slide.center { align-items: center; justify-content: center; text-align: center; }
+.slide.dark { background: radial-gradient(1400px 700px at 70% -20%, #1e3a8a66, transparent), var(--navy); color: #fff; }
+.slide.dark .kicker { color: var(--sky); }
+.slide.dark .sub { color: #b6c4e0; }
+
+.kicker {
+  font-size: 24px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 18px;
+}
+h1 { font-size: 84px; line-height: 1.06; letter-spacing: -0.02em; font-weight: 800; color: inherit; }
+.slide:not(.dark) h1 { color: var(--navy); }
+h2 { font-size: 40px; font-weight: 700; color: var(--navy); }
+.sub { font-size: 30px; color: var(--sub); margin-top: 22px; line-height: 1.45; max-width: 1250px; }
+.content { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+.logo { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); }
+.logo b { color: var(--blue); }
+.slide.dark .logo { color: #fff; }
+.slide.dark .logo b { color: var(--sky); }
+
+.slide-footer {
+  position: absolute; left: 110px; right: 110px; bottom: 46px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 20px; color: var(--muted);
+  border-top: 1px solid var(--line); padding-top: 20px;
+}
+.slide.dark .slide-footer { border-top-color: #ffffff26; color: #8ea0c0; }
+
+/* ── Build steps (data-step) ─────────────────────────────────────────── */
+.fp-hidden { opacity: 0 !important; transform: translateY(16px); visibility: hidden; }
+[data-step] { transition: opacity 0.35s ease, transform 0.35s ease; }
+
+/* ── Cards & grids ───────────────────────────────────────────────────── */
+.cards { display: grid; gap: 28px; margin-top: 48px; }
+.cards.c2 { grid-template-columns: repeat(2, 1fr); }
+.cards.c3 { grid-template-columns: repeat(3, 1fr); }
+.cards.c4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 36px 38px; box-shadow: 0 10px 26px rgb(15 32 68 / 5%);
+}
+.card .icon { font-size: 46px; margin-bottom: 18px; display: block; }
+.card h3 { font-size: 30px; color: var(--navy); margin-bottom: 12px; font-weight: 700; }
+.card p { font-size: 23px; color: var(--sub); line-height: 1.5; }
+.card.accent { border-top: 6px solid var(--blue); }
+
+/* ── Stat tiles (headline numbers; text wears text tokens) ───────────── */
+.stats { display: grid; gap: 28px; margin-top: 48px; }
+.stats.c3 { grid-template-columns: repeat(3, 1fr); }
+.stats.c4 { grid-template-columns: repeat(4, 1fr); }
+.stat {
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+  padding: 38px 40px;
+}
+.stat .num { font-size: 76px; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat .num small { font-size: 40px; font-weight: 700; }
+.stat .lbl { font-size: 23px; color: var(--sub); margin-top: 14px; line-height: 1.4; }
+.stat .delta { display: inline-block; margin-top: 12px; font-size: 20px; font-weight: 700; padding: 4px 14px; border-radius: 999px; }
+.stat .delta.up { color: var(--good); background: #d1fae5; }
+.stat .delta.down { color: var(--bad); background: #fee2e2; }
+
+/* ── Simple table (rate boards, comparisons) ─────────────────────────── */
+table.fp { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; font-size: 25px; }
+table.fp th { background: var(--navy); color: #fff; text-align: left; font-weight: 700; padding: 20px 30px; font-size: 22px; letter-spacing: 0.03em; }
+table.fp td { padding: 20px 30px; border-top: 1px solid var(--line); color: var(--ink); font-variant-numeric: tabular-nums; }
+table.fp tr.win td { background: #ecfdf5; font-weight: 700; }
+table.fp .tag { font-size: 18px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); white-space: nowrap; }
+table.fp .tag.good { background: #d1fae5; color: var(--good); }
+
+/* ── Pills / chips ───────────────────────────────────────────────────── */
+.pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1px solid var(--line); background: var(--card); border-radius: 999px;
+  padding: 14px 30px; font-size: 25px; font-weight: 600; color: var(--navy);
+}
+
+/* ── Callout banner ──────────────────────────────────────────────────── */
+.callout {
+  margin-top: 44px; background: var(--navy); color: #fff; border-radius: 20px;
+  padding: 34px 44px; font-size: 32px; font-weight: 600; line-height: 1.4;
+}
+.callout b { color: var(--sky); }

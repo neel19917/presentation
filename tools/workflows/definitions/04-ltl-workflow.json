@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "company": "FreightPOP", "tagline": "LTL Done Right",
+    "title": "LTL Freight Workflow", "phone": "(888) 726-4464",
+    "email": "sales@freightpop.com", "website": "https://www.freightpop.com",
+    "primaryColor": "#4088cf"
+  },
+  "phases": [
+    { "label": "Classify", "title": "Freight Classification", "icon": "clipboard", "badge": null, "color": "#64748b",
+      "desc": "Accurate freight classification prevents billing adjustments and delays.",
+      "steps": ["Verify NMFC class for all commodity types", "Confirm dimensions and weight per pallet", "Apply density-based class if applicable"], "branches": null },
+    { "label": "Rate Shop", "title": "LTL Rate Shopping", "icon": "truck", "badge": null, "color": "#4088cf",
+      "desc": "FreightPOP connects to all major LTL carriers for instant, binding rate quotes.",
+      "steps": ["Pull rates from all contracted LTL carriers", "Compare transit days and accessorial charges", "Select carrier per configured rules"], "branches": null },
+    { "label": "Book & BOL", "title": "Book Carrier & Generate BOL", "icon": "printer", "badge": null, "color": "#a78bfa",
+      "desc": "One-click booking with automatic BOL generation — no carrier portals needed.",
+      "steps": ["Book carrier directly from FreightPOP", "BOL auto-generated with correct commodity data", "Pro number captured and stored"], "branches": null },
+    { "label": "Pickup", "title": "Carrier Pickup & Transit", "icon": "package", "badge": null, "color": "#22c55e",
+      "desc": "Pickup scheduled and tracked through final delivery.",
+      "steps": ["Pickup request sent automatically", "Driver check-in recorded at dock", "In-transit tracking activated"], "branches": null },
+    { "label": "Invoice", "title": "Freight Audit & Invoice", "icon": "integration", "badge": "Decision Point", "color": "#f59e0b",
+      "desc": "FreightPOP audits carrier invoices against quoted rates automatically.",
+      "steps": null,
+      "branches": [
+        { "label": "Match", "color": "#22c55e", "steps": ["Invoice matches quoted rate", "Auto-approved for payment", "Cost data synced to ERP"] },
+        { "label": "Dispute", "color": "#ef4444", "steps": ["Variance flagged for review", "Dispute filed with carrier", "Corrected invoice received and approved"] }
+      ]
+    }
+  ]
+}

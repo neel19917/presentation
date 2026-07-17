@@ -1,0 +1,317 @@
+[
+  {
+    "num": "01",
+    "t1": "Shipping",
+    "t2": "Rules Engine",
+    "name": "Shipping Rules Engine",
+    "tag": "Codify shipping logic into rules that run themselves",
+    "problem": {
+      "heading": "Every rep ships by their own playbook.",
+      "body": "Which carrier for hazmat, when a guaranteed service is required, which account to bill — that logic lives in people's heads. New hires guess, veterans improvise, and compliance becomes a hope instead of a guarantee.",
+      "quote": {
+        "text": "Each of our sites had its own way of choosing carriers. No two did it the same.",
+        "who": "— Operations Director, Industrial"
+      }
+    },
+    "benefit": {
+      "heading": "Turn tribal knowledge into rules that fire automatically.",
+      "bullets": [
+        "Route by weight, value, destination, hazmat, customer or SLA",
+        "Force guaranteed service on critical lanes; block non-compliant carriers",
+        "Apply the right GL code and billing account every time",
+        "Rules run at quote time — no training, no memory required",
+        "Change a rule once and it applies company-wide instantly"
+      ]
+    },
+    "demo": {
+      "caption": "A hazmat order auto-routes to the only compliant carrier — no human decision.",
+      "progress": "28%",
+      "embed": "../modules/shipping-rules-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "100%",
+      "statLabel": "rule compliance, every site",
+      "proof": "Policy is enforced on every shipment automatically — no training, no memory, no exceptions."
+    }
+  },
+  {
+    "num": "02",
+    "t1": "Carrier",
+    "t2": "Management",
+    "name": "Carrier Management",
+    "tag": "Every carrier and account, centrally controlled",
+    "problem": {
+      "heading": "Your carrier network lives in a spreadsheet — and someone's inbox.",
+      "body": "Accounts, credentials, contracted rates and service rules are scattered across files and people. Onboarding a carrier is a project, and auditing who got used and why is nearly impossible.",
+      "quote": {
+        "text": "I send requests to four or five brokers every time I get a load, and they come back with rates.",
+        "who": "— Logistics Manager, Food & Bev"
+      }
+    },
+    "benefit": {
+      "heading": "Run every carrier and account from one place.",
+      "bullets": [
+        "1,500+ pre-built carrier integrations — parcel, LTL, FTL, ocean and air",
+        "Store contracted rates, credentials and service rules centrally",
+        "Add or swap carriers without an EDI project or IT ticket",
+        "Control which carriers each site, user or lane can use",
+        "One source of truth for spend and performance by carrier"
+      ]
+    },
+    "demo": {
+      "caption": "Add a regional LTL carrier and turn it live across every site in minutes.",
+      "progress": "44%",
+      "embed": "../modules/carrier-management-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1,500+",
+      "statLabel": "pre-built carrier integrations",
+      "proof": "No per-carrier build and no EDI project. G2 reviewers describe comparing every carrier partner in a single window instead of managing a dozen logins. (Aaron A., Sr. Manager, Transportation · G2 review)"
+    }
+  },
+  {
+    "num": "03",
+    "t1": "Rate",
+    "t2": "Shopping",
+    "name": "Rate Shopping",
+    "tag": "Compare every carrier and mode in one screen",
+    "problem": {
+      "heading": "Your team visits every carrier portal. One at a time.",
+      "body": "Open FedEx, then UPS, then the LTL site. Screenshot the rates, paste them to a spreadsheet, pick the cheapest, then go back to book — on every single shipment.",
+      "quote": {
+        "text": "We were logging into six different sites just to compare a single shipment.",
+        "who": "— Shipping Lead, Manufacturing"
+      }
+    },
+    "benefit": {
+      "heading": "Compare every carrier and every mode in one screen.",
+      "bullets": [
+        "Shop parcel, LTL, FTL, ocean, rail and air simultaneously",
+        "Contracted, spot and carrier rules in one view — no logins",
+        "Select and book in a single action — no portal hopping",
+        "Carrier rules applied automatically (hazmat, liftgate, residential)",
+        "Your negotiated rates — FreightPOP doesn't mark them up"
+      ]
+    },
+    "demo": {
+      "caption": "Instead of six carrier portals, every rate lands in one screen — book in under a minute.",
+      "progress": "52%",
+      "embed": "../modules/rate-shopping-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "Up to 30%",
+      "statLabel": "savings on freight spend",
+      "proof": "“We have saved tens of thousands of dollars this year alone.” — Verified User in Consumer Goods, G2 review"
+    }
+  },
+  {
+    "num": "04",
+    "t1": "Shipment",
+    "t2": "Consolidation",
+    "name": "Shipment Consolidation",
+    "tag": "Combine orders into fewer, fuller loads",
+    "problem": {
+      "heading": "Orders ship the moment they drop — one box at a time.",
+      "body": "Same-day, same-destination orders leave as separate parcels or half-empty LTL loads. You pay minimums and per-shipment fees over and over for freight that could have moved together.",
+      "quote": {
+        "text": "We were sending three separate LTL shipments to the same city in one week.",
+        "who": "— Distribution Manager, Wholesale"
+      }
+    },
+    "benefit": {
+      "heading": "Combine orders into fewer, fuller loads — automatically.",
+      "bullets": [
+        "Group orders by destination, lane, ship date or customer",
+        "Flag parcel orders that should move as one LTL shipment",
+        "Pool LTL into volume or FTL when it's cheaper",
+        "Honor delivery windows while waiting to consolidate",
+        "See the savings of each consolidation before you commit"
+      ]
+    },
+    "demo": {
+      "caption": "Five parcels to one metro collapse into a single LTL booking.",
+      "progress": "40%",
+      "embed": "../modules/shipment-consolidation-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 load",
+      "statLabel": "instead of several, on poolable lanes",
+      "proof": "Pay one minimum instead of five — on freight that was always headed the same way."
+    }
+  },
+  {
+    "num": "05",
+    "t1": "Multi-Leg",
+    "t2": "Shipments",
+    "name": "Multi-Leg Shipments",
+    "tag": "Plan and track door-to-door, every leg",
+    "problem": {
+      "heading": "Hand-offs are where shipments go dark.",
+      "body": "A load that moves drayage to linehaul to final mile touches multiple carriers and systems. Every hand-off is a re-key, a phone call, and a blind spot the moment something slips.",
+      "quote": {
+        "text": "Once it leaves the port we're calling around just to find out where it is.",
+        "who": "— Import Manager, Retail"
+      }
+    },
+    "benefit": {
+      "heading": "Plan and track door-to-door across every leg.",
+      "bullets": [
+        "Build multi-leg moves — drayage, linehaul, final mile — as one shipment",
+        "Assign the right carrier and rate to each leg",
+        "Unified tracking and milestones across all legs and carriers",
+        "Documents and costs roll up to a single shipment record",
+        "An exception on any leg surfaces in one place"
+      ]
+    },
+    "demo": {
+      "caption": "Track a port-to-door move across three carriers on one timeline.",
+      "progress": "60%",
+      "embed": "../modules/multi-leg-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 record",
+      "statLabel": "for every leg, every carrier",
+      "proof": "One shipment record spans drayage, linehaul and final mile — no hand-off blind spots."
+    }
+  },
+  {
+    "num": "06",
+    "t1": "Route",
+    "t2": "Optimization",
+    "name": "Route Optimization",
+    "tag": "Fewer miles, tighter windows, lower cost",
+    "problem": {
+      "heading": "Routes are built by whoever knows the territory.",
+      "body": "Stop sequencing and load assignment ride on tribal knowledge. Trucks run extra miles, deadhead, and miss the tighter delivery windows that better planning would have caught.",
+      "quote": {
+        "text": "Our routing is basically whatever the dispatcher remembers works.",
+        "who": "— Transportation Supervisor, Food"
+      }
+    },
+    "benefit": {
+      "heading": "Optimize stops, loads and lanes automatically.",
+      "bullets": [
+        "Sequence multi-stop routes for minimum miles and time",
+        "Respect delivery windows, vehicle capacity and driver hours",
+        "Balance loads across available equipment",
+        "Compare optimized vs. manual plans side by side",
+        "Feed optimized routes straight into dispatch"
+      ]
+    },
+    "demo": {
+      "caption": "From raw orders to proof of delivery — watch the full flow, step by step.",
+      "progress": "48%",
+      "embed": "../modules/route-optimization-explainer.html?embed=1"
+    },
+    "roi": {
+      "stat": "40%",
+      "statLabel": "average increase in on-time deliveries",
+      "proof": "Smarter sequencing means less fuel, more stops per truck, and delivery windows you actually hit."
+    }
+  },
+  {
+    "num": "07",
+    "t1": "Batch",
+    "t2": "Shipping",
+    "name": "Batch Shipping",
+    "tag": "Rate, label and book hundreds at once",
+    "problem": {
+      "heading": "Peak days mean one label at a time.",
+      "body": "When volume spikes, your team rate-shops, labels and books orders individually — the same clicks, hundreds of times. Throughput is capped by headcount, and errors climb with fatigue.",
+      "quote": {
+        "text": "On a big release day we're just printing labels for hours.",
+        "who": "— Fulfillment Lead, E-commerce"
+      }
+    },
+    "benefit": {
+      "heading": "Rate, label and book hundreds of orders at once.",
+      "bullets": [
+        "Select a batch and rate-shop every order simultaneously",
+        "Generate all labels and documents in a single run",
+        "Apply shipping rules across the whole batch automatically",
+        "Catch address and compliance errors before they ship",
+        "Hand the entire batch to the carrier in one action"
+      ]
+    },
+    "demo": {
+      "caption": "An entire batch rate-shopped, labeled and booked in a single pass.",
+      "progress": "66%",
+      "embed": "../modules/batch-shipping-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 click",
+      "statLabel": "to book and dispatch an entire batch",
+      "proof": "Throughput scales with order volume, not headcount. One G2 reviewer bulk-quotes hundreds of locations from a single spreadsheet and reports it saved him days of work. (Andrew B., Vice President · G2 review)"
+    }
+  },
+  {
+    "num": "08",
+    "t1": "Auto",
+    "t2": "Dispatch",
+    "name": "Auto Dispatch",
+    "tag": "Qualifying orders book themselves",
+    "problem": {
+      "heading": "Booking is a queue your team works by hand.",
+      "body": "Every approved order waits for someone to pick the carrier, confirm the rate and tender the load. The work adds no value — but the delay and the typos do.",
+      "quote": {
+        "text": "There's always a stack of orders waiting for someone to book them.",
+        "who": "— Logistics Coordinator, Manufacturing"
+      }
+    },
+    "benefit": {
+      "heading": "Let qualifying orders book themselves.",
+      "bullets": [
+        "Auto-select carrier and rate using your rules engine",
+        "Tender, confirm and generate documents with no human touch",
+        "Set guardrails — only orders that meet criteria auto-dispatch",
+        "Exceptions route to a person; everything else just ships",
+        "Tracking and costs flow back to your systems automatically"
+      ]
+    },
+    "demo": {
+      "caption": "An approved order books, tenders and labels itself end to end.",
+      "progress": "72%",
+      "embed": "../modules/auto-dispatch-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "95%",
+      "statLabel": "reduction in shipment processing time",
+      "proof": "“It makes the complex simple.” — Kenny K., Supply Chain Manager, Medical Devices, Capterra review. Qualifying orders book themselves; your team manages only the exceptions."
+    }
+  },
+  {
+    "num": "09",
+    "t1": "Dock",
+    "t2": "Scheduling",
+    "name": "Dock Scheduling",
+    "tag": "Self-service dock appointments",
+    "problem": {
+      "heading": "The dock runs on phone calls and a whiteboard.",
+      "body": "Carriers arrive whenever, the yard backs up, and detention charges pile on while labor sits idle or scrambles. Nobody upstream knows what's hitting the dock today.",
+      "quote": {
+        "text": "Trucks show up unannounced and we eat the detention.",
+        "who": "— Warehouse Manager, CPG"
+      }
+    },
+    "benefit": {
+      "heading": "Give carriers self-service dock appointments.",
+      "bullets": [
+        "Carriers book dock slots against your real capacity online",
+        "Level appointments to your labor and door availability",
+        "Tie appointments to inbound and outbound shipments automatically",
+        "Cut detention with predictable, enforced arrival windows",
+        "Give the floor a live view of what's arriving and when"
+      ]
+    },
+    "demo": {
+      "caption": "A carrier self-books a dock slot that lands on the floor's schedule.",
+      "progress": "56%",
+      "embed": "../modules/dock-scheduling-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 calendar",
+      "statLabel": "for carriers, docks and labor",
+      "proof": "Predictable arrival windows level your labor and stop surprise detention charges."
+    }
+  }
+]

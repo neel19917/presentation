@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Analytics</title><link rel="stylesheet" href="../theme.css">
+<style>
+  /* Single-series bar chart (illustrative monthly freight spend). One hue,
+     thin marks, rounded data-ends, recessive grid, selective direct labels. */
+  .chart-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 36px 40px 28px; margin-top: 40px; }
+  .chart-title { font-size: 26px; font-weight: 700; color: var(--navy); }
+  .chart-sub { font-size: 20px; color: var(--sub); margin-top: 4px; }
+  .chart { display: flex; align-items: flex-end; gap: 18px; height: 320px; margin-top: 30px; position: relative; }
+  .chart .gridline { position: absolute; left: 0; right: 0; height: 1px; background: var(--line); }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+  .bar { width: 46px; background: #2563eb; border-radius: 4px 4px 0 0; position: relative; transition: opacity 0.15s ease; }
+  .bar-col:hover .bar { opacity: 0.8; }
+  .bar-col .val {
+    position: absolute; top: -34px; left: 50%; transform: translateX(-50%);
+    font-size: 19px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums;
+    opacity: 0; transition: opacity 0.15s ease; white-space: nowrap;
+  }
+  .bar-col:hover .val, .bar-col.labeled .val { opacity: 1; }
+  .bar-col .mon { font-size: 18px; color: var(--muted); margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="kicker">Analytics</div>
+  <h1>See the spend. Then shrink it.</h1>
+  <div class="content">
+    <div class="stats c3" style="margin-top:8px;">
+      <div class="stat" data-step="1"><div class="num">Spend</div><div class="lbl">By carrier, mode, lane, customer and business unit — sliceable, exportable.</div></div>
+      <div class="stat" data-step="1"><div class="num">Service</div><div class="lbl">On-time performance per carrier, so contract talks start from data.</div></div>
+      <div class="stat" data-step="1"><div class="num">Cost/unit</div><div class="lbl">Freight cost per order and per pound, trended over time.</div></div>
+    </div>
+
+    <div class="chart-card" data-step="2">
+      <div class="chart-title">Monthly freight spend under management — illustrative</div>
+      <div class="chart-sub">Hover a bar for its value · replace with your real numbers as you build this out</div>
+      <div class="chart">
+        <div class="gridline" style="bottom: 25%;"></div>
+        <div class="gridline" style="bottom: 50%;"></div>
+        <div class="gridline" style="bottom: 75%;"></div>
+        <div class="bar-col labeled"><span class="val">$118k</span><div class="bar" style="height:59%;"></div><span class="mon">Jan</span></div>
+        <div class="bar-col"><span class="val">$126k</span><div class="bar" style="height:63%;"></div><span class="mon">Feb</span></div>
+        <div class="bar-col"><span class="val">$139k</span><div class="bar" style="height:69%;"></div><span class="mon">Mar</span></div>
+        <div class="bar-col"><span class="val">$131k</span><div class="bar" style="height:65%;"></div><span class="mon">Apr</span></div>
+        <div class="bar-col"><span class="val">$147k</span><div class="bar" style="height:73%;"></div><span class="mon">May</span></div>
+        <div class="bar-col labeled"><span class="val">$172k</span><div class="bar" style="height:86%;"></div><span class="mon">Jun</span></div>
+        <div class="bar-col"><span class="val">$158k</span><div class="bar" style="height:79%;"></div><span class="mon">Jul</span></div>
+        <div class="bar-col"><span class="val">$150k</span><div class="bar" style="height:75%;"></div><span class="mon">Aug</span></div>
+        <div class="bar-col"><span class="val">$143k</span><div class="bar" style="height:71%;"></div><span class="mon">Sep</span></div>
+        <div class="bar-col"><span class="val">$149k</span><div class="bar" style="height:74%;"></div><span class="mon">Oct</span></div>
+        <div class="bar-col"><span class="val">$161k</span><div class="bar" style="height:80%;"></div><span class="mon">Nov</span></div>
+        <div class="bar-col labeled"><span class="val">$168k</span><div class="bar" style="height:84%;"></div><span class="mon">Dec</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="logo" style="font-size:26px;">Freight<b>POP</b></span><span>Analytics &amp; Reporting</span></div>
+</div>
+<script src="../slide-runtime.js"></script>
+</body>
+</html>

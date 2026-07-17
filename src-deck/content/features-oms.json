@@ -1,0 +1,200 @@
+[
+  {
+    "num": "01",
+    "name": "Sales Order Management",
+    "tag": "Capture every order once, cleanly",
+    "problem": {
+      "heading": "The same order gets typed three times.",
+      "body": "Orders arrive by email, portal and ERP — then get re-keyed into whatever system comes next. Every re-entry is a chance for a wrong address, a wrong quantity, a wrong day.",
+      "quote": {
+        "text": "We typed the same order into three systems.",
+        "who": "— Customer Service Manager, Distribution"
+      }
+    },
+    "benefit": {
+      "heading": "Create or import every order in one workspace.",
+      "bullets": [
+        "Create or import sales orders into a single workspace",
+        "Ship From / Ship To pull from your address book, Google or an integration",
+        "US, Canada and Mexico address validation at entry",
+        "Every order starts clean — downstream systems inherit good data",
+        "No re-entry between order capture and fulfillment"
+      ]
+    },
+    "demo": {
+      "caption": "An order imports, addresses validate, and it's ready for fulfillment — no re-entry.",
+      "progress": "32%",
+      "embed": "../modules/oms-sales-orders-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 entry",
+      "statLabel": "per order, across every system",
+      "proof": "Captured once, the order carries itself into picking, rating and booking. One G2 reviewer reports system integration eliminated hand-typed errors entirely. (William G., Transport Manager · G2 review)"
+    }
+  },
+  {
+    "num": "02",
+    "name": "Product & Shipment Detail",
+    "tag": "Quote-ready orders with compliance built in",
+    "problem": {
+      "heading": "The freight details show up at the dock — not at order entry.",
+      "body": "Freight class, NMFC, hazmat paperwork and container details get filled in late or guessed. Quotes bounce, reclasses land on invoices, and compliance is a scramble.",
+      "quote": {
+        "text": "Half our LTL quotes bounced because the class was wrong.",
+        "who": "— Traffic Manager, Industrial"
+      }
+    },
+    "benefit": {
+      "heading": "Pull the detail from the catalog — right the first time.",
+      "bullets": [
+        "Items pull from the product catalog with ERP serial numbers",
+        "Auto freight class and NMFC on every line",
+        "Saved package types applied consistently",
+        "Hazmat built in — UN/NA catalog, DG details and BOL",
+        "Ocean container details captured on the order itself"
+      ]
+    },
+    "demo": {
+      "caption": "An item pulls from the catalog with class, NMFC and hazmat docs pre-filled.",
+      "progress": "40%",
+      "embed": "../modules/oms-shipment-detail-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "Quote-ready",
+      "statLabel": "orders, with class and compliance built in",
+      "proof": "Rates come back right the first time because the shipment detail was right at entry."
+    }
+  },
+  {
+    "num": "03",
+    "name": "Order Consolidation",
+    "tag": "Same destination, one shipment",
+    "problem": {
+      "heading": "Orders to the same door ship as separate freight.",
+      "body": "Two orders, same customer, same day — and they leave as two shipments with two minimums, two bookings and two tracking records. The waste is invisible because each order looks fine on its own.",
+      "quote": {
+        "text": "Two orders, same customer, same day — two shipments.",
+        "who": "— Distribution Manager, Wholesale"
+      }
+    },
+    "benefit": {
+      "heading": "Combine same-destination orders into one shipment.",
+      "bullets": [
+        "Group multiple orders heading to the same destination",
+        "Consolidate before rating, so the savings are real",
+        "One rate, one booking, one set of documents",
+        "One tracking record for the combined move",
+        "Your customer gets one delivery instead of several"
+      ]
+    },
+    "demo": {
+      "caption": "Three same-destination orders collapse into one lower-cost shipment.",
+      "progress": "48%",
+      "embed": "../modules/oms-consolidation-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 shipment",
+      "statLabel": "for orders sharing a destination",
+      "proof": "Pay for one move instead of several on freight that was always going to the same door."
+    }
+  },
+  {
+    "num": "04",
+    "name": "Auto Pack",
+    "tag": "Packaging, units and weight — calculated, not guessed",
+    "problem": {
+      "heading": "Quotes are built on guessed weights.",
+      "body": "At order entry nobody knows the cartons, handling units or final weight — so the quote is an estimate and the invoice is a correction. The difference settles itself on your freight bill.",
+      "quote": {
+        "text": "We quoted off guessed weights and settled the difference later.",
+        "who": "— Logistics Analyst, Consumer Goods"
+      }
+    },
+    "benefit": {
+      "heading": "Auto-calculate the pack before the quote.",
+      "bullets": [
+        "Auto-calculate packaging, handling units and weight per order",
+        "Fulfillment kits pack multi-item bundles consistently",
+        "Packing rules apply your logic on every order",
+        "Every order is quote-ready and accurate at entry",
+        "The rate you quote is built on the freight you'll ship"
+      ]
+    },
+    "demo": {
+      "caption": "An order auto-packs into the right cartons with calculated weight — instantly quote-ready.",
+      "progress": "54%",
+      "embed": "../modules/oms-auto-pack-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "Auto-built",
+      "statLabel": "handling units, packaging and weights",
+      "proof": "Accurate dims and weights at entry mean the rate you quote is the rate you pay."
+    }
+  },
+  {
+    "num": "05",
+    "name": "Returns & Portals",
+    "tag": "Self-service returns, scoped access",
+    "problem": {
+      "heading": "Every return starts with a phone call.",
+      "body": "Customers and vendors email for labels, then email again for status. Your team plays switchboard for a process that should run itself — and every handoff adds a day.",
+      "quote": {
+        "text": "Every return started with a phone call and ended with someone forwarding a label.",
+        "who": "— Customer Service Lead, E-commerce"
+      }
+    },
+    "benefit": {
+      "heading": "Let customers and vendors serve themselves.",
+      "bullets": [
+        "Generate parcel return labels with default return processing",
+        "Customer portals scoped to their own orders and shipments",
+        "Vendor portals with permission-scoped access",
+        "Labels and status live in the portal — not in your inbox",
+        "Your team handles exceptions, not routine requests"
+      ]
+    },
+    "demo": {
+      "caption": "A customer self-serves a return label from their portal — no ticket, no call.",
+      "progress": "62%",
+      "embed": "../modules/oms-returns-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "Self-service",
+      "statLabel": "returns for customers and vendors",
+      "proof": "Labels and status live in the portal, scoped to exactly what each party should see."
+    }
+  },
+  {
+    "num": "06",
+    "name": "Order-to-Fulfillment Handoff",
+    "tag": "One record from capture to carrier",
+    "problem": {
+      "heading": "Order, warehouse and freight systems each keep their own copy.",
+      "body": "The order system, the WMS and shipping never quite agree — because every handoff is a re-key. Status lives in three places and the customer's question lands in a fourth.",
+      "quote": {
+        "text": "The order system, the warehouse and shipping never agreed.",
+        "who": "— IT Director, Manufacturing"
+      }
+    },
+    "benefit": {
+      "heading": "One record flows from order to pick to booked freight.",
+      "bullets": [
+        "Open sales orders flow straight into WMS picking",
+        "The same record hands off to the TMS for rate shopping and booking",
+        "Tracking and status flow back to the order automatically",
+        "No re-keying at any handoff, in either direction",
+        "One place to answer “where is my order?”"
+      ]
+    },
+    "demo": {
+      "caption": "One sales order flows through picking, rating and booking untouched.",
+      "progress": "70%",
+      "embed": "../modules/oms-handoff-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "0 re-keys",
+      "statLabel": "from order capture to carrier booking",
+      "proof": "One record moves through OMS, WMS and TMS — nothing is typed twice. A G2 reviewer running a WMS integration reports manual work mostly eliminated and shipping errors down. (Tony C., Purchasing & Systems Manager · G2 review)"
+    }
+  }
+]

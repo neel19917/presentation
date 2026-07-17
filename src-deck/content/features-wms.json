@@ -1,0 +1,167 @@
+[
+  {
+    "num": "01",
+    "name": "Warehouse & Bin Setup",
+    "tag": "Model the floor you actually run",
+    "problem": {
+      "heading": "The system's warehouse isn't your warehouse.",
+      "body": "Bins, lots and license plates exist on the floor but not in the software. When the digital layout doesn't match the physical one, every downstream scan, count and pick inherits the gap.",
+      "quote": {
+        "text": "Our system says the part is 'in the warehouse.' Which shelf? Nobody knows.",
+        "who": "— Inventory Manager, Industrial Distribution"
+      }
+    },
+    "benefit": {
+      "heading": "Configure a digital layout that mirrors the floor.",
+      "bullets": [
+        "Set up multiple warehouses with Standard, Overflow and Picking bins",
+        "Enable License Plates and Lot IDs with lot expiration",
+        "Add up to three custom identifiers per site",
+        "Match each site's real rack-and-bin structure, not a generic map",
+        "One shared record with shipping, so stock and freight stay in sync"
+      ]
+    },
+    "demo": {
+      "caption": "A new site goes live — warehouses, bins and license plates configured to match the floor.",
+      "progress": "30%",
+      "embed": "../modules/wms-bin-setup-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1:1",
+      "statLabel": "digital layout to physical floor",
+      "proof": "When bins, lots and license plates mirror reality, every downstream scan means something."
+    }
+  },
+  {
+    "num": "02",
+    "name": "Receiving",
+    "tag": "From dock door to ERP receipt in one flow",
+    "problem": {
+      "heading": "Inbound runs on a clipboard.",
+      "body": "POs get re-keyed at the dock, paperwork waits on a desk, and the ERP finds out about received stock days later. Inventory is always a step behind what's actually on the shelf.",
+      "quote": {
+        "text": "Receiving paperwork sat on a desk until Friday, so inventory was always behind.",
+        "who": "— Warehouse Supervisor, CPG"
+      }
+    },
+    "benefit": {
+      "heading": "Receive against the PO and post it the moment it lands.",
+      "bullets": [
+        "Import POs straight from TMS inbound — no re-keying",
+        "Capture carrier, PRO, dock and arrival at the door",
+        "Allocate to bins with license-plate and lot tracking",
+        "Catch discrepancies at the dock, not at month-end",
+        "Approval posts a purchase receipt to your ERP automatically"
+      ]
+    },
+    "demo": {
+      "caption": "An inbound PO is received, allocated to bins and posted to the ERP in one flow.",
+      "progress": "38%",
+      "embed": "../modules/wms-receiving-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "1 flow",
+      "statLabel": "from dock door to ERP receipt",
+      "proof": "Receiving posts the purchase receipt the moment it's approved — inventory and finance see the same truth."
+    }
+  },
+  {
+    "num": "03",
+    "name": "Picking",
+    "tag": "Scan-verified picks from open sales orders",
+    "problem": {
+      "heading": "Pickers walk the aisles with a printout.",
+      "body": "Paper pick lists can't verify anything. Wrong items and short picks surface at packing — or at the customer — and nobody upstream can see what's picked and what's still waiting.",
+      "quote": {
+        "text": "Pickers walked the aisles with a printout, and we found the mistakes at packing.",
+        "who": "— Fulfillment Manager, E-commerce"
+      }
+    },
+    "benefit": {
+      "heading": "Turn open orders into scan-verified picking tickets.",
+      "bullets": [
+        "Generate picking tickets at header or line level",
+        "Mobile-first scan picking or License-Plate picking",
+        "Take-full-bin and split picks without workarounds",
+        "Live Ready-to-Pick → Pick Completed status for every ticket",
+        "A wrong item can't be scanned — errors stop at the shelf"
+      ]
+    },
+    "demo": {
+      "caption": "A sales order becomes a picking ticket and is scan-picked to completion on mobile.",
+      "progress": "46%",
+      "embed": "../modules/wms-picking-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "Scan-verified",
+      "statLabel": "every pick, before it reaches packing",
+      "proof": "Errors surface at the shelf — not at the customer's dock."
+    }
+  },
+  {
+    "num": "04",
+    "name": "Pick & Pack",
+    "tag": "Documents that match what was packed",
+    "problem": {
+      "heading": "The paperwork and the pallet tell different stories.",
+      "body": "Cartons are guessed, weights are estimated, and documents are printed before the freight is final. When the BOL doesn't match the pallet, you pay for it in reclasses and disputes.",
+      "quote": {
+        "text": "The BOL said one thing and the pallet said another.",
+        "who": "— Shipping Lead, Wholesale"
+      }
+    },
+    "benefit": {
+      "heading": "Pack by scan, weigh by scale, print to match.",
+      "bullets": [
+        "Scan-to-verify items into each package",
+        "Scale-driven weights captured as you pack",
+        "Saved package types for repeatable cartonization",
+        "Close-pack control so nothing ships half-verified",
+        "Documents print to match exactly what was packed"
+      ]
+    },
+    "demo": {
+      "caption": "Items scan into cartons, the scale writes the weight, and matching docs print.",
+      "progress": "58%",
+      "embed": "../modules/wms-pick-pack-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "Exact match",
+      "statLabel": "documents to the physical pallet",
+      "proof": "What ships is what was scanned — the paperwork can't drift from the freight."
+    }
+  },
+  {
+    "num": "05",
+    "name": "Inventory & Bin Transfers",
+    "tag": "One live view, scanned moves",
+    "problem": {
+      "heading": "Every cycle count is a surprise.",
+      "body": "Stock levels differ by system and by site, and bin-to-bin moves happen off the record. The count in the software and the count on the shelf drift apart until an audit forces a reckoning.",
+      "quote": {
+        "text": "Every cycle count was a surprise.",
+        "who": "— Operations Manager, Manufacturing"
+      }
+    },
+    "benefit": {
+      "heading": "See every warehouse in one view — and scan every move.",
+      "bullets": [
+        "Read-only inventory across every warehouse in one screen",
+        "Cross-field search to find any item, lot or license plate",
+        "Export any view to Excel for counts and reporting",
+        "Bin-to-bin transfers — single-item splits or many-to-one",
+        "License-plate support so grouped stock moves as one unit"
+      ]
+    },
+    "demo": {
+      "caption": "Search an item across every site, then move it bin-to-bin with a scan.",
+      "progress": "64%",
+      "embed": "../modules/wms-inventory-explainer.html?theme=deck&embed=1"
+    },
+    "roi": {
+      "stat": "All sites",
+      "statLabel": "in one live inventory view",
+      "proof": "Every move is a scanned transaction, so the count you see is the count on the shelf."
+    }
+  }
+]

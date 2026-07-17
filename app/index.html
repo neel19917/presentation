@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Tradeshow Presentation Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --navy: #051729; --teal: #3dd6b5; --light-blue: #b5cde0; --line: rgba(255,255,255,0.12); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: radial-gradient(1400px 700px at 70% -15%, #123a66 0%, var(--navy) 55%), var(--navy);
+  color: #fff; -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+.wrap { position: relative; max-width: 980px; margin: 0 auto; padding: 90px 32px 60px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.logo { height: 42px; display: block; }
+.kicker { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.28em; color: var(--teal); text-transform: uppercase; margin: 42px 0 18px; display: flex; align-items: center; gap: 14px; }
+.kicker::before, .kicker::after { content: ""; width: 26px; height: 1.5px; background: var(--teal); display: inline-block; }
+h1 { font-family: 'Manrope', sans-serif; font-weight: 500; font-size: 54px; letter-spacing: -0.02em; line-height: 1.08; }
+.deck-name { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--light-blue); margin-top: 16px; letter-spacing: 0.06em; }
+
+.choices { display: flex; gap: 22px; margin: 52px 0 44px; flex-wrap: wrap; justify-content: center; }
+a.choice {
+  display: block; width: 330px; padding: 28px 30px; text-decoration: none; text-align: left;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+a.choice:hover { border-color: var(--teal); background: rgba(61,214,181,0.06); box-shadow: 0 0 34px rgba(61,214,181,0.14); }
+a.choice .ic { width: 44px; height: 44px; border-radius: 11px; background: rgba(61,214,181,0.12); border: 1px solid rgba(61,214,181,0.4); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; color: var(--teal); }
+a.choice .t { font-family: 'Manrope', sans-serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+a.choice .d { font-size: 14px; color: var(--light-blue); line-height: 1.55; }
+a.choice .d b { color: #fff; }
+
+.setup { width: 100%; max-width: 760px; text-align: left; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 14px; padding: 24px 28px; }
+.setup .s-title { font-family: 'DM Mono', monospace; font-size: 11.5px; letter-spacing: 0.2em; color: var(--teal); margin-bottom: 16px; }
+.setup ol { list-style: none; counter-reset: st; display: flex; flex-direction: column; gap: 10px; }
+.setup li { counter-increment: st; font-size: 14.5px; color: var(--light-blue); line-height: 1.55; padding-left: 38px; position: relative; }
+.setup li::before { content: counter(st, decimal-leading-zero); position: absolute; left: 0; top: 1px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--teal); }
+.setup li b { color: #fff; font-weight: 600; }
+kbd { font-family: 'DM Mono', monospace; font-size: 12px; background: rgba(255,255,255,0.08); border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; color: #fff; }
+.foot { margin-top: 34px; font-family: 'DM Mono', monospace; font-size: 11.5px; letter-spacing: 0.08em; color: rgba(181,205,224,0.6); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+  <div class="kicker">Tradeshow Presentation Kit</div>
+  <h1>Present on the big screen.<br>Control from your laptop.</h1>
+  <div class="deck-name" id="deck-name"></div>
+
+  <div class="choices">
+    <a class="choice" href="presenter.html">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M7 9l3 3 5-5"/></svg></div>
+      <div class="t">Presenter view</div>
+      <div class="d">Your control screen — speaker notes, live sync, jump grid, video transport, timer. <b>Keep this on the laptop.</b> It can open the audience window for you.</div>
+    </a>
+    <a class="choice" href="audience.html" target="fp-audience">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M12 18v3M8 21h8"/></svg></div>
+      <div class="t">Audience view</div>
+      <div class="d">The clean full-screen deck for the booth monitor. <b>Follows the presenter automatically</b> — every click, key and screen change.</div>
+    </a>
+  </div>
+
+  <div class="setup">
+    <div class="s-title">BOOTH SETUP</div>
+    <ol>
+      <li>Set the external monitor to <b>Extended display</b> (Mac: System Settings → Displays · Win: <kbd>Win</kbd>+<kbd>P</kbd> → Extend).</li>
+      <li>Open <b>Presenter view</b> here, then click <b>“Open audience window”</b>.</li>
+      <li>Drag the audience window to the big screen, click it once, press <kbd>F</kbd> for fullscreen.</li>
+      <li>Present: <kbd>→</kbd> <kbd>←</kbd> <kbd>Space</kbd> navigate · <kbd>G</kbd> jump grid · <kbd>B</kbd> blackout · <kbd>A</kbd> replay animations · <kbd>P</kbd> <kbd>[</kbd> <kbd>]</kbd> <kbd>1</kbd>–<kbd>9</kbd> video control.</li>
+    </ol>
+  </div>
+
+  <div class="foot">RUNS FULLY OFFLINE · FREIGHTPOP SALES ENGINEERING</div>
+</div>
+<script src="../deck/manifest.js"></script>
+<script>
+  document.getElementById('deck-name').textContent =
+    (window.FP_DECK && FP_DECK.title ? FP_DECK.title : '') +
+    (window.FP_DECK ? ' · ' + FP_DECK.slides.length + ' slides' : '');
+</script>
+</body>
+</html>

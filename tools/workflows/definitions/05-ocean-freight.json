@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "company": "FreightPOP", "tagline": "Global Ocean Visibility",
+    "title": "Ocean Freight Workflow", "phone": "(888) 726-4464",
+    "email": "sales@freightpop.com", "website": "https://www.freightpop.com",
+    "primaryColor": "#0ea5e9"
+  },
+  "phases": [
+    { "label": "Booking", "title": "Ocean Booking", "icon": "clipboard", "badge": null, "color": "#0ea5e9",
+      "desc": "Book FCL or LCL space with preferred ocean carriers through FreightPOP.",
+      "steps": ["Select origin and destination ports", "Choose FCL or LCL based on volume", "Book container space with preferred carrier"], "branches": null },
+    { "label": "Docs", "title": "Export Documentation", "icon": "printer", "badge": null, "color": "#64748b",
+      "desc": "All export documents generated and filed from a single platform.",
+      "steps": ["Generate commercial invoice and packing list", "File EEI through AES if required", "Provide HBL or MBL to broker"], "branches": null },
+    { "label": "Customs", "title": "Customs Clearance", "icon": "integration", "badge": "Decision Point", "color": "#a78bfa",
+      "desc": "Customs clearance path depends on destination country requirements.",
+      "steps": null,
+      "branches": [
+        { "label": "Pre-cleared", "color": "#22c55e", "steps": ["ISF filed 24 hrs before loading", "Automated clearance granted", "Container released at port"] },
+        { "label": "Exam", "color": "#f59e0b", "steps": ["Container selected for exam", "Documents submitted to CBP", "Exam completed and container released"] }
+      ]
+    },
+    { "label": "Transit", "title": "Ocean Transit", "icon": "truck", "badge": null, "color": "#0ea5e9",
+      "desc": "Real-time container tracking from origin port to destination port.",
+      "steps": ["Container loaded and vessel departed", "Tracking events updated via carrier API", "ETA alerts sent to stakeholders"], "branches": null },
+    { "label": "Delivery", "title": "Drayage & Final Delivery", "icon": "package", "badge": null, "color": "#22c55e",
+      "desc": "Drayage coordinated from port to final destination.",
+      "steps": ["Container availability notice received", "Drayage carrier dispatched from port", "Final delivery to warehouse confirmed"], "branches": null }
+  ]
+}

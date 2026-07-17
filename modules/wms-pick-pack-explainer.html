@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Pick &amp; Pack, Step by Step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP brand tokens (BRANDING.md + freightpop.com warehouse-management)
+   Every timeline-driven property is set from JS seek(t) — NO CSS animations
+   on story elements, so headless frame rendering is deterministic.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729;
+  --navy-2: #0b2340;
+  --blue: #4c8dde;
+  --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9;
+  --bg: #f7f9fc;
+  --ink: #051729;
+  --sub: rgba(5, 23, 41, 0.72);
+  --green: #1f7a54;
+  --success: #22c55e;
+  --red: #d64545;
+  --red-deep: #b93838;
+  --card-line: rgba(5, 23, 41, 0.10);
+  --board: #f0e2c8;
+  --board-edge: #caa36a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', -apple-system, sans-serif; }
+
+/* ── 1920×1080 stage scaled to the window ─────────────────────────────── */
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden;
+  background: var(--bg); transform-origin: center center; flex: 0 0 auto;
+}
+
+/* faint blueprint grid like the website hero panels */
+#stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* ── Title / end cards ────────────────────────────────────────────────── */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo-img { display: block; }
+.logo-img.logo-sm { height: 26px; }
+.logo-img.logo-md { height: 40px; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 112px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+
+/* ── Step caption (lower-left third) ─────────────────────────────────── */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 54px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 23px; line-height: 1.5; color: var(--sub); }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 30px rgba(5,23,41,0.25); }
+
+/* ── Dashboard frame (mirrors the site's product shots) ───────────────── */
+#dash { position: absolute; right: 80px; top: 78px; width: 1040px; height: 780px; background: #fff; border: 3px solid var(--navy); border-radius: 26px; box-shadow: 0 30px 70px rgba(5,23,41,0.18); overflow: hidden; z-index: 10; }
+#dash .titlebar { height: 64px; background: var(--navy); display: flex; align-items: center; padding: 0 26px; border-radius: 22px 22px 0 0; }
+#dash .apphead { padding: 16px 26px 12px; }
+#dash .apphead .h { font-family: 'Manrope'; font-weight: 800; font-size: 20px; letter-spacing: 0.02em; color: var(--ink); }
+#dash .apphead .strip { height: 14px; border-radius: 7px; background: rgba(76,141,222,0.22); margin-top: 12px; position: relative; overflow: hidden; }
+#dash .apphead .strip .fill { position: absolute; inset: 0; width: 0%; background: linear-gradient(90deg, var(--blue-deep), #6fb2ff); }
+#dash .body { display: flex; height: calc(100% - 64px - 70px); }
+#dash .sidebar { width: 300px; border-right: 1px solid var(--card-line); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+#dash .main { flex: 1; position: relative; background: #fbfcfe; }
+
+/* sidebar — the verified pick ticket ("filled placeholders") */
+.side-h { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; color: var(--sub); font-family: 'DM Mono', monospace; }
+.side-status { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--green); background: rgba(31,122,84,0.10); border-radius: 999px; padding: 5px 12px; align-self: flex-start; }
+.pickrow { border: 1.5px solid var(--card-line); border-radius: 12px; padding: 10px 12px; background: #fff; box-shadow: 0 2px 6px rgba(5,23,41,0.05); position: relative; }
+.pickrow .sku { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: var(--blue-deep); }
+.pickrow .nm { font-weight: 700; font-size: 14.5px; color: var(--ink); margin-top: 1px; }
+.pickrow .mt { font-size: 12px; color: var(--sub); margin-top: 2px; }
+.pickrow .ck { position: absolute; right: 10px; top: 12px; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--card-line); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.pickrow .ck.on { background: var(--success); border-color: var(--success); }
+.side-total { margin-top: 2px; border-top: 1.5px dashed var(--card-line); padding-top: 10px; font-size: 12.5px; color: var(--sub); line-height: 1.5; }
+.side-total b { color: var(--ink); }
+
+/* generic pane inside the dash main area */
+.pane { position: absolute; inset: 0; }
+
+/* documents / cards */
+.doccard { position: absolute; background: #fff; border: 2px solid var(--navy); border-radius: 14px; box-shadow: 0 10px 26px rgba(5,23,41,0.14); overflow: hidden; }
+.doccard .dh { font-family: 'DM Mono', monospace; font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; color: #fff; background: var(--navy); padding: 7px 12px; }
+.doccard .db { padding: 10px 12px; }
+.doccard .ln { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink); padding: 3px 0; border-bottom: 1px dashed rgba(5,23,41,0.12); }
+.doccard .ln .q { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--blue-deep); }
+.doccard .tot { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; color: var(--ink); padding-top: 7px; }
+.doccard .meta { font-size: 12px; color: var(--sub); margin-top: 4px; line-height: 1.45; }
+.stamp { position: absolute; right: 10px; bottom: 8px; font-family: 'Manrope'; font-weight: 800; font-size: 12px; letter-spacing: 0.06em; color: var(--green); border: 2.5px solid var(--green); border-radius: 8px; padding: 3px 9px; transform: rotate(-7deg); background: rgba(255,255,255,0.9); }
+.stamp.red { color: var(--red-deep); border-color: var(--red-deep); }
+
+/* mismatch scene extras */
+#mismatch-badge { position: absolute; left: 240px; top: 372px; z-index: 6; background: var(--red); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 17px; letter-spacing: 0.04em; border-radius: 999px; padding: 11px 22px; box-shadow: 0 12px 28px rgba(214,69,69,0.4); }
+#claim-card { position: absolute; left: 25px; right: 25px; bottom: 28px; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--red); border-radius: 14px; padding: 13px 18px; box-shadow: 0 14px 34px rgba(5,23,41,0.18); }
+#claim-card .t1 { font-weight: 800; font-size: 16.5px; color: var(--ink); }
+#claim-card .t2 { font-size: 13.5px; color: var(--sub); margin-top: 3px; }
+#claim-card .t2 i { color: var(--red-deep); font-style: normal; font-weight: 700; }
+
+/* pack scene extras */
+.rchip { position: absolute; font-size: 13.5px; font-weight: 700; padding: 8px 16px; border-radius: 999px; background: #fff; border: 1.5px solid var(--navy); color: var(--navy); box-shadow: 0 6px 16px rgba(5,23,41,0.12); white-space: nowrap; }
+.rchip b { color: var(--blue-deep); }
+.rchip.green b { color: var(--green); }
+#scale-card { position: absolute; left: 22px; bottom: 26px; background: var(--navy); color: #fff; border-radius: 16px; padding: 13px 20px; box-shadow: 0 16px 36px rgba(5,23,41,0.3); min-width: 220px; }
+#scale-card .lbl { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; color: var(--light-blue); font-family: 'DM Mono', monospace; }
+#scale-card .val { font-family: 'Manrope'; font-size: 31px; font-weight: 800; margin-top: 2px; }
+#scale-card .val b { color: #7fd4ae; }
+#scale-card .note { font-size: 11px; color: rgba(193,212,233,0.75); margin-top: 3px; }
+#closepack { position: absolute; right: 26px; bottom: 34px; font-family: 'Manrope'; font-weight: 800; font-size: 15.5px; letter-spacing: 0.05em; color: #fff; background: rgba(5,23,41,0.35); border-radius: 12px; padding: 14px 24px; box-shadow: 0 10px 26px rgba(5,23,41,0.2); }
+#closepack.ready { background: var(--green); box-shadow: 0 14px 32px rgba(31,122,84,0.4); }
+
+/* flying scan chips (stage-level, like the reference src-chips) */
+.src-chip { position: absolute; z-index: 40; font-weight: 700; font-size: 16px; padding: 11px 22px; border-radius: 999px; background: var(--navy); color: #fff; box-shadow: 0 12px 26px rgba(5,23,41,0.28); white-space: nowrap; }
+.src-chip small { color: var(--light-blue); font-weight: 500; margin-left: 8px; font-family: 'DM Mono', monospace; }
+
+/* handoff toast (stage-level, top-right — clear of the caption block) */
+#toast { position: absolute; right: 120px; top: 108px; z-index: 60; background: #fff; border: 2px solid var(--navy); border-left: 8px solid var(--success); border-radius: 14px; padding: 14px 22px; box-shadow: 0 18px 44px rgba(5,23,41,0.25); width: 470px; }
+#toast .t1 { font-weight: 800; font-size: 17px; color: var(--ink); }
+#toast .t2 { font-size: 14px; color: var(--sub); margin-top: 3px; }
+
+/* ── End card stats ───────────────────────────────────────────────────── */
+.stats-row { display: flex; gap: 34px; margin: 54px 0 60px; }
+.stat-tile { width: 360px; background: rgba(255,255,255,0.055); border: 1px solid rgba(193,212,233,0.22); border-radius: 20px; padding: 34px 32px; text-align: left; }
+.stat-num { font-size: 50px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.stat-num b { color: var(--blue); }
+.stat-lbl { font-size: 19px; color: var(--light-blue); margin-top: 10px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; box-shadow: 0 18px 44px rgba(76,141,222,0.35); }
+.cta-url { margin-top: 22px; font-size: 21px; color: var(--light-blue); letter-spacing: 0.02em; }
+
+/* ── Player chrome (hidden in render mode) ───────────────────────────── */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; font-size: 15px; cursor: pointer; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+
+/* ── embed=1 — living inside a demo panel (deck module). The player
+      controls become a dedicated always-visible bottom bar (never floating
+      over content), with fullscreen, and story text is bumped up so it stays
+      readable at panel scale. ─────────────────────────────────────────── */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls {
+  left: 0; right: 0; bottom: 0; transform: none; border-radius: 0;
+  padding: 10px 18px; gap: 14px; opacity: 1 !important; pointer-events: auto !important;
+  background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3);
+}
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #timecode { font-size: 15px; }
+body.embed #btn-play { width: 44px; height: 44px; flex: 0 0 auto; }
+#btn-theme, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+body.embed #btn-theme, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+#btn-fs { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-fs:hover { border-color: #fff; }
+body.embed #btn-fs { width: 44px; height: 44px; }
+/* bigger story text at embed scale */
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(50px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(22px * var(--fpb, 1.35)); line-height: 1.45; }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed .src-chip { font-size: calc(15px * var(--fpb, 1.35)); padding: 13px 26px; }
+body.embed #toast .t1 { font-size: calc(16px * var(--fpb, 1.35)); }
+body.embed #toast .t2 { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed #toast { width: 540px; }
+body.embed #scale-card .lbl { font-size: calc(11px * var(--fpb, 1.35)); }
+body.embed #scale-card .val { font-size: calc(28px * var(--fpb, 1.35)); }
+body.embed .rchip { font-size: calc(13px * var(--fpb, 1.35)); }
+body.embed .title-sub { font-size: calc(30px * var(--fpb, 1.35)); }
+body.embed .kicker { font-size: calc(20px * var(--fpb, 1.35)); }
+body.embed .stat-num { font-size: calc(43px * var(--fpb, 1.35)); }
+body.embed .stat-lbl { font-size: calc(17px * var(--fpb, 1.35)); }
+body.embed .cta { font-size: calc(24px * var(--fpb, 1.35)); }
+body.embed .cta-url { font-size: calc(19px * var(--fpb, 1.35)); }
+
+/* ── theme=deck — matches the interactive deck (navy #051729 + teal
+      #3DD6B5 + DM Mono kickers). Product mocks stay light like the deck's
+      own product screens. ─────────────────────────────────────────────── */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before {
+  background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+}
+body.theme-deck .kicker,
+body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: #3dd6b5; letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; letter-spacing: -0.02em; }
+body.theme-deck .stat-num { font-weight: 600; }
+body.theme-deck #caption .step-body { color: #b5cde0; font-weight: 400; }
+body.theme-deck #caption .step-num { background: #3dd6b5; color: var(--navy); }
+body.theme-deck .fullcard { background: radial-gradient(1300px 700px at 72% -10%, #0e3050 0%, var(--navy) 55%); }
+body.theme-deck .title-sub { color: #b5cde0; }
+body.theme-deck .stat-num b { color: #3dd6b5; }
+body.theme-deck .cta { background: #3dd6b5; color: var(--navy); box-shadow: 0 18px 44px rgba(61,214,181,0.3); }
+body.theme-deck .src-chip { background: #0a2540; border: 1px solid rgba(61,214,181,0.4); }
+body.theme-deck #scale-card .val b { color: #3dd6b5; }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: #3dd6b5; color: var(--navy); }
+body.theme-deck #dash { border-color: #0a2540; box-shadow: 0 30px 70px rgba(0,0,0,0.5), 0 0 64px rgba(61,214,181,0.10); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ persistent product stage ═══ -->
+  <div class="layer" id="scene-product">
+
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE MISMATCH</div>
+      <div class="step-title" id="cap-title">The paperwork and the pallet tell different stories</div>
+      <div class="step-body" id="cap-body">Cartons are guessed, weights are estimated.</div>
+    </div>
+
+    <div id="dash">
+      <div class="titlebar"><img class="logo-img logo-sm" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="></div>
+      <div class="apphead">
+        <div class="h">PICK &amp; PACK — SO-20841 · MARYVILLE SUPPLY CO.</div>
+        <div class="strip"><div class="fill" id="pack-strip"></div></div>
+      </div>
+      <div class="body">
+        <div class="sidebar">
+          <div class="side-h">VERIFIED PICK — PT-1042</div>
+          <div class="side-status" id="pick-status">Pick Completed — scan-verified</div>
+          <div class="pickrow" data-i="0">
+            <div class="sku">BRK-4420</div><div class="nm">Brake caliper kit</div>
+            <div class="mt">4 ea · 9.8 lb · bin A-04-2</div><div class="ck">✓</div>
+          </div>
+          <div class="pickrow" data-i="1">
+            <div class="sku">HYD-1108</div><div class="nm">Hydraulic fitting pack</div>
+            <div class="mt">3 ea · 5.4 lb · bin A-11-1</div><div class="ck">✓</div>
+          </div>
+          <div class="pickrow" data-i="2">
+            <div class="sku">GSK-7731</div><div class="nm">Gasket &amp; seal set</div>
+            <div class="mt">3 ea · 6.2 lb · bin B-02-4</div><div class="ck">✓</div>
+          </div>
+          <div class="pickrow" data-i="3">
+            <div class="sku">FLT-2210</div><div class="nm">Inline filter, 3/8 in</div>
+            <div class="mt">2 ea · 3.2 lb · bin B-07-3</div><div class="ck">✓</div>
+          </div>
+          <div class="side-total"><b>12 units · 4 lines</b><br>SO-20841 · Maryville Supply Co.<br>Maryville, TN · LTL outbound</div>
+        </div>
+
+        <div class="main">
+
+          <!-- ── PANE 1 · the mismatch (the old way) ─────────────────── -->
+          <div class="pane" id="pane-mismatch">
+            <div class="doccard" id="mm-slip" style="left:25px; top:36px; width:315px;">
+              <div class="dh">PACKING SLIP — SO-20841 · PRINTED 7:52 AM</div>
+              <div class="db">
+                <div class="ln"><span>Brake caliper kit</span><span class="q">× 4</span></div>
+                <div class="ln"><span>Hydraulic fitting pack</span><span class="q">× 3</span></div>
+                <div class="ln"><span>Gasket &amp; seal set</span><span class="q">× 3</span></div>
+                <div class="ln"><span>Inline filter, 3/8 in</span><span class="q">× 2</span></div>
+                <div class="tot"><span>TOTAL BILLED</span><span>12 UNITS</span></div>
+                <div class="meta">Weight: <i style="font-style:normal;color:var(--red-deep);font-weight:700;">estimated</i> · printed before packing</div>
+              </div>
+            </div>
+            <svg id="mm-carton" viewBox="0 0 340 300" style="position:absolute; left:378px; top:42px; width:340px; height:300px;">
+              <polygon points="30,96 12,42 150,58 168,96" fill="#f6ecd8" stroke="#caa36a" stroke-width="2.5" stroke-linejoin="round"/>
+              <polygon points="172,96 190,58 328,42 310,96" fill="#f6ecd8" stroke="#caa36a" stroke-width="2.5" stroke-linejoin="round"/>
+              <rect x="30" y="96" width="280" height="176" rx="6" fill="#f0e2c8" stroke="#caa36a" stroke-width="3"/>
+              <g id="mm-cells"></g>
+              <rect x="240" y="212" width="56" height="44" rx="6" fill="none" stroke="#d64545" stroke-width="2.5" stroke-dasharray="7 5"/>
+              <text x="268" y="239" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="18" fill="#d64545">?</text>
+              <text x="170" y="294" text-anchor="middle" font-family="DM Mono, monospace" font-size="13" fill="#b93838" font-weight="500">11 UNITS IN THE BOX</text>
+            </svg>
+            <div id="mismatch-badge">SLIP 12 · BOX 11 — 1 SHORT</div>
+            <div id="claim-card">
+              <div class="t1">Customer claim filed — short shipment</div>
+              <div class="t2"><i>12 billed, 11 received.</i> The BOL said one thing and the pallet said another — now it's a reclass and a dispute.</div>
+            </div>
+          </div>
+
+          <!-- ── PANE 2 · pack by scan + docs print to match ─────────── -->
+          <div class="pane" id="pane-pack">
+            <div class="rchip" id="pkg-chip" style="left:22px; top:20px;">Saved package type — <b>Carton B · 18 × 14 × 12 in</b></div>
+            <svg id="pk-carton" viewBox="0 0 340 310" style="position:absolute; left:22px; top:118px; width:340px; height:310px;">
+              <g id="pk-flaps">
+                <polygon points="30,96 12,42 150,58 168,96" fill="#f6ecd8" stroke="#caa36a" stroke-width="2.5" stroke-linejoin="round"/>
+                <polygon points="172,96 190,58 328,42 310,96" fill="#f6ecd8" stroke="#caa36a" stroke-width="2.5" stroke-linejoin="round"/>
+              </g>
+              <rect x="30" y="96" width="280" height="176" rx="6" fill="#f0e2c8" stroke="#caa36a" stroke-width="3"/>
+              <g id="pk-cells"></g>
+              <g id="pk-lid">
+                <rect x="26" y="78" width="288" height="26" rx="6" fill="#e9d7b4" stroke="#caa36a" stroke-width="3"/>
+                <rect x="158" y="72" width="24" height="38" rx="4" fill="#4c8dde" opacity="0.85"/>
+                <circle cx="170" cy="58" r="26" fill="#22c55e"/>
+                <path d="M158 58 l8 9 l16 -18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g id="pk-beam">
+                <rect x="150" y="106" width="40" height="160" fill="#4c8dde" opacity="0.35"/>
+                <rect x="146" y="182" width="48" height="5" rx="2.5" fill="#2d6cc0"/>
+              </g>
+              <text x="170" y="302" text-anchor="middle" font-family="DM Mono, monospace" font-size="13" fill="rgba(5,23,41,0.6)" font-weight="500">CARTON B — 18 × 14 × 12 IN</text>
+            </svg>
+            <div id="scale-card">
+              <div class="lbl">SCALE — LIVE</div>
+              <div class="val"><b id="wt-val">0.0</b> lb</div>
+              <div class="note">written to the pack as you scan — never estimated</div>
+            </div>
+            <div id="closepack">CLOSE PACK — <span id="pk-count">0</span> OF 12 VERIFIED</div>
+
+            <!-- documents fan out of the closed carton -->
+            <svg id="doc-links" viewBox="0 0 740 646" style="position:absolute; inset:0; width:100%; height:100%;">
+              <path id="conn0" d="M362,220 C400,190 420,140 452,120" fill="none" stroke="#1f7a54" stroke-width="3" stroke-dasharray="8 6"/>
+              <path id="conn1" d="M362,268 C400,270 420,290 452,296" fill="none" stroke="#1f7a54" stroke-width="3" stroke-dasharray="8 6"/>
+              <path id="conn2" d="M362,316 C400,360 420,430 452,468" fill="none" stroke="#1f7a54" stroke-width="3" stroke-dasharray="8 6"/>
+            </svg>
+            <div class="doccard doc" id="doc-slip" style="left:452px; top:40px; width:266px;">
+              <div class="dh">PACKING SLIP — SO-20841</div>
+              <div class="db">
+                <div class="ln"><span>BRK-4420</span><span class="q">× 4</span></div>
+                <div class="ln"><span>HYD-1108</span><span class="q">× 3</span></div>
+                <div class="ln"><span>GSK-7731</span><span class="q">× 3</span></div>
+                <div class="ln"><span>FLT-2210</span><span class="q">× 2</span></div>
+                <div class="tot"><span>TOTAL</span><span>12 UNITS</span></div>
+              </div>
+              <div class="stamp">MATCHES PACK ✓</div>
+            </div>
+            <div class="doccard doc" id="doc-label" style="left:452px; top:236px; width:266px;">
+              <div class="dh">SHIPPING LABEL — LTL</div>
+              <div class="db">
+                <svg viewBox="0 0 240 30" style="width:100%; height:30px;">
+                  <g fill="#051729"><rect x="2" y="2" width="4" height="26"/><rect x="10" y="2" width="2" height="26"/><rect x="16" y="2" width="6" height="26"/><rect x="26" y="2" width="3" height="26"/><rect x="34" y="2" width="5" height="26"/><rect x="44" y="2" width="2" height="26"/><rect x="50" y="2" width="4" height="26"/><rect x="60" y="2" width="7" height="26"/><rect x="70" y="2" width="2" height="26"/><rect x="78" y="2" width="4" height="26"/><rect x="86" y="2" width="3" height="26"/><rect x="94" y="2" width="6" height="26"/><rect x="104" y="2" width="2" height="26"/><rect x="110" y="2" width="4" height="26"/><rect x="120" y="2" width="5" height="26"/><rect x="130" y="2" width="2" height="26"/><rect x="136" y="2" width="6" height="26"/><rect x="146" y="2" width="3" height="26"/><rect x="154" y="2" width="4" height="26"/><rect x="162" y="2" width="2" height="26"/><rect x="170" y="2" width="7" height="26"/><rect x="180" y="2" width="3" height="26"/><rect x="188" y="2" width="4" height="26"/><rect x="196" y="2" width="2" height="26"/><rect x="204" y="2" width="6" height="26"/><rect x="214" y="2" width="3" height="26"/><rect x="222" y="2" width="5" height="26"/><rect x="232" y="2" width="2" height="26"/></g>
+                </svg>
+                <div class="meta"><b style="color:var(--ink);">24.6 lb — scale weight</b> · Carton B 18 × 14 × 12<br>Maryville Supply Co. · Maryville, TN</div>
+              </div>
+              <div class="stamp">MATCHES PACK ✓</div>
+            </div>
+            <div class="doccard doc" id="doc-bol" style="left:452px; top:412px; width:266px;">
+              <div class="dh">CARTON CONTENTS — PT-1042</div>
+              <div class="db">
+                <div class="meta"><b style="color:var(--ink);">12 units scanned</b> · 4 lines · 1 carton<br>Generated from the scan record at close-pack — nothing typed, nothing guessed.</div>
+              </div>
+              <div class="stamp">MATCHES PACK ✓</div>
+            </div>
+            <div class="rchip green" id="final-chip" style="left:40px; bottom:160px;">Printed after close-pack — <b>the freight is final</b></div>
+          </div>
+
+          <!-- ── PANE 3 · handoff to shipping ────────────────────────── -->
+          <div class="pane" id="pane-handoff">
+            <div class="rchip" id="ho-chip0" style="left:26px; top:24px;">Carrier <b>rated</b></div>
+            <div class="rchip" id="ho-chip1" style="left:180px; top:24px;">Label <b>on carton</b></div>
+            <div class="rchip" id="ho-chip2" style="left:366px; top:24px;">Outbound <b>dock 2</b></div>
+            <svg id="ho-svg" viewBox="0 0 740 646" style="position:absolute; inset:0; width:100%; height:100%;" preserveAspectRatio="xMidYMid slice">
+              <!-- dock door -->
+              <rect x="560" y="118" width="170" height="330" rx="10" fill="#e5ebf3" stroke="#051729" stroke-width="3"/>
+              <rect x="576" y="140" width="138" height="270" fill="#0b2340"/>
+              <g stroke="#1c3a5e" stroke-width="3"><line x1="576" y1="194" x2="714" y2="194"/><line x1="576" y1="248" x2="714" y2="248"/><line x1="576" y1="302" x2="714" y2="302"/><line x1="576" y1="356" x2="714" y2="356"/></g>
+              <text x="645" y="480" text-anchor="middle" font-family="DM Mono, monospace" font-size="15" fill="rgba(5,23,41,0.65)" font-weight="500">OUTBOUND — DOCK 2</text>
+              <!-- conveyor -->
+              <rect x="10" y="430" width="700" height="26" rx="13" fill="#dfe6ee" stroke="#051729" stroke-width="2.5"/>
+              <g fill="#b7c4d4">
+                <circle cx="50" cy="443" r="7"/><circle cx="130" cy="443" r="7"/><circle cx="210" cy="443" r="7"/><circle cx="290" cy="443" r="7"/><circle cx="370" cy="443" r="7"/><circle cx="450" cy="443" r="7"/><circle cx="530" cy="443" r="7"/><circle cx="610" cy="443" r="7"/><circle cx="690" cy="443" r="7"/>
+              </g>
+              <!-- moving cartons (translated from JS) -->
+              <g class="ho-box" id="ho-box0">
+                <rect x="-45" y="-78" width="90" height="78" rx="6" fill="#f0e2c8" stroke="#caa36a" stroke-width="3"/>
+                <rect x="-30" y="-62" width="42" height="28" rx="3" fill="#fff" stroke="#051729" stroke-width="2"/>
+                <line x1="-24" y1="-52" x2="6" y2="-52" stroke="#051729" stroke-width="2.5"/>
+                <line x1="-24" y1="-44" x2="0" y2="-44" stroke="#4c8dde" stroke-width="2.5"/>
+                <circle cx="26" cy="-20" r="12" fill="#22c55e"/>
+                <path d="M20 -20 l4 5 l8 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g class="ho-box" id="ho-box1">
+                <rect x="-45" y="-78" width="90" height="78" rx="6" fill="#f0e2c8" stroke="#caa36a" stroke-width="3"/>
+                <rect x="-30" y="-62" width="42" height="28" rx="3" fill="#fff" stroke="#051729" stroke-width="2"/>
+                <line x1="-24" y1="-52" x2="6" y2="-52" stroke="#051729" stroke-width="2.5"/>
+                <line x1="-24" y1="-44" x2="0" y2="-44" stroke="#4c8dde" stroke-width="2.5"/>
+                <circle cx="26" cy="-20" r="12" fill="#22c55e"/>
+                <path d="M20 -20 l4 5 l8 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g class="ho-box" id="ho-box2">
+                <rect x="-45" y="-78" width="90" height="78" rx="6" fill="#f0e2c8" stroke="#caa36a" stroke-width="3"/>
+                <rect x="-30" y="-62" width="42" height="28" rx="3" fill="#fff" stroke="#051729" stroke-width="2"/>
+                <line x1="-24" y1="-52" x2="6" y2="-52" stroke="#051729" stroke-width="2.5"/>
+                <line x1="-24" y1="-44" x2="0" y2="-44" stroke="#4c8dde" stroke-width="2.5"/>
+                <circle cx="26" cy="-20" r="12" fill="#22c55e"/>
+                <path d="M20 -20 l4 5 l8 -10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+            </svg>
+            <div class="rchip green" id="ho-note" style="left:26px; bottom:110px;">Docs travel with the carton — <b>rating &amp; labels tied to the dock</b></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- flying scan chips (items → carton), stage-level -->
+    <div class="src-chip" data-s="0">BRK-4420 <small>× 4 scanned</small></div>
+    <div class="src-chip" data-s="1">HYD-1108 <small>× 3 scanned</small></div>
+    <div class="src-chip" data-s="2">GSK-7731 <small>× 3 scanned</small></div>
+    <div class="src-chip" data-s="3">FLT-2210 <small>× 2 scanned</small></div>
+
+    <div id="toast">
+      <div class="t1">SO-20841 handed to shipping</div>
+      <div class="t2">Packing slip, label and carton contents match the pack — no reclasses, no disputes</div>
+    </div>
+  </div>
+
+  <!-- ═══ title card ═══ -->
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">WAREHOUSE MANAGEMENT</div>
+    <h1 class="title-h1">Pick &amp; Pack,<br>step by step.</h1>
+    <div class="title-sub">Pack by scan, weigh by scale, print to match — documents that match exactly what was packed.</div>
+  </div>
+
+  <!-- ═══ end card ═══ -->
+  <div class="fullcard" id="scene-end">
+    <img class="logo-img logo-md" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:36px"></div>
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">What ships is what was scanned.</h1>
+    <div class="stats-row">
+      <div class="stat-tile"><div class="stat-num">Exact <b>match</b></div><div class="stat-lbl">Documents to the physical pallet — the paperwork can't drift from the freight.</div></div>
+      <div class="stat-tile"><div class="stat-num">Scan-<b>verified</b></div><div class="stat-lbl">Every item scanned into each package — close-pack control means nothing ships half-verified.</div></div>
+      <div class="stat-tile"><div class="stat-num">Scale-<b>true</b></div><div class="stat-lbl">Weights captured from the scale as you pack — not estimated after the freight left.</div></div>
+    </div>
+    <div class="cta">SCHEDULE A DEMO →</div>
+    <div class="cta-url">freightpop.com/warehouse-management-system</div>
+  </div>
+
+</div></div>
+
+<!-- ═══ player chrome ═══ -->
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button><button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════════════════════
+   Deterministic timeline engine.
+   apply(t) computes EVERY visual property from absolute time t — no CSS
+   animations, no free-running state — so:
+     • window.FPVideo.seek(t) renders any frame exactly (MP4 rendering)
+     • presenter & audience windows stay in sync over BroadcastChannel
+   ═════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);   // living inside the deck's demo panel
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  // ── chapters ───────────────────────────────────────────────────────────
+  const CH = [
+    { id: 'title',    label: 'Intro',    start: 0,  end: 6 },
+    { id: 'problem',  label: 'Problem',  start: 6,  end: 19 },
+    { id: 'pack',     label: 'Pack',     start: 19, end: 32 },
+    { id: 'docs',     label: 'Docs',     start: 32, end: 45 },
+    { id: 'handoff',  label: 'Handoff',  start: 45, end: 58 },
+    { id: 'end',      label: 'Result',   start: 58, end: 72 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  const CAPTIONS = {
+    problem: { n: '1', k: 'STEP 1 — THE MISMATCH', t: 'The paperwork and the pallet tell different stories', b: 'Cartons are guessed, weights are estimated, and documents are printed before the freight is final. The slip says 12, the box holds 11 — and the claim lands on your desk.' },
+    pack:    { n: '2', k: 'STEP 2 — PACK BY SCAN', t: 'What was scanned is what goes in', b: 'Pack straight from the verified pick: scan-to-verify every item into each package, saved package types keep cartonization repeatable, and the scale writes the weight as you pack.' },
+    docs:    { n: '3', k: 'STEP 3 — PRINT TO MATCH', t: 'Documents that match what was packed', b: 'Packing slip, shipping label and carton contents generate from the actual pack — printed after close-pack, so the paperwork can’t drift from the freight.' },
+    handoff: { n: '4', k: 'STEP 4 — THE HANDOFF', t: 'Nothing ships half-verified', b: 'Close-pack control hands finished cartons straight to shipping — automated carrier rating and label generation tied directly to your outbound loading docks.' },
+  };
+
+  // ── pack data (the "filled placeholders") ──────────────────────────────
+  // items: [qty, cumulative units, cumulative scale lb]
+  const ITEMS = [
+    { qty: 4, cumU: 4,  cumW: 9.8 },
+    { qty: 3, cumU: 7,  cumW: 15.2 },
+    { qty: 3, cumU: 10, cumW: 21.4 },
+    { qty: 2, cumU: 12, cumW: 24.6 },
+  ];
+  const FLY = [21.4, 23.1, 24.8, 26.5];   // chip launch times
+  const FLY_DUR = 1.0;                     // flight duration
+  const CELLS = [[0, 3], [4, 6], [7, 9], [10, 11]]; // carton cell ranges per item
+
+  // build the 4×3 cell grids (pack carton + mismatch carton)
+  function buildCells(groupSel, n, opts) {
+    const g = document.querySelector(groupSel);
+    const cells = [];
+    for (let i = 0; i < n; i++) {
+      const col = i % 4, row = Math.floor(i / 4);
+      const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      r.setAttribute('x', 42 + col * 66); r.setAttribute('y', 108 + row * 54);
+      r.setAttribute('width', 56); r.setAttribute('height', 44); r.setAttribute('rx', 6);
+      r.setAttribute('fill', (opts && opts.fill) || '#4c8dde');
+      r.setAttribute('stroke', '#2d6cc0'); r.setAttribute('stroke-width', '1.5');
+      g.appendChild(r); cells.push(r);
+    }
+    return cells;
+  }
+  const mmCells = buildCells('#mm-cells', 11, {});           // mismatch: 11 of 12
+  const pkCells = buildCells('#pk-cells', 12, {});           // pack: fills to 12
+
+  // ── easing helpers ─────────────────────────────────────────────────────
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const easeOut = (x) => 1 - Math.pow(1 - clamp01(x), 3);
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  // path helpers (dash-draw)
+  function prepPath(sel) {
+    const p = document.querySelector(sel);
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    return { p, L };
+  }
+  const conns = [prepPath('#conn0'), prepPath('#conn1'), prepPath('#conn2')];
+
+  const el = {
+    title: $('#scene-title'), end: $('#scene-end'), product: $('#scene-product'),
+    caption: $('#caption'), capNum: $('#cap-num'), capKicker: $('#cap-kicker'), capTitle: $('#cap-title'), capBody: $('#cap-body'),
+    dash: $('#dash'), strip: $('#pack-strip'),
+    paneMM: $('#pane-mismatch'), mmSlip: $('#mm-slip'), mmCarton: $('#mm-carton'),
+    mmBadge: $('#mismatch-badge'), claim: $('#claim-card'),
+    panePK: $('#pane-pack'), pkgChip: $('#pkg-chip'), flaps: $('#pk-flaps'), lid: $('#pk-lid'), beam: $('#pk-beam'),
+    scale: $('#scale-card'), wtVal: $('#wt-val'), closepack: $('#closepack'), pkCount: $('#pk-count'),
+    docs: $$('#pane-pack .doc'), stamps: $$('#pane-pack .doc .stamp'), finalChip: $('#final-chip'),
+    paneHO: $('#pane-handoff'), hoChips: [$('#ho-chip0'), $('#ho-chip1'), $('#ho-chip2')],
+    hoBoxes: [$('#ho-box0'), $('#ho-box1'), $('#ho-box2')], hoNote: $('#ho-note'),
+    srcChips: $$('.src-chip'), rowChecks: $$('#dash .pickrow .ck'),
+    toast: $('#toast'),
+  };
+
+  let currentCaption = '';
+  function setCaption(key) {
+    if (key === currentCaption) return;
+    currentCaption = key;
+    if (!key) return;
+    const c = CAPTIONS[key];
+    el.capNum.textContent = c.n;
+    el.capKicker.textContent = c.k;
+    el.capTitle.textContent = c.t;
+    el.capBody.textContent = c.b;
+  }
+
+  // scanned-count / weight as pure functions of t
+  function countAt(t) {
+    let n = 0;
+    for (let i = 0; i < 4; i++) {
+      const land = FLY[i] + FLY_DUR;
+      for (let j = CELLS[i][0]; j <= CELLS[i][1]; j++) {
+        if (t >= land + (j - CELLS[i][0]) * 0.12) n++;
+      }
+    }
+    return n;
+  }
+  function weightAt(t) {
+    let w = 0;
+    for (let i = 0; i < 4; i++) {
+      const land = FLY[i] + FLY_DUR;
+      const prev = i === 0 ? 0 : ITEMS[i - 1].cumW;
+      if (t >= land) w = prev + (ITEMS[i].cumW - prev) * easeOut(seg(t, land, land + 0.5));
+    }
+    return w;
+  }
+
+  // ── the whole film as a function of t ──────────────────────────────────
+  function apply(t) {
+    // title card: FULLY visible at t=0 (no fade-in) — fade out only
+    el.title.style.opacity = String(1 - seg(t, 5.2, 6.0));
+    el.title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+    const endIn = seg(t, 58, 58.9);
+    el.end.style.opacity = String(endIn);
+    el.end.style.visibility = t > 57.9 ? 'visible' : 'hidden';
+    el.end.querySelectorAll('.stat-tile').forEach((tile, i) => {
+      const p = ease(seg(t, 59.2 + i * 0.5, 60.1 + i * 0.5));
+      tile.style.opacity = String(p);
+      tile.style.transform = `translateY(${24 * (1 - p)}px)`;
+    });
+    const ctaP = ease(seg(t, 61.5, 62.3));
+    el.end.querySelector('.cta').style.opacity = String(ctaP);
+    el.end.querySelector('.cta').style.transform = `scale(${0.9 + 0.1 * ctaP})`;
+    el.end.querySelector('.cta-url').style.opacity = String(ctaP);
+
+    // product stage visible between title and end
+    const prodIn = ease(seg(t, 5.6, 6.6));
+    const prodOut = seg(t, 57.2, 58.1);
+    el.product.style.opacity = String(Math.min(prodIn, 1 - prodOut));
+    el.product.style.visibility = (t > 5.5 && t < 58.2) ? 'visible' : 'hidden';
+
+    // dashboard entrance
+    const dashP = ease(seg(t, 6.0, 7.2));
+    el.dash.style.transform = `translateY(${60 * (1 - dashP)}px)`;
+
+    // ── captions per chapter ──
+    let cap = '';
+    if (t >= 6 && t < 19) cap = 'problem';
+    else if (t < 32) cap = 'pack';
+    else if (t < 45) cap = 'docs';
+    else if (t < 58) cap = 'handoff';
+    setCaption(cap);
+    const capStarts = { problem: 6.4, pack: 19, docs: 32, handoff: 45 };
+    if (cap) {
+      const p = ease(seg(t, capStarts[cap], capStarts[cap] + 0.7));
+      el.caption.style.opacity = String(p);
+      el.caption.style.transform = `translateY(${26 * (1 - p)}px)`;
+    } else el.caption.style.opacity = '0';
+
+    // strip = verified-pack progress (counts up in S2, full afterwards)
+    el.strip.style.width = (t < 19 ? 0 : Math.max(countAt(t) / 12, t >= 32 ? 1 : 0) * 100) + '%';
+
+    // ── S1 mismatch (6–19) ──
+    const mmOut = seg(t, 18.2, 19);
+    el.paneMM.style.opacity = String(Math.min(1, ease(seg(t, 6.6, 7.4))) * (1 - mmOut));
+    el.paneMM.style.visibility = (t > 6.4 && t < 19.05) ? 'visible' : 'hidden';
+    const slipP = ease(seg(t, 7.0, 7.9));
+    el.mmSlip.style.opacity = String(slipP);
+    el.mmSlip.style.transform = `translateX(${-30 * (1 - slipP)}px)`;
+    const cartP = ease(seg(t, 7.9, 8.8));
+    el.mmCarton.style.opacity = String(cartP);
+    el.mmCarton.style.transform = `translateX(${30 * (1 - cartP)}px)`;
+    // slip lines pop row by row (they're in the DOM — reveal via opacity)
+    el.mmSlip.querySelectorAll('.ln, .tot, .meta').forEach((ln, i) => {
+      ln.style.opacity = String(ease(seg(t, 8.6 + i * 0.45, 9.1 + i * 0.45)));
+    });
+    // carton cells appear 1-by-1 (11 only)
+    mmCells.forEach((c, i) => {
+      c.style.opacity = String(ease(seg(t, 9.0 + i * 0.22, 9.3 + i * 0.22)));
+    });
+    // mismatch badge slams in
+    const badgeP = ease(seg(t, 12.2, 12.9));
+    const slam = 1 + 0.3 * Math.sin(Math.PI * seg(t, 12.2, 13.1));
+    el.mmBadge.style.opacity = String(badgeP);
+    el.mmBadge.style.transform = `scale(${(0.6 + 0.4 * badgeP) * slam})`;
+    // claim card
+    const claimP = ease(seg(t, 14.2, 15.0));
+    el.claim.style.opacity = String(claimP);
+    el.claim.style.transform = `translateY(${24 * (1 - claimP)}px)`;
+
+    // ── S2 pack by scan (19–32) — pane persists through docs (→45) ──
+    const pkIn = ease(seg(t, 19.2, 20.0));
+    const pkOut = seg(t, 44.2, 45);
+    el.panePK.style.opacity = String(Math.min(pkIn, 1 - pkOut));
+    el.panePK.style.visibility = (t > 19.05 && t < 45.05) ? 'visible' : 'hidden';
+    const pkgP = ease(seg(t, 20.3, 21.0));
+    el.pkgChip.style.opacity = String(pkgP);
+    el.pkgChip.style.transform = `translateY(${-14 * (1 - pkgP)}px)`;
+    const scaleP = ease(seg(t, 20.7, 21.4));
+    el.scale.style.opacity = String(scaleP);
+    el.scale.style.transform = `translateY(${20 * (1 - scaleP)}px)`;
+
+    // flying scan chips: sidebar rows → carton (stage coordinates)
+    el.srcChips.forEach((chip, i) => {
+      const a = FLY[i], fly = ease(seg(t, a, a + FLY_DUR));
+      const gone = seg(t, a + FLY_DUR, a + FLY_DUR + 0.25);
+      const x0 = 880, y0 = 300 + i * 78, x1 = 1220, y1 = 470;
+      chip.style.left = (x0 + (x1 - x0) * fly) + 'px';
+      chip.style.top = (y0 + (y1 - y0) * fly - 60 * Math.sin(Math.PI * fly)) + 'px';
+      chip.style.opacity = String((t >= 19 && t < 32) ? Math.min(seg(t, a, a + 0.25), 1 - gone) : 0);
+      chip.style.transform = `scale(${1 - 0.3 * fly})`;
+    });
+    // sidebar row checks flip green as each item lands
+    el.rowChecks.forEach((ck, i) => {
+      ck.classList.toggle('on', t >= FLY[i] + FLY_DUR && t > 19);
+    });
+    // carton cells fill as items are scanned in
+    const cnt = t < 19 ? 0 : countAt(t);
+    pkCells.forEach((c, j) => {
+      let shown = 0;
+      for (let i = 0; i < 4; i++) {
+        if (j >= CELLS[i][0] && j <= CELLS[i][1]) {
+          const at = FLY[i] + FLY_DUR + (j - CELLS[i][0]) * 0.12;
+          shown = t >= 19 ? ease(seg(t, at, at + 0.3)) : 0;
+        }
+      }
+      c.style.opacity = String(shown);
+    });
+    // scan beam pulses at each landing
+    let beamO = 0;
+    FLY.forEach((a) => { beamO = Math.max(beamO, Math.sin(Math.PI * seg(t, a + FLY_DUR - 0.15, a + FLY_DUR + 0.45))); });
+    el.beam.style.opacity = String(t >= 19 && t < 32 ? beamO : 0);
+    // counter + weight
+    el.pkCount.textContent = String(cnt);
+    el.wtVal.textContent = (t < 19 ? 0 : weightAt(t)).toFixed(1);
+    // close-pack button: disabled → ready → pressed
+    const ready = cnt >= 12;
+    el.closepack.classList.toggle('ready', ready && t >= 28.2);
+    const cpIn = ease(seg(t, 21.0, 21.7));
+    el.closepack.style.opacity = String(Math.min(cpIn, 1 - seg(t, 31.6, 32.4)));
+    const press = Math.sin(Math.PI * seg(t, 29.4, 30.0));
+    el.closepack.style.transform = `translateY(${16 * (1 - cpIn)}px) scale(${1 - 0.07 * press})`;
+    if (t >= 30.0) el.closepack.innerHTML = 'PACK CLOSED — 12 OF 12 ✓';
+    else el.closepack.innerHTML = 'CLOSE PACK — <span id="pk-count">' + cnt + '</span> OF 12 VERIFIED';
+    // lid closes after the press
+    const lidP = ease(seg(t, 29.9, 30.7));
+    el.lid.style.opacity = String(lidP);
+    el.flaps.style.opacity = String(1 - lidP);
+
+    // ── S3 docs print to match (32–45) ──
+    el.docs.forEach((d, i) => {
+      const a = 33 + i * 1.6, p = ease(seg(t, a, a + 0.9));
+      d.style.opacity = String(t >= 32 ? p : 0);
+      d.style.transform = `translateX(${-40 * (1 - p)}px) scale(${0.92 + 0.08 * p})`;
+    });
+    conns.forEach((c, i) => {
+      const a = 33 + i * 1.6;
+      const draw = t >= 32 ? ease(seg(t, a + 0.3, a + 1.2)) : 0;
+      c.p.style.strokeDashoffset = String(c.L * (1 - draw));
+      c.p.style.opacity = String(t >= 32 && t < 45 ? 1 : 0);
+    });
+    el.stamps.forEach((s, i) => {
+      const a = 39.4 + i * 1.0;
+      const p = t >= 32 ? ease(seg(t, a, a + 0.5)) : 0;
+      const pop = 1 + 0.5 * (1 - p);
+      s.style.opacity = String(p);
+      s.style.transform = `rotate(-7deg) scale(${pop})`;
+    });
+    const finP = ease(seg(t, 42.4, 43.2));
+    el.finalChip.style.opacity = String(t >= 32 ? finP : 0);
+    el.finalChip.style.transform = `translateY(${16 * (1 - finP)}px)`;
+
+    // ── S4 handoff (45–58) ──
+    const hoIn = ease(seg(t, 45.2, 46.0));
+    el.paneHO.style.opacity = String(hoIn);
+    el.paneHO.style.visibility = (t > 45.05 && t < 58.2) ? 'visible' : 'hidden';
+    el.hoChips.forEach((ch, i) => {
+      const a = 47.4 + i * 1.2, p = ease(seg(t, a, a + 0.7));
+      ch.style.opacity = String(p);
+      ch.style.transform = `translateY(${-14 * (1 - p)}px)`;
+    });
+    el.hoBoxes.forEach((box, i) => {
+      const a = 46.6 + i * 2.6;
+      const drive = seg(t, a, a + 6.0); // constant belt speed — keeps a carton on screen through the chapter
+      const x = -60 + (660 - (-60)) * drive;
+      // fade only as the carton passes through the dock door
+      const fade = seg(x, 590, 655);
+      box.setAttribute('transform', `translate(${x}, 430)`);
+      box.style.opacity = String(t >= a ? (1 - fade) : 0);
+    });
+    const noteP = ease(seg(t, 50.6, 51.4));
+    el.hoNote.style.opacity = String(noteP);
+    el.hoNote.style.transform = `translateY(${16 * (1 - noteP)}px)`;
+    // toast (stage top-right — clear of the caption block)
+    const toastP = ease(seg(t, 52.6, 53.4));
+    el.toast.style.opacity = String(Math.min(toastP, 1 - seg(t, 56.8, 57.5)));
+    el.toast.style.transform = `translateY(${-24 * (1 - toastP)}px)`;
+  }
+
+  // hide everything that pops later (first paint at t=0)
+  ['#toast', '#pane-mismatch', '#pane-pack', '#pane-handoff'].forEach((s) => { $(s).style.opacity = '0'; });
+  $$('.src-chip').forEach((n) => { n.style.opacity = '0'; });
+
+  // ── player / transport ─────────────────────────────────────────────────
+  let T = 0, playing = false, lastTick = 0, raf = null;
+  function step(now) {
+    if (playing) {
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      if (T >= DURATION) {
+        if (EMBED) { T = 0; } // booth-friendly: loop when embedded in the deck
+        else { playing = false; updatePlayBtn(); }
+      }
+      apply(T);
+      updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); raf = requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  // ── chrome ─────────────────────────────────────────────────────────────
+  const chaptersEl = $('#chapters');
+  CH.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); broadcast(); });
+    chaptersEl.appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => {
+      const c = CH[i];
+      cel.querySelector('.fill').style.width = (seg(T, c.start, c.end) * 100) + '%';
+    });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); broadcast(); });
+
+  // auto-hide controls while playing (mouse move brings back)
+  let hideTimer = null;
+  function scheduleHide() {
+    if (EMBED) return; // embed bar is a dedicated strip — always visible
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  }
+  document.addEventListener('mousemove', scheduleHide);
+
+  // keyboard: Space play/pause, ←/→ chapter jump; deck-level keys forwarded up.
+  // In EMBED mode (inside the deck's demo panel) arrows belong to the
+  // DECK's step navigation — re-dispatch them on the parent document
+  // (same-origin) so featNext/featPrev keep working while the video has focus.
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); broadcast(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) { /* cross-origin host */ }
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); broadcast(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const prev = [...CH].reverse().find((c) => c.start < T - 0.5); seek(prev ? prev.start : 0); play(); broadcast(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*');
+      e.preventDefault();
+    }
+  });
+
+  // ── presenter ↔ audience sync (same-origin BroadcastChannel) ──────────
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  // try/catch: file:// documents have opaque origins where BroadcastChannel
+  // may throw — the video must still play standalone from a double-clicked file.
+  try {
+  if (!RENDER && 'BroadcastChannel' in window) {
+    bc = new BroadcastChannel('fp-roadmap-video-sync');
+    bc.onmessage = (e) => {
+      const m = e.data || {};
+      // presenter-console transport commands
+      if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+      if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+      if (m.cmd === 'play') { play(true); return; }
+      if (m.cmd === 'pause') { pause(true); return; }
+      // a late-mounting copy asks where everyone is
+      if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+      if (typeof m.t !== 'number') return;
+      authority = false; lastRemoteState = Date.now(); // someone else is driving
+      applyingRemote = true;
+      // tolerate small drift — snapping for sub-0.6s deltas is what read as a
+      // "refresh"; only real seeks (chapters) or play-state changes apply
+      if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+        T = m.t; playing = !!m.playing; lastTick = performance.now();
+        apply(T); updateChrome(); updatePlayBtn();
+      }
+      applyingRemote = false;
+    };
+    // periodic drift correction while playing
+    setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+  }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  // ── stage scaling ──────────────────────────────────────────────────────
+  function fit() {
+    if (EMBED) {
+      // dynamic text formatting: small panels get a readability boost,
+      // full-size panels use the design sizes (1.0)
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty("--fpb", String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ── render contract ────────────────────────────────────────────────────
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    // ?seek=<seconds> — static preview of any timestamp (QA / thumbnails)
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    // autoplay silently, then adopt any peer that is already mid-flight
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
