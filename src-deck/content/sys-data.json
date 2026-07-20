@@ -69,5 +69,43 @@
         "tag": "Open sales orders flow into WMS picking and into the TMS for rate shopping, booking and tracking — one record, no re-keying."
       }
     ]
+  },
+  "netsuite": {
+    "abbr": "NetSuite",
+    "name": "FreightPOP inside NetSuite",
+    "kicker": "ERP Demo Track · SuiteApp",
+    "intro": "A certified SuiteApp plus a bilateral integration: quote, book, track and reconcile freight without leaving the NetSuite record. 134 NetSuite shippers run FreightPOP today.",
+    "cards": [
+      {
+        "num": "01",
+        "title": "Quote & Ship Inside NetSuite",
+        "tag": "Rate shop and book without leaving the Sales Order"
+      },
+      {
+        "num": "02",
+        "title": "Order-to-Ship Sync",
+        "tag": "Orders flow in, tracking and cost flow back — automatically"
+      },
+      {
+        "num": "03",
+        "title": "Product Catalog & AutoCalc",
+        "tag": "Item dims and weights sync so rating is instant and accurate"
+      },
+      {
+        "num": "04",
+        "title": "Order Change Management",
+        "tag": "When NetSuite orders change, review and accept — nothing ships stale"
+      },
+      {
+        "num": "05",
+        "title": "Consolidation & Optimization",
+        "tag": "Combine NetSuite orders into fewer, cheaper shipments"
+      },
+      {
+        "num": "06",
+        "title": "Inbound PO Visibility",
+        "tag": "Import purchase orders and track inbound freight to the dock"
+      }
+    ]
   }
 }

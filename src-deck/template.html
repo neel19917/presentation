@@ -350,7 +350,9 @@
         <div onclick="{{ goTms }}" title="Transportation Management" style="position:absolute;left:6.1%;top:3.2%;width:30.2%;height:19%;cursor:pointer;"></div>
         <div onclick="{{ goWms }}" title="Warehouse Management" style="position:absolute;right:10%;top:3.2%;width:30.2%;height:19%;cursor:pointer;"></div>
         <div onclick="{{ goOms }}" title="Order Management" style="position:absolute;left:6.1%;bottom:0.9%;width:30.2%;height:19.5%;cursor:pointer;"></div>
-        <div onclick="{{ goErp }}" title="ERP Integrations" style="position:absolute;right:10%;bottom:0.9%;width:30.2%;height:19.5%;cursor:pointer;"></div>
+        <!-- ERP quadrant opens the NetSuite demo track (flagship ERP integration);
+             the generic ERP placeholder stays reachable from the drawer menu. -->
+        <div onclick="{{ goNetsuite }}" title="ERP Integrations — NetSuite Demo Track" style="position:absolute;right:10%;bottom:0.9%;width:30.2%;height:19.5%;cursor:pointer;"></div>
       </div>
       </section>
   </sc-if>
@@ -623,6 +625,15 @@
         <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7A96B0;margin:26px 0 14px;">Order Management · 6 modules</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
           <sc-for list="{{ omsMenu }}" as="m" hint-placeholder-count="6">
+            <div onclick="{{ m.onClick }}" style="{{ m.style }}">
+              <div style="font-family:'DM Mono',monospace;font-size:11px;color:#3DD6B5;letter-spacing:.08em;">{{ m.num }}</div>
+              <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:17px;letter-spacing:-.01em;color:#fff;margin-top:8px;">{{ m.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7A96B0;margin:26px 0 14px;">NetSuite Demo Track · 6 workflows</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <sc-for list="{{ nsMenu }}" as="m" hint-placeholder-count="6">
             <div onclick="{{ m.onClick }}" style="{{ m.style }}">
               <div style="font-family:'DM Mono',monospace;font-size:11px;color:#3DD6B5;letter-spacing:.08em;">{{ m.num }}</div>
               <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:17px;letter-spacing:-.01em;color:#fff;margin-top:8px;">{{ m.label }}</div>

@@ -58,6 +58,7 @@
         { label: 'TMS — Module Hub',         state: { view: 'hub', sysKey: 'tms' } },
         { label: 'WMS — Warehouse',          state: { view: 'wms', sysKey: 'wms' } },
         { label: 'OMS — Orders',             state: { view: 'oms', sysKey: 'oms' } },
+        { label: 'NetSuite — Demo Track',    state: { view: 'netsuite', sysKey: 'netsuite' } },
         { label: 'Carrier Integrations',     state: { view: 'carriers' } },
         { label: 'Shipping Workflows',       state: { view: 'workflows' } },
         { label: 'ERP & System Integrations', state: { view: 'erp' } },

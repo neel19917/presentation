@@ -9,6 +9,8 @@
     "bundle": "node tools/bundle.js",
     "package": "node tools/package.js",
     "workflows": "node tools/build-workflows.js",
+    "outline": "node tools/outline.js export",
+    "outline:apply": "node tools/outline.js apply && node tools/bundle.js",
     "netlify": "node tools/build-netlify.js"
   }
 }
