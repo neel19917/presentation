@@ -485,6 +485,7 @@
 - **Card 04:** Order Change Management — When NetSuite orders change, review and accept — nothing ships stale
 - **Card 05:** Consolidation & Optimization — Combine NetSuite orders into fewer, cheaper shipments
 - **Card 06:** Inbound PO Visibility — Import purchase orders and track inbound freight to the dock
+- **Card 07:** Partners & Case Studies — The NetSuite ecosystem we implement with — and the shippers who prove it
 
 ## NETSUITE 01 — Quote & Ship Inside NetSuite
 - **Title line 1:** Quote & Ship
@@ -621,3 +622,26 @@
 - **Stat:** PO→POD
 - **Stat label:** inbound tracked end to end
 - **Proof:** The PO record in NetSuite carries live tracking until delivery — receiving and planning finally see inbound the way customers see outbound.
+
+## NETSUITE 07 — Partners & Case Studies
+- **Title line 1:** Partners
+- **Title line 2:** & Proof
+- **Tagline:** The NetSuite ecosystem we implement with — and the shippers who prove it
+### Problem
+- **Heading:** A shipping platform is only as good as its rollout.
+- **Body:** NetSuite projects live and die by the implementation. Bolting on a shipping tool the VAR has never seen adds risk to a go-live that is already high-stakes.
+- **Quote:** Our NetSuite partner runs the project — anything we add has to work with them, not around them.
+- **Quote by:** — IT director (illustrative persona)
+### Benefit
+- **Heading:** We ship with the NetSuite partner ecosystem, not around it.
+- Referred and co-implemented by NetSuite VARs — AppFiciency, ScaleNorth, NetDynamic, Beyond Cloud and more
+- Technology partners like RF-SMART pair barcode/WMS workflows with FreightPOP shipping
+- Certified SuiteApp distributed through the SuiteApp marketplace
+- Case studies across distribution, manufacturing and multi-location retail
+- 134 NetSuite shippers live — references available in your vertical
+### Live Demo
+- **Caption:** Implementation partners and customer case studies — the live list, with links.
+### Validation
+- **Stat:** 134
+- **Stat label:** NetSuite shippers live on FreightPOP
+- **Proof:** Won together with the NetSuite partner ecosystem — the rollout risk question has been answered 134 times.

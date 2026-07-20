@@ -200,5 +200,40 @@
       "statLabel": "inbound tracked end to end",
       "proof": "The PO record in NetSuite carries live tracking until delivery — receiving and planning finally see inbound the way customers see outbound."
     }
+  },
+  {
+    "num": "07",
+    "t1": "Partners",
+    "t2": "& Proof",
+    "name": "Partners & Case Studies",
+    "tag": "The NetSuite ecosystem we implement with — and the shippers who prove it",
+    "problem": {
+      "heading": "A shipping platform is only as good as its rollout.",
+      "body": "NetSuite projects live and die by the implementation. Bolting on a shipping tool the VAR has never seen adds risk to a go-live that is already high-stakes.",
+      "quote": {
+        "text": "Our NetSuite partner runs the project — anything we add has to work with them, not around them.",
+        "who": "— IT director (illustrative persona)"
+      }
+    },
+    "benefit": {
+      "heading": "We ship with the NetSuite partner ecosystem, not around it.",
+      "bullets": [
+        "Referred and co-implemented by NetSuite VARs — AppFiciency, ScaleNorth, NetDynamic, Beyond Cloud and more",
+        "Technology partners like RF-SMART pair barcode/WMS workflows with FreightPOP shipping",
+        "Certified SuiteApp distributed through the SuiteApp marketplace",
+        "Case studies across distribution, manufacturing and multi-location retail",
+        "134 NetSuite shippers live — references available in your vertical"
+      ]
+    },
+    "demo": {
+      "caption": "Implementation partners and customer case studies — the live list, with links.",
+      "progress": "100%",
+      "embed": "../modules/netsuite-partners.html?embed=1"
+    },
+    "roi": {
+      "stat": "134",
+      "statLabel": "NetSuite shippers live on FreightPOP",
+      "proof": "Won together with the NetSuite partner ecosystem — the rollout risk question has been answered 134 times."
+    }
   }
 ]

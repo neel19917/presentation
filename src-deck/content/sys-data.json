@@ -105,6 +105,11 @@
         "num": "06",
         "title": "Inbound PO Visibility",
         "tag": "Import purchase orders and track inbound freight to the dock"
+      },
+      {
+        "num": "07",
+        "title": "Partners & Case Studies",
+        "tag": "The NetSuite ecosystem we implement with — and the shippers who prove it"
       }
     ]
   }

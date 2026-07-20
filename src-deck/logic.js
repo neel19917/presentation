@@ -194,7 +194,7 @@ class Component extends DCLogic {
       { label: "Carrier Integrations", sub: "Every mode · one network", onClick: this.goCarriers, style: view === "carriers" ? topRowActive : topRow },
       { label: "Standard Shipping Workflows", sub: "7 animated flows", onClick: this.goWorkflows, style: (view === "workflows" || view === "workflow") ? topRowActive : topRow },
       { label: "ERP & System Integrations", sub: "54 connected systems", onClick: this.goErp, style: view === "erp" ? topRowActive : topRow },
-      { label: "NetSuite Demo Track", sub: "SuiteApp · 6 workflows", onClick: this.goNetsuite, style: (view === "netsuite" || (view === "feature" && this.state.sysKey === "netsuite")) ? topRowActive : topRow },
+      { label: "NetSuite Demo Track", sub: "SuiteApp · 7 workflows", onClick: this.goNetsuite, style: (view === "netsuite" || (view === "feature" && this.state.sysKey === "netsuite")) ? topRowActive : topRow },
     ];
     const fCard = "background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .2s ease;";
     const fCardActive = "background:rgba(61,214,181,.1);border:1.5px solid #3DD6B5;border-radius:12px;padding:16px 18px;cursor:pointer;box-shadow:0 0 22px rgba(61,214,181,.14);";
