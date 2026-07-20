@@ -85,6 +85,21 @@ window.FP_DECK = {
     },
 
     {
+      url: '/modules/freightpop-ai.html',
+      fit: 'native',
+      title: 'FreightPOP AI — Freight That Thinks Ahead',
+      section: 'Demo',
+      videoChannel: 'fp-freightpop-ai-video-sync',
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Recommend', t: 7 }, { label: 'Answer', t: 26 },
+        { label: 'Predict', t: 44 }, { label: 'Optimize', t: 60 }, { label: 'Catch', t: 76 }, { label: 'Result', t: 90 },
+      ],
+      notes:
+        'Auto-plays (102s). The AI flagship: Accessorial Agent (map + Street View + confidence recs, audit-trail attribution) → Copilot Q&A → predictive Last Free Date / ETAs into NetSuite → cost-model route optimization with pin-and-rerun → invoice-audit radar.\n' +
+        'All five are REAL, shipping features (June 2026 release). Premium FreightPOP AI lineup.',
+    },
+
+    {
       url: '/modules/netsuite-order-sync.html',
       fit: 'native',
       title: 'NetSuite — Order-to-Ship Sync',
