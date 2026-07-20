@@ -84,6 +84,76 @@ window.FP_DECK = {
         'Published results shown: GrowGeneration $500K/yr + 10x ROI · Uneekor 50% cost · Everflow 95% faster processing.',
     },
 
+    {
+      url: '/modules/netsuite-order-sync.html',
+      fit: 'native',
+      title: 'NetSuite — Order-to-Ship Sync',
+      section: 'Demo',
+      videoChannel: 'fp-netsuite-order-sync-video-sync',
+      deckHost: { view: 'feature', fi: 1, step: 2, sysKey: 'netsuite' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Import', t: 6 }, { label: 'Book', t: 19 },
+        { label: 'Writeback', t: 32 }, { label: 'EDI', t: 45 }, { label: 'Proof', t: 58 }, { label: 'Result', t: 71 },
+      ],
+      notes: 'Auto-plays (84s). Orders import → book → tracking/cost writeback → EDI/batch → pain stats (149/141 of 463 deals) → zero re-keys.',
+    },
+
+    {
+      url: '/modules/netsuite-product-catalog.html',
+      fit: 'native',
+      title: 'NetSuite — Product Catalog & AutoCalc',
+      section: 'Demo',
+      videoChannel: 'fp-netsuite-product-catalog-video-sync',
+      deckHost: { view: 'feature', fi: 2, step: 2, sysKey: 'netsuite' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Item', t: 6 }, { label: 'Sync', t: 20 },
+        { label: 'Rate', t: 34 }, { label: 'Update', t: 48 }, { label: 'Result', t: 62 },
+      ],
+      notes: 'Auto-plays (82s). NetSuite item record → catalog sync (9,000+ SKUs) → instant rating → edit-once ripple → no reclass surprises.',
+    },
+
+    {
+      url: '/modules/netsuite-change-management.html',
+      fit: 'native',
+      title: 'NetSuite — Order Change Management',
+      section: 'Demo',
+      videoChannel: 'fp-netsuite-change-management-video-sync',
+      deckHost: { view: 'feature', fi: 3, step: 2, sysKey: 'netsuite' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Planned', t: 6 }, { label: 'Change', t: 18 },
+        { label: 'Compare', t: 31 }, { label: 'Accept', t: 45 }, { label: 'Flow', t: 58 }, { label: 'Result', t: 70 },
+      ],
+      notes: 'Auto-plays (84s). Allocated shipment → ERP update creates pending copy → side-by-side diff → accept/auto-accept → nothing ships stale.',
+    },
+
+    {
+      url: '/modules/netsuite-consolidation.html',
+      fit: 'native',
+      title: 'NetSuite — Consolidation & Optimization',
+      section: 'Demo',
+      videoChannel: 'fp-netsuite-consolidation-video-sync',
+      deckHost: { view: 'feature', fi: 4, step: 2, sysKey: 'netsuite' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Orders', t: 6 }, { label: 'Combine', t: 20 },
+        { label: 'Rate', t: 33 }, { label: 'Ship', t: 48 }, { label: 'Result', t: 62 },
+      ],
+      notes: 'Auto-plays (82s). 3 Reno-area orders → combine → $762.30 vs $486.90 (save 36%) → one booking, two stops → GrowGeneration stats.',
+    },
+
+    {
+      url: '/modules/netsuite-inbound-po.html',
+      fit: 'native',
+      title: 'NetSuite — Inbound PO Visibility',
+      section: 'Demo',
+      videoChannel: 'fp-netsuite-inbound-po-video-sync',
+      deckHost: { view: 'feature', fi: 5, step: 2, sysKey: 'netsuite' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'The PO', t: 6 }, { label: 'Import', t: 19 },
+        { label: 'Track', t: 32 }, { label: 'Writeback', t: 47 }, { label: 'Result', t: 60 },
+      ],
+      notes: 'Auto-plays (82s). NetSuite PO → tracked inbound shipment → milestone timeline to the dock → tracking writes back to the PO.',
+    },
+
     // ── Starter slides (kept for reference — uncomment any to append) ────
     // { file: 'slides/01-title.html',         title: 'Title — One Login, All Your Freight', section: 'Starter', notes: '' },
     // { file: 'slides/02-problem.html',       title: 'The Problem',            section: 'Starter', notes: '' },

@@ -60,7 +60,8 @@
     },
     "demo": {
       "caption": "An order imports from NetSuite, books with the best carrier, and writes tracking + cost back to the fulfillment — no re-keying.",
-      "progress": "33%"
+      "progress": "33%",
+      "embed": "../modules/netsuite-order-sync.html?embed=1"
     },
     "roi": {
       "stat": "2×",
@@ -93,7 +94,8 @@
     },
     "demo": {
       "caption": "A fulfillment rates itself from item-master dims and weights — no manual measuring, no guessed freight class.",
-      "progress": "50%"
+      "progress": "50%",
+      "embed": "../modules/netsuite-product-catalog.html?embed=1"
     },
     "roi": {
       "stat": "9,000+",
@@ -127,7 +129,8 @@
     },
     "demo": {
       "caption": "A NetSuite order update arrives after allocation — FreightPOP shows the diff side-by-side and the planner accepts it in one click.",
-      "progress": "66%"
+      "progress": "66%",
+      "embed": "../modules/netsuite-change-management.html?embed=1"
     },
     "roi": {
       "stat": "100%",
@@ -160,7 +163,8 @@
     },
     "demo": {
       "caption": "Three NetSuite orders to the same region combine into one rated LTL shipment — the savings show before booking.",
-      "progress": "83%"
+      "progress": "83%",
+      "embed": "../modules/netsuite-consolidation.html?embed=1"
     },
     "roi": {
       "stat": "N→1",
@@ -194,7 +198,8 @@
     },
     "demo": {
       "caption": "A NetSuite PO becomes a tracked inbound shipment — status updates flow back to the PO until it reaches the dock.",
-      "progress": "100%"
+      "progress": "100%",
+      "embed": "../modules/netsuite-inbound-po.html?embed=1"
     },
     "roi": {
       "stat": "PO→POD",
