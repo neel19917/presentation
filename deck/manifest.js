@@ -64,6 +64,26 @@ window.FP_DECK = {
         'PageUp/PageDown switch deck slides; arrows stay inside the video.',
     },
 
+    {
+      url: '/modules/netsuite-suiteapp.html',
+      fit: 'native',
+      title: 'NetSuite SuiteApp — Ship From Inside NetSuite',
+      section: 'Demo',
+      // Also embedded inside the deck's NetSuite track (module 01 · Live Demo).
+      videoChannel: 'fp-netsuite-suiteapp-video-sync',
+      deckHost: { view: 'feature', fi: 0, step: 2, sysKey: 'netsuite' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Order', t: 6 }, { label: 'AutoCalc', t: 20 },
+        { label: 'Book', t: 33 }, { label: 'Sync', t: 46 }, { label: 'Audit', t: 59 },
+        { label: 'Proof', t: 71 }, { label: 'Results', t: 84 },
+      ],
+      notes:
+        'Auto-plays (96s). Space: play/pause · ←/→: chapter jump — synced between preview and big screen.\n' +
+        'Chapters: Intro → Order → AutoCalc → Book → Sync → Audit → Proof (customer quotes) → Results (published stats).\n' +
+        'Talking points: Built for NetSuite certified · bi-directional sync every 10 min, no middleware · AutoCalc + Auto Select Best Option · invoice audit before posting.\n' +
+        'Published results shown: GrowGeneration $500K/yr + 10x ROI · Uneekor 50% cost · Everflow 95% faster processing.',
+    },
+
     // ── Starter slides (kept for reference — uncomment any to append) ────
     // { file: 'slides/01-title.html',         title: 'Title — One Login, All Your Freight', section: 'Starter', notes: '' },
     // { file: 'slides/02-problem.html',       title: 'The Problem',            section: 'Starter', notes: '' },

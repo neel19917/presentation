@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Ship From Inside NetSuite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP VIDEO MODULE TEMPLATE  (copy me: tools/new-module.js <name>)
+
+   You get for free: deterministic timeline (MP4-renderable + synced across
+   presenter/audience), chapters bar, fullscreen, white↔deck theme toggle,
+   URL modes (?render=1, ?seek=s, ?theme=deck, ?embed=1), brand tokens,
+   the real FreightPOP logo, dynamic text boost in embeds.
+
+   You write: the SCENES — markup in the stage + the apply(t) choreography.
+   RULES: every visual is a pure function of t. No CSS animations/transitions
+   on story elements. No emoji. Design at 1920×1080.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729; --navy-2: #0b2340; --blue: #4c8dde; --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9; --bg: #f7f9fc; --ink: #051729; --sub: rgba(5,23,41,0.72);
+  --green: #1f7a54; --success: #22c55e; --card-line: rgba(5,23,41,0.10); --teal: #3dd6b5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', sans-serif; }
+
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); transform-origin: center center; flex: 0 0 auto; }
+#stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px; }
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* full-bleed navy cards (title / end) */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo-img { display: block; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 118px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; }
+
+/* step caption — number badge lives INSIDE the box so it can never clip */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+
+/* build-step reveal helper: elements fade/slide via apply(t), no CSS anim */
+
+/* player chrome */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+#btn-theme, #btn-fs, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-fs:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+
+/* embed mode: dedicated bottom bar + text boost */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; padding: 10px 18px; opacity: 1 !important; pointer-events: auto !important; background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3); }
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #btn-play, body.embed #btn-theme, body.embed #btn-fs, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); }
+
+/* deck theme: navy + teal + mono kickers + LIGHT-weight headings */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before { background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); }
+body.theme-deck .kicker, body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: var(--teal); letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; }
+body.theme-deck #caption .step-body { color: #b5cde0; }
+body.theme-deck #caption .step-num { background: var(--teal); color: var(--navy); }
+body.theme-deck .cta { background: var(--teal); color: var(--navy); }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: var(--teal); color: var(--navy); }
+
+/* ═══ NetSuite app mock (right side; left edge 840px clears the caption) ═══ */
+#ns-frame { position: absolute; right: 70px; top: 96px; width: 1010px; height: 850px; background: #fff; border: 3px solid var(--navy); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(5,23,41,0.18); }
+#ns-topbar { height: 64px; background: #1c2b3a; color: #fff; display: flex; align-items: center; gap: 26px; padding: 0 28px; }
+.ns-brand { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.14em; color: #d8e4f2; font-weight: 500; }
+.ns-crumb { font-size: 17px; color: #b7c8da; }
+.ns-crumb b { color: #fff; }
+.ns-user { margin-left: auto; font-size: 15px; color: #8fa6bd; }
+#ns-orderrow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 22px 28px 16px; }
+.ns-field span { display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(5,23,41,0.5); margin-bottom: 6px; }
+.ns-field b { font-size: 18px; color: var(--ink); font-weight: 700; }
+#ns-tabs { display: flex; gap: 6px; padding: 6px 28px 0; border-bottom: 2px solid var(--card-line); }
+.ns-tab { font-size: 17px; font-weight: 600; color: rgba(5,23,41,0.55); padding: 12px 22px 14px; border-radius: 10px 10px 0 0; }
+#ns-tab-fp { position: relative; color: var(--blue-deep); }
+#ns-tab-fp::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -2px; height: 4px; border-radius: 2px; background: var(--blue); transform: scaleX(var(--tabp, 0)); transform-origin: left; }
+#ns-panel { position: relative; height: 590px; }
+.fp-panel { position: absolute; inset: 0; padding: 26px 28px; opacity: 0; }
+.fp-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.fp-chip { display: inline-block; font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.1em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border: 1px solid rgba(76,141,222,0.4); border-radius: 999px; padding: 8px 16px; }
+.fp-chip.teal { color: var(--green); background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.45); }
+.fp-toggle b { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.08em; padding: 8px 16px; border-radius: 999px; color: rgba(5,23,41,0.5); font-weight: 500; }
+.fp-toggle b.on { background: var(--navy); color: #fff; }
+.rate-row { display: grid; grid-template-columns: 2.2fr 2fr 1.2fr 1.2fr; align-items: center; padding: 20px 22px; border: 1.5px solid var(--card-line); border-radius: 14px; margin-bottom: 14px; background: #fff; }
+.rate-row .rr-carrier { font-weight: 800; font-size: 21px; color: var(--ink); font-family: 'Manrope'; }
+.rate-row .rr-svc, .rate-row .rr-days { font-size: 17px; color: var(--sub); }
+.rate-row .rr-price { font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--ink); text-align: right; }
+.rate-row.best { border-color: var(--success); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+.rate-row.best .rr-price { color: var(--green); }
+/* book */
+.book-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.book-row .rr-carrier { font-family: 'Manrope'; font-weight: 800; font-size: 26px; color: var(--ink); }
+.book-status { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+.status-chip { font-family: 'DM Mono', monospace; font-size: 16px; letter-spacing: 0.12em; padding: 12px 24px; border-radius: 12px; background: rgba(5,23,41,0.08); color: var(--sub); }
+.status-chip.booked { background: var(--success); color: #fff; }
+.book-price { font-family: 'Manrope'; font-weight: 800; font-size: 26px; color: var(--ink); }
+.doc-chips { display: flex; flex-direction: column; gap: 14px; }
+.doc-chip { font-size: 19px; font-weight: 600; color: var(--ink); background: #fff; border: 1.5px solid var(--card-line); border-left: 6px solid var(--blue); border-radius: 12px; padding: 18px 22px; }
+/* sync */
+.sync-cols { display: grid; grid-template-columns: 1fr 90px 1fr; align-items: center; gap: 0; margin-bottom: 26px; }
+.sync-card { border: 1.5px solid var(--card-line); border-radius: 16px; padding: 20px 22px; background: #fff; }
+.sync-h { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sub); margin-bottom: 14px; }
+.sync-f { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid var(--card-line); font-size: 18px; }
+.sync-f span { color: var(--sub); }
+.sync-f b { color: var(--ink); }
+#sync-arrows { text-align: center; font-size: 52px; color: var(--blue); }
+/* audit */
+.audit-row { display: grid; grid-template-columns: 2fr 1.4fr 1.4fr 1.4fr; align-items: center; padding: 22px; border: 1.5px solid var(--card-line); border-radius: 14px; margin-bottom: 16px; background: #fff; font-size: 18px; }
+.audit-row .rr-carrier { font-family: 'Manrope'; font-weight: 800; font-size: 20px; }
+.ar-q, .ar-i { color: var(--sub); }
+.ar-ok { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--green); text-align: right; }
+.ar-flag { font-family: 'DM Mono', monospace; font-size: 15px; color: #b45309; background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.5); border-radius: 999px; padding: 8px 14px; text-align: center; }
+.audit-note { font-size: 18px; color: var(--sub); padding: 6px 4px; }
+/* proof scene */
+#scene-proof { display: flex; align-items: center; justify-content: center; }
+.proof-wrap { width: 1500px; }
+.proof-kicker { font-size: 19px; }
+.proof-h { font-family: 'Manrope'; font-weight: 800; font-size: 58px; letter-spacing: -0.02em; color: var(--ink); margin: 18px 0 42px; }
+.quote-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+.quote-card { background: #fff; border: 1.5px solid var(--card-line); border-left: 6px solid var(--blue); border-radius: 18px; padding: 34px 36px; box-shadow: 0 18px 50px rgba(5,23,41,0.08); }
+.q-text { font-size: 25px; line-height: 1.5; color: var(--ink); font-style: italic; }
+.q-who { margin-top: 20px; font-family: 'DM Mono', monospace; font-size: 14.5px; letter-spacing: 0.06em; color: var(--sub); }
+.proof-count { font-family: 'Manrope'; font-weight: 800; font-size: 30px; color: var(--blue-deep); }
+body.theme-deck .proof-h { color: #fff; font-weight: 500; }
+body.theme-deck .quote-card { background: #0a2540; border-color: rgba(255,255,255,0.12); border-left-color: var(--teal); }
+body.theme-deck .q-text { color: #e8f1fa; }
+body.theme-deck .q-who { color: #b5cde0; }
+body.theme-deck .proof-count { color: var(--teal); }
+/* end-card stat tiles */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 300px); gap: 22px; margin-top: 44px; }
+.stat-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(193,212,233,0.25); border-radius: 18px; padding: 28px 22px; }
+.stat-num { font-family: 'Manrope'; font-weight: 800; font-size: 54px; color: #7fd4ae; }
+.stat-lb { font-size: 16.5px; color: var(--light-blue); line-height: 1.4; margin-top: 10px; }
+.stat-src { margin-top: 26px; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: rgba(193,212,233,0.6); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ SCENES: title → NetSuite app (order/rates/book/sync/audit) → proof → end ═══ -->
+  <div class="layer" id="scene-app">
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE ORDER</div>
+      <div class="step-title" id="cap-title">The order is already there</div>
+      <div class="step-body" id="cap-body">Sales Orders and Item Fulfillments sync bi-directionally — token auth, no middleware.</div>
+    </div>
+
+    <!-- NetSuite app mock (right side; left edge 840px clears the caption) -->
+    <div id="ns-frame">
+      <div id="ns-topbar">
+        <span class="ns-brand">ORACLE NETSUITE</span>
+        <span class="ns-crumb">Transactions &rsaquo; Sales Order &rsaquo; <b>SO-10482</b></span>
+        <span class="ns-user">Summit Industrial Supply</span>
+      </div>
+      <div id="ns-orderrow">
+        <div class="ns-field"><span>Customer</span><b>Summit Industrial Supply</b></div>
+        <div class="ns-field"><span>Ship To</span><b>Reno, NV 89506</b></div>
+        <div class="ns-field"><span>Lines</span><b>3 items &middot; 1,240 lb &middot; 2 pallets</b></div>
+        <div class="ns-field"><span>Status</span><b id="ns-status">Pending Fulfillment</b></div>
+      </div>
+      <div id="ns-tabs">
+        <span class="ns-tab">General</span>
+        <span class="ns-tab">Shipping</span>
+        <span class="ns-tab" id="ns-tab-fp">FreightPOP</span>
+        <span class="ns-tab">Communication</span>
+      </div>
+
+      <div id="ns-panel">
+        <!-- rates -->
+        <div class="fp-panel" id="panel-rates">
+          <div class="fp-panel-head"><span class="fp-chip" id="chip-autocalc">AUTOCALC RAN &middot; 0 CLICKS</span>
+            <span class="fp-toggle"><b class="on">Contract</b><b>Spot</b></span></div>
+          <div class="rate-row" data-r="0"><span class="rr-carrier">Estes</span><span class="rr-svc">LTL Standard</span><span class="rr-days">4 days</span><span class="rr-price">$298.40</span></div>
+          <div class="rate-row" data-r="1"><span class="rr-carrier">ODFL</span><span class="rr-svc">LTL Standard</span><span class="rr-days">3 days</span><span class="rr-price">$305.10</span></div>
+          <div class="rate-row" data-r="2"><span class="rr-carrier">XPO</span><span class="rr-svc">LTL Standard</span><span class="rr-days">3 days</span><span class="rr-price">$312.75</span></div>
+          <div class="rate-row" data-r="3"><span class="rr-carrier">FedEx Freight</span><span class="rr-svc">Priority</span><span class="rr-days">2 days</span><span class="rr-price">$342.60</span></div>
+        </div>
+        <!-- book -->
+        <div class="fp-panel" id="panel-book">
+          <div class="book-row"><span class="rr-carrier">Estes &middot; LTL Standard</span><span class="fp-chip teal" id="chip-best">AUTO SELECT BEST OPTION</span></div>
+          <div class="book-status"><span id="book-chip" class="status-chip">PENDING</span><span class="book-price">$298.40 &middot; 4 days</span></div>
+          <div class="doc-chips">
+            <span class="doc-chip" data-d="0">BOL &middot; generated</span>
+            <span class="doc-chip" data-d="1">Pallet labels &middot; generated</span>
+            <span class="doc-chip" data-d="2">Packing slip &middot; generated</span>
+          </div>
+        </div>
+        <!-- sync -->
+        <div class="fp-panel" id="panel-sync">
+          <div class="sync-cols">
+            <div class="sync-card"><div class="sync-h">FreightPOP shipment</div>
+              <div class="sync-f"><span>Carrier</span><b>Estes</b></div>
+              <div class="sync-f"><span>PRO #</span><b>784-122-104</b></div>
+              <div class="sync-f"><span>Cost</span><b>$298.40</b></div></div>
+            <div id="sync-arrows">&#8646;</div>
+            <div class="sync-card"><div class="sync-h">NetSuite fulfillment</div>
+              <div class="sync-f" data-s="0"><span>Tracking</span><b>784-122-104</b></div>
+              <div class="sync-f" data-s="1"><span>Ship cost</span><b>$298.40</b></div>
+              <div class="sync-f" data-s="2"><span>Status</span><b>In Transit</b></div></div>
+          </div>
+          <div class="fp-chip" id="chip-sync">BI-DIRECTIONAL &middot; SYNCS EVERY 10 MINUTES &middot; NO MIDDLEWARE</div>
+        </div>
+        <!-- audit -->
+        <div class="fp-panel" id="panel-audit">
+          <div class="audit-row" data-a="0"><span class="rr-carrier">SO-10471 &middot; ODFL</span><span class="ar-q">Quoted $412.00</span><span class="ar-i">Invoiced $412.00</span><span class="ar-ok">&#10003; MATCH</span></div>
+          <div class="audit-row" data-a="1"><span class="rr-carrier">SO-10482 &middot; Estes</span><span class="ar-q">Quoted $298.40</span><span class="ar-i">Invoiced $341.15</span><span class="ar-flag">+$42.75 FLAGGED</span></div>
+          <div class="audit-note" id="audit-note">Unquoted accessorial caught before posting to NetSuite &mdash; disputed automatically.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- proof: quotes + live count -->
+  <div class="layer" id="scene-proof">
+    <div class="proof-wrap">
+      <div class="kicker proof-kicker">WHAT NETSUITE SHIPPERS TELL US</div>
+      <div class="proof-h">Before FreightPOP, shipping was a second job.</div>
+      <div class="quote-cards">
+        <div class="quote-card" data-q="0">
+          <div class="q-text">&ldquo;I need to go back and send emails to our carriers and compare those quotes, pick one&hellip; then do the documents we need to do in NetSuite, the packing list, the BOL, all that.&rdquo;</div>
+          <div class="q-who">&mdash; Logistics coordinator, NetSuite shipper &middot; discovery call</div>
+        </div>
+        <div class="quote-card" data-q="1">
+          <div class="q-text">&ldquo;I would not need to manually check a checkbox or select a drop-down for that to happen, right?&rdquo;</div>
+          <div class="q-who">&mdash; IT lead, NetSuite shipper &middot; integration scoping</div>
+        </div>
+      </div>
+      <div class="proof-count" id="proof-count">134 NetSuite shippers run FreightPOP today</div>
+    </div>
+  </div>
+
+  <div class="fullcard" id="scene-title">
+    <!-- <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="> is replaced with the real white FreightPOP logo <img> by tools/new-module.js -->
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa57arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS266qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">FREIGHTPOP &times; NETSUITE &middot; BUILT FOR NETSUITE</div>
+    <h1 class="title-h1">Ship from inside NetSuite.</h1>
+    <div class="title-sub">The certified FreightPOP SuiteApp rates, books, tracks and audits your freight &mdash; without ever leaving the record.</div>
+  </div>
+
+  <div class="fullcard" id="scene-end">
+    <div class="kicker">PUBLISHED RESULTS</div>
+    <h1 class="title-h1" style="font-size:76px;">NetSuite shippers keep the receipts.</h1>
+    <div class="stat-tiles">
+      <div class="stat-tile" data-st="0"><div class="stat-num">$500K</div><div class="stat-lb">annual cost reduction &mdash; GrowGeneration</div></div>
+      <div class="stat-tile" data-st="1"><div class="stat-num">10&times;</div><div class="stat-lb">ROI on FreightPOP &mdash; GrowGeneration</div></div>
+      <div class="stat-tile" data-st="2"><div class="stat-num">50%</div><div class="stat-lb">lower shipping costs &mdash; Uneekor</div></div>
+      <div class="stat-tile" data-st="3"><div class="stat-num">95%</div><div class="stat-lb">faster shipment processing &mdash; Everflow</div></div>
+    </div>
+    <div class="stat-src">From published FreightPOP &times; NetSuite customer success stories &middot; freightpop.com</div>
+    <div style="height:34px"></div>
+    <div class="cta">SCHEDULE A DEMO &rarr;</div>
+  </div>
+
+</div></div>
+
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button>
+  <button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  /* ═══ CONFIG — tools/new-module.js rewrites these ═══ */
+  const SYNC_CHANNEL = 'fp-netsuite-suiteapp-video-sync';       // unique per module
+  const CH = [                              // chapters: contiguous, seconds
+    { id: 'title', label: 'Intro',   start: 0,  end: 6 },
+    { id: 'order', label: 'Order',   start: 6,  end: 20 },
+    { id: 'rates', label: 'AutoCalc',start: 20, end: 33 },
+    { id: 'book',  label: 'Book',    start: 33, end: 46 },
+    { id: 'sync',  label: 'Sync',    start: 46, end: 59 },
+    { id: 'audit', label: 'Audit',   start: 59, end: 71 },
+    { id: 'proof', label: 'Proof',   start: 71, end: 84 },
+    { id: 'end',   label: 'Results', start: 84, end: 96 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  /* ═══ easing helpers ═══ */
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  /* ═══ THE FILM — every visual from t, nothing free-running ═══ */
+  const CAPS = [
+    { a: 6,  n: '1', k: 'STEP 1 — THE ORDER',     h: 'The order is already there',
+      b: 'Sales Orders and Item Fulfillments sync bi-directionally — token auth, no middleware.' },
+    { a: 20, n: '2', k: 'STEP 2 — AUTOCALC',      h: 'AutoCalc rates it for you',
+      b: 'Contract and spot rates compared across parcel, LTL and FTL — before anyone opens a carrier portal.' },
+    { a: 33, n: '3', k: 'STEP 3 — AUTO SELECT',   h: 'The best option books itself',
+      b: 'Cheapest compliant rate wins. BOL, labels and packing slip generate on the record.' },
+    { a: 46, n: '4', k: 'STEP 4 — WRITEBACK',     h: 'Everything writes back',
+      b: 'Tracking number, carrier and actual cost land on the NetSuite fulfillment automatically.' },
+    { a: 59, n: '5', k: 'STEP 5 — INVOICE AUDIT', h: 'The invoice gets audited too',
+      b: 'Carrier invoices are compared to quoted rates — discrepancies flagged before they post to NetSuite.' },
+  ];
+  function setCaption(t) {
+    let c = CAPS[0];
+    for (const x of CAPS) if (t >= x.a) c = x;
+    if ($('#cap-num').textContent !== c.n) {
+      $('#cap-num').textContent = c.n; $('#cap-kicker').textContent = c.k;
+      $('#cap-title').textContent = c.h; $('#cap-body').textContent = c.b;
+    }
+    const p = ease(seg(t, c.a + 0.4, c.a + 1.1));
+    $('#caption').style.opacity = String(p);
+    $('#caption').style.transform = `translateY(${26 * (1 - p)}px)`;
+  }
+  function panel(el, on, t, a) {
+    // crossfade panels inside the FP tab area
+    el.style.opacity = on ? String(ease(seg(t, a, a + 0.8))) : '0';
+    el.style.visibility = on ? 'visible' : 'hidden';
+  }
+  function apply(t) {
+    const title = $('#scene-title'), end = $('#scene-end'), app = $('#scene-app'), proof = $('#scene-proof');
+
+    /* title card 0–6 */
+    title.style.opacity = String(Math.min(seg(t, 0, 0.8), 1 - seg(t, 5.2, 6.0)));
+    title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+
+    /* NetSuite app scene 6–71 */
+    const appVis = t > 5.5 && t < 71.8;
+    app.style.opacity = String(Math.min(ease(seg(t, 5.6, 6.6)), 1 - seg(t, 70.8, 71.7)));
+    app.style.visibility = appVis ? 'visible' : 'hidden';
+    if (!appVis) $('#caption').style.opacity = '0'; // caption belongs to the app scene
+    if (appVis) {
+      setCaption(t);
+      const fr = ease(seg(t, 6.0, 7.2));
+      $('#ns-frame').style.transform = `translateY(${60 * (1 - fr)}px)`;
+      $('#ns-frame').style.opacity = String(fr);
+      /* FreightPOP tab underline draws in as the order chapter closes */
+      $('#ns-tab-fp').style.setProperty('--tabp', String(ease(seg(t, 15, 16.5))));
+      /* order status flips once booked */
+      $('#ns-status').textContent = t >= 41 ? 'Fulfilled — In Transit' : 'Pending Fulfillment';
+
+      /* rates panel 20–33: rows cascade, best highlights at 28 */
+      panel($('#panel-rates'), t >= 20 && t < 33, t, 20);
+      $$('#panel-rates .rate-row').forEach((r, i) => {
+        const p = ease(seg(t, 21 + i * 1.1, 22 + i * 1.1));
+        r.style.opacity = String(p);
+        r.style.transform = `translateX(${40 * (1 - p)}px)`;
+        r.classList.toggle('best', i === 0 && t >= 28);
+      });
+      /* book panel 33–46: chip PENDING→BOOKED at 38, docs cascade */
+      panel($('#panel-book'), t >= 33 && t < 46, t, 33);
+      const bc = $('#book-chip');
+      bc.textContent = t >= 38 ? 'BOOKED' : 'PENDING';
+      bc.classList.toggle('booked', t >= 38);
+      $$('#panel-book .doc-chip').forEach((d, i) => {
+        const p = ease(seg(t, 39.5 + i * 1.4, 40.5 + i * 1.4));
+        d.style.opacity = String(p);
+        d.style.transform = `translateX(${40 * (1 - p)}px)`;
+      });
+      /* sync panel 46–59: NetSuite fields fill left→right */
+      panel($('#panel-sync'), t >= 46 && t < 59, t, 46);
+      $$('#panel-sync [data-s]').forEach((f, i) => {
+        f.style.opacity = String(0.25 + 0.75 * ease(seg(t, 49 + i * 1.6, 50 + i * 1.6)));
+      });
+      $('#sync-arrows').style.opacity = String(0.35 + 0.65 * Math.abs(Math.sin(t * 1.8)));
+      $('#chip-sync').style.opacity = String(ease(seg(t, 54, 55)));
+      /* audit panel 59–71: match row, then flagged row + note */
+      panel($('#panel-audit'), t >= 59 && t < 71, t, 59);
+      $$('#panel-audit .audit-row').forEach((r, i) => {
+        const p = ease(seg(t, 60.5 + i * 2.4, 61.5 + i * 2.4));
+        r.style.opacity = String(p);
+        r.style.transform = `translateX(${40 * (1 - p)}px)`;
+      });
+      $('#audit-note').style.opacity = String(ease(seg(t, 66, 67)));
+    }
+
+    /* proof 71–84: quote cards then the live count */
+    const proofVis = t > 71 && t < 84.6;
+    proof.style.opacity = String(Math.min(ease(seg(t, 71.2, 72.2)), 1 - seg(t, 83.6, 84.5)));
+    proof.style.visibility = proofVis ? 'visible' : 'hidden';
+    if (proofVis) {
+      $$('.quote-card').forEach((q, i) => {
+        const p = ease(seg(t, 73 + i * 2.2, 74.2 + i * 2.2));
+        q.style.opacity = String(p);
+        q.style.transform = `translateY(${34 * (1 - p)}px)`;
+      });
+      $('#proof-count').style.opacity = String(ease(seg(t, 79, 80)));
+    }
+
+    /* end card 84–96: stat tiles cascade */
+    end.style.opacity = String(ease(seg(t, 84, 84.9)));
+    end.style.visibility = t > 83.9 ? 'visible' : 'hidden';
+    $$('.stat-tile').forEach((s, i) => {
+      const p = ease(seg(t, 85.5 + i * 1.0, 86.4 + i * 1.0));
+      s.style.opacity = String(p);
+      s.style.transform = `translateY(${30 * (1 - p)}px)`;
+    });
+  }
+
+  /* ═══ ENGINE (transport, chrome, sync, modes) — copy verbatim ═══ */
+  let T = 0, playing = false, lastTick = 0, autoPause = false;
+  // section boundaries for "pause after each section": chapter starts (past the first) + end
+  const BOUNDARIES = CH.slice(1).map((c) => c.start).concat([DURATION]);
+  function step(now) {
+    if (playing) {
+      const prevT = T;
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      let stopped = false;
+      if (autoPause) {
+        for (var bi = 0; bi < BOUNDARIES.length; bi++) {
+          var b = BOUNDARIES[bi];
+          if (prevT < b - 1e-4 && T >= b) { T = b; playing = false; updatePlayBtn(); broadcast(); stopped = true; break; }
+        }
+      }
+      if (!stopped && T >= DURATION) { if (EMBED) T = 0; else { playing = false; updatePlayBtn(); } }
+      apply(T); updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  CH.forEach((c) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); });
+    $('#chapters').appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => { cel.querySelector('.fill').style.width = (seg(T, CH[i].start, CH[i].end) * 100) + '%'; });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';
+  const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';
+  function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+
+  let hideTimer = null;
+  document.addEventListener('mousemove', () => {
+    if (EMBED) return;
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) {}
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', 'w', 'W', 's', 'S', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*'); e.preventDefault();
+    }
+  });
+
+  /* presenter/audience sync — file:// safe */
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  try {
+    if (!RENDER && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel(SYNC_CHANNEL);
+      bc.onmessage = (e) => {
+        const m = e.data || {};
+        if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+        if (m.cmd === 'play') { play(true); return; }
+        if (m.cmd === 'pause') { pause(true); return; }
+        if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+        if (m.cmd === 'autopause') { autoPause = !!m.on; return; }
+        if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+        if (typeof m.t !== 'number') return;
+        authority = false; lastRemoteState = Date.now(); // someone else is driving
+        applyingRemote = true;
+        if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+          T = m.t; playing = !!m.playing; lastTick = performance.now();
+          apply(T); updateChrome(); updatePlayBtn();
+        }
+        applyingRemote = false;
+      };
+      setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+    }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  /* stage scaling + embed text boost */
+  function fit() {
+    if (EMBED) {
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty('--fpb', String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  /* render contract (tools/render-video.mjs) */
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

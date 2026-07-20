@@ -24,8 +24,9 @@
       ]
     },
     "demo": {
-      "caption": "A sales order rates itself inside NetSuite — AutoCalc plus Auto Select books the best option without opening another tab.",
-      "progress": "16%"
+      "caption": "The certified SuiteApp rates, books, tracks and audits a NetSuite order end to end — watch the full flow.",
+      "progress": "16%",
+      "embed": "../modules/netsuite-suiteapp.html?embed=1"
     },
     "roi": {
       "stat": "0",
