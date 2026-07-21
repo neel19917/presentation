@@ -15,3 +15,6 @@ node_modules/
 
 # portable Node runtime downloaded by install-*.sh (never commit)
 .node/
+
+# server.js safeWrite backups (runtime artifacts)
+*.bak

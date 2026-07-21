@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Presenter — Generated Deck</title>
+<link rel="stylesheet" href="core/styles.css">
+<style>#btn-story{display:none;}</style>
+</head>
+<body class="presenter-body">
+
+  <div class="presenter-topbar">
+    <div class="brand">Freight<span>POP</span> Presenter</div>
+    <div class="deck-title" id="deck-title"></div>
+    <span class="black-badge" id="black-badge">SCREEN BLACKED (B)</span>
+    <div class="spacer"></div>
+    <div class="clockbox">
+      <span class="timer" id="timer">00:00</span>
+      <span class="clock" id="clock"></span>
+    </div>
+    <button class="pbtn" id="btn-timer">Start timer</button>
+    <button class="pbtn" id="btn-timer-reset" title="Reset timer (T)">Reset</button>
+    <button class="pbtn" id="btn-replay" title="Replay this screen's animations on both screens (A)" style="display:none;">↻ Replay anim</button>
+    <button class="pbtn" id="btn-story" title="Guided story mode (Y)">Story</button>
+    <button class="pbtn" id="btn-grid" title="Slide grid (G)">Grid</button>
+    <button class="pbtn primary" id="btn-audience">Open audience window</button>
+  </div>
+
+  <div class="presenter-main">
+    <div class="presenter-current">
+      <div class="panel-label">Current slide &nbsp;·&nbsp; <span class="step-ind" id="step-ind"></span></div>
+      <div id="stage-current"></div>
+    </div>
+    <div class="presenter-side">
+      <div class="panel-label" id="next-label">Next</div>
+      <div id="stage-next"></div>
+      <div id="video-controls">
+        <div class="vc-row">
+          <button class="pbtn" id="vc-toggle">Play / Pause</button>
+          <button class="pbtn" id="vc-restart">Restart</button>
+          <span class="vc-time" id="vc-time">–:––</span>
+        </div>
+        <div class="vc-chapters" id="vc-chapters"></div>
+        <div class="vc-keys"><kbd>P</kbd> play/pause · <kbd>[</kbd><kbd>]</kbd> chapters · <kbd>1</kbd>–<kbd>9</kbd> jump · <kbd>0</kbd> restart · <kbd>W</kbd> white/dark · <kbd>S</kbd> pause-per-section</div>
+      </div>
+      <details id="config-panel">
+        <summary class="panel-label">Config — live modules &amp; theme</summary>
+        <div class="cfg-row" id="cfg-theme-row">
+          <span class="cfg-lbl">Video background</span>
+          <span style="flex:1"></span>
+          <button class="pbtn" id="cfg-theme-dark">Dark</button>
+          <button class="pbtn" id="cfg-theme-light">White</button>
+        </div>
+        <div class="cfg-row" id="cfg-pause-row">
+          <span class="cfg-lbl">Playback</span>
+          <span style="flex:1"></span>
+          <button class="pbtn" id="cfg-autopause">Pause each section: ON</button>
+        </div>
+        <div class="cfg-summary" id="cfg-summary"></div>
+        <div id="cfg-modules"></div>
+        <div class="cfg-hint">This is the standalone screenshot deck. Edit slides + AI callouts in modules/real-ui/shots-data.js.</div>
+      </details>
+      <div class="panel-label" style="display:flex; align-items:center; justify-content:space-between;">
+        <span>Speaker notes</span>
+        <span class="notes-size-btns">
+          <button class="pbtn" id="notes-smaller">A−</button>
+          <button class="pbtn" id="notes-bigger">A+</button>
+        </span>
+      </div>
+      <div class="notes-panel"><div class="notes-text" id="notes"></div></div>
+    </div>
+  </div>
+
+  <div class="presenter-footer">
+    <span class="pos" id="pos"></span>
+    <span class="section" id="section"></span>
+    <span id="slide-title"></span>
+    <span class="keys">
+      <span><kbd>→</kbd>/<kbd>Space</kbd> next</span>
+      <span><kbd>←</kbd> back</span>
+      <span><kbd>B</kbd> black</span>
+      <span><kbd>G</kbd> grid</span>
+      <span><kbd>Home</kbd>/<kbd>End</kbd> first/last</span>
+    </span>
+  </div>
+
+  <div id="grid-overlay"><h2>All slides <small>click to jump · G or Esc to close</small></h2><div id="grid-content"></div></div>
+  <div id="story-overlay"><h2>Guided stories <small>pick a track · Esc to close</small></h2><div id="story-content"></div></div>
+  <div id="story-panel">
+    <div class="sp-head">
+      <span class="sp-name" id="sp-name"></span>
+      <span class="sp-vert" id="sp-vert"></span>
+      <span class="sp-count" id="sp-count"></span>
+      <span style="flex:1"></span>
+      <button class="pbtn" id="sp-prev">‹ Prev</button>
+      <button class="pbtn primary" id="sp-next">Next ›</button>
+      <button class="pbtn" id="sp-exit">Exit</button>
+    </div>
+    <div class="sp-script" id="sp-script"></div>
+  </div>
+  <script>
+  (function(){
+    var slug=(new URLSearchParams(location.search).get("deck")||"").replace(/[^a-z0-9-]/gi,"");
+    window.FP_AUDIENCE_URL="generated-audience.html?deck="+slug;
+    var chain=["../deck/manifest-generated-"+slug+".js","core/sync.js","core/framework.js","core/presenter.js"];
+    (function next(i){ if(i>=chain.length) return; var s=document.createElement("script"); s.src=chain[i]; s.onload=function(){next(i+1);}; s.onerror=function(){next(i+1);}; document.body.appendChild(s); })(0);
+  })();
+  </script>
+</body>
+</html>

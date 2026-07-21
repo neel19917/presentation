@@ -4,85 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FreightPOP — ERP & Systems Integrations</title>
-<script>
-/* ═══════════════════════════════════════════════════════════════════════════
-   ✏️  EDIT ME — this block is the ONLY thing you change.
-   ERP cards, the hardware/data-capture section, and quick links all render
-   from this data. Edit → reload the deck (R in the presenter). No rebuild:
-   the deck embeds this file live as an iframe.
-
-   - `link` is optional on any card; omit it and no "Docs ↗" chip shows.
-   - `flavor` styles the card accent: "native" (teal), "bilateral" (blue),
-     "hardware" (violet). Anything else falls back to blue.
-   - Copy is grounded in the FreightPOP ERP Integration Docs (Confluence,
-     Jul 2026). Confirm specifics with product before a show.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const DATA = {
-  kicker: "FreightPOP × Your Stack",
-  title: "Ships with your ERP",
-  intro: "FreightPOP connects to the ERP you already run — natively inside it, or bilaterally through its API — plus the hardware on your dock. Rate, book, document, track and reconcile freight without leaving the system of record.",
-
-  links: [
-    { label: "All Integrations",   url: "https://www.freightpop.com/integrations" },
-    { label: "NetSuite SuiteApp",   url: "https://www.suiteapp.com/FreightPOP" },
-    { label: "Acumatica Marketplace", url: "https://www.acumatica.com/marketplace/" },
-    { label: "Partner Program",     url: "https://www.freightpop.com/partners" },
-    { label: "Case Studies",        url: "https://www.freightpop.com/case-studies" },
-    { label: "Book a Demo",         url: "https://www.freightpop.com/demo" }
-  ],
-
-  erps: [
-    {
-      name: "NetSuite",
-      flavor: "native",
-      modes: "Certified SuiteApp (inside NetSuite) + bilateral",
-      tag: "Quote, rate shop, book, track and audit on the Sales Order / Item Fulfillment. AutoCalc + Auto Select Best Option, invoice audit, bi-directional sync every 10 min — no middleware. The proven alternative to native Ship Central.",
-      link: "https://www.suiteapp.com/FreightPOP"
-    },
-    {
-      name: "Acumatica",
-      flavor: "native",
-      modes: "Native carrier plug-in (inside Acumatica) + Plug & Play bilateral",
-      tag: "Rate shop and book from the Acumatica Sales Order; AutoCalc packaging, dual rate shop & auto-select best rate (2025 R2), per-user printers. Plug & Play adds SO / Shipment / PO / RMA import, item sync, AP + Return-to-Vendor export and tracking writeback. Certified Acumatica ISV partner."
-    },
-    {
-      name: "SAP S/4HANA",
-      flavor: "bilateral",
-      modes: "Bilateral (Public Cloud)",
-      tag: "Import Sales Orders and Purchase Orders; rate, book and generate documents, then write carrier, cost and tracking back. Fulfillment maps to SAP's Outbound Delivery model rather than NetSuite-style Item Fulfillment."
-    },
-    {
-      name: "Sage X3",
-      flavor: "bilateral",
-      modes: "Bilateral (SOAP web services)",
-      tag: "Orders flow in and out over Sage X3 SOAP pools; rate, book, print, and write carrier + tracking back to the transaction. Supports custom transaction entries (e.g. purchase-order POH) for non-standard configurations."
-    },
-    {
-      name: "Microsoft Dynamics 365 — Business Central",
-      flavor: "bilateral",
-      modes: "Bilateral (token auth · OData/SOAP)",
-      tag: "Token-based connection into Business Central; integrates the Posted Sales Shipment transaction for rating, booking and tracking writeback. SPS Commerce EDI bundle supported."
-    },
-    {
-      name: "Microsoft Dynamics 365 — Finance & Operations",
-      flavor: "bilateral",
-      modes: "Bilateral (ERP Automation / External API)",
-      tag: "Connect F&O / F&SCM through FreightPOP's ERP Automation and External API — order import, multi-carrier rating and booking, document generation, and carrier + cost + tracking writeback."
-    }
-  ],
-
-  hardware: [
-    {
-      name: "Cubiscan",
-      flavor: "hardware",
-      modes: "Dimensioning & weighing · partner",
-      tag: "Capture verified dimensions and weight from the Cubiscan device straight into FreightPOP, so rating, packaging and BOLs use measured data — not guesses. Eliminates dimension mix-ups and reclass surprises at the dock. FreightPOP × Cubiscan partner enablement in progress.",
-      link: "https://cubiscan.com/"
-    }
-  ]
-};
-/* ═══════════════════ end of editable block ═══════════════════ */
-</script>
+<script src="erp-integrations-data.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; min-height:100vh; padding:52px 60px 40px; overflow-x:hidden; }
@@ -130,6 +52,7 @@ const DATA = {
   <div class="foot"><b>Native</b> = ship from inside your ERP · <b>Bilateral</b> = FreightPOP-driven via your ERP's API · <b>Hardware</b> = device data into FreightPOP. Edit modules/erp-integrations.html — the deck picks it up on reload.</div>
 </div>
 <script>
+  const DATA = window.FP_ERP_DATA || {};
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const flavorClass = (f) => (f === 'native' || f === 'hardware') ? f : 'bilateral';
   document.getElementById('kicker').textContent = DATA.kicker;

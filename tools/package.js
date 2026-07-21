@@ -32,7 +32,11 @@ const version = pkg.version;
 const zipName = `FreightPOP-DemoKit-v${version}.zip`;
 
 // What ships. src-deck/tools/dist stay home — reps get the runnable kit only.
-const INCLUDE = ['app', 'deck', 'Presentation', 'modules', 'docs', 'server.js', 'start-mac.command', 'start-windows.bat', 'README.md', 'BRANDING.md'];
+const INCLUDE = ['app', 'deck', 'Presentation', 'modules', 'docs', 'server.js',
+  'start-mac.command', 'start-windows.bat', 'install-mac.command', 'install-windows.bat',
+  // src-deck + tools ship so the in-kit Editor can rebundle the interactive deck
+  // (tools/bundle.js is zero-dep Node) and the Generator can write assets.
+  'src-deck', 'tools', 'README.md', 'BRANDING.md'];
 
 // ── Stage dist/site ───────────────────────────────────────────────────────
 fs.rmSync(SITE, { recursive: true, force: true });

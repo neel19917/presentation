@@ -4,54 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FreightPOP — The ROI of One Platform</title>
-<script>
-/* ═══════════════════════════════════════════════════════════════════════════
-   ✏️  EDIT ME — this block is the ONLY thing you change.
-   The published customer results and the savings-estimator defaults render
-   from this data. Edit → reload the deck (R in the presenter). No rebuild:
-   the deck embeds this file live as an iframe.
-
-   - `results` are PUBLISHED customer outcomes (freightpop.com customer-success).
-     Confirm with marketing before a show; keep the customer as the source.
-   - The estimator is an ILLUSTRATIVE model — it multiplies the inputs below.
-     Adjust the default assumptions / ranges to fit the room; the math is in
-     the script at the bottom (no rebuild needed to change these numbers).
-   ═══════════════════════════════════════════════════════════════════════════ */
-const DATA = {
-  kicker: "FreightPOP · Value",
-  title: "The ROI of one platform",
-  intro: "One login replaces the carrier portals, the spreadsheets, the manual audit and the re-keying. Here is what that has been worth to shippers already running FreightPOP — and a live estimate for a shipper your size.",
-
-  // Published customer results (freightpop.com customer-success).
-  results: [
-    { stat: "$500K", label: "saved per year on freight", source: "GrowGeneration" },
-    { stat: "10×",   label: "return on the FreightPOP investment", source: "GrowGeneration" },
-    { stat: "50%",   label: "lower shipping cost while doubling volume", source: "Uneekor" },
-    { stat: "95%",   label: "faster order processing", source: "Everflow" }
-  ],
-
-  // Savings estimator — illustrative model. Defaults describe a mid-size shipper.
-  estimator: {
-    intro: "Drag to match your operation — the estimate updates live.",
-    inputs: [
-      { key: "shipments", label: "Shipments per month", min: 100,  max: 20000, step: 100, value: 2000, fmt: "int" },
-      { key: "avgCost",   label: "Average freight cost / shipment", min: 40, max: 1200, step: 10, value: 180, fmt: "usd" },
-      { key: "rateShop",  label: "Rate-shopping savings", min: 0, max: 25, step: 1, value: 12, fmt: "pct",
-        help: "Savings from comparing every carrier + auto-selecting the best compliant rate." },
-      { key: "audit",     label: "Invoice-audit recovery", min: 0, max: 8, step: 1, value: 2, fmt: "pct",
-        help: "Overcharges recovered when every carrier invoice is audited against the booked rate." }
-    ],
-    disclaimer: "Illustrative estimate from the inputs above — not a guarantee. Rate-shopping and audit-recovery percentages vary by lane mix, carrier contracts and current process."
-  },
-
-  links: [
-    { label: "Customer Success", url: "https://www.freightpop.com/customer-success" },
-    { label: "Case Studies",     url: "https://www.freightpop.com/case-studies" },
-    { label: "Book a Demo",      url: "https://www.freightpop.com/demo" }
-  ]
-};
-/* ═══════════════════ end of editable block ═══════════════════ */
-</script>
+<script src="roi-value-data.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; min-height:100vh; padding:52px 60px 40px; overflow-x:hidden; }
@@ -132,6 +85,7 @@ const DATA = {
   <div class="foot">Edit modules/roi-value.html — published results + estimator assumptions live in the EDIT-ME block. The deck picks it up on reload.</div>
 </div>
 <script>
+  const DATA = window.FP_ROI_DATA || {};
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const usd0 = (n) => '$' + Math.round(n).toLocaleString('en-US');
   const usdCompact = (n) => {
