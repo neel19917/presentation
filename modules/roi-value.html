@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreightPOP — The ROI of One Platform</title>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   ✏️  EDIT ME — this block is the ONLY thing you change.
+   The published customer results and the savings-estimator defaults render
+   from this data. Edit → reload the deck (R in the presenter). No rebuild:
+   the deck embeds this file live as an iframe.
+
+   - `results` are PUBLISHED customer outcomes (freightpop.com customer-success).
+     Confirm with marketing before a show; keep the customer as the source.
+   - The estimator is an ILLUSTRATIVE model — it multiplies the inputs below.
+     Adjust the default assumptions / ranges to fit the room; the math is in
+     the script at the bottom (no rebuild needed to change these numbers).
+   ═══════════════════════════════════════════════════════════════════════════ */
+const DATA = {
+  kicker: "FreightPOP · Value",
+  title: "The ROI of one platform",
+  intro: "One login replaces the carrier portals, the spreadsheets, the manual audit and the re-keying. Here is what that has been worth to shippers already running FreightPOP — and a live estimate for a shipper your size.",
+
+  // Published customer results (freightpop.com customer-success).
+  results: [
+    { stat: "$500K", label: "saved per year on freight", source: "GrowGeneration" },
+    { stat: "10×",   label: "return on the FreightPOP investment", source: "GrowGeneration" },
+    { stat: "50%",   label: "lower shipping cost while doubling volume", source: "Uneekor" },
+    { stat: "95%",   label: "faster order processing", source: "Everflow" }
+  ],
+
+  // Savings estimator — illustrative model. Defaults describe a mid-size shipper.
+  estimator: {
+    intro: "Drag to match your operation — the estimate updates live.",
+    inputs: [
+      { key: "shipments", label: "Shipments per month", min: 100,  max: 20000, step: 100, value: 2000, fmt: "int" },
+      { key: "avgCost",   label: "Average freight cost / shipment", min: 40, max: 1200, step: 10, value: 180, fmt: "usd" },
+      { key: "rateShop",  label: "Rate-shopping savings", min: 0, max: 25, step: 1, value: 12, fmt: "pct",
+        help: "Savings from comparing every carrier + auto-selecting the best compliant rate." },
+      { key: "audit",     label: "Invoice-audit recovery", min: 0, max: 8, step: 1, value: 2, fmt: "pct",
+        help: "Overcharges recovered when every carrier invoice is audited against the booked rate." }
+    ],
+    disclaimer: "Illustrative estimate from the inputs above — not a guarantee. Rate-shopping and audit-recovery percentages vary by lane mix, carrier contracts and current process."
+  },
+
+  links: [
+    { label: "Customer Success", url: "https://www.freightpop.com/customer-success" },
+    { label: "Case Studies",     url: "https://www.freightpop.com/case-studies" },
+    { label: "Book a Demo",      url: "https://www.freightpop.com/demo" }
+  ]
+};
+/* ═══════════════════ end of editable block ═══════════════════ */
+</script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; min-height:100vh; padding:52px 60px 40px; overflow-x:hidden; }
+  body::before { content:""; position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(720px 720px at 84% -8%,rgba(64,136,207,.28),rgba(64,136,207,.10) 42%,transparent 70%),
+               radial-gradient(560px 560px at 4% 108%,rgba(61,214,181,.10),transparent 65%); }
+  .wrap { position:relative; max-width:1320px; margin:0 auto; }
+  .kicker { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:#3DD6B5; margin-bottom:12px; display:flex; align-items:center; gap:11px; }
+  .kicker::before { content:""; width:26px; height:1.5px; background:#3DD6B5; display:inline-block; }
+  .head { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:14px; }
+  h1 { font-weight:400; font-size:46px; line-height:1.03; letter-spacing:-.02em; }
+  .intro { font-size:14px; line-height:1.55; color:#B5CDE0; max-width:540px; font-weight:300; }
+  .quicklinks { display:flex; gap:9px; flex-wrap:wrap; margin:16px 0 24px; }
+  .quicklinks a { display:inline-flex; align-items:center; gap:7px; padding:8px 15px; border:1px solid rgba(61,214,181,.5); border-radius:999px; color:#3DD6B5; text-decoration:none; font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; transition:background .2s; }
+  .quicklinks a:hover { background:rgba(61,214,181,.12); }
+  h2 { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:#7A96B0; margin:0 0 14px; }
+
+  .results { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:30px; }
+  .result { position:relative; background:#0A2540; border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:22px 22px 18px; box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
+  .result .stat { font-family:'Manrope',sans-serif; font-weight:400; font-size:52px; line-height:.95; letter-spacing:-.03em; color:#3DD6B5; font-variant-numeric:tabular-nums; text-shadow:0 0 40px rgba(61,214,181,.30); }
+  .result .rlabel { font-size:13.5px; line-height:1.45; color:#B5CDE0; margin-top:12px; }
+  .result .src { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:#7A96B0; margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,.10); }
+
+  .calc { display:grid; grid-template-columns:1.15fr .85fr; gap:26px; align-items:stretch; }
+  .panel { background:#0A2540; border:1px solid rgba(255,255,255,.10); border-radius:16px; padding:24px 26px; box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
+  .calc-intro { font-size:13px; color:#B5CDE0; margin:0 0 20px; font-weight:300; }
+  .field { margin-bottom:20px; }
+  .field:last-child { margin-bottom:0; }
+  .field .frow { display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:9px; }
+  .field .flabel { font-size:14px; color:#E7F0F8; font-weight:500; }
+  .field .fval { font-family:'DM Mono',monospace; font-size:16px; color:#3DD6B5; font-variant-numeric:tabular-nums; }
+  .field .fhelp { font-size:11.5px; line-height:1.4; color:#7A96B0; margin-top:7px; font-weight:300; }
+  input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:5px; border-radius:999px; background:rgba(255,255,255,.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:19px; height:19px; border-radius:50%; background:#3DD6B5; cursor:pointer; box-shadow:0 0 0 4px rgba(61,214,181,.18),0 2px 8px rgba(0,0,0,.4); border:none; }
+  input[type=range]::-moz-range-thumb { width:19px; height:19px; border-radius:50%; background:#3DD6B5; cursor:pointer; border:none; box-shadow:0 0 0 4px rgba(61,214,181,.18); }
+
+  .out { display:flex; flex-direction:column; justify-content:center; background:linear-gradient(160deg,rgba(61,214,181,.10),rgba(64,136,207,.05)); border:1px solid rgba(61,214,181,.30); box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 54px rgba(61,214,181,.08); }
+  .out .olabel { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#7A96B0; }
+  .out .obig { font-family:'Manrope',sans-serif; font-weight:400; font-size:66px; line-height:1; letter-spacing:-.03em; color:#3DD6B5; font-variant-numeric:tabular-nums; text-shadow:0 0 48px rgba(61,214,181,.35); margin:8px 0 4px; }
+  .out .osub { font-size:13px; color:#B5CDE0; }
+  .breakdown { margin-top:22px; border-top:1px solid rgba(255,255,255,.12); padding-top:16px; display:flex; flex-direction:column; gap:11px; }
+  .brow { display:flex; justify-content:space-between; align-items:baseline; font-size:13.5px; }
+  .brow .bk { color:#B5CDE0; }
+  .brow .bv { font-family:'DM Mono',monospace; color:#E7F0F8; font-variant-numeric:tabular-nums; }
+  .disclaimer { font-size:11px; line-height:1.5; color:#7A96B0; margin-top:16px; font-weight:300; }
+  .foot { margin-top:20px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:#7A96B0; }
+  .foot b { color:#3DD6B5; font-weight:500; }
+  @media (max-width:1100px){ .results{grid-template-columns:repeat(2,1fr);} .calc{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker" id="kicker"></div>
+  <div class="head">
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+  </div>
+  <div class="quicklinks" id="links"></div>
+
+  <h2>Published Customer Results</h2>
+  <div class="results" id="results"></div>
+
+  <h2>Estimate Your Savings</h2>
+  <div class="calc">
+    <div class="panel">
+      <p class="calc-intro" id="calcIntro"></p>
+      <div id="fields"></div>
+    </div>
+    <div class="panel out">
+      <div class="olabel">Estimated annual savings</div>
+      <div class="obig" id="totalOut">$0</div>
+      <div class="osub" id="spendOut"></div>
+      <div class="breakdown" id="breakdown"></div>
+      <div class="disclaimer" id="disclaimer"></div>
+    </div>
+  </div>
+
+  <div class="foot">Edit modules/roi-value.html — published results + estimator assumptions live in the EDIT-ME block. The deck picks it up on reload.</div>
+</div>
+<script>
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const usd0 = (n) => '$' + Math.round(n).toLocaleString('en-US');
+  const usdCompact = (n) => {
+    if (n >= 1e6) return '$' + (n/1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/,'') + 'M';
+    if (n >= 1e3) return '$' + Math.round(n/1e3) + 'K';
+    return '$' + Math.round(n);
+  };
+  const fmtVal = (fmt, v) => fmt === 'usd' ? usd0(v) : fmt === 'pct' ? v + '%' : Number(v).toLocaleString('en-US');
+
+  document.getElementById('kicker').textContent = DATA.kicker;
+  document.getElementById('title').textContent = DATA.title;
+  document.getElementById('intro').textContent = DATA.intro;
+  document.getElementById('links').innerHTML = (DATA.links || []).map(l =>
+    `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join('');
+
+  document.getElementById('results').innerHTML = (DATA.results || []).map(r =>
+    `<div class="result"><div class="stat">${esc(r.stat)}</div><div class="rlabel">${esc(r.label)}</div><div class="src">${esc(r.source)}</div></div>`).join('');
+
+  const E = DATA.estimator;
+  document.getElementById('calcIntro').textContent = E.intro;
+  document.getElementById('disclaimer').textContent = E.disclaimer;
+
+  const state = {};
+  E.inputs.forEach(i => state[i.key] = i.value);
+
+  document.getElementById('fields').innerHTML = E.inputs.map(i =>
+    `<div class="field">
+       <div class="frow"><span class="flabel">${esc(i.label)}</span><span class="fval" id="v_${i.key}">${fmtVal(i.fmt, i.value)}</span></div>
+       <input type="range" id="r_${i.key}" min="${i.min}" max="${i.max}" step="${i.step}" value="${i.value}">
+       ${i.help ? `<div class="fhelp">${esc(i.help)}</div>` : ''}
+     </div>`).join('');
+
+  function recompute() {
+    const annualSpend = state.shipments * state.avgCost * 12;
+    const rateShopSavings = annualSpend * (state.rateShop / 100);
+    const auditSavings = annualSpend * (state.audit / 100);
+    const total = rateShopSavings + auditSavings;
+    document.getElementById('totalOut').textContent = usdCompact(total);
+    document.getElementById('spendOut').textContent = 'on ' + usd0(annualSpend) + ' of annual freight spend';
+    document.getElementById('breakdown').innerHTML =
+      `<div class="brow"><span class="bk">Rate-shopping savings</span><span class="bv">${usd0(rateShopSavings)}/yr</span></div>`
+    + `<div class="brow"><span class="bk">Invoice-audit recovery</span><span class="bv">${usd0(auditSavings)}/yr</span></div>`
+    + `<div class="brow"><span class="bk" style="color:#E7F0F8;font-weight:500">Total annual savings</span><span class="bv" style="color:#3DD6B5">${usd0(total)}/yr</span></div>`;
+  }
+
+  E.inputs.forEach(i => {
+    const r = document.getElementById('r_' + i.key);
+    r.addEventListener('input', () => {
+      state[i.key] = Number(r.value);
+      document.getElementById('v_' + i.key).textContent = fmtVal(i.fmt, r.value);
+      recompute();
+    });
+  });
+  recompute();
+</script>
+</body>
+</html>

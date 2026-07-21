@@ -240,6 +240,18 @@ window.FP_DECK = {
         'Grounded in Confluence ERP Integration Docs + Fathom (Jul 2026). Also opens from the Platform deck main-menu ERP quadrant.',
     },
 
+    // ══ VALUE ══ ROI / value slide with an interactive savings estimator
+    {
+      url: '/modules/roi-value.html',
+      fit: 'native',
+      title: 'The ROI of One Platform',
+      section: 'Value',
+      notes:
+        'Editable showcase — modules/roi-value.html (EDIT ME data block). Published customer results + a LIVE savings estimator (drag the sliders; annual savings recompute in real time).\n' +
+        'Published stats: GrowGeneration $500K/yr + 10x ROI · Uneekor 50% lower cost (2x volume) · Everflow 95% faster processing — verified on freightpop.com/customer-success.\n' +
+        'Estimator is an ILLUSTRATIVE model (shipments × avg cost × 12 → rate-shopping % + invoice-audit % savings). Tune the assumptions to the room; disclaimer is shown on the slide.',
+    },
+
     // ══ EXPLAINERS ══ standalone deep-dive films
     {
       url: '/modules/route-optimization-explainer.html',
