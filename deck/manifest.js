@@ -150,6 +150,21 @@ window.FP_DECK = {
       notes: 'Auto-plays (82s). NetSuite PO → tracked inbound shipment → milestone timeline to the dock → tracking writes back to the PO.',
     },
 
+    // ══ INTEGRATIONS ══ ERP + hardware connections (editable page; also the deck's ERP screen)
+    {
+      url: '/modules/erp-integrations.html',
+      fit: 'native',
+      title: 'ERP & Systems Integrations',
+      section: 'Integrations',
+      // Same page renders inside the deck's main-menu ERP quadrant (view: erp).
+      deckHost: { view: 'erp' },
+      notes:
+        'Editable showcase — modules/erp-integrations.html (EDIT ME data block). Native vs bilateral vs hardware.\n' +
+        'ERPs: NetSuite (SuiteApp, Ship Central alternative) · Acumatica (native plug-in + Plug & Play, certified ISV) · SAP S/4HANA (Public Cloud, Outbound Delivery) · Sage X3 (SOAP) · Dynamics 365 Business Central (token/OData, Posted Sales Shipments, SPS bundle) · Dynamics 365 F&O (ERP Automation / External API).\n' +
+        'Hardware: Cubiscan — verified dims/weight into FreightPOP (no dimension mix-ups / reclass). Partner enablement in progress.\n' +
+        'Grounded in Confluence ERP Integration Docs + Fathom (Jul 2026). Also opens from the Platform deck main-menu ERP quadrant.',
+    },
+
     // ══ EXPLAINERS ══ standalone deep-dive films
     {
       url: '/modules/route-optimization-explainer.html',
