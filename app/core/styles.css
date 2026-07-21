@@ -221,3 +221,40 @@ button { font: inherit; cursor: pointer; }
 }
 #grid-overlay .step-chip:hover { border-color: var(--sky); color: #fff; }
 #grid-overlay .step-chip.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+/* ── Guided story mode ─────────────────────────────────────────────────── */
+.pbtn.active { background: #7c5cf0; border-color: #8b7cf6; color: #fff; }
+
+/* Story picker overlay — reuses the grid overlay shell */
+#story-overlay {
+  display: none; position: fixed; inset: 0; z-index: 60;
+  background: rgba(8, 13, 26, 0.94); padding: 40px 48px; overflow: auto;
+}
+#story-overlay.open { display: block; }
+#story-overlay h2 { color: #fff; font-size: 18px; margin-bottom: 20px; font-weight: 700; }
+#story-overlay h2 small { color: var(--console-sub); font-weight: 400; margin-left: 10px; font-size: 12.5px; }
+#story-content { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; max-width: 1100px; }
+#story-content .gslide {
+  text-align: left; padding: 18px 20px; border-radius: 12px; background: var(--console-panel);
+  border: 1px solid var(--console-line); border-left: 3px solid #8b7cf6; color: var(--console-ink); cursor: pointer;
+}
+#story-content .gslide:hover { border-color: #8b7cf6; background: #1a2438; }
+#story-content .gslide .t { font-size: 16px; font-weight: 700; }
+#story-content .gslide .n { font-size: 12px; color: var(--console-sub); margin-top: 6px; }
+
+/* Docked script panel (presenter-only) */
+#story-panel {
+  display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 55;
+  background: linear-gradient(180deg, rgba(19,28,49,0.98), rgba(11,17,32,0.99));
+  border-top: 2px solid #8b7cf6; box-shadow: 0 -12px 40px rgba(0,0,0,0.5);
+  padding: 14px 22px 18px;
+}
+#story-panel.on { display: block; }
+#story-panel .sp-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+#story-panel .sp-name { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+#story-panel .sp-vert { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #b9aefb; }
+#story-panel .sp-count { font-size: 12px; color: var(--console-sub); font-variant-numeric: tabular-nums; }
+#story-panel .sp-script {
+  font-size: 21px; line-height: 1.42; color: #f1f5ff; font-weight: 500;
+  max-width: 1500px; letter-spacing: -0.005em;
+}

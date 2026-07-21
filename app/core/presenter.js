@@ -78,6 +78,7 @@
   // remote interactions (someone clicking the big screen) apply here too.
   let dcInfo = null;   // screen map reported by the deck
   let dcState = null;  // latest known internal state {view, fi, step, sysKey}
+  let pendingStoryDc = null; // a story dc-jump waiting for the deck bridge to come up
   stageCur.onDc((d) => {
     if (d.kind === 'ready') {
       dcInfo = d.info || dcInfo;
@@ -85,6 +86,10 @@
       buildGrid();
       buildConfig();
       renderDcStatus();
+      // A story beat that just switched to the interactive deck slide parked its
+      // dc jump here — the bridge is live now, so apply it (this wins over the
+      // deck's own initial-state re-announce below).
+      if (pendingStoryDc) { const p = pendingStoryDc; pendingStoryDc = null; dcGoto(p); return; }
       // Re-announce truth so any already-open audience window aligns.
       if (d.state) deck.dcBroadcast({ kind: 'state', state: d.state });
       return;
@@ -509,12 +514,137 @@
   el('notes-bigger').addEventListener('click', () => { notesSize = Math.min(28, notesSize + 1); applyNotesSize(); });
   el('notes-smaller').addEventListener('click', () => { notesSize = Math.max(11, notesSize - 1); applyNotesSize(); });
 
+  // ── Guided story mode ──────────────────────────────────────────────────
+  // A story is an ordered beat sheet (deck/stories.js). Each beat targets a
+  // manifest slide, an in-deck screen/module (dcGoto), and/or a film chapter
+  // (videoSeek) — all of which already broadcast to the audience window, so the
+  // big screen follows. The script overlay is PRESENTER-ONLY. Free nav stays
+  // the default; story mode is opt-in and non-destructive.
+  const STORIES = window.FP_STORIES || {};
+  const deckSlideIdx = slides.findIndex((s) => s.sync === 'dc');
+  let storyId = null;      // active story id (null = off)
+  let beatIdx = 0;
+  const storyOverlay = el('story-overlay');
+  const storyPanel = el('story-panel');
+
+  function resolveSlide(ref) {
+    if (typeof ref === 'number') return ref;
+    if (typeof ref === 'string') {
+      const i = slides.findIndex((s) => s.url === ref || (s.url && s.url.indexOf(ref) !== -1));
+      return i >= 0 ? i : 0;
+    }
+    return 0;
+  }
+  function runBeat(b) {
+    if (!b) return;
+    el('sp-script').textContent = b.script || '';
+    const story = STORIES[storyId];
+    el('sp-count').textContent = 'Beat ' + (beatIdx + 1) + ' / ' + story.beats.length;
+    const wasOnDeck = deck.state.i === deckSlideIdx;
+    // 1) manifest slide jump
+    if (b.slide != null) {
+      const idx = resolveSlide(b.slide);
+      if (deck.state.i !== idx) deck.goto(idx);
+    } else if (b.dc) {
+      // dc jumps operate on the interactive-deck iframe — make sure it's the
+      // active slide first.
+      if (deck.state.i !== deckSlideIdx && deckSlideIdx >= 0) deck.goto(deckSlideIdx);
+    }
+    // 2) in-deck screen/module jump
+    if (b.dc) {
+      const freshMount = !wasOnDeck && b.slide == null; // we just switched to the deck slide
+      if (freshMount) pendingStoryDc = b.dc;             // apply once the bridge reports ready
+      else dcGoto(b.dc);
+    }
+    // 3) film chapter seek (videoSeek self-retries while an embed is still mounting)
+    if (b.video && b.video.channel) {
+      const delay = (b.slide != null || (b.dc && !wasOnDeck)) ? 700 : 150;
+      setTimeout(() => videoSeek(b.video.channel, b.video.t || 0), delay);
+    }
+  }
+  function enterStory(id) {
+    if (!STORIES[id]) return;
+    storyId = id; beatIdx = 0;
+    const story = STORIES[id];
+    el('sp-name').textContent = story.name;
+    el('sp-vert').textContent = story.vertical || '';
+    storyPanel.classList.add('on');
+    el('btn-story').classList.add('active');
+    closeStoryPicker();
+    runBeat(story.beats[0]);
+  }
+  function exitStory() {
+    storyId = null;
+    storyPanel.classList.remove('on');
+    el('btn-story').classList.remove('active');
+  }
+  function storyNext() {
+    const story = STORIES[storyId]; if (!story) return;
+    if (beatIdx < story.beats.length - 1) { beatIdx++; runBeat(story.beats[beatIdx]); }
+  }
+  function storyPrev() {
+    const story = STORIES[storyId]; if (!story) return;
+    if (beatIdx > 0) { beatIdx--; runBeat(story.beats[beatIdx]); }
+  }
+  function buildStoryPicker() {
+    const wrap = el('story-content');
+    wrap.innerHTML = '';
+    Object.keys(STORIES).forEach((id) => {
+      const s = STORIES[id];
+      const b = document.createElement('button');
+      b.className = 'gslide';
+      b.innerHTML = '<div class="t"></div><div class="n"></div>';
+      b.querySelector('.t').textContent = s.name;
+      b.querySelector('.n').textContent = (s.vertical || '') + ' · ' + s.beats.length + ' beats';
+      b.addEventListener('click', () => enterStory(id));
+      wrap.appendChild(b);
+    });
+  }
+  function openStoryPicker() { buildStoryPicker(); storyOverlay.classList.add('open'); }
+  function closeStoryPicker() { storyOverlay.classList.remove('open'); }
+  function toggleStory() {
+    if (storyId) { exitStory(); return; }
+    if (storyOverlay.classList.contains('open')) closeStoryPicker(); else openStoryPicker();
+  }
+  el('btn-story').addEventListener('click', toggleStory);
+  el('sp-next').addEventListener('click', storyNext);
+  el('sp-prev').addEventListener('click', storyPrev);
+  el('sp-exit').addEventListener('click', exitStory);
+  storyOverlay.addEventListener('click', (e) => { if (e.target === storyOverlay) closeStoryPicker(); });
+
+  // Capture-phase interception: while a story is active, arrows/Space drive the
+  // BEAT SHEET, not the deck. Capture + stopImmediatePropagation runs before the
+  // framework's bubble-phase key handler AND before the relay path, so beat nav
+  // works even while the interactive (relay) deck slide is on screen.
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const t = e.target;
+    if (t && t.matches && t.matches('input, textarea, select, [contenteditable="true"]')) return;
+    if (!storyId) return;
+    const k = e.key;
+    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter') { storyNext(); e.preventDefault(); e.stopImmediatePropagation(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { storyPrev(); e.preventDefault(); e.stopImmediatePropagation(); }
+    else if (k === 'Escape') { exitStory(); e.preventDefault(); e.stopImmediatePropagation(); }
+  }, true);
+  // Same interception for keys forwarded from inside the deck iframe (focus sits
+  // in the preview). Registered BEFORE bindKeys' message listener so it wins.
+  window.addEventListener('message', (e) => {
+    if (!storyId) return;
+    const d = e.data || {};
+    if (d.fp !== 'key') return;
+    const k = d.key;
+    if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'Enter') { storyNext(); e.stopImmediatePropagation(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { storyPrev(); e.stopImmediatePropagation(); }
+    else if (k === 'Escape') { exitStory(); e.stopImmediatePropagation(); }
+  }, true);
+
   // ── Keys ───────────────────────────────────────────────────────────────
   el('btn-replay').addEventListener('click', dcReplay);
   bindKeys(deck, Object.assign({
     g: toggleGrid, G: toggleGrid,
     t: resetTimer, T: resetTimer,
     a: dcReplay, A: dcReplay,
+    y: toggleStory, Y: toggleStory,
     Escape: closeGrid,
   }, videoKeys));
   // Escape is relayed into synced decks (to close their overlays), so close

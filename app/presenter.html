@@ -19,6 +19,7 @@
     <button class="pbtn" id="btn-timer">Start timer</button>
     <button class="pbtn" id="btn-timer-reset" title="Reset timer (T)">Reset</button>
     <button class="pbtn" id="btn-replay" title="Replay this screen's animations on both screens (A)" style="display:none;">↻ Replay anim</button>
+    <button class="pbtn" id="btn-story" title="Guided story mode (Y)">Story</button>
     <button class="pbtn" id="btn-grid" title="Slide grid (G)">Grid</button>
     <button class="pbtn primary" id="btn-audience">Open audience window</button>
   </div>
@@ -83,7 +84,25 @@
 
   <div id="grid-overlay"><h2>All slides <small>click to jump · G or Esc to close</small></h2><div id="grid-content"></div></div>
 
+  <!-- Guided story picker -->
+  <div id="story-overlay"><h2>Guided stories <small>pick a track · Esc to close</small></h2><div id="story-content"></div></div>
+
+  <!-- Guided story script panel (presenter-only, docked bottom) -->
+  <div id="story-panel">
+    <div class="sp-head">
+      <span class="sp-name" id="sp-name"></span>
+      <span class="sp-vert" id="sp-vert"></span>
+      <span class="sp-count" id="sp-count"></span>
+      <span style="flex:1"></span>
+      <button class="pbtn" id="sp-prev" title="Previous beat (←)">‹ Prev</button>
+      <button class="pbtn primary" id="sp-next" title="Next beat (→ / Space)">Next ›</button>
+      <button class="pbtn" id="sp-exit" title="Exit story mode (Esc / Y)">Exit</button>
+    </div>
+    <div class="sp-script" id="sp-script"></div>
+  </div>
+
   <script src="../deck/manifest.js"></script>
+  <script src="../deck/stories.js"></script>
   <script src="core/sync.js"></script>
   <script src="core/framework.js"></script>
   <script src="core/presenter.js"></script>
