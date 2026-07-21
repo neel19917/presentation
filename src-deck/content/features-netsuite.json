@@ -20,7 +20,8 @@
         "AutoCalc rates the transaction automatically; dual rate shop compares contract and spot",
         "Auto Select Best Option books the cheapest compliant rate with zero clicks",
         "Accessorials supported on the transaction; services filter by subsidiary",
-        "Freight cost at the Quote stage — know your margin before you commit"
+        "Freight cost at the Quote stage — know your margin before you commit",
+        "The proven alternative to NetSuite's native Ship Central — an existing SuiteApp, not a build-from-scratch project"
       ]
     },
     "demo": {
@@ -31,7 +32,7 @@
     "roi": {
       "stat": "0",
       "statLabel": "carrier portals opened to book a shipment",
-      "proof": "Rating, booking, documents and tracking all happen on the NetSuite record via the FreightPOP SuiteApp — built for NetSuite 2026.1 and updated continuously."
+      "proof": "Rating, booking, documents and tracking all happen on the NetSuite record via the FreightPOP SuiteApp — built for NetSuite 2026.1, updated continuously, and chosen over NetSuite's native Ship Central by shippers who want it working in weeks, not a build project."
     }
   },
   {

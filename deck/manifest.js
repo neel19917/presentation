@@ -55,7 +55,8 @@ window.FP_DECK = {
       ],
       notes:
         'Auto-plays (102s). The AI flagship: Accessorial Agent (map + Street View + confidence recs, audit-trail attribution) → Copilot Q&A → predictive Last Free Date / ETAs into NetSuite → cost-model route optimization with pin-and-rerun → invoice-audit radar.\n' +
-        'All five are REAL, shipping features (June 2026 release). Premium FreightPOP AI lineup.',
+        'All five are REAL, shipping features (June 2026 release). Premium FreightPOP AI lineup.\n' +
+        'REAL demo language (Invoice Audit demo, Jul 10 2026): agent names the variance cause ("$75 liftgate we weren\'t expecting") and offers to save the rule to that destination; on detention it compares driver-logged time vs carrier-billed time against the loaded contract and escalates the dispute through the carrier on the customer\'s behalf. Accessorial Agent checks the address history AND Google Earth for a loading dock. Anchor pain: one prospect had 3,600 carrier invoices sitting unreconciled.',
     },
 
     // ══ NETSUITE DEMO TRACK ══ 6 films in module order (also embedded in the deck's NetSuite track)
@@ -75,7 +76,8 @@ window.FP_DECK = {
         'Auto-plays (96s). Space: play/pause · ←/→: chapter jump — synced between preview and big screen.\n' +
         'Chapters: Intro → Order → AutoCalc → Book → Sync → Audit → Proof (customer quotes) → Results (published stats).\n' +
         'Talking points: Built for NetSuite certified · bi-directional sync every 10 min, no middleware · AutoCalc + Auto Select Best Option · invoice audit before posting.\n' +
-        'Published results shown: GrowGeneration $500K/yr + 10x ROI · Uneekor 50% cost · Everflow 95% faster processing.',
+        'Published results shown: GrowGeneration $500K/yr + 10x ROI · Uneekor 50% cost · Everflow 95% faster processing.\n' +
+        'COMPETITIVE (from live NetSuite evals, Jul 2026): position against NetSuite native "Ship Central" — FreightPOP is an existing SuiteApp, not a build-from-scratch project, live in weeks not months. #1 reason customers cite for choosing/keeping FreightPOP: support responsiveness. Multi-entity shippers: services filter by subsidiary.',
     },
 
     {

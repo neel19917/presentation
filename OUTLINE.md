@@ -503,12 +503,13 @@
 - Auto Select Best Option books the cheapest compliant rate with zero clicks
 - Accessorials supported on the transaction; services filter by subsidiary
 - Freight cost at the Quote stage — know your margin before you commit
+- The proven alternative to NetSuite's native Ship Central — an existing SuiteApp, not a build-from-scratch project
 ### Live Demo
-- **Caption:** A sales order rates itself inside NetSuite — AutoCalc plus Auto Select books the best option without opening another tab.
+- **Caption:** The certified SuiteApp rates, books, tracks and audits a NetSuite order end to end — watch the full flow.
 ### Validation
 - **Stat:** 0
 - **Stat label:** carrier portals opened to book a shipment
-- **Proof:** Rating, booking, documents and tracking all happen on the NetSuite record via the FreightPOP SuiteApp — built for NetSuite 2026.1 and updated continuously.
+- **Proof:** Rating, booking, documents and tracking all happen on the NetSuite record via the FreightPOP SuiteApp — built for NetSuite 2026.1, updated continuously, and chosen over NetSuite's native Ship Central by shippers who want it working in weeks, not a build project.
 
 ## NETSUITE 02 — Order-to-Ship Sync
 - **Title line 1:** Order-to-Ship
