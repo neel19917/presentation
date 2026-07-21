@@ -266,6 +266,32 @@ window.FP_DECK = {
       notes: 'Auto-plays (82s). Status trapped in a dozen carrier sites → one live map (parcel/LTL/FTL/ocean) → milestone timeline booking→POD → AI exception agent predicts a slip + flags ocean Last Free Date before demurrage. The exceptions come to you.',
     },
 
+    // ══ REAL PRODUCT UI ══ actual FreightPOP screenshots (pulled from Confluence),
+    // shown as-is + AI-augmented with callout overlays. Assets in modules/real-ui/.
+    {
+      url: '/modules/product-ui.html',
+      fit: 'native',
+      title: 'The Real Product — Live UI',
+      section: 'Real Product UI',
+      notes:
+        'Real FreightPOP screenshots (not mockups) pulled from the Confluence Knowledge Center + ERP Integration docs: AI Copilot on Order Management, Copilot on Quote/Ship, the Accessorial Agent, and the certified Acumatica plug-in.\n' +
+        'Editable gallery — modules/real-ui/shots-data.js (single source of truth; also drives the AI-augmented slides + the standalone screenshot deck at app/screens.html).',
+    },
+    {
+      url: '/modules/real-ui/shot.html?id=copilot-om',
+      fit: 'native',
+      title: 'AI Copilot — Augmented',
+      section: 'Real Product UI',
+      notes: 'REAL Order Management screen with AI-callout overlays: the natural-language Copilot panel + AI analytics/reporting/audit in the nav. Same screenshot, augmented to show where the AI acts.',
+    },
+    {
+      url: '/modules/real-ui/shot.html?id=acu-shopforrates',
+      fit: 'native',
+      title: 'Ship Inside Acumatica — Augmented',
+      section: 'Real Product UI',
+      notes: 'REAL Acumatica "Shop For Rates" plug-in screen with AI-callout overlays: AutoCalc packaging + dual rate shop / auto-select best rate, native on the Sales Order.',
+    },
+
     // ══ INTEGRATIONS ══ ERP + hardware connections (editable page; also the deck's ERP screen)
     {
       url: '/modules/erp-integrations.html',

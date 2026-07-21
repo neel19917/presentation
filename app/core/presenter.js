@@ -207,7 +207,9 @@
 
   // ── Audience window ────────────────────────────────────────────────────
   el('btn-audience').addEventListener('click', () => {
-    window.open('audience.html', 'fp-audience', 'width=1280,height=720');
+    // A deck variant (e.g. app/screens.html) can point at its own audience shell
+    // by setting window.FP_AUDIENCE_URL before this script loads.
+    window.open(window.FP_AUDIENCE_URL || 'audience.html', 'fp-audience', 'width=1280,height=720');
   });
 
   // ── Slide grid overlay ─────────────────────────────────────────────────

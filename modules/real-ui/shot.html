@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreightPOP — Real Product UI</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; }
+  body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; overflow:hidden;
+    display:flex; flex-direction:column; }
+  body::before { content:""; position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(760px 760px at 84% -8%,rgba(64,136,207,.26),rgba(64,136,207,.10) 42%,transparent 70%),
+               radial-gradient(560px 560px at 4% 108%,rgba(61,214,181,.09),transparent 65%); }
+  .top { position:relative; z-index:2; padding:26px 40px 10px; flex:0 0 auto; }
+  .kicker { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:#B9AEFB; display:flex; align-items:center; gap:11px; }
+  .kicker::before { content:""; width:26px; height:1.5px; background:#8b7cf6; display:inline-block; }
+  h1 { font-weight:400; font-size:34px; line-height:1.05; letter-spacing:-.02em; margin-top:8px; }
+  .stage { position:relative; z-index:2; flex:1 1 auto; display:flex; align-items:center; justify-content:center; padding:6px 40px 8px; min-height:0; }
+  .shot { position:relative; display:inline-block; border-radius:12px; overflow:hidden;
+    box-shadow:0 24px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.10); }
+  .shot img { display:block; max-width:100%; max-height:74vh; }
+  .ovl { position:absolute; inset:0; pointer-events:none; }
+  .ring { position:absolute; border:2px solid #8b7cf6; border-radius:9px; box-shadow:0 0 0 3px rgba(139,124,246,.22), 0 0 22px rgba(139,124,246,.45); background:rgba(139,124,246,.06); }
+  .lbl { position:absolute; max-width:290px; transform:translate(-0%, 0); background:rgba(24,20,48,.96);
+    border:1px solid rgba(139,124,246,.55); border-radius:11px; padding:11px 13px; box-shadow:0 10px 30px rgba(0,0,0,.45);
+    font-size:13.5px; line-height:1.4; color:#EDE9FF; font-weight:400; }
+  .lbl .tag { display:inline-flex; align-items:center; gap:6px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500;
+    letter-spacing:.14em; text-transform:uppercase; color:#B9AEFB; background:rgba(139,124,246,.18); border:1px solid rgba(139,124,246,.42);
+    padding:3px 9px; border-radius:999px; margin-bottom:7px; }
+  .caption { position:relative; z-index:2; flex:0 0 auto; padding:6px 40px 24px; font-size:15px; line-height:1.5; color:#B5CDE0; font-weight:300; max-width:1180px; }
+  .caption .src { display:block; margin-top:6px; font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:#64789a; }
+  .connect { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; }
+  .connect line { stroke:#8b7cf6; stroke-width:1.5; stroke-dasharray:4 3; opacity:.8; }
+  .connect circle { fill:#8b7cf6; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="title"></h1>
+  </div>
+  <div class="stage">
+    <div class="shot" id="shot">
+      <img id="img" alt="FreightPOP screenshot">
+      <svg class="connect" id="connect" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      <div class="ovl" id="ovl"></div>
+    </div>
+  </div>
+  <div class="caption"><span id="caption"></span><span class="src" id="src"></span></div>
+
+<script src="shots-data.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id') || (window.FP_SHOT_ORDER && window.FP_SHOT_ORDER[0]);
+  const raw = params.get('raw') === '1';
+  const shot = (window.FP_SHOTS || {})[id];
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  if (shot) {
+    document.getElementById('kicker').textContent = shot.kicker || '';
+    document.getElementById('title').textContent = shot.title || '';
+    document.getElementById('caption').textContent = shot.caption || '';
+    document.getElementById('src').textContent = shot.source ? ('Source · ' + shot.source) : '';
+    const img = document.getElementById('img');
+    img.src = 'assets/' + shot.file;
+
+    function drawOverlays() {
+      const ovl = document.getElementById('ovl');
+      const svg = document.getElementById('connect');
+      ovl.innerHTML = ''; svg.innerHTML = '';
+      if (raw || !shot.overlays) return;
+      shot.overlays.forEach((o) => {
+        const r = o.ring, l = o.label;
+        // ring
+        const ring = document.createElement('div');
+        ring.className = 'ring';
+        ring.style.left = r.x + '%'; ring.style.top = r.y + '%';
+        ring.style.width = r.w + '%'; ring.style.height = r.h + '%';
+        ovl.appendChild(ring);
+        // label chip
+        const lab = document.createElement('div');
+        lab.className = 'lbl';
+        lab.style.left = l.x + '%'; lab.style.top = l.y + '%';
+        lab.innerHTML = '<span class="tag">✦ AI</span>' + esc(o.text);
+        ovl.appendChild(lab);
+        // connector: label anchor → ring center (percent coords via non-uniform viewBox)
+        const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', l.x + 4); line.setAttribute('y1', l.y + 4);
+        line.setAttribute('x2', cx); line.setAttribute('y2', cy);
+        svg.appendChild(line);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('r', 0.8);
+        svg.appendChild(dot);
+      });
+    }
+    if (img.complete) drawOverlays(); else img.addEventListener('load', drawOverlays);
+    window.addEventListener('resize', drawOverlays);
+  } else {
+    document.getElementById('title').textContent = 'Screenshot not found: ' + (id || '(none)');
+  }
+</script>
+</body>
+</html>
