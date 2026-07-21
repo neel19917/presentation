@@ -223,6 +223,78 @@
 - **Stat label:** for carriers, docks and labor
 - **Proof:** Predictable arrival windows level your labor and stop surprise detention charges.
 
+## TMS 10 — Analytics & Reporting
+- **Title line 1:** Analytics
+- **Title line 2:** & Reporting
+- **Tagline:** Carrier, lane and cost scorecards — freight decisions on data, not hunches
+- **AI callout:** AI surfaces the outliers for you — the lane that quietly got 12% more expensive, the carrier whose on-time slipped — so the quarterly review starts with the answer, not the export.
+### Problem
+- **Heading:** Your freight data is trapped in a hundred invoices.
+- **Body:** Spend lives in carrier portals, spreadsheets and PDFs. Building a carrier scorecard or a lane-cost trend means a week of manual export and pivot tables — and by the time the report exists, the quarter is already over.
+- **Quote:** The reports were basically unusable — we could not see what we were spending by carrier or lane.
+- **Quote by:** — Logistics lead, industrial distributor (illustrative persona)
+### Benefit
+- **Heading:** Every shipment, scored and charted the moment it books.
+- Prebuilt dashboards for spend by carrier, lane, mode and business unit
+- On-time performance and exception scorecards for every carrier
+- Cost-per-pound and cost-per-shipment trends over any date range
+- Export-ready reports for QBRs and carrier-rate negotiations
+- Drill from any chart straight to the shipments behind it
+### Live Demo
+- **Caption:** A shipment books and the carrier, lane and cost dashboards update live — drill from a spend chart to the exact shipments behind it.
+### Validation
+- **Stat:** 1
+- **Stat label:** source of truth for every freight dollar
+- **Proof:** Spend, service and lane performance live in one place — the QBR deck builds itself, and carrier negotiations start from data the carrier cannot dispute.
+
+## TMS 11 — Freight & Invoice Audit
+- **Title line 1:** Freight
+- **Title line 2:** Invoice Audit
+- **Tagline:** Every carrier invoice checked against the rate you booked — automatically
+- **AI callout:** The AI audit radar names the variance cause — "a $75 liftgate we weren't expecting" — and offers to save the rule to that address so the same surprise never re-bills.
+### Problem
+- **Heading:** Nobody audits the freight bills. There are too many.
+- **Body:** Carrier invoices arrive by the thousand, each one a chance to be over-billed for an accessorial, a reweigh or a detention charge nobody agreed to. Manual audit is impossible at that volume, so the overcharges just get paid.
+- **Quote:** One prospect had three thousand six hundred carrier invoices sitting unreconciled.
+- **Quote by:** — FreightPOP invoice-audit demo, Jul 2026
+### Benefit
+- **Heading:** An audit radar that catches the variance and names the cause.
+- Every invoice matched to the booked rate; variances flagged automatically
+- In-tolerance differences auto-approve — only real exceptions reach a human
+- EDI invoices auto-file into the audit queue with no manual entry
+- Detention disputes compare driver-logged vs carrier-billed time against the loaded contract
+- Recovered overcharges and dispute status tracked end to end
+### Live Demo
+- **Caption:** A carrier invoice lands, the audit radar flags a $75 accessorial variance, names the cause, and offers to save the rule to that destination.
+### Validation
+- **Stat:** 3,600
+- **Stat label:** invoices audited without adding headcount
+- **Proof:** Overcharges surface the day the invoice arrives, not at year-end — the audit that was impossible by hand runs on every bill, and the recovered dollars are real margin.
+
+## TMS 12 — Tracking & Visibility
+- **Title line 1:** Tracking
+- **Title line 2:** & Visibility
+- **Tagline:** One live map from booking to POD — across every carrier and mode
+- **AI callout:** The AI exception agent predicts slips before they happen and flags ocean Last Free Date early — so demurrage and missed windows get headed off, not explained after the fact.
+### Problem
+- **Heading:** "Where is my order?" is a full-time job.
+- **Body:** Status lives in a dozen carrier websites. Customer service refreshes tracking pages all day, ocean containers rack up demurrage nobody saw coming, and the first time anyone hears about a delay is when the customer calls.
+- **Quote:** We found out shipments were late when the customer told us.
+- **Quote by:** — Customer service manager, distributor (illustrative persona)
+### Benefit
+- **Heading:** Proactive visibility that flags the exception before the customer does.
+- Milestone tracking from booking to delivery across parcel, LTL, FTL and ocean
+- One live map and status feed — no carrier-site hopping
+- Ocean container tracking with Last Free Date countdowns
+- Proactive exception alerts on delays, holds and missed milestones
+- Proof-of-delivery captured and attached to the shipment automatically
+### Live Demo
+- **Caption:** A multi-leg shipment moves across a live map; the exception agent predicts a delay and flags the ocean container Last Free Date before demurrage hits.
+### Validation
+- **Stat:** 0
+- **Stat label:** carrier sites to check for a status
+- **Proof:** Every shipment status is one screen, and the exceptions come to you — customer service stops chasing tracking pages and demurrage stops arriving as a surprise.
+
 # WMS — Warehouse Management
 
 ## WMS HUB — Warehouse Management

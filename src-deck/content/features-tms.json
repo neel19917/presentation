@@ -316,5 +316,113 @@
       "statLabel": "for carriers, docks and labor",
       "proof": "Predictable arrival windows level your labor and stop surprise detention charges."
     }
+  },
+  {
+    "num": "10",
+    "t1": "Analytics",
+    "t2": "& Reporting",
+    "name": "Analytics & Reporting",
+    "tag": "Carrier, lane and cost scorecards — freight decisions on data, not hunches",
+    "ai": "AI surfaces the outliers for you — the lane that quietly got 12% more expensive, the carrier whose on-time slipped — so the quarterly review starts with the answer, not the export.",
+    "problem": {
+      "heading": "Your freight data is trapped in a hundred invoices.",
+      "body": "Spend lives in carrier portals, spreadsheets and PDFs. Building a carrier scorecard or a lane-cost trend means a week of manual export and pivot tables — and by the time the report exists, the quarter is already over.",
+      "quote": {
+        "text": "The reports were basically unusable — we could not see what we were spending by carrier or lane.",
+        "who": "— Logistics lead, industrial distributor (illustrative persona)"
+      }
+    },
+    "benefit": {
+      "heading": "Every shipment, scored and charted the moment it books.",
+      "bullets": [
+        "Prebuilt dashboards for spend by carrier, lane, mode and business unit",
+        "On-time performance and exception scorecards for every carrier",
+        "Cost-per-pound and cost-per-shipment trends over any date range",
+        "Export-ready reports for QBRs and carrier-rate negotiations",
+        "Drill from any chart straight to the shipments behind it"
+      ]
+    },
+    "demo": {
+      "caption": "A shipment books and the carrier, lane and cost dashboards update live — drill from a spend chart to the exact shipments behind it.",
+      "progress": "83%",
+      "embed": "../modules/tms-analytics-reporting.html?embed=1"
+    },
+    "roi": {
+      "stat": "1",
+      "statLabel": "source of truth for every freight dollar",
+      "proof": "Spend, service and lane performance live in one place — the QBR deck builds itself, and carrier negotiations start from data the carrier cannot dispute."
+    }
+  },
+  {
+    "num": "11",
+    "t1": "Freight",
+    "t2": "Invoice Audit",
+    "name": "Freight & Invoice Audit",
+    "tag": "Every carrier invoice checked against the rate you booked — automatically",
+    "ai": "The AI audit radar names the variance cause — \"a $75 liftgate we weren't expecting\" — and offers to save the rule to that address so the same surprise never re-bills.",
+    "problem": {
+      "heading": "Nobody audits the freight bills. There are too many.",
+      "body": "Carrier invoices arrive by the thousand, each one a chance to be over-billed for an accessorial, a reweigh or a detention charge nobody agreed to. Manual audit is impossible at that volume, so the overcharges just get paid.",
+      "quote": {
+        "text": "One prospect had three thousand six hundred carrier invoices sitting unreconciled.",
+        "who": "— FreightPOP invoice-audit demo, Jul 2026"
+      }
+    },
+    "benefit": {
+      "heading": "An audit radar that catches the variance and names the cause.",
+      "bullets": [
+        "Every invoice matched to the booked rate; variances flagged automatically",
+        "In-tolerance differences auto-approve — only real exceptions reach a human",
+        "EDI invoices auto-file into the audit queue with no manual entry",
+        "Detention disputes compare driver-logged vs carrier-billed time against the loaded contract",
+        "Recovered overcharges and dispute status tracked end to end"
+      ]
+    },
+    "demo": {
+      "caption": "A carrier invoice lands, the audit radar flags a $75 accessorial variance, names the cause, and offers to save the rule to that destination.",
+      "progress": "92%",
+      "embed": "../modules/tms-invoice-audit.html?embed=1"
+    },
+    "roi": {
+      "stat": "3,600",
+      "statLabel": "invoices audited without adding headcount",
+      "proof": "Overcharges surface the day the invoice arrives, not at year-end — the audit that was impossible by hand runs on every bill, and the recovered dollars are real margin."
+    }
+  },
+  {
+    "num": "12",
+    "t1": "Tracking",
+    "t2": "& Visibility",
+    "name": "Tracking & Visibility",
+    "tag": "One live map from booking to POD — across every carrier and mode",
+    "ai": "The AI exception agent predicts slips before they happen and flags ocean Last Free Date early — so demurrage and missed windows get headed off, not explained after the fact.",
+    "problem": {
+      "heading": "\"Where is my order?\" is a full-time job.",
+      "body": "Status lives in a dozen carrier websites. Customer service refreshes tracking pages all day, ocean containers rack up demurrage nobody saw coming, and the first time anyone hears about a delay is when the customer calls.",
+      "quote": {
+        "text": "We found out shipments were late when the customer told us.",
+        "who": "— Customer service manager, distributor (illustrative persona)"
+      }
+    },
+    "benefit": {
+      "heading": "Proactive visibility that flags the exception before the customer does.",
+      "bullets": [
+        "Milestone tracking from booking to delivery across parcel, LTL, FTL and ocean",
+        "One live map and status feed — no carrier-site hopping",
+        "Ocean container tracking with Last Free Date countdowns",
+        "Proactive exception alerts on delays, holds and missed milestones",
+        "Proof-of-delivery captured and attached to the shipment automatically"
+      ]
+    },
+    "demo": {
+      "caption": "A multi-leg shipment moves across a live map; the exception agent predicts a delay and flags the ocean container Last Free Date before demurrage hits.",
+      "progress": "100%",
+      "embed": "../modules/tms-tracking-visibility.html?embed=1"
+    },
+    "roi": {
+      "stat": "0",
+      "statLabel": "carrier sites to check for a status",
+      "proof": "Every shipment status is one screen, and the exceptions come to you — customer service stops chasing tracking pages and demurrage stops arriving as a surprise."
+    }
   }
 ]

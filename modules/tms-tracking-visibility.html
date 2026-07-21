@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Tracking & Visibility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP VIDEO MODULE TEMPLATE  (copy me: tools/new-module.js <name>)
+
+   You get for free: deterministic timeline (MP4-renderable + synced across
+   presenter/audience), chapters bar, fullscreen, white↔deck theme toggle,
+   URL modes (?render=1, ?seek=s, ?theme=deck, ?embed=1), brand tokens,
+   the real FreightPOP logo, dynamic text boost in embeds.
+
+   You write: the SCENES — markup in the stage + the apply(t) choreography.
+   RULES: every visual is a pure function of t. No CSS animations/transitions
+   on story elements. No emoji. Design at 1920×1080.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729; --navy-2: #0b2340; --blue: #4c8dde; --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9; --bg: #f7f9fc; --ink: #051729; --sub: rgba(5,23,41,0.72);
+  --green: #1f7a54; --success: #22c55e; --card-line: rgba(5,23,41,0.10); --teal: #3dd6b5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', sans-serif; }
+
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); transform-origin: center center; flex: 0 0 auto; }
+#stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px; }
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* full-bleed navy cards (title / end) */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo-img { display: block; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 118px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; }
+
+/* step caption — number badge lives INSIDE the box so it can never clip */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+
+/* build-step reveal helper: elements fade/slide via apply(t), no CSS anim */
+
+/* player chrome */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+#btn-theme, #btn-fs, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-fs:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+
+/* embed mode: dedicated bottom bar + text boost */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; padding: 10px 18px; opacity: 1 !important; pointer-events: auto !important; background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3); }
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #btn-play, body.embed #btn-theme, body.embed #btn-fs, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); }
+
+/* deck theme: navy + teal + mono kickers + LIGHT-weight headings */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before { background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); }
+body.theme-deck .kicker, body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: var(--teal); letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; }
+body.theme-deck #caption .step-body { color: #b5cde0; }
+body.theme-deck #caption .step-num { background: var(--teal); color: var(--navy); }
+body.theme-deck .cta { background: var(--teal); color: var(--navy); }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: var(--teal); color: var(--navy); }
+
+/* ═══ Tracking & Visibility scenes (right-side mock; left edge 840px clears the caption) ═══ */
+:root { --violet: #8b7cf6; --violet-deep: #6d5de0; --amber: #f59e0b; --danger: #e2483d; --ocean: #0f8f76; }
+#app-frame { position: absolute; right: 70px; top: 96px; width: 1010px; height: 850px; background: #fff; border: 3px solid var(--navy); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(5,23,41,0.18); }
+#app-topbar { height: 64px; display: flex; align-items: center; gap: 26px; padding: 0 28px; background: var(--navy); }
+.fp-brand { font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: #fff; }
+.fp-brand em { font-style: normal; color: var(--blue); }
+.fp-crumb { font-size: 17px; color: #b7c8da; }
+.fp-crumb b { color: #fff; }
+.fp-user { margin-left: auto; font-size: 15px; color: #8fa6bd; }
+#panelbox { position: relative; height: 786px; }
+.panel { position: absolute; inset: 0; padding: 24px 28px; opacity: 0; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; min-height: 40px; }
+.fp-chip { display: inline-block; font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.1em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border: 1px solid rgba(76,141,222,0.4); border-radius: 999px; padding: 8px 16px; }
+.fp-chip.violet { color: var(--violet-deep); background: rgba(139,124,246,0.12); border-color: rgba(139,124,246,0.45); }
+
+/* problem panel — cluster of carrier tracking sites */
+#csite-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; height: 520px; }
+.csite { border: 1.5px solid var(--card-line); border-radius: 14px; overflow: hidden; background: #fbfcfe; display: flex; flex-direction: column; }
+.csite-bar { display: flex; align-items: center; gap: 12px; height: 46px; padding: 0 16px; background: #eef2f7; border-bottom: 1px solid var(--card-line); flex: 0 0 auto; }
+.csite-dots { display: flex; gap: 6px; }
+.csite-dots i { width: 11px; height: 11px; border-radius: 50%; background: #cbd5e1; display: block; }
+.csite-url { font-family: 'DM Mono', monospace; font-size: 15px; color: #64748b; }
+.csite-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; }
+.csite-ring { width: 50px; height: 50px; margin-bottom: 14px; border-radius: 50%; border: 5px solid #e4e9f0; border-top-color: #94a3b8; transform: rotate(115deg); }
+.csite-msg { font-size: 19px; color: #94a3b8; font-weight: 700; letter-spacing: 0.02em; }
+.csite-track { font-family: 'DM Mono', monospace; font-size: 14px; color: #b6c0cc; margin-top: 8px; }
+#prob-callout { position: absolute; left: 28px; right: 28px; bottom: 26px; padding: 22px 26px; background: rgba(245,158,11,0.12); border: 1.5px solid rgba(245,158,11,0.42); border-left: 6px solid var(--amber); border-radius: 14px; font-size: 22px; line-height: 1.4; color: var(--ink); font-weight: 600; }
+
+/* map panel — one live map + status feed */
+#map-svg { display: block; width: 100%; height: 432px; border: 1.5px solid var(--card-line); border-radius: 16px; background: #eef4fb; }
+#map-feed { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+.feed-row { display: flex; align-items: center; gap: 18px; padding: 15px 20px; border: 1.5px solid var(--card-line); border-left: 6px solid var(--blue); border-radius: 12px; background: #fff; }
+.feed-row.ltl { border-left-color: var(--blue-deep); }
+.feed-row.ocean { border-left-color: var(--teal); }
+.mode-badge { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.06em; padding: 7px 13px; border-radius: 8px; background: rgba(76,141,222,0.14); color: var(--blue-deep); flex: 0 0 auto; }
+.mode-badge.ltl { background: rgba(45,108,192,0.14); color: var(--blue-deep); }
+.mode-badge.ocean { background: rgba(61,214,181,0.18); color: var(--ocean); }
+.feed-main { flex: 1; color: var(--ink); font-weight: 700; font-size: 18px; }
+.feed-main span { color: var(--sub); font-weight: 400; font-size: 15px; }
+.feed-status { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--green); flex: 0 0 auto; }
+
+/* milestones panel — booking → POD timeline */
+.eta-chip { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.05em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border: 1px solid rgba(76,141,222,0.4); border-radius: 999px; padding: 9px 18px; }
+.eta-chip.delivered { color: var(--ocean); background: rgba(61,214,181,0.14); border-color: rgba(61,214,181,0.5); }
+#timeline { position: relative; margin: 128px 92px 0; }
+#tl-bar { position: relative; height: 8px; border-radius: 4px; background: rgba(5,23,41,0.10); }
+#tl-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: var(--teal); }
+#tl-dot { position: absolute; top: 50%; left: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--teal); border: 5px solid #fff; box-shadow: 0 4px 14px rgba(61,214,181,0.6); transform: translate(-50%,-50%); }
+.tl-node { position: absolute; top: -17px; transform: translateX(-50%); width: 170px; text-align: center; }
+.tl-tick { width: 42px; height: 42px; margin: 0 auto; border-radius: 50%; background: #fff; border: 3px solid rgba(5,23,41,0.22); color: transparent; font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.tl-node.done .tl-tick { background: var(--teal); border-color: var(--teal); color: #04352b; }
+.tl-lb { margin-top: 16px; font-family: 'Manrope'; font-weight: 800; font-size: 17px; color: var(--ink); }
+.tl-when { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--sub); margin-top: 6px; opacity: 0; }
+#pod-thumb { display: flex; align-items: center; gap: 18px; width: 360px; margin: 108px auto 0; padding: 16px 22px; border: 1.5px solid rgba(61,214,181,0.5); border-radius: 14px; background: rgba(61,214,181,0.08); opacity: 0; }
+.pod-doc { width: 46px; height: 56px; border-radius: 6px; background: #fff; border: 2px solid var(--teal); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.pod-txt .k { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--ocean); }
+.pod-txt .v { font-family: 'Manrope'; font-weight: 800; font-size: 20px; color: var(--ink); margin-top: 4px; }
+#tl-lane { display: grid; grid-template-columns: 1.2fr 1.2fr 0.9fr; gap: 14px; margin-top: 42px; opacity: 0; }
+.fld { border: 1.5px solid var(--card-line); border-radius: 14px; padding: 16px 18px; background: #fbfcfe; }
+.fld span { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(5,23,41,0.5); margin-bottom: 6px; }
+.fld b { font-size: 17px; color: var(--ink); }
+
+/* exception panel — AI exception agent (violet) */
+#agent-head { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+.agent-badge { width: 46px; height: 46px; border-radius: 12px; background: rgba(139,124,246,0.14); border: 1.5px solid rgba(139,124,246,0.45); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.agent-name { font-family: 'Manrope'; font-weight: 800; font-size: 25px; color: var(--ink); }
+.agent-status { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: var(--violet-deep); background: rgba(139,124,246,0.12); border: 1px solid rgba(139,124,246,0.4); border-radius: 999px; padding: 8px 15px; }
+#exc-ship { border: 1.5px solid var(--card-line); border-left: 6px solid var(--teal); border-radius: 14px; padding: 18px 22px; background: #fbfcfe; margin-bottom: 18px; opacity: 0; }
+#exc-ship .l1 { font-family: 'Manrope'; font-weight: 800; font-size: 21px; color: var(--ink); }
+#exc-ship .l2 { font-size: 16px; color: var(--sub); margin-top: 6px; }
+#exc-warn { border: 1.5px solid rgba(226,72,61,0.4); border-left: 6px solid var(--danger); border-radius: 14px; padding: 20px 24px; background: rgba(226,72,61,0.06); margin-bottom: 18px; opacity: 0; }
+#exc-warn .wh { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: var(--danger); margin-bottom: 8px; }
+#exc-warn .wb { font-size: 20px; line-height: 1.4; color: var(--ink); font-weight: 600; }
+#lfd-card { display: flex; align-items: center; gap: 30px; border: 1.5px solid rgba(245,158,11,0.5); border-radius: 16px; padding: 22px 28px; background: rgba(245,158,11,0.08); margin-bottom: 20px; opacity: 0; }
+.lfd-num { font-family: 'Manrope'; font-weight: 800; font-size: 60px; line-height: 1; color: var(--danger); flex: 0 0 auto; }
+.lfd-num small { font-size: 24px; font-weight: 700; }
+.lfd-meta { flex: 0 0 auto; }
+.lfd-meta .k { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--sub); }
+.lfd-meta .v { font-size: 20px; font-weight: 700; color: var(--ink); margin-top: 6px; }
+.lfd-bar { flex: 1; height: 12px; border-radius: 6px; background: rgba(5,23,41,0.08); overflow: hidden; position: relative; }
+#lfd-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; background: linear-gradient(90deg, var(--amber), var(--danger)); width: 0; }
+#exc-callout { padding: 20px 24px; background: rgba(139,124,246,0.10); border: 1.5px solid rgba(139,124,246,0.4); border-left: 6px solid var(--violet); border-radius: 14px; font-size: 21px; color: var(--ink); font-weight: 600; opacity: 0; }
+
+/* end-card stat tiles */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 300px); gap: 22px; margin-top: 44px; }
+.stat-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(193,212,233,0.25); border-radius: 18px; padding: 28px 22px; }
+.stat-num { font-family: 'Manrope'; font-weight: 800; font-size: 50px; color: #7fd4ae; }
+.stat-lb { font-size: 16.5px; color: var(--light-blue); line-height: 1.4; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ SCENES: title → problem → map → milestones → exception → end ═══ -->
+  <div class="layer" id="scene-app">
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE BLIND SPOT</div>
+      <div class="step-title" id="cap-title">Status is trapped in carrier sites.</div>
+      <div class="step-body" id="cap-body">Customer service refreshes a dozen tracking pages all day — and the first you hear of a delay is when the customer calls.</div>
+    </div>
+
+    <!-- app frame (right side; left edge 840px clears the caption) -->
+    <div id="app-frame">
+      <div id="app-topbar">
+        <span class="fp-brand">Freight<em>POP</em></span>
+        <span class="fp-crumb">Tracking &rsaquo; <b>Live Shipments</b></span>
+        <span class="fp-user">All modes &middot; All carriers</span>
+      </div>
+      <div id="panelbox">
+
+        <!-- PROBLEM: carrier-site cluster -->
+        <div class="panel" id="panel-problem">
+          <div class="panel-head"><span class="fp-chip">THE STATUS HUNT &middot; A DOZEN CARRIER SITES</span></div>
+          <div id="csite-grid">
+            <div class="csite" data-cs="0">
+              <div class="csite-bar"><span class="csite-dots"><i></i><i></i><i></i></span><span class="csite-url">ups.com/track</span></div>
+              <div class="csite-body"><div class="csite-ring"></div><div class="csite-msg">Checking status&hellip;</div><div class="csite-track">1Z 999 AA1 01 2345 6784</div></div>
+            </div>
+            <div class="csite" data-cs="1">
+              <div class="csite-bar"><span class="csite-dots"><i></i><i></i><i></i></span><span class="csite-url">fedex.com/tracking</span></div>
+              <div class="csite-body"><div class="csite-ring"></div><div class="csite-msg">Checking status&hellip;</div><div class="csite-track">7712 4408 9910</div></div>
+            </div>
+            <div class="csite" data-cs="2">
+              <div class="csite-bar"><span class="csite-dots"><i></i><i></i><i></i></span><span class="csite-url">estes-express.com</span></div>
+              <div class="csite-body"><div class="csite-ring"></div><div class="csite-msg">Checking status&hellip;</div><div class="csite-track">PRO 552-210-88</div></div>
+            </div>
+            <div class="csite" data-cs="3">
+              <div class="csite-bar"><span class="csite-dots"><i></i><i></i><i></i></span><span class="csite-url">maersk.com/tracking</span></div>
+              <div class="csite-body"><div class="csite-ring"></div><div class="csite-msg">Checking status&hellip;</div><div class="csite-track">MSKU 774 9921 0</div></div>
+            </div>
+          </div>
+          <div id="prob-callout">Status trapped in a dozen carrier sites &mdash; you hear about delays from the customer.</div>
+        </div>
+
+        <!-- MAP: one live map + status feed -->
+        <div class="panel" id="panel-map">
+          <div class="panel-head"><span class="fp-chip">ONE LIVE MAP &middot; EVERY CARRIER &amp; MODE</span><span class="eta-chip">3 SHIPMENTS LIVE</span></div>
+          <svg id="map-svg" viewBox="0 0 950 432" preserveAspectRatio="xMidYMid meet">
+            <rect x="0" y="0" width="950" height="432" fill="#eef4fb"/>
+            <path d="M40 120 C 160 70, 250 150, 360 110 C 470 70, 500 200, 430 250 C 360 300, 200 300, 120 260 C 60 230, 30 180, 40 120 Z" fill="#dce8f6"/>
+            <path d="M560 90 C 690 60, 860 90, 910 170 C 940 220, 900 320, 800 340 C 700 360, 590 320, 560 250 C 535 190, 520 120, 560 90 Z" fill="#dce8f6"/>
+            <path id="route-base" d="M110 250 C 300 300, 380 120, 520 170 S 760 110, 850 150" fill="none" stroke="rgba(5,23,41,0.16)" stroke-width="4" stroke-dasharray="2 12" stroke-linecap="round"/>
+            <path id="route-prog" d="M110 250 C 300 300, 380 120, 520 170 S 760 110, 850 150" fill="none" stroke="#3dd6b5" stroke-width="5" stroke-linecap="round"/>
+            <g><circle cx="110" cy="250" r="13" fill="#fff" stroke="#2d6cc0" stroke-width="4"/><circle cx="110" cy="250" r="5" fill="#2d6cc0"/><text x="110" y="292" text-anchor="middle" font-family="DM Mono, monospace" font-size="16" fill="#2d6cc0">SHANGHAI</text></g>
+            <g><circle cx="850" cy="150" r="13" fill="#fff" stroke="#0f8f76" stroke-width="4"/><circle cx="850" cy="150" r="5" fill="#0f8f76"/><text x="850" y="120" text-anchor="middle" font-family="DM Mono, monospace" font-size="16" fill="#0f8f76">DALLAS DC</text></g>
+            <circle id="map-halo" cx="110" cy="250" r="20" fill="rgba(76,141,222,0.22)"/>
+            <circle id="map-dot" cx="110" cy="250" r="11" fill="#4c8dde" stroke="#fff" stroke-width="4"/>
+          </svg>
+          <div id="map-feed">
+            <div class="feed-row" data-f="0"><span class="mode-badge">PARCEL</span><span class="feed-main">UPS &middot; Ground <span>&middot; 1Z 999 AA1 &middot; Dallas, TX</span></span><span class="feed-status">OUT FOR DELIVERY</span></div>
+            <div class="feed-row ltl" data-f="1"><span class="mode-badge ltl">LTL</span><span class="feed-main">Estes &middot; PRO 552-210 <span>&middot; Kingman, AZ</span></span><span class="feed-status">IN TRANSIT</span></div>
+            <div class="feed-row ocean" data-f="2"><span class="mode-badge ocean">OCEAN</span><span class="feed-main">Maersk &middot; MSKU 774 9921 <span>&middot; Pacific</span></span><span class="feed-status">ON VESSEL</span></div>
+          </div>
+        </div>
+
+        <!-- MILESTONES: booking → POD -->
+        <div class="panel" id="panel-milestones">
+          <div class="panel-head"><span class="fp-chip">MILESTONES &middot; BOOKING &#8594; POD, AUTO-CAPTURED</span><span class="eta-chip" id="eta-chip">ETA THU 2:10 PM</span></div>
+          <div id="timeline">
+            <div id="tl-bar">
+              <div id="tl-fill"></div>
+              <div id="tl-dot"></div>
+              <div class="tl-node" data-m="0" style="left:0%"><div class="tl-tick">&#10003;</div><div class="tl-lb">Booking</div><div class="tl-when">Mon 8:02 AM</div></div>
+              <div class="tl-node" data-m="1" style="left:25%"><div class="tl-tick">&#10003;</div><div class="tl-lb">Picked up</div><div class="tl-when">Mon 3:40 PM</div></div>
+              <div class="tl-node" data-m="2" style="left:50%"><div class="tl-tick">&#10003;</div><div class="tl-lb">In transit</div><div class="tl-when">Tue 6:15 PM</div></div>
+              <div class="tl-node" data-m="3" style="left:75%"><div class="tl-tick">&#10003;</div><div class="tl-lb">Out for delivery</div><div class="tl-when">Thu 7:20 AM</div></div>
+              <div class="tl-node" data-m="4" style="left:100%"><div class="tl-tick">&#10003;</div><div class="tl-lb">Delivered &middot; POD</div><div class="tl-when">Thu 1:58 PM</div></div>
+            </div>
+          </div>
+          <div id="pod-thumb">
+            <div class="pod-doc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f8f76" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="pod-txt"><div class="k">PROOF OF DELIVERY</div><div class="v">Signature &amp; photo captured</div></div>
+          </div>
+          <div id="tl-lane">
+            <div class="fld"><span>Origin</span><b>Shanghai &#8594; Long Beach</b></div>
+            <div class="fld"><span>Destination</span><b>Dallas DC &middot; TX</b></div>
+            <div class="fld"><span>Reference</span><b>SO-4471 &middot; 3 containers</b></div>
+          </div>
+        </div>
+
+        <!-- EXCEPTION: AI exception agent -->
+        <div class="panel" id="panel-exception">
+          <div id="agent-head">
+            <div class="agent-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6d5de0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <span class="agent-name">FreightPOP Exception Agent</span>
+            <span class="agent-status">MONITORING &middot; 3 MODES</span>
+          </div>
+          <div id="exc-ship">
+            <div class="l1">OCEAN &middot; MSC Bellula &middot; MSKU 774 9921</div>
+            <div class="l2">Shanghai &#8594; Long Beach &middot; 3 containers &middot; SO-4471</div>
+          </div>
+          <div id="exc-warn">
+            <div class="wh">PREDICTED SLIP</div>
+            <div class="wb">Vessel tracking predicts a 2-day late berth at Long Beach &mdash; demurrage risk on 3 containers.</div>
+          </div>
+          <div id="lfd-card">
+            <div class="lfd-num">3<small> days</small></div>
+            <div class="lfd-meta"><div class="k">LAST FREE DATE</div><div class="v">Thu, Aug 14</div></div>
+            <div class="lfd-bar"><div id="lfd-bar-fill"></div></div>
+          </div>
+          <div id="exc-callout">Predicted slip flagged before demurrage &mdash; the exception finds you.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="fullcard" id="scene-title">
+    <!-- <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="> is replaced with the real white FreightPOP logo <img> by tools/new-module.js -->
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">FREIGHTPOP &middot; TRACKING &amp; VISIBILITY</div>
+    <h1 class="title-h1">One map. Booking to POD.</h1>
+    <div class="title-sub">Live tracking across parcel, LTL, FTL and ocean &mdash; with an AI agent that flags delays before your customer does.</div>
+  </div>
+
+  <div class="fullcard" id="scene-end">
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">The exceptions come to you.</h1>
+    <div class="stat-tiles">
+      <div class="stat-tile" data-st="0"><div class="stat-num">0</div><div class="stat-lb">carrier sites to refresh &mdash; one live map</div></div>
+      <div class="stat-tile" data-st="1"><div class="stat-num">1 map</div><div class="stat-lb">booking &#8594; POD, every carrier &amp; mode</div></div>
+      <div class="stat-tile" data-st="2"><div class="stat-num">LFD</div><div class="stat-lb">ocean Last Free Date countdowns</div></div>
+      <div class="stat-tile" data-st="3"><div class="stat-num">AI</div><div class="stat-lb">proactive exception agent predicts slips</div></div>
+    </div>
+    <div style="height:34px"></div>
+    <div class="cta" id="end-cta">SCHEDULE A DEMO &#8594;</div>
+  </div>
+
+</div></div>
+
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button>
+  <button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  /* ═══ CONFIG — tools/new-module.js rewrites these ═══ */
+  const SYNC_CHANNEL = 'fp-tms-tracking-visibility-video-sync';       // unique per module
+  const CH = [                              // chapters: contiguous, seconds
+    { id: 'title',      label: 'Intro',      start: 0,  end: 7  },
+    { id: 'problem',    label: 'Blind spot', start: 7,  end: 22 },
+    { id: 'map',        label: 'Live map',   start: 22, end: 39 },
+    { id: 'milestones', label: 'Milestones', start: 39, end: 55 },
+    { id: 'exception',  label: 'AI agent',   start: 55, end: 70 },
+    { id: 'end',        label: 'Result',     start: 70, end: 82 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  /* ═══ easing helpers ═══ */
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  /* ═══ THE FILM — every visual from t, nothing free-running ═══ */
+  const CAPS = [
+    { a: 7,  n: '1', k: 'STEP 1 — THE BLIND SPOT', h: 'Status is trapped in carrier sites.',
+      b: 'Customer service refreshes a dozen tracking pages all day — and the first you hear of a delay is when the customer calls.' },
+    { a: 22, n: '2', k: 'STEP 2 — ONE LIVE MAP', h: 'One live map. Every carrier, every mode.',
+      b: 'Parcel, LTL, FTL and ocean on a single live map — from booking to POD, updated automatically.' },
+    { a: 39, n: '3', k: 'STEP 3 — MILESTONES', h: 'Every milestone, captured for you.',
+      b: 'Booking, pickup, in transit, out for delivery, POD — each milestone lands on its own, with proof of delivery attached.' },
+    { a: 55, n: '4', k: 'STEP 4 — EXCEPTION AGENT', h: 'The delay comes to you first.',
+      b: 'The AI exception agent predicts slips before they happen and counts down ocean Last Free Dates before demurrage hits.' },
+  ];
+  function setCaption(t) {
+    let c = CAPS[0];
+    for (const x of CAPS) if (t >= x.a) c = x;
+    if ($('#cap-num').textContent !== c.n) {
+      $('#cap-num').textContent = c.n; $('#cap-kicker').textContent = c.k;
+      $('#cap-title').textContent = c.h; $('#cap-body').textContent = c.b;
+    }
+    const p = ease(seg(t, c.a + 0.4, c.a + 1.1));
+    $('#caption').style.opacity = String(p);
+    $('#caption').style.transform = `translateY(${26 * (1 - p)}px)`;
+  }
+  function panel(el, on, t, a) {
+    el.style.opacity = on ? String(ease(seg(t, a, a + 0.8))) : '0';
+    el.style.visibility = on ? 'visible' : 'hidden';
+  }
+  function positionMapDot(prog) {
+    const path = $('#route-prog'); if (!path) return;
+    const total = path.getTotalLength();
+    path.style.strokeDasharray = String(total);
+    path.style.strokeDashoffset = String(total * (1 - prog));
+    const pt = path.getPointAtLength(total * prog);
+    const dot = $('#map-dot'), halo = $('#map-halo');
+    dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+    halo.setAttribute('cx', pt.x); halo.setAttribute('cy', pt.y);
+  }
+  function apply(t) {
+    const title = $('#scene-title'), end = $('#scene-end'), app = $('#scene-app');
+
+    /* title card 0–7 */
+    title.style.opacity = String(Math.min(seg(t, 0, 0.8), 1 - seg(t, 6.2, 7.0)));
+    title.style.visibility = t < 7.05 ? 'visible' : 'hidden';
+
+    /* app scene 7–70: problem → map → milestones → exception */
+    const appVis = t > 6.5 && t < 70.7;
+    app.style.opacity = String(Math.min(ease(seg(t, 6.6, 7.6)), 1 - seg(t, 69.7, 70.6)));
+    app.style.visibility = appVis ? 'visible' : 'hidden';
+    if (!appVis) $('#caption').style.opacity = '0'; // caption belongs to the app scene
+    if (appVis) {
+      setCaption(t);
+      $('#app-frame').style.transform = `translateY(${44 * (1 - ease(seg(t, 6.6, 7.8)))}px)`;
+
+      panel($('#panel-problem'), t >= 7 && t < 22, t, 7.4);
+      panel($('#panel-map'), t >= 22 && t < 39, t, 22.3);
+      panel($('#panel-milestones'), t >= 39 && t < 55, t, 39.3);
+      panel($('#panel-exception'), t >= 55, t, 55.3);
+
+      /* PROBLEM 7–22: carrier windows land, then amber callout */
+      $$('#csite-grid .csite').forEach((c, i) => {
+        const p = ease(seg(t, 8.2 + i * 1.0, 9.0 + i * 1.0));
+        c.style.opacity = String(p);
+        c.style.transform = `translateY(${24 * (1 - p)}px)`;
+      });
+      const pc = ease(seg(t, 15.0, 16.1));
+      $('#prob-callout').style.opacity = String(pc);
+      $('#prob-callout').style.transform = `translateY(${20 * (1 - pc)}px)`;
+
+      /* MAP 22–39: dot travels the route (t-derived), status feed fills */
+      positionMapDot(ease(seg(t, 24, 37)));
+      $$('#map-feed .feed-row').forEach((r, i) => {
+        const p = ease(seg(t, 30 + i * 1.3, 30.9 + i * 1.3));
+        r.style.opacity = String(p);
+        r.style.transform = `translateX(${30 * (1 - p)}px)`;
+      });
+
+      /* MILESTONES 39–55: nodes light teal as t passes, POD attaches */
+      const M = [40.3, 43.5, 46.7, 49.9, 53.1];
+      const mprog = (ease(seg(t, 40.3, 43.5)) + ease(seg(t, 43.5, 46.7)) + ease(seg(t, 46.7, 49.9)) + ease(seg(t, 49.9, 53.1))) * (100 / 4);
+      $('#tl-fill').style.width = mprog + '%';
+      $('#tl-dot').style.left = mprog + '%';
+      $$('#tl-bar .tl-node').forEach((n, i) => {
+        const done = t >= M[i];
+        n.classList.toggle('done', done);
+        n.querySelector('.tl-when').style.opacity = done ? String(ease(seg(t, M[i], M[i] + 0.7))) : '0';
+      });
+      const podP = ease(seg(t, 53.0, 54.0));
+      $('#pod-thumb').style.opacity = String(podP);
+      $('#pod-thumb').style.transform = `translateY(${18 * (1 - podP)}px)`;
+      $('#tl-lane').style.opacity = String(ease(seg(t, 40.6, 41.6)));
+      const eta = $('#eta-chip');
+      const delivered = t >= 53.1;
+      const etaTxt = delivered ? 'DELIVERED · POD ON FILE' : 'ETA THU 2:10 PM';
+      if (eta.textContent !== etaTxt) eta.textContent = etaTxt;
+      eta.classList.toggle('delivered', delivered);
+
+      /* EXCEPTION 55–70: agent predicts slip, LFD countdown */
+      $('#agent-head').style.opacity = String(ease(seg(t, 55.6, 56.6)));
+      const es = ease(seg(t, 56.6, 57.7));
+      $('#exc-ship').style.opacity = String(es);
+      $('#exc-ship').style.transform = `translateY(${20 * (1 - es)}px)`;
+      const ew = ease(seg(t, 58.6, 59.9));
+      $('#exc-warn').style.opacity = String(ew);
+      $('#exc-warn').style.transform = `translateY(${20 * (1 - ew)}px)`;
+      $('#lfd-card').style.opacity = String(ease(seg(t, 61.0, 62.3)));
+      $('#lfd-bar-fill').style.width = (42 + 53 * ease(seg(t, 61.5, 66.5))) + '%';
+      const ec = ease(seg(t, 65.5, 66.8));
+      $('#exc-callout').style.opacity = String(ec);
+      $('#exc-callout').style.transform = `translateY(${18 * (1 - ec)}px)`;
+    }
+
+    /* end card 70–82: stat tiles cascade, then CTA */
+    end.style.opacity = String(ease(seg(t, 70, 70.9)));
+    end.style.visibility = t > 69.9 ? 'visible' : 'hidden';
+    $$('.stat-tile').forEach((s, i) => {
+      const p = ease(seg(t, 71.6 + i * 0.9, 72.5 + i * 0.9));
+      s.style.opacity = String(p);
+      s.style.transform = `translateY(${30 * (1 - p)}px)`;
+    });
+    $('#end-cta').style.opacity = String(ease(seg(t, 77.0, 78.0)));
+  }
+
+  /* ═══ ENGINE (transport, chrome, sync, modes) — copy verbatim ═══ */
+  let T = 0, playing = false, lastTick = 0, autoPause = false;
+  // section boundaries for "pause after each section": chapter starts (past the first) + end
+  const BOUNDARIES = CH.slice(1).map((c) => c.start).concat([DURATION]);
+  function step(now) {
+    if (playing) {
+      const prevT = T;
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      let stopped = false;
+      if (autoPause) {
+        for (var bi = 0; bi < BOUNDARIES.length; bi++) {
+          var b = BOUNDARIES[bi];
+          if (prevT < b - 1e-4 && T >= b) { T = b; playing = false; updatePlayBtn(); broadcast(); stopped = true; break; }
+        }
+      }
+      if (!stopped && T >= DURATION) { if (EMBED) T = 0; else { playing = false; updatePlayBtn(); } }
+      apply(T); updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  CH.forEach((c) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); });
+    $('#chapters').appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => { cel.querySelector('.fill').style.width = (seg(T, CH[i].start, CH[i].end) * 100) + '%'; });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';
+  const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';
+  function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+
+  let hideTimer = null;
+  document.addEventListener('mousemove', () => {
+    if (EMBED) return;
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) {}
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', 'w', 'W', 's', 'S', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*'); e.preventDefault();
+    }
+  });
+
+  /* presenter/audience sync — file:// safe */
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  try {
+    if (!RENDER && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel(SYNC_CHANNEL);
+      bc.onmessage = (e) => {
+        const m = e.data || {};
+        if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+        if (m.cmd === 'play') { play(true); return; }
+        if (m.cmd === 'pause') { pause(true); return; }
+        if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+        if (m.cmd === 'autopause') { autoPause = !!m.on; return; }
+        if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+        if (typeof m.t !== 'number') return;
+        authority = false; lastRemoteState = Date.now(); // someone else is driving
+        applyingRemote = true;
+        if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+          T = m.t; playing = !!m.playing; lastTick = performance.now();
+          apply(T); updateChrome(); updatePlayBtn();
+        }
+        applyingRemote = false;
+      };
+      setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+    }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  /* stage scaling + embed text boost */
+  function fit() {
+    if (EMBED) {
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty('--fpb', String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  /* render contract (tools/render-video.mjs) */
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

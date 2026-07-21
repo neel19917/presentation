@@ -195,7 +195,7 @@ class Component extends DCLogic {
       { label: "Intro", sub: "Full-screen overview", onClick: this.goIntro, style: view === "intro" ? topRowActive : topRow },
       { label: "Interactive Walkthrough", sub: "Live product experience", onClick: this.goExplore, style: view === "explore" ? topRowActive : topRow },
       { label: "Main Menu", sub: "Platform · 4 systems", onClick: this.goMainMenu, style: view === "mainmenu" ? topRowActive : topRow },
-      { label: "Transportation Management", sub: "Module hub · 9 capabilities", onClick: this.goTms, style: (view === "hub" || (view === "feature" && this.state.sysKey === "tms")) ? topRowActive : topRow },
+      { label: "Transportation Management", sub: "Module hub · 12 capabilities", onClick: this.goTms, style: (view === "hub" || (view === "feature" && this.state.sysKey === "tms")) ? topRowActive : topRow },
       { label: "Carrier Integrations", sub: "Every mode · one network", onClick: this.goCarriers, style: view === "carriers" ? topRowActive : topRow },
       { label: "Standard Shipping Workflows", sub: "7 animated flows", onClick: this.goWorkflows, style: (view === "workflows" || view === "workflow") ? topRowActive : topRow },
       { label: "ERP & System Integrations", sub: "54 connected systems", onClick: this.goErp, style: view === "erp" ? topRowActive : topRow },

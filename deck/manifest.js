@@ -225,6 +225,47 @@ window.FP_DECK = {
       notes: 'Auto-plays (80s). Item dims + weights sync from Acumatica stock items (6,000+); AutoCalc builds Packages / Inner Pieces / Inner-Most Pieces from the SO lines; edit an item once and every quote re-rates. Accurate packaging = accurate rates, fewer carrier reclass surprises.',
     },
 
+    // ══ PLATFORM CAPABILITIES ══ TMS gap films (also embedded as TMS modules 10-12)
+    {
+      url: '/modules/tms-analytics-reporting.html',
+      fit: 'native',
+      title: 'Analytics & Reporting',
+      section: 'Platform Capabilities',
+      videoChannel: 'fp-tms-analytics-reporting-video-sync',
+      deckHost: { view: 'feature', fi: 9, step: 2, sysKey: 'tms' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Problem', t: 7 }, { label: 'Dashboards', t: 20 },
+        { label: 'Scorecards', t: 38 }, { label: 'Drill', t: 54 }, { label: 'Result', t: 70 },
+      ],
+      notes: 'Auto-plays (82s). Freight data trapped in portals/spreadsheets/PDFs → prebuilt dashboards (spend by carrier/lane/mode) → carrier scorecards → drill from a chart to the shipments. AI surfaces the outliers. Ground: Confluence flagged analytics as a pain ("reports unusable").',
+    },
+    {
+      url: '/modules/tms-invoice-audit.html',
+      fit: 'native',
+      title: 'Freight & Invoice Audit',
+      section: 'Platform Capabilities',
+      videoChannel: 'fp-tms-invoice-audit-video-sync',
+      deckHost: { view: 'feature', fi: 10, step: 2, sysKey: 'tms' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Problem', t: 6 }, { label: 'Match', t: 22 },
+        { label: 'Flag', t: 38 }, { label: 'Save Rule', t: 56 }, { label: 'Result', t: 70 },
+      ],
+      notes: 'Auto-plays (82s). REAL Jul 2026 invoice-audit demo: 3,600 unreconciled invoices → match to booked rate, in-tolerance auto-approve → $75 liftgate variance flagged, AI radar names the cause and offers to save the rule to the address → detention dispute vs contract. The overcharges that got paid, caught.',
+    },
+    {
+      url: '/modules/tms-tracking-visibility.html',
+      fit: 'native',
+      title: 'Tracking & Visibility',
+      section: 'Platform Capabilities',
+      videoChannel: 'fp-tms-tracking-visibility-video-sync',
+      deckHost: { view: 'feature', fi: 11, step: 2, sysKey: 'tms' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Blind spot', t: 7 }, { label: 'Live map', t: 22 },
+        { label: 'Milestones', t: 39 }, { label: 'AI agent', t: 55 }, { label: 'Result', t: 70 },
+      ],
+      notes: 'Auto-plays (82s). Status trapped in a dozen carrier sites → one live map (parcel/LTL/FTL/ocean) → milestone timeline booking→POD → AI exception agent predicts a slip + flags ocean Last Free Date before demurrage. The exceptions come to you.',
+    },
+
     // ══ INTEGRATIONS ══ ERP + hardware connections (editable page; also the deck's ERP screen)
     {
       url: '/modules/erp-integrations.html',
