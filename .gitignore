@@ -12,3 +12,6 @@ tmp-*
 .DS_Store
 **/.DS_Store
 node_modules/
+
+# portable Node runtime downloaded by install-*.sh (never commit)
+.node/

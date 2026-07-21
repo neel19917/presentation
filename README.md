@@ -9,6 +9,23 @@ Works on **Mac and Windows**. Needs no internet at the booth.
 
 ## Start it
 
+### Brand-new computer, nothing installed → use the installer
+
+| OS | Do this |
+|---|---|
+| Mac | double-click **`install-mac.command`** |
+| Windows | double-click **`install-windows.bat`** |
+
+These work on a **fresh Mac or Windows PC with nothing installed** — no Node, no
+Homebrew, no admin password. If Node.js isn't already on the machine, the
+installer downloads a **private, self-contained copy of Node** into a local
+`.node/` folder (using tools that already ship with the OS: `curl`/`tar` on Mac,
+PowerShell on Windows) and runs the demo from there. Nothing touches the system;
+delete the LocalDemo folder and it's all gone. First run needs internet for the
+one-time ~40 MB Node download; every run after that is fully offline and instant.
+
+### Already have Node → just launch
+
 | OS | Do this |
 |---|---|
 | Mac | double-click **`start-mac.command`** |
@@ -16,7 +33,7 @@ Works on **Mac and Windows**. Needs no internet at the booth.
 | Any terminal | `node server.js` |
 
 The launcher opens at `http://localhost:8123` (if 8123 is busy it walks up to the
-next free port). Requires Node.js (falls back to Python 3 if Node is missing).
+next free port).
 
 > **Mac first run:** if Gatekeeper blocks the `.command` file, right-click →
 > Open → Open. If it says "permission denied", run
