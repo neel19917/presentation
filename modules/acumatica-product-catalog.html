@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Product Catalog & AutoCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP VIDEO MODULE TEMPLATE  (copy me: tools/new-module.js <name>)
+
+   You get for free: deterministic timeline (MP4-renderable + synced across
+   presenter/audience), chapters bar, fullscreen, white↔deck theme toggle,
+   URL modes (?render=1, ?seek=s, ?theme=deck, ?embed=1), brand tokens,
+   the real FreightPOP logo, dynamic text boost in embeds.
+
+   You write: the SCENES — markup in the stage + the apply(t) choreography.
+   RULES: every visual is a pure function of t. No CSS animations/transitions
+   on story elements. No emoji. Design at 1920×1080.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729; --navy-2: #0b2340; --blue: #4c8dde; --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9; --bg: #f7f9fc; --ink: #051729; --sub: rgba(5,23,41,0.72);
+  --green: #1f7a54; --success: #22c55e; --card-line: rgba(5,23,41,0.10); --teal: #3dd6b5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', sans-serif; }
+
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); transform-origin: center center; flex: 0 0 auto; }
+#stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px; }
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* full-bleed navy cards (title / end) */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo-img { display: block; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 118px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; }
+
+/* step caption — number badge lives INSIDE the box so it can never clip */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+
+/* build-step reveal helper: elements fade/slide via apply(t), no CSS anim */
+
+/* player chrome */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+#btn-theme, #btn-fs, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-fs:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+
+/* embed mode: dedicated bottom bar + text boost */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; padding: 10px 18px; opacity: 1 !important; pointer-events: auto !important; background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3); }
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #btn-play, body.embed #btn-theme, body.embed #btn-fs, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); }
+
+/* deck theme: navy + teal + mono kickers + LIGHT-weight headings */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before { background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); }
+body.theme-deck .kicker, body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: var(--teal); letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; }
+body.theme-deck #caption .step-body { color: #b5cde0; }
+body.theme-deck #caption .step-num { background: var(--teal); color: var(--navy); }
+body.theme-deck .cta { background: var(--teal); color: var(--navy); }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: var(--teal); color: var(--navy); }
+
+/* ═══ Product Catalog & AutoCalc — scene styles ═══ */
+/* Acumatica stock-item mock (right side; left edge 840px clears the caption) */
+#ns-frame { position: absolute; right: 70px; top: 150px; width: 1010px; height: 585px; background: #fff; border: 3px solid var(--navy); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(5,23,41,0.18); }
+#ns-topbar { height: 64px; background: #1c2b3a; color: #fff; display: flex; align-items: center; gap: 26px; padding: 0 28px; }
+.ns-brand { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.14em; color: #d8e4f2; font-weight: 500; }
+.ns-crumb { font-size: 17px; color: #b7c8da; }
+.ns-crumb b { color: #fff; }
+.ns-user { margin-left: auto; font-size: 15px; color: #8fa6bd; }
+#ns-itemrow { display: grid; grid-template-columns: 1.5fr 1.2fr 0.9fr 0.7fr; gap: 14px; padding: 22px 28px 20px; }
+.ns-field span { display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(5,23,41,0.5); margin-bottom: 6px; }
+.ns-field b { font-size: 18px; color: var(--ink); font-weight: 700; }
+#ns-sec-head { display: flex; align-items: center; justify-content: space-between; margin: 0 28px 10px; padding-top: 22px; border-top: 2px solid var(--card-line); font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.14em; color: var(--blue-deep); }
+.fp-chip { display: inline-block; font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.1em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border: 1px solid rgba(76,141,222,0.4); border-radius: 999px; padding: 8px 16px; }
+.fp-chip.teal { color: var(--green); background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.45); }
+.fpf { display: grid; grid-template-columns: 320px 1fr; align-items: center; margin: 13px 28px; padding: 19px 24px; border: 1.5px solid var(--card-line); border-radius: 14px; background: #fff; }
+.fpf > span { font-size: 17.5px; color: var(--sub); }
+.fpf .fpf-val { display: flex; align-items: center; justify-content: space-between; }
+.fpf .fv { font-size: 21px; font-weight: 700; color: var(--ink); }
+.fpf .ck { font-size: 24px; font-weight: 700; color: var(--green); }
+
+/* FreightPOP app frame (right side; left edge 840px clears the caption) */
+.fp-frame { position: absolute; right: 70px; top: 150px; width: 1010px; background: #fff; border: 3px solid var(--navy); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(5,23,41,0.18); }
+.fp-topbar { height: 64px; background: var(--navy); color: #fff; display: flex; align-items: center; gap: 20px; padding: 0 28px; }
+.fp-logo-t { font-family: 'Manrope'; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+.fp-crumb { font-size: 17px; color: #b7c8da; }
+.fp-tag { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #7fd4ae; }
+
+/* catalog panel (chapter: Sync) */
+.cat-head { display: grid; grid-template-columns: 150px 1.45fr 200px 110px 100px 130px; padding: 16px 28px 12px; font-family: 'DM Mono', monospace; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(5,23,41,0.5); border-bottom: 2px solid var(--card-line); }
+.cat-row { display: grid; grid-template-columns: 150px 1.45fr 200px 110px 100px 130px; align-items: center; padding: 20px 28px; border-bottom: 1px solid var(--card-line); font-size: 17.5px; color: var(--ink); }
+.cat-row b { font-family: 'Manrope'; font-weight: 800; font-size: 18px; }
+.cat-row .cd { color: var(--sub); }
+.cat-row .ck { color: var(--green); font-weight: 700; }
+.cat-row.hl { background: rgba(76,141,222,0.10); }
+#cat-counter { display: flex; align-items: baseline; gap: 20px; padding: 30px 28px 32px; }
+#cat-count-num { font-family: 'Manrope'; font-weight: 800; font-size: 58px; color: var(--blue-deep); min-width: 280px; font-variant-numeric: tabular-nums; }
+#cat-counter span { font-size: 20px; color: var(--sub); }
+
+/* source item card + flying chip (chapter: Sync, left of the caption column) */
+#src-card { position: absolute; left: 130px; top: 175px; width: 600px; background: #fff; border: 3px solid #1c2b3a; border-radius: 18px; padding: 26px 30px; box-shadow: 0 24px 60px rgba(5,23,41,0.14); }
+#src-card .src-h { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.14em; color: var(--sub); margin-bottom: 12px; }
+#src-card .src-t { font-family: 'Manrope'; font-weight: 800; font-size: 25px; color: var(--ink); }
+#src-card .src-d { font-size: 17.5px; color: var(--sub); margin-top: 10px; }
+#fly-card { position: absolute; left: 200px; top: 358px; width: 420px; background: var(--navy); color: #fff; font-family: 'DM Mono', monospace; font-size: 15.5px; letter-spacing: 0.04em; padding: 15px 22px; border-radius: 12px; box-shadow: 0 18px 44px rgba(5,23,41,0.3); z-index: 6; }
+
+/* rate panel (chapter: Rate) */
+#rate-frame { top: 115px; }
+#order-line { margin: 26px 28px 0; padding: 20px 24px; border: 1.5px solid var(--card-line); border-radius: 14px; display: flex; align-items: center; justify-content: space-between; font-size: 19px; color: var(--sub); }
+#order-line b { color: var(--ink); font-size: 20px; }
+#build-arrow { text-align: center; padding: 16px 0 14px; font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.14em; color: var(--blue-deep); }
+#pack-box { margin: 0 28px; padding: 24px 28px; border: 1.5px solid var(--card-line); border-radius: 14px; display: flex; align-items: center; gap: 32px; }
+.cartons { display: flex; gap: 14px; }
+.carton { width: 92px; height: 74px; background: #efe4d0; border: 2.5px solid #a58a62; border-radius: 8px; position: relative; }
+.carton::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 14px; margin-left: -7px; background: rgba(165,138,98,0.35); }
+.pack-txt b { display: block; font-family: 'Manrope'; font-weight: 800; font-size: 24px; color: var(--ink); }
+.pack-txt span { display: block; font-size: 17px; color: var(--sub); margin-top: 8px; }
+.rate-row { display: grid; grid-template-columns: 2.2fr 2fr 1.2fr 1.2fr; align-items: center; margin: 22px 28px 16px; padding: 20px 22px; border: 1.5px solid var(--card-line); border-radius: 14px; background: #fff; }
+.rate-row .rr-carrier { font-weight: 800; font-size: 21px; color: var(--ink); font-family: 'Manrope'; }
+.rate-row .rr-svc, .rate-row .rr-days { font-size: 17px; color: var(--sub); }
+.rate-row .rr-price { font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--ink); text-align: right; }
+.rate-row.best { border-color: var(--success); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+.rate-row.best .rr-price { color: var(--green); }
+#chip-rated { margin: 0 28px 30px; }
+
+/* update ripple (chapter: Update) */
+#upd-wrap { position: absolute; right: 70px; top: 150px; width: 1010px; }
+.upd-card { background: #fff; border: 3px solid var(--navy); border-radius: 22px; padding: 26px 30px; box-shadow: 0 24px 60px rgba(5,23,41,0.14); }
+.upd-h { font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.14em; color: var(--sub); margin-bottom: 16px; }
+.upd-field { display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 1.5px solid var(--card-line); border-radius: 14px; margin-bottom: 14px; }
+.upd-field span { flex: 1; font-size: 19px; color: var(--sub); }
+.upd-field b { font-family: 'Manrope'; font-weight: 800; font-size: 27px; color: var(--ink); font-variant-numeric: tabular-nums; }
+#upd-ns-edit { font-family: 'DM Mono', monospace; font-style: normal; font-size: 12.5px; letter-spacing: 0.1em; color: #b45309; background: rgba(245,158,11,0.14); border: 1px solid rgba(245,158,11,0.5); border-radius: 999px; padding: 7px 14px; }
+#upd-link { position: relative; height: 92px; }
+#upd-link .ln { position: absolute; left: 50%; top: 8px; bottom: 8px; width: 4px; margin-left: -2px; background: rgba(76,141,222,0.30); border-radius: 2px; }
+#upd-dot { position: absolute; left: 50%; top: 4px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 6px rgba(76,141,222,0.22); }
+#chip-rerate { margin-top: 6px; }
+
+/* end-card stat tiles */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 300px); gap: 22px; margin-top: 44px; }
+.stat-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(193,212,233,0.25); border-radius: 18px; padding: 28px 22px; }
+.stat-num { font-family: 'Manrope'; font-weight: 800; font-size: 54px; color: #7fd4ae; }
+.stat-lb { font-size: 16.5px; color: var(--light-blue); line-height: 1.4; margin-top: 10px; }
+.stat-src { margin-top: 26px; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: rgba(193,212,233,0.6); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ SCENES: title → main (item / sync / rate / update) → end ═══ -->
+  <div class="layer" id="scene-main">
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE ITEM</div>
+      <div class="step-title" id="cap-title">The item master carries the freight data</div>
+      <div class="step-body" id="cap-body">Dimensions, weight, freight class and inner pieces live on the Acumatica stock item.</div>
+    </div>
+
+    <!-- CH2: Acumatica stock-item record -->
+    <div id="ns-frame">
+      <div id="ns-topbar">
+        <span class="ns-brand">ACUMATICA ERP</span>
+        <span class="ns-crumb">Stock Items &rsaquo; <b>HDW-2200</b> &rsaquo; Steel Bracket Assembly</span>
+        <span class="ns-user">Inventory</span>
+      </div>
+      <div id="ns-itemrow">
+        <div class="ns-field"><span>Description</span><b>Steel Bracket Assembly</b></div>
+        <div class="ns-field"><span>Item Class</span><b>Stock Item</b></div>
+        <div class="ns-field"><span>Inventory ID</span><b>HDW-2200</b></div>
+        <div class="ns-field"><span>Status</span><b>Active</b></div>
+      </div>
+      <div id="ns-sec-head">FREIGHTPOP ITEM FIELDS <span class="fp-chip teal" id="chip-assembly">ITEM DIMS + WEIGHTS &middot; SYNCED FROM ACUMATICA</span></div>
+      <div id="ns-fields">
+        <div class="fpf"><span>Weight</span><span class="fpf-val"><span class="fv">38.0 lb</span><span class="ck">&#10003;</span></span></div>
+        <div class="fpf"><span>Dimensions</span><span class="fpf-val"><span class="fv">16 &times; 12 &times; 10 in</span><span class="ck">&#10003;</span></span></div>
+        <div class="fpf"><span>Freight Class</span><span class="fpf-val"><span class="fv">85</span><span class="ck">&#10003;</span></span></div>
+        <div class="fpf"><span>Inner Pieces</span><span class="fpf-val"><span class="fv">12</span><span class="ck">&#10003;</span></span></div>
+      </div>
+    </div>
+
+    <!-- CH3: stock item flows into the FreightPOP catalog -->
+    <div id="src-card">
+      <div class="src-h">ACUMATICA STOCK ITEM</div>
+      <div class="src-t">HDW-2200 &middot; Steel Bracket Assembly</div>
+      <div class="src-d">38.0 lb &middot; 16 &times; 12 &times; 10 in &middot; class 85 &middot; 12 inner pcs</div>
+    </div>
+    <div id="fly-card">HDW-2200 &middot; 38.0 lb &middot; class 85</div>
+    <div class="fp-frame" id="fp-catalog">
+      <div class="fp-topbar"><span class="fp-logo-t">FreightPOP</span><span class="fp-crumb">Product Catalog</span><span class="fp-tag">SYNCED FROM ACUMATICA</span></div>
+      <div class="cat-head"><span>SKU</span><span>Item</span><span>Dims (in)</span><span>Weight</span><span>Class</span><span>Inner</span></div>
+      <div class="cat-row" data-c="0"><b>HDW-2200</b><span class="cd">Steel Bracket Assembly</span><span class="cd">16 &times; 12 &times; 10</span><span>38.0 lb</span><span>85</span><span class="ck">12 pcs</span></div>
+      <div class="cat-row" data-c="1"><b>VLV-1180</b><span class="cd">Valve Body, Cast</span><span class="cd">12 &times; 10 &times; 8</span><span>26.0 lb</span><span>92.5</span><span class="ck">6 pcs</span></div>
+      <div class="cat-row" data-c="2"><b>PMP-3300</b><span class="cd">Pump Housing, Steel</span><span class="cd">22 &times; 16 &times; 14</span><span>88.0 lb</span><span>70</span><span class="ck">1 pc</span></div>
+      <div class="cat-row" data-c="3"><b>CLP-0044</b><span class="cd">Clamp Pack, Bulk</span><span class="cd">10 &times; 8 &times; 6</span><span>14.0 lb</span><span>100</span><span class="ck">48 pcs</span></div>
+      <div id="cat-counter"><b id="cat-count-num">0</b><span>stock items synced from Acumatica</span></div>
+    </div>
+
+    <!-- CH4: order line auto-builds a rated shipment -->
+    <div class="fp-frame" id="rate-frame">
+      <div class="fp-topbar"><span class="fp-logo-t">FreightPOP</span><span class="fp-crumb">New Shipment &middot; from Acumatica order</span><span class="fp-tag">AUTOCALC</span></div>
+      <div id="order-line"><span>Sales Order <b>SO-40188</b></span><span><b>2 &times; HDW-2200</b> &middot; Steel Bracket Assembly</span></div>
+      <div id="build-arrow">&darr; AUTOCALC &middot; PACKAGES / INNER PIECES / INNER-MOST PIECES</div>
+      <div id="pack-box">
+        <span class="cartons"><span class="carton"></span><span class="carton"></span></span>
+        <span class="pack-txt"><b>2 cartons &middot; 76 lb &middot; class 85</b><span>Packed from item data: 16 &times; 12 &times; 10 in &middot; 38.0 lb each &middot; 12 inner pieces</span></span>
+      </div>
+      <div class="rate-row best" id="rate-row-main"><span class="rr-carrier">Estes</span><span class="rr-svc">LTL Standard</span><span class="rr-days">4 days</span><span class="rr-price">$298.40</span></div>
+      <span class="fp-chip" id="chip-rated">RATED FROM CATALOG DATA &middot; NOTHING TYPED</span>
+    </div>
+
+    <!-- CH5: edit ripples from Acumatica to catalog + quote -->
+    <div id="upd-wrap">
+      <div class="upd-card" id="upd-ns">
+        <div class="upd-h">ACUMATICA &middot; STOCK ITEM HDW-2200</div>
+        <div class="upd-field" id="upd-field-ns"><span>Weight</span><b id="upd-ns-weight">38.0 lb</b><i id="upd-ns-edit">EDITED</i></div>
+      </div>
+      <div id="upd-link"><span class="ln"></span><span id="upd-dot"></span></div>
+      <div class="upd-card" id="upd-fp">
+        <div class="upd-h">FREIGHTPOP &middot; CATALOG + LIVE QUOTE</div>
+        <div class="upd-field" id="upd-row-cat"><span>Catalog &middot; HDW-2200 weight</span><b id="upd-fp-weight">38.0 lb</b></div>
+        <div class="upd-field" id="upd-row-rate"><span>Estes &middot; LTL Standard &middot; 2 cartons</span><b id="upd-fp-rate">$298.40</b></div>
+        <span class="fp-chip teal" id="chip-rerate">CHANGE IT ONCE &middot; RE-RATED EVERYWHERE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullcard" id="scene-title">
+    <!-- <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII="> is replaced with the real white FreightPOP logo <img> by tools/new-module.js -->
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">FREIGHTPOP &times; ACUMATICA &middot; PRODUCT CATALOG</div>
+    <h1 class="title-h1" style="font-size:92px;">Your item master does the rating.</h1>
+    <div class="title-sub">Dimensions, weights and packaging sync from Acumatica stock items &mdash; so AutoCalc builds accurate shipments automatically.</div>
+  </div>
+
+  <div class="fullcard" id="scene-end">
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:76px;">No more guessed freight class.</h1>
+    <div class="stat-tiles">
+      <div class="stat-tile" data-st="0"><div class="stat-num">6,000+</div><div class="stat-lb">items rated straight from the master</div></div>
+      <div class="stat-tile" data-st="1"><div class="stat-num">0</div><div class="stat-lb">manual package entries per shipment</div></div>
+      <div class="stat-tile" data-st="2"><div class="stat-num">1</div><div class="stat-lb">place to maintain item data</div></div>
+      <div class="stat-tile" data-st="3"><div class="stat-num">Fewer</div><div class="stat-lb">reclass surprises &amp; freight adjustments</div></div>
+    </div>
+    <div class="stat-src" id="end-src">AutoCalc + item sync built for Acumatica &middot; freightpop.com</div>
+    <div style="height:34px"></div>
+    <div class="cta" id="end-cta">SCHEDULE A DEMO &rarr;</div>
+  </div>
+
+</div></div>
+
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button>
+  <button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  /* ═══ CONFIG — tools/new-module.js rewrites these ═══ */
+  const SYNC_CHANNEL = 'fp-acumatica-product-catalog-video-sync';       // unique per module
+  const CH = [                              // chapters: contiguous, seconds
+    { id: 'title',  label: 'Intro',   start: 0,  end: 6 },
+    { id: 'item',   label: 'Item',    start: 6,  end: 20 },
+    { id: 'sync',   label: 'Sync',    start: 20, end: 34 },
+    { id: 'rate',   label: 'AutoCalc',start: 34, end: 48 },
+    { id: 'update', label: 'Edit',    start: 48, end: 62 },
+    { id: 'end',    label: 'Result',  start: 62, end: 80 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  /* ═══ easing helpers ═══ */
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  /* ═══ THE FILM — every visual from t, nothing free-running ═══ */
+  const CAPS = [
+    { a: 6,  n: '1', k: 'STEP 1 — THE ITEM',            h: 'The item master carries the freight data',
+      b: 'Dimensions, weight, freight class and inner pieces live on the Acumatica stock item.' },
+    { a: 20, n: '2', k: 'STEP 2 — CATALOG SYNC',        h: 'The catalog syncs itself',
+      b: 'Stock items and their freight data flow into the FreightPOP catalog automatically.' },
+    { a: 34, n: '3', k: 'STEP 3 — AUTOCALC',            h: 'AutoCalc builds the shipment',
+      b: 'An order line becomes packed cartons and an accurate rate — pulled straight from the catalog.' },
+    { a: 48, n: '4', k: 'STEP 4 — ONE SOURCE OF TRUTH', h: 'Change it once, it changes everywhere',
+      b: 'Edit the weight in Acumatica — the catalog row and every new rate pick it up automatically.' },
+  ];
+  function setCaption(t) {
+    let c = CAPS[0];
+    for (const x of CAPS) if (t >= x.a) c = x;
+    if ($('#cap-num').textContent !== c.n) {
+      $('#cap-num').textContent = c.n; $('#cap-kicker').textContent = c.k;
+      $('#cap-title').textContent = c.h; $('#cap-body').textContent = c.b;
+    }
+    const p = ease(seg(t, c.a + 0.4, c.a + 1.1));
+    $('#caption').style.opacity = String(p);
+    $('#caption').style.transform = `translateY(${26 * (1 - p)}px)`;
+  }
+  function apply(t) {
+    const title = $('#scene-title'), end = $('#scene-end'), main = $('#scene-main');
+
+    /* title card 0–6 */
+    title.style.opacity = String(Math.min(seg(t, 0, 0.8), 1 - seg(t, 5.2, 6.0)));
+    title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+
+    /* main scene 6–62 (item → sync → rate → update) */
+    const mainVis = t > 5.5 && t < 62.6;
+    main.style.opacity = String(Math.min(ease(seg(t, 5.6, 6.6)), 1 - seg(t, 61.6, 62.5)));
+    main.style.visibility = mainVis ? 'visible' : 'hidden';
+    if (!mainVis) $('#caption').style.opacity = '0'; // caption belongs to the main scene
+    if (mainVis) {
+      setCaption(t);
+
+      /* item record 6–20: FreightPOP fields fill in, sync chip */
+      const ns = $('#ns-frame');
+      const nsIn = ease(seg(t, 6.0, 7.2));
+      ns.style.opacity = String(Math.min(nsIn, 1 - seg(t, 20, 21)));
+      ns.style.visibility = t < 21.1 ? 'visible' : 'hidden';
+      ns.style.transform = `translateY(${60 * (1 - nsIn)}px)`;
+      $$('#ns-fields .fpf-val').forEach((v, i) => {
+        const p = ease(seg(t, 8.0 + i * 1.4, 8.9 + i * 1.4));
+        v.style.opacity = String(p);
+        v.style.transform = `translateX(${26 * (1 - p)}px)`;
+      });
+      $('#chip-assembly').style.opacity = String(ease(seg(t, 15.5, 16.4)));
+
+      /* catalog sync 20–34: item card flies into the catalog, counter climbs */
+      const cat = $('#fp-catalog'), src = $('#src-card'), fly = $('#fly-card');
+      const catVis = t > 20.5 && t < 34.5;
+      const catOut = 1 - seg(t, 33.5, 34.4);
+      cat.style.opacity = String(Math.min(ease(seg(t, 21, 22)), catOut));
+      cat.style.visibility = catVis ? 'visible' : 'hidden';
+      const srcIn = ease(seg(t, 20.6, 21.6));
+      src.style.opacity = String(Math.min(srcIn, catOut));
+      src.style.visibility = catVis ? 'visible' : 'hidden';
+      src.style.transform = `translateY(${30 * (1 - srcIn)}px)`;
+      const fp = ease(seg(t, 22.6, 25.0));
+      fly.style.opacity = String(Math.min(seg(t, 22.4, 22.9), 1 - seg(t, 24.9, 25.4)));
+      fly.style.visibility = (catVis && t > 22.3 && t < 25.5) ? 'visible' : 'hidden';
+      fly.style.transform = `translate(${672 * fp}px, ${-58 * fp}px)`;
+      $$('#fp-catalog .cat-row').forEach((r, i) => {
+        const p = ease(seg(t, 22.0 + i * 0.9, 22.9 + i * 0.9));
+        r.style.opacity = String(p);
+        r.classList.toggle('hl', i === 0 && t >= 24.9 && t < 28);
+      });
+      const n = Math.round(6000 * ease(seg(t, 26, 31)));
+      $('#cat-count-num').textContent = n >= 6000 ? '6,000+' : n.toLocaleString('en-US');
+      $('#cat-counter').style.opacity = String(ease(seg(t, 25.8, 26.6)));
+
+      /* rate 34–48: order line → auto-built cartons → rate row */
+      const rf = $('#rate-frame');
+      const rfIn = ease(seg(t, 34.2, 35.2));
+      rf.style.opacity = String(Math.min(rfIn, 1 - seg(t, 47.2, 48)));
+      rf.style.visibility = (t > 34 && t < 48.1) ? 'visible' : 'hidden';
+      rf.style.transform = `translateY(${50 * (1 - rfIn)}px)`;
+      $('#order-line').style.opacity = String(ease(seg(t, 35.2, 36)));
+      $('#build-arrow').style.opacity = String(ease(seg(t, 36.8, 37.6)));
+      const pb = ease(seg(t, 37.6, 38.6));
+      $('#pack-box').style.opacity = String(pb);
+      $('#pack-box').style.transform = `translateY(${24 * (1 - pb)}px)`;
+      $$('#pack-box .carton').forEach((cn, i) => {
+        const p = ease(seg(t, 38.2 + i * 0.7, 39.0 + i * 0.7));
+        cn.style.opacity = String(p);
+        cn.style.transform = `scale(${0.6 + 0.4 * p})`;
+      });
+      const rr = ease(seg(t, 39.6, 40.6));
+      $('#rate-row-main').style.opacity = String(rr);
+      $('#rate-row-main').style.transform = `translateX(${40 * (1 - rr)}px)`;
+      $('#chip-rated').style.opacity = String(ease(seg(t, 42, 42.9)));
+
+      /* update 48–62: weight edit ripples Acumatica → catalog → quote */
+      const uw = $('#upd-wrap');
+      uw.style.opacity = String(ease(seg(t, 48.2, 49.1)));
+      uw.style.visibility = t > 48 ? 'visible' : 'hidden';
+      const u1 = ease(seg(t, 48.4, 49.3)), u2 = ease(seg(t, 49.2, 50.1));
+      $('#upd-ns').style.opacity = String(u1);
+      $('#upd-ns').style.transform = `translateY(${26 * (1 - u1)}px)`;
+      $('#upd-fp').style.opacity = String(u2);
+      $('#upd-fp').style.transform = `translateY(${26 * (1 - u2)}px)`;
+      $('#upd-link').style.opacity = String(ease(seg(t, 49.9, 50.6)));
+      $('#upd-ns-weight').textContent = t >= 52 ? '40.0 lb' : '38.0 lb';
+      $('#upd-ns-edit').style.opacity = String(ease(seg(t, 52, 52.6)));
+      const f1 = Math.max(0, 1 - Math.abs(t - 52.4) / 1.5);
+      $('#upd-field-ns').style.boxShadow = `0 0 0 ${6 * f1}px rgba(245,158,11,${(0.35 * f1).toFixed(3)})`;
+      const dp = ease(seg(t, 53, 54.6));
+      $('#upd-dot').style.top = `${4 + 66 * dp}px`;
+      $('#upd-dot').style.opacity = String(Math.min(seg(t, 52.8, 53.1), 1 - seg(t, 54.7, 55.1)));
+      $('#upd-fp-weight').textContent = t >= 54.8 ? '40.0 lb' : '38.0 lb';
+      const f2 = Math.max(0, 1 - Math.abs(t - 55.2) / 1.5);
+      $('#upd-row-cat').style.boxShadow = `0 0 0 ${6 * f2}px rgba(76,141,222,${(0.30 * f2).toFixed(3)})`;
+      $('#upd-fp-rate').textContent = t >= 56.6 ? '$301.10' : '$298.40';
+      const f3 = Math.max(0, 1 - Math.abs(t - 57.0) / 1.5);
+      $('#upd-row-rate').style.boxShadow = `0 0 0 ${6 * f3}px rgba(34,197,94,${(0.30 * f3).toFixed(3)})`;
+      $('#chip-rerate').style.opacity = String(ease(seg(t, 57.6, 58.4)));
+    }
+
+    /* end card 62–80: stat tiles cascade, then source + CTA */
+    end.style.opacity = String(ease(seg(t, 62, 62.9)));
+    end.style.visibility = t > 61.9 ? 'visible' : 'hidden';
+    $$('.stat-tile').forEach((s, i) => {
+      const p = ease(seg(t, 63.4 + i * 0.9, 64.3 + i * 0.9));
+      s.style.opacity = String(p);
+      s.style.transform = `translateY(${30 * (1 - p)}px)`;
+    });
+    $('#end-src').style.opacity = String(ease(seg(t, 67.2, 68)));
+    $('#end-cta').style.opacity = String(ease(seg(t, 68, 68.9)));
+  }
+
+  /* ═══ ENGINE (transport, chrome, sync, modes) — copy verbatim ═══ */
+  let T = 0, playing = false, lastTick = 0, autoPause = false;
+  // section boundaries for "pause after each section": chapter starts (past the first) + end
+  const BOUNDARIES = CH.slice(1).map((c) => c.start).concat([DURATION]);
+  function step(now) {
+    if (playing) {
+      const prevT = T;
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      let stopped = false;
+      if (autoPause) {
+        for (var bi = 0; bi < BOUNDARIES.length; bi++) {
+          var b = BOUNDARIES[bi];
+          if (prevT < b - 1e-4 && T >= b) { T = b; playing = false; updatePlayBtn(); broadcast(); stopped = true; break; }
+        }
+      }
+      if (!stopped && T >= DURATION) { if (EMBED) T = 0; else { playing = false; updatePlayBtn(); } }
+      apply(T); updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  CH.forEach((c) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); });
+    $('#chapters').appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => { cel.querySelector('.fill').style.width = (seg(T, CH[i].start, CH[i].end) * 100) + '%'; });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';
+  const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';
+  function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+
+  let hideTimer = null;
+  document.addEventListener('mousemove', () => {
+    if (EMBED) return;
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) {}
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', 'w', 'W', 's', 'S', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*'); e.preventDefault();
+    }
+  });
+
+  /* presenter/audience sync — file:// safe */
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  try {
+    if (!RENDER && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel(SYNC_CHANNEL);
+      bc.onmessage = (e) => {
+        const m = e.data || {};
+        if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+        if (m.cmd === 'play') { play(true); return; }
+        if (m.cmd === 'pause') { pause(true); return; }
+        if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+        if (m.cmd === 'autopause') { autoPause = !!m.on; return; }
+        if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+        if (typeof m.t !== 'number') return;
+        authority = false; lastRemoteState = Date.now(); // someone else is driving
+        applyingRemote = true;
+        if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+          T = m.t; playing = !!m.playing; lastTick = performance.now();
+          apply(T); updateChrome(); updatePlayBtn();
+        }
+        applyingRemote = false;
+      };
+      setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+    }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  /* stage scaling + embed text boost */
+  function fit() {
+    if (EMBED) {
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty('--fpb', String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  /* render contract (tools/render-video.mjs) */
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

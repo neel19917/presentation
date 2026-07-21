@@ -25,7 +25,11 @@ class Component extends DCLogic {
   // bilateral integration), grounded in the ERP Integration Docs / Update Briefs.
   nsFeatures = /*@fp-content:features-netsuite*/null;
 
-  featureSets = { tms: this.features, wms: this.wmsFeatures, oms: this.omsFeatures, netsuite: this.nsFeatures };
+  // Acumatica demo track — native plug-in + Plug & Play bilateral, grounded in
+  // the ERP Integration Docs.
+  acuFeatures = /*@fp-content:features-acumatica*/null;
+
+  featureSets = { tms: this.features, wms: this.wmsFeatures, oms: this.omsFeatures, netsuite: this.nsFeatures, acumatica: this.acuFeatures };
 
   setRoot = (el) => { this.root = el; };
   setHeroWrap = (el) => { this.heroWrap = el; };
@@ -45,7 +49,7 @@ class Component extends DCLogic {
         else if (e.key === "Escape" || e.key === "ArrowLeft") this.goExplore();
         return;
       }
-      if (this.state.view === "wms" || this.state.view === "oms" || this.state.view === "netsuite" || this.state.view === "erp" || this.state.view === "carriers" || this.state.view === "workflows") {
+      if (this.state.view === "wms" || this.state.view === "oms" || this.state.view === "netsuite" || this.state.view === "acumatica" || this.state.view === "erp" || this.state.view === "carriers" || this.state.view === "workflows") {
         if (e.key === "Escape" || e.key === "ArrowLeft") this.goMainMenu();
         return;
       }
@@ -84,12 +88,13 @@ class Component extends DCLogic {
   goIntro = () => this.setState({ view: "intro", menuOpen: false });
   goExplore = () => this.setState({ view: "explore", menuOpen: false });
   goMainMenu = () => this.setState({ view: "mainmenu", menuOpen: false });
-  goHub = () => { const k = this.state.sysKey; if (k === "wms" || k === "oms" || k === "netsuite") this.setState({ view: k, menuOpen: false }); else this.setState({ view: "hub", menuOpen: false }); };
+  goHub = () => { const k = this.state.sysKey; if (k === "wms" || k === "oms" || k === "netsuite" || k === "acumatica") this.setState({ view: k, menuOpen: false }); else this.setState({ view: "hub", menuOpen: false }); };
   goTms = () => this.setState({ view: "hub", sysKey: "tms", menuOpen: false });
   goPlaceholder = (k) => this.setState({ view: k, menuOpen: false });
   goWms = () => this.setState({ view: "wms", sysKey: "wms", menuOpen: false });
   goOms = () => this.setState({ view: "oms", sysKey: "oms", menuOpen: false });
   goNetsuite = () => this.setState({ view: "netsuite", sysKey: "netsuite", menuOpen: false });
+  goAcumatica = () => this.setState({ view: "acumatica", sysKey: "acumatica", menuOpen: false });
   curFeats = () => this.featureSets[this.state.sysKey] || this.features;
   goErp = () => this.goPlaceholder("erp");
   goCarriers = () => this.setState({ view: "carriers", menuOpen: false });
@@ -171,7 +176,7 @@ class Component extends DCLogic {
     const feats = this.curFeats();
     const feat = feats[fi] || feats[0];
     const isPlaceholder = view === "erp";
-    const isSysHub = view === "wms" || view === "oms" || view === "netsuite";
+    const isSysHub = view === "wms" || view === "oms" || view === "netsuite" || view === "acumatica";
     const sys = this.sysData[view] || { abbr: "", name: "", kicker: "", intro: "", cards: [] };
     const ph = this.placeholders[view] || { abbr: "", name: "", tag: "" };
 
@@ -195,6 +200,7 @@ class Component extends DCLogic {
       { label: "Standard Shipping Workflows", sub: "7 animated flows", onClick: this.goWorkflows, style: (view === "workflows" || view === "workflow") ? topRowActive : topRow },
       { label: "ERP & System Integrations", sub: "54 connected systems", onClick: this.goErp, style: view === "erp" ? topRowActive : topRow },
       { label: "NetSuite Demo Track", sub: "SuiteApp · 7 workflows", onClick: this.goNetsuite, style: (view === "netsuite" || (view === "feature" && this.state.sysKey === "netsuite")) ? topRowActive : topRow },
+      { label: "Acumatica Demo Track", sub: "Certified ISV · 6 workflows", onClick: this.goAcumatica, style: (view === "acumatica" || (view === "feature" && this.state.sysKey === "acumatica")) ? topRowActive : topRow },
     ];
     const fCard = "background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .2s ease;";
     const fCardActive = "background:rgba(61,214,181,.1);border:1.5px solid #3DD6B5;border-radius:12px;padding:16px 18px;cursor:pointer;box-shadow:0 0 22px rgba(61,214,181,.14);";
@@ -218,6 +224,11 @@ class Component extends DCLogic {
       onClick: () => this.openFeature(i, 0, "netsuite"),
       style: (view === "feature" && this.state.sysKey === "netsuite" && i === fi) ? fCardActive : fCard,
     }));
+    const acuMenu = this.featureSets.acumatica.map((f, i) => ({
+      num: f.num, label: f.name,
+      onClick: () => this.openFeature(i, 0, "acumatica"),
+      style: (view === "feature" && this.state.sysKey === "acumatica" && i === fi) ? fCardActive : fCard,
+    }));
 
     const wf = this.workflows.items[this.state.wfi] || this.workflows.items[0];
     const navKey = view + ":" + fi + ":" + step + ":" + this.state.wfi;
@@ -234,7 +245,7 @@ class Component extends DCLogic {
     let crumbLeaf = "", hasLeaf = false;
     if (view === "explore") { crumb0 = "Interactive Walkthrough"; crumb0Click = this.goExplore; }
     else if (view === "hub") { crumbLeaf = "Transportation Management"; hasLeaf = true; }
-    else if (view === "feature") { crumb1 = ({ tms: "Transportation Management", wms: "Warehouse Management", oms: "Order Management", netsuite: "NetSuite Demo Track" })[this.state.sysKey] || "Modules"; crumb1Click = this.goHub; hasCrumb1 = true; crumbLeaf = feat.name; hasLeaf = true; }
+    else if (view === "feature") { crumb1 = ({ tms: "Transportation Management", wms: "Warehouse Management", oms: "Order Management", netsuite: "NetSuite Demo Track", acumatica: "Acumatica Demo Track" })[this.state.sysKey] || "Modules"; crumb1Click = this.goHub; hasCrumb1 = true; crumbLeaf = feat.name; hasLeaf = true; }
     else if (isSysHub) { crumbLeaf = sys.name; hasLeaf = true; }
     else if (isPlaceholder) { crumbLeaf = ph.name; hasLeaf = true; }
     else if (view === "carriers") { crumbLeaf = "Carrier Integrations"; hasLeaf = true; }
@@ -248,7 +259,7 @@ class Component extends DCLogic {
       isWorkflows: view === "workflows", isWorkflow: view === "workflow",
       sysAbbr: sys.abbr, sysName: sys.name, sysKicker: sys.kicker, sysIntro: sys.intro, sysCards: sys.cards.map((c, i) => ({ ...c, onClick: () => this.openFeature(i, 0, view) })),
       goExplore: this.goExplore, goStart: this.goExplore,
-      goMainMenu: this.goMainMenu, goTms: this.goTms, goWms: this.goWms, goOms: this.goOms, goErp: this.goErp, goNetsuite: this.goNetsuite, goBack: this.goBack,
+      goMainMenu: this.goMainMenu, goTms: this.goTms, goWms: this.goWms, goOms: this.goOms, goErp: this.goErp, goNetsuite: this.goNetsuite, goAcumatica: this.goAcumatica, goBack: this.goBack,
       goWorkflows: this.goWorkflows, wfNext: this.wfNext, wfPrev: this.wfPrev,
       wfAbbr: this.workflows.abbr, wfSection: this.workflows.name, wfKicker: this.workflows.kicker, wfIntro: this.workflows.intro,
       wfCards: this.workflows.items.map((c, i) => ({ ...c, onClick: () => this.openWorkflow(i) })),
@@ -268,7 +279,7 @@ class Component extends DCLogic {
       stepCounter: "0" + (step + 1) + " / 04",
       nextLabel: fi < feats.length - 1 ? "Next module" : "Back to modules",
       modTotal: (feats.length < 10 ? "0" : "") + feats.length,
-      cards, topMenu, featMenu, wmsMenu, omsMenu, nsMenu,
+      cards, topMenu, featMenu, wmsMenu, omsMenu, nsMenu, acuMenu,
       goIntro: this.goIntro, goHub: this.goHub, toggleMenu: this.toggleMenu,
       featNext: this.featNext, featPrev: this.featPrev,
       menuOpen,

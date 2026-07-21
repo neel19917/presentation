@@ -112,5 +112,43 @@
         "tag": "The NetSuite ecosystem we implement with — and the shippers who prove it"
       }
     ]
+  },
+  "acumatica": {
+    "abbr": "Acumatica",
+    "name": "FreightPOP inside Acumatica",
+    "kicker": "ERP Demo Track · Certified ISV",
+    "intro": "A certified Acumatica ISV: rate shop, book, track and reconcile freight natively inside Acumatica, or bilaterally through its API. Native plug-in + Plug & Play — pick the model that fits the account.",
+    "cards": [
+      {
+        "num": "01",
+        "title": "Ship Inside Acumatica",
+        "tag": "Rate shop and book from the Acumatica Sales Order — no system switching"
+      },
+      {
+        "num": "02",
+        "title": "Dual Rate Shop & Auto-Select",
+        "tag": "Compare contract and spot, auto-pick the best rate — in Acumatica"
+      },
+      {
+        "num": "03",
+        "title": "Plug & Play Order Sync",
+        "tag": "Orders flow in, tracking and cost flow back — bilateral, API-driven"
+      },
+      {
+        "num": "04",
+        "title": "AP & Return-to-Vendor Export",
+        "tag": "Carrier invoices become Acumatica AP Bills — coded and ready"
+      },
+      {
+        "num": "05",
+        "title": "Product Catalog & AutoCalc",
+        "tag": "Item dims and weights drive instant, accurate rating"
+      },
+      {
+        "num": "06",
+        "title": "Partners & Case Studies",
+        "tag": "A certified Acumatica ISV — and the shippers who prove it"
+      }
+    ]
   }
 }

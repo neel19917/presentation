@@ -23,6 +23,7 @@ const SYSTEMS = [
   { key: 'WMS', file: 'features-wms.json', label: 'WMS — Warehouse Management' },
   { key: 'OMS', file: 'features-oms.json', label: 'OMS — Order Management' },
   { key: 'NETSUITE', file: 'features-netsuite.json', label: 'NETSUITE — ERP Demo Track' },
+  { key: 'ACUMATICA', file: 'features-acumatica.json', label: 'ACUMATICA — ERP Demo Track' },
 ];
 
 const readJson = (f) => JSON.parse(fs.readFileSync(path.join(CONTENT, f), 'utf8'));

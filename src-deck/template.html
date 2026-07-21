@@ -640,6 +640,15 @@
             </div>
           </sc-for>
         </div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7A96B0;margin:26px 0 14px;">Acumatica Demo Track · 6 workflows</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <sc-for list="{{ acuMenu }}" as="m" hint-placeholder-count="6">
+            <div onclick="{{ m.onClick }}" style="{{ m.style }}">
+              <div style="font-family:'DM Mono',monospace;font-size:11px;color:#3DD6B5;letter-spacing:.08em;">{{ m.num }}</div>
+              <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:17px;letter-spacing:-.01em;color:#fff;margin-top:8px;">{{ m.label }}</div>
+            </div>
+          </sc-for>
+        </div>
       </div>
     </div>
   </sc-if>

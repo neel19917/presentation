@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreightPOP × Acumatica — Partners & Case Studies</title>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   ✏️  EDIT ME — this block is the ONLY thing you need to change.
+   Partners and case studies render automatically from this data.
+   After editing, just reload the deck (R in the presenter) — no rebuild needed,
+   because the deck embeds this file live as an iframe.
+
+   - `link` is optional: omit it (or set null) and the card renders without one.
+   - Case-study names/claims should be confirmed with marketing before a show.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const DATA = {
+  kicker: "FreightPOP × Acumatica",
+  title: "Partners & Proof",
+  intro: "FreightPOP is a certified Acumatica ISV — a listed, supported integration implemented alongside the Acumatica VAR ecosystem. Native plug-in inside Acumatica, or Plug & Play bilateral.",
+
+  links: [
+    { label: "Acumatica Marketplace", url: "https://www.acumatica.com/marketplace/" },
+    { label: "Case Study Library",    url: "https://www.freightpop.com/case-studies" },
+    { label: "Partner Program",       url: "https://www.freightpop.com/partners" },
+    { label: "All Integrations",      url: "https://www.freightpop.com/integrations" },
+    { label: "Book a Demo",           url: "https://www.freightpop.com/demo" }
+  ],
+
+  partners: [
+    { name: "Certified Acumatica ISV",   tag: "Listed, supported integration — Native carrier plug-in + Plug & Play bilateral, built for Acumatica 2025 R1/R2" },
+    { name: "Acumatica VAR ecosystem",   tag: "Implemented alongside your Acumatica reseller/implementation partner — not a from-scratch build" },
+    { name: "External API + OAuth",      tag: "Connects over the Acumatica External API with OAuth (ROPC) — no middleware to run" }
+  ],
+
+  caseStudies: [
+    { name: "Buffalo Seal & Gasket", tag: "Distribution · Acumatica LTL & Parcel — chose FreightPOP over StarShip (3–5 min per parcel)", link: null }
+  ]
+};
+/* ═══════════════════ end of editable block ═══════════════════ */
+</script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; min-height:100vh; padding:56px 64px; overflow-x:hidden; }
+  body::before { content:""; position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(640px 640px at 82% -6%,rgba(64,136,207,.30),rgba(64,136,207,.12) 42%,transparent 70%),
+               radial-gradient(560px 560px at 6% 108%,rgba(61,214,181,.10),transparent 65%); }
+  .wrap { position:relative; max-width:1280px; margin:0 auto; }
+  .kicker { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:#3DD6B5; margin-bottom:14px; display:flex; align-items:center; gap:11px; }
+  .kicker::before { content:""; width:26px; height:1.5px; background:#3DD6B5; display:inline-block; }
+  .head { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:18px; margin-bottom:14px; }
+  h1 { font-weight:400; font-size:44px; line-height:1.04; letter-spacing:-.02em; }
+  .intro { font-size:14.5px; line-height:1.55; color:#B5CDE0; max-width:460px; font-weight:300; }
+  .quicklinks { display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 30px; }
+  .quicklinks a { display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid rgba(61,214,181,.5); border-radius:999px; color:#3DD6B5; text-decoration:none; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; transition:background .2s; }
+  .quicklinks a:hover { background:rgba(61,214,181,.12); }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .col h2 { font-family:'DM Mono',monospace; font-size:11.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; color:#7A96B0; margin-bottom:14px; }
+  .card { background:#0A2540; border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:18px 20px; margin-bottom:12px; box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
+  .card .name { font-weight:500; font-size:18px; letter-spacing:-.01em; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .card .tag { font-size:13px; line-height:1.5; color:#B5CDE0; margin-top:6px; }
+  .card a { color:#3DD6B5; text-decoration:none; font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
+  .foot { margin-top:26px; font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:#7A96B0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker" id="kicker"></div>
+  <div class="head">
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+  </div>
+  <div class="quicklinks" id="links"></div>
+  <div class="cols">
+    <div class="col"><h2>Implementation & Technology Partners</h2><div id="partners"></div></div>
+    <div class="col"><h2>Customer Case Studies</h2><div id="cases"></div></div>
+  </div>
+  <div class="foot">Edit this list in modules/acumatica-partners.html — the deck picks it up on reload.</div>
+</div>
+<script>
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  document.getElementById('kicker').textContent = DATA.kicker;
+  document.getElementById('title').textContent = DATA.title;
+  document.getElementById('intro').textContent = DATA.intro;
+  document.getElementById('links').innerHTML = (DATA.links || []).map(l =>
+    `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join('');
+  const card = (x) => `<div class="card"><div class="name"><span>${esc(x.name)}</span>${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">View ↗</a>` : ''}</div><div class="tag">${esc(x.tag)}</div></div>`;
+  document.getElementById('partners').innerHTML = (DATA.partners || []).map(card).join('');
+  document.getElementById('cases').innerHTML = (DATA.caseStudies || []).map(card).join('');
+</script>
+</body>
+</html>

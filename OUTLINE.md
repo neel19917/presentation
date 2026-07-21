@@ -646,3 +646,153 @@
 - **Stat:** 134
 - **Stat label:** NetSuite shippers live on FreightPOP
 - **Proof:** Won together with the NetSuite partner ecosystem — the rollout risk question has been answered 134 times.
+
+# ACUMATICA — ERP Demo Track
+
+## ACUMATICA HUB — FreightPOP inside Acumatica
+- **Kicker:** ERP Demo Track · Certified ISV
+- **Intro:** A certified Acumatica ISV: rate shop, book, track and reconcile freight natively inside Acumatica, or bilaterally through its API. Native plug-in + Plug & Play — pick the model that fits the account.
+- **Card 01:** Ship Inside Acumatica — Rate shop and book from the Acumatica Sales Order — no system switching
+- **Card 02:** Dual Rate Shop & Auto-Select — Compare contract and spot, auto-pick the best rate — in Acumatica
+- **Card 03:** Plug & Play Order Sync — Orders flow in, tracking and cost flow back — bilateral, API-driven
+- **Card 04:** AP & Return-to-Vendor Export — Carrier invoices become Acumatica AP Bills — coded and ready
+- **Card 05:** Product Catalog & AutoCalc — Item dims and weights drive instant, accurate rating
+- **Card 06:** Partners & Case Studies — A certified Acumatica ISV — and the shippers who prove it
+
+## ACUMATICA 01 — Ship Inside Acumatica
+- **Title line 1:** Ship Inside
+- **Title line 2:** Acumatica
+- **Tagline:** Rate shop and book from the Acumatica Sales Order — no system switching
+### Problem
+- **Heading:** Shipping lives in a second window.
+- **Body:** The order is in Acumatica, but rating and labels happen in a standalone shipping tool. Reps re-key the order, bounce between screens, and the freight cost on the SO is a guess until someone books it somewhere else.
+- **Quote:** Our old tool took three to five minutes to process a single parcel shipment — outside the ERP.
+- **Quote by:** — Operations lead, Acumatica shipper (illustrative persona)
+### Benefit
+- **Heading:** A FreightPOP carrier plug-in, native inside Acumatica.
+- Rate shop and book directly from the Acumatica Sales Order and Shipment screens
+- Installed as an Acumatica customization package — talks to FreightPOP over the External API
+- AutoCalc builds packages, inner pieces and inner-most pieces from the SO lines
+- Labels and documents print automatically to each user's mapped printer
+- Runs on Acumatica 2025 R1 / R2 — no middleware, no separate shipping station
+### Live Demo
+- **Caption:** A rep rate shops and books an Acumatica Sales Order without ever leaving Acumatica — labels print themselves.
+### Validation
+- **Stat:** 0
+- **Stat label:** windows switched to book a shipment
+- **Proof:** The certified FreightPOP plug-in lives on the Acumatica transaction — rate, book, print and track without leaving the ERP.
+
+## ACUMATICA 02 — Dual Rate Shop & Auto-Select
+- **Title line 1:** Dual Rate Shop
+- **Title line 2:** & Auto-Select
+- **Tagline:** Compare contract and spot, auto-pick the best rate — in Acumatica
+### Problem
+- **Heading:** The cheapest rate is the one nobody had time to find.
+- **Body:** With one carrier account and a manual pick, reps default to the familiar carrier. Contract versus spot never gets compared, and the savings sitting in a better lane go unclaimed on every order.
+- **Quote:** Each rep just used whichever carrier they knew. No two shipped the same way.
+- **Quote by:** — Logistics manager, Acumatica shipper (illustrative persona)
+### Benefit
+- **Heading:** Optimized packaging plus best-rate selection, on the Acumatica screen.
+- Dual Rate Shop compares contract and spot rates side by side
+- Auto-Select Best Rate books the cheapest compliant option automatically
+- Extends the existing Shop-for-Rates experience — parcel, LTL and FTL
+- Optimized packaging calc feeds accurate rates, not guesses
+- Targeting Acumatica 2025 R2
+### Live Demo
+- **Caption:** An Acumatica order rate shops contract vs spot and auto-selects the best compliant rate — zero manual carrier choice.
+### Validation
+- **Stat:** Best
+- **Stat label:** compliant rate, every order
+- **Proof:** Dual rate shop + auto-select runs inside Acumatica, so the cheapest compliant rate is the default — not the carrier a rep happened to remember.
+
+## ACUMATICA 03 — Plug & Play Order Sync
+- **Title line 1:** Plug & Play
+- **Title line 2:** Order Sync
+- **Tagline:** Orders flow in, tracking and cost flow back — bilateral, API-driven
+### Problem
+- **Heading:** Every shipment gets keyed twice.
+- **Body:** The order is typed into Acumatica, re-typed into shipping, then tracking and freight cost get typed back by hand. Manual data entry between disconnected systems is where the day disappears.
+- **Quote:** We were copy-pasting order data into the shipping tool and the tracking number back into the ERP, all day.
+- **Quote by:** — Fulfillment supervisor, Acumatica shipper (illustrative persona)
+### Benefit
+- **Heading:** A bilateral connection, operated from inside FreightPOP.
+- Imports every Acumatica order type — Sales Orders (SO) and Return Merchandise (RM/RMA)
+- Pulls Acumatica Shipments and Purchase Orders for inbound and outbound freight
+- Stock-item sync keeps the FreightPOP catalog aligned with Acumatica
+- Carrier, tracking number and rate write back onto the Acumatica transaction
+- OAuth (ROPC) auth to the Acumatica API — no middleware to run
+### Live Demo
+- **Caption:** An Acumatica Sales Order imports into FreightPOP, books, and writes carrier + tracking + cost straight back — no re-keying.
+### Validation
+- **Stat:** 2×
+- **Stat label:** data entry eliminated per shipment
+- **Proof:** Order data is entered once, in Acumatica. The Plug & Play integration handles the round trip — SO/RMA/Shipment/PO in, carrier + tracking + cost back.
+
+## ACUMATICA 04 — AP & Return-to-Vendor Export
+- **Title line 1:** AP & Return-to
+- **Title line 2:** Vendor Export
+- **Tagline:** Carrier invoices become Acumatica AP Bills — coded and ready
+### Problem
+- **Heading:** Freight bills pile up, uncoded.
+- **Body:** Carrier invoices arrive by email and PDF, then someone hand-keys each one into Acumatica AP with a GL code. Returns to vendors add another manual export. Accounting is always behind and always guessing at the coding.
+- **Quote:** Reconciling carrier bills into AP by hand is a job nobody has time for.
+- **Quote by:** — Accounting lead, Acumatica shipper (illustrative persona)
+### Benefit
+- **Heading:** Freight AP and returns, exported into Acumatica automatically.
+- Completed shipment costs export to Acumatica as AP Bills with vendor + GL coding
+- Return-to-Vendor (RTV) export handles reverse-logistics shipments
+- Purchase Order integration tracks inbound freight from creation to receipt
+- Shipping terms map from native or custom Acumatica fields
+- Accurate carrier cost on the record — no manual bill entry
+### Live Demo
+- **Caption:** A booked shipment posts its carrier cost to Acumatica AP as a coded Bill, and a return exports as an RTV — no manual entry.
+### Validation
+- **Stat:** Auto
+- **Stat label:** AP bills + RTV posted to Acumatica
+- **Proof:** Carrier invoices post to Acumatica AP with the right GL code, and returns export as RTV — the reconciliation backlog stops accumulating.
+
+## ACUMATICA 05 — Product Catalog & AutoCalc
+- **Title line 1:** Product Catalog
+- **Title line 2:** & AutoCalc
+- **Tagline:** Item dims and weights drive instant, accurate rating
+### Problem
+- **Heading:** Rating is only as good as your item data.
+- **Body:** Dimensions, weights and packaging live in someone's head or a spreadsheet. When they don't flow to rating, every quote is a guess and every carrier reclass is a surcharge nobody expected.
+- **Quote:** If the dimensions aren't right, the rate isn't right — and we eat the reclass.
+- **Quote by:** — Warehouse manager, Acumatica shipper (illustrative persona)
+### Benefit
+- **Heading:** The FreightPOP catalog, populated from your Acumatica items.
+- AutoCalc computes Packages, Inner Pieces and Inner-Most Pieces from the SO lines + catalog
+- Item dimensions and weights feed rating automatically — no manual package entry
+- Populate the catalog from Acumatica stock items; keep it synced going forward
+- Accurate packaging means accurate rates and fewer carrier reclass adjustments
+- The prerequisite that makes AutoCalc and dual rate shop work
+### Live Demo
+- **Caption:** An Acumatica order auto-builds its packages from item dims and weights — the rate is right the first time.
+### Validation
+- **Stat:** 0
+- **Stat label:** manual package entries at rate time
+- **Proof:** Item data syncs once from Acumatica; AutoCalc builds the shipment and every quote uses measured dims — accurate rates, fewer reclass surprises.
+
+## ACUMATICA 06 — Partners & Case Studies
+- **Title line 1:** Partners
+- **Title line 2:** & Proof
+- **Tagline:** A certified Acumatica ISV — and the shippers who prove it
+### Problem
+- **Heading:** A shipping add-on is only as good as its fit with Acumatica.
+- **Body:** Acumatica is highly customizable, so a bolt-on shipping tool that the VAR has never seen adds risk to a go-live that's already high-stakes. Teams want a proven, certified integration — not a science project.
+- **Quote:** We needed shipping that our Acumatica partner already knew how to implement.
+- **Quote by:** — IT director (illustrative persona)
+### Benefit
+- **Heading:** Certified, partner-backed, and already winning.
+- Certified Acumatica ISV — a listed, supported integration, not a from-scratch build
+- Native plug-in and Plug & Play bilateral — pick the model that fits the account
+- Implemented alongside the Acumatica VAR ecosystem
+- Won accounts displacing legacy shipping tools
+- Setup guides, field mapping and known-issue references maintained continuously
+### Live Demo
+- **Caption:** Certified Acumatica ISV, implementation partners and customer proof — the live list, with links.
+### Validation
+- **Stat:** ISV
+- **Stat label:** certified Acumatica integration
+- **Proof:** Buffalo Seal & Gasket chose FreightPOP for Acumatica LTL & Parcel over a legacy tool that took 3–5 minutes per parcel — a certified integration, implemented with the Acumatica partner ecosystem.

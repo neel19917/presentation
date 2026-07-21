@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — AP & Return-to-Vendor Export</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP VIDEO MODULE TEMPLATE  (copy me: tools/new-module.js <name>)
+
+   You get for free: deterministic timeline (MP4-renderable + synced across
+   presenter/audience), chapters bar, fullscreen, white↔deck theme toggle,
+   URL modes (?render=1, ?seek=s, ?theme=deck, ?embed=1), brand tokens,
+   the real FreightPOP logo, dynamic text boost in embeds.
+
+   You write: the SCENES — markup in the stage + the apply(t) choreography.
+   RULES: every visual is a pure function of t. No CSS animations/transitions
+   on story elements. No emoji. Design at 1920×1080.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729; --navy-2: #0b2340; --blue: #4c8dde; --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9; --bg: #f7f9fc; --ink: #051729; --sub: rgba(5,23,41,0.72);
+  --green: #1f7a54; --success: #22c55e; --card-line: rgba(5,23,41,0.10); --teal: #3dd6b5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', sans-serif; }
+
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); transform-origin: center center; flex: 0 0 auto; }
+#stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px; }
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* full-bleed navy cards (title / end) */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo-img { display: block; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 118px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; }
+
+/* step caption — number badge lives INSIDE the box so it can never clip */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+
+/* build-step reveal helper: elements fade/slide via apply(t), no CSS anim */
+
+/* player chrome */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+#btn-theme, #btn-fs, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-fs:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+
+/* embed mode: dedicated bottom bar + text boost */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; padding: 10px 18px; opacity: 1 !important; pointer-events: auto !important; background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3); }
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #btn-play, body.embed #btn-theme, body.embed #btn-fs, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); }
+
+/* deck theme: navy + teal + mono kickers + LIGHT-weight headings */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before { background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); }
+body.theme-deck .kicker, body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: var(--teal); letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; }
+body.theme-deck #caption .step-body { color: #b5cde0; }
+body.theme-deck #caption .step-num { background: var(--teal); color: var(--navy); }
+body.theme-deck .cta { background: var(--teal); color: var(--navy); }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: var(--teal); color: var(--navy); }
+
+/* ═══ SCENE STYLES — AP & Return-to-Vendor Export ═══ */
+
+/* end-card stat tiles */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 320px); gap: 22px; margin-top: 46px; }
+.stat-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(193,212,233,0.25); border-radius: 18px; padding: 30px 24px; text-align: left; }
+.stat-num { font-family: 'Manrope'; font-weight: 800; font-size: 52px; color: #7fd4ae; line-height: 1; }
+.stat-lb { font-size: 17px; color: var(--light-blue); line-height: 1.4; margin-top: 12px; }
+body.theme-deck .stat-num { color: var(--teal); }
+
+/* ═══ The Problem — pile of uncoded carrier invoices (right side; left edge 840px) ═══ */
+#pile { position: absolute; right: 70px; top: 132px; width: 1010px; height: 800px; padding: 4px 6px; }
+.inv-card { display: grid; grid-template-columns: 74px 1fr auto 210px; gap: 22px; align-items: center; background: #fff; border: 1.5px solid var(--card-line); border-radius: 16px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 14px 34px rgba(5,23,41,0.07); }
+.inv-doc { width: 74px; height: 90px; border-radius: 8px; background: #fdfdfe; border: 2px solid rgba(5,23,41,0.16); position: relative; }
+.inv-doc::before { content: ""; position: absolute; left: 12px; right: 12px; top: 16px; height: 4px; border-radius: 2px; background: rgba(5,23,41,0.14); box-shadow: 0 12px 0 rgba(5,23,41,0.14), 0 24px 0 rgba(5,23,41,0.14); }
+.inv-doc::after { content: "PDF"; position: absolute; bottom: 9px; left: 0; right: 0; text-align: center; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #c0392b; font-weight: 600; }
+.inv-carrier { font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--ink); }
+.inv-no { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--sub); margin-top: 4px; }
+.inv-amt { font-family: 'Manrope'; font-weight: 800; font-size: 23px; color: var(--ink); text-align: right; }
+.inv-tags { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.inv-uncoded { font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.08em; color: #b45309; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.5); border-radius: 999px; padding: 7px 14px; }
+.inv-glq { font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.06em; color: #c0392b; background: rgba(192,57,43,0.10); border: 1px solid rgba(192,57,43,0.4); border-radius: 8px; padding: 7px 13px; }
+.pile-callout { display: flex; align-items: center; gap: 16px; margin-top: 6px; font-size: 22px; font-weight: 600; color: var(--ink); background: #fff; border: 1.5px solid var(--card-line); border-left: 6px solid #f59e0b; border-radius: 14px; padding: 20px 24px; }
+.pile-callout .pc-tag { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #b45309; }
+
+/* ═══ Acumatica app mock (right side; left edge 840px clears the caption) ═══ */
+#acu-frame { position: absolute; right: 70px; top: 96px; width: 1010px; height: 850px; background: #fff; border: 3px solid var(--navy); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(5,23,41,0.18); }
+#acu-topbar { height: 64px; background: #10263c; color: #fff; display: flex; align-items: center; gap: 26px; padding: 0 28px; }
+.acu-brand { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.14em; color: #7fd0f5; font-weight: 500; }
+.acu-crumb { font-size: 17px; color: #b7c8da; }
+.acu-crumb b { color: #fff; }
+.acu-user { margin-left: auto; font-size: 15px; color: #8fa6bd; }
+#acu-billrow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 22px 28px 16px; }
+.acu-field span { display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(5,23,41,0.5); margin-bottom: 6px; }
+.acu-field b { font-size: 18px; color: var(--ink); font-weight: 700; }
+#acu-tabs { display: flex; gap: 6px; padding: 6px 28px 0; border-bottom: 2px solid var(--card-line); }
+.acu-tab { font-size: 17px; font-weight: 600; color: rgba(5,23,41,0.55); padding: 12px 22px 14px; border-radius: 10px 10px 0 0; }
+#acu-tab-fp { position: relative; color: var(--blue-deep); }
+#acu-tab-fp::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -2px; height: 4px; border-radius: 2px; background: var(--blue); transform: scaleX(var(--tabp, 0)); transform-origin: left; }
+#acu-panel { position: relative; height: 590px; }
+.fp-panel { position: absolute; inset: 0; padding: 26px 28px; opacity: 0; }
+.fp-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.fp-chip { display: inline-block; font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.1em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border: 1px solid rgba(76,141,222,0.4); border-radius: 999px; padding: 8px 16px; }
+.fp-chip.teal { color: var(--green); background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.45); }
+.fp-note { font-size: 18px; color: var(--sub); padding: 4px 2px; }
+
+/* two-column FreightPOP → Acumatica mapping (reused across AP + RTV) */
+.map-cols { display: grid; grid-template-columns: 1fr 92px 1fr; align-items: center; gap: 0; margin-bottom: 24px; }
+.map-card { border: 1.5px solid var(--card-line); border-radius: 16px; padding: 22px 24px; background: #fff; }
+.map-card.acu { border-color: rgba(76,141,222,0.4); box-shadow: 0 0 0 3px rgba(76,141,222,0.10); }
+.map-h { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sub); margin-bottom: 16px; }
+.map-f { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--card-line); font-size: 18px; }
+.map-f span { color: var(--sub); }
+.map-f b { color: var(--ink); font-weight: 700; text-align: right; }
+.map-f.gl b { font-family: 'DM Mono', monospace; font-size: 16px; }
+.map-f.filled { background: rgba(34,197,94,0.08); border-radius: 8px; padding-left: 10px; padding-right: 10px; margin: 0 -10px; }
+.map-f.filled b { color: var(--green); }
+.map-arrow { text-align: center; font-size: 50px; color: var(--blue); font-weight: 300; }
+.map-status { display: inline-block; margin-top: 4px; font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.1em; padding: 8px 16px; border-radius: 999px; background: var(--success); color: #fff; }
+
+/* PO stage tracker */
+.po-row { display: flex; align-items: center; justify-content: space-between; border: 1.5px solid var(--card-line); border-radius: 14px; padding: 20px 24px; margin-bottom: 34px; background: #fff; }
+.po-row .po-id { font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--ink); }
+.po-row .po-meta { font-size: 17px; color: var(--sub); }
+.po-track { display: flex; align-items: flex-start; margin: 6px 12px 34px; }
+.po-node { display: flex; flex-direction: column; align-items: center; width: 120px; flex: 0 0 auto; }
+.po-node .dot { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--card-line); background: #fff; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 16px; color: #fff; }
+.po-node.on .dot { border-color: var(--success); background: var(--success); }
+.po-node .plb { margin-top: 12px; font-size: 16px; color: var(--sub); font-weight: 600; }
+.po-node.on .plb { color: var(--ink); }
+.po-conn { flex: 1; height: 4px; border-radius: 2px; background: var(--card-line); margin-top: 18px; position: relative; overflow: hidden; }
+.po-conn .pfill { position: absolute; inset: 0; width: 0%; background: var(--success); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ SCENES: title → problem (pile) → Acumatica app (AP / RTV / PO) → end ═══ -->
+  <div class="layer" id="scene-app">
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE PROBLEM</div>
+      <div class="step-title" id="cap-title">Freight bills pile up, uncoded</div>
+      <div class="step-body" id="cap-body">Every carrier invoice hand-keyed into AP — coded from memory, reconciled by hand.</div>
+    </div>
+
+    <!-- The Problem: pile of uncoded carrier invoices -->
+    <div id="pile">
+      <div class="inv-card" data-i="0">
+        <div class="inv-doc"></div>
+        <div><div class="inv-carrier">Estes Express</div><div class="inv-no">INV 784-122-104</div></div>
+        <div class="inv-amt">$312.40</div>
+        <div class="inv-tags"><span class="inv-uncoded">UNCODED</span><span class="inv-glq">GL&nbsp;?</span></div>
+      </div>
+      <div class="inv-card" data-i="1">
+        <div class="inv-doc"></div>
+        <div><div class="inv-carrier">Old Dominion</div><div class="inv-no">INV 559-208-771</div></div>
+        <div class="inv-amt">$204.85</div>
+        <div class="inv-tags"><span class="inv-uncoded">UNCODED</span><span class="inv-glq">GL&nbsp;?</span></div>
+      </div>
+      <div class="inv-card" data-i="2">
+        <div class="inv-doc"></div>
+        <div><div class="inv-carrier">XPO Logistics</div><div class="inv-no">INV 610-334-902</div></div>
+        <div class="inv-amt">$488.10</div>
+        <div class="inv-tags"><span class="inv-uncoded">UNCODED</span><span class="inv-glq">GL&nbsp;?</span></div>
+      </div>
+      <div class="inv-card" data-i="3">
+        <div class="inv-doc"></div>
+        <div><div class="inv-carrier">FedEx Freight</div><div class="inv-no">INV 902-118-540</div></div>
+        <div class="inv-amt">$156.20</div>
+        <div class="inv-tags"><span class="inv-uncoded">UNCODED</span><span class="inv-glq">GL&nbsp;?</span></div>
+      </div>
+      <div class="pile-callout" id="pile-callout"><span class="pc-tag">AP QUEUE</span>Every carrier bill hand-keyed into AP</div>
+    </div>
+
+    <!-- Acumatica app mock -->
+    <div id="acu-frame">
+      <div id="acu-topbar">
+        <span class="acu-brand">ACUMATICA ERP</span>
+        <span class="acu-crumb" id="acu-crumb">Payables &rsaquo; Bill &rsaquo; <b>AP-004821</b></span>
+        <span class="acu-user">Summit Industrial Supply</span>
+      </div>
+      <div id="acu-billrow">
+        <div class="acu-field"><span>Vendor</span><b id="acu-f-vendor">Estes Express</b></div>
+        <div class="acu-field"><span>Document</span><b id="acu-f-doc">AP Bill</b></div>
+        <div class="acu-field"><span>Amount</span><b id="acu-f-amount">$312.40</b></div>
+        <div class="acu-field"><span>Status</span><b id="acu-f-status">Ready to release</b></div>
+      </div>
+      <div id="acu-tabs">
+        <span class="acu-tab">Details</span>
+        <span class="acu-tab">GL Allocation</span>
+        <span class="acu-tab" id="acu-tab-fp">FreightPOP</span>
+        <span class="acu-tab">Approval</span>
+      </div>
+
+      <div id="acu-panel">
+        <!-- Post to AP -->
+        <div class="fp-panel" id="panel-ap">
+          <div class="fp-panel-head"><span class="fp-chip teal" id="chip-autocode">AUTO-CODED &middot; POSTS TO ACUMATICA AP</span></div>
+          <div class="map-cols">
+            <div class="map-card"><div class="map-h">FreightPOP shipment</div>
+              <div class="map-f"><span>Carrier</span><b>Estes Express</b></div>
+              <div class="map-f"><span>Shipment</span><b>SHP-77421</b></div>
+              <div class="map-f"><span>Freight cost</span><b>$312.40</b></div>
+              <div class="map-f"><span>Status</span><b>Completed</b></div></div>
+            <div class="map-arrow">&#8594;</div>
+            <div class="map-card acu"><div class="map-h">Acumatica AP Bill</div>
+              <div class="map-f" data-ap="0"><span>Vendor</span><b>Estes Express</b></div>
+              <div class="map-f gl filled" data-ap="1"><span>GL account</span><b>5040 &middot; Freight Out</b></div>
+              <div class="map-f" data-ap="2"><span>Amount</span><b>$312.40</b></div>
+              <div class="map-f" data-ap="3"><span>Status</span><b>Ready</b></div></div>
+          </div>
+          <div class="fp-note" id="ap-note">Vendor and GL account mapped from the shipment &mdash; the Bill posts with zero hand-keying.</div>
+        </div>
+
+        <!-- Return-to-Vendor -->
+        <div class="fp-panel" id="panel-rtv">
+          <div class="fp-panel-head"><span class="fp-chip teal" id="chip-rtv">RTV EXPORT &middot; RM001204</span></div>
+          <div class="map-cols">
+            <div class="map-card"><div class="map-h">FreightPOP return shipment</div>
+              <div class="map-f"><span>RMA</span><b>RM001204</b></div>
+              <div class="map-f"><span>Carrier</span><b>Old Dominion</b></div>
+              <div class="map-f"><span>Direction</span><b>To vendor</b></div>
+              <div class="map-f"><span>Freight</span><b>$148.20</b></div></div>
+            <div class="map-arrow" id="rtv-arrow">&#8592;</div>
+            <div class="map-card acu"><div class="map-h">Acumatica RTV</div>
+              <div class="map-f" data-rtv="0"><span>Vendor</span><b>Uline</b></div>
+              <div class="map-f" data-rtv="1"><span>Document</span><b>RTV-002317</b></div>
+              <div class="map-f gl" data-rtv="2"><span>Type</span><b>Return to Vendor</b></div>
+              <div class="map-f filled" data-rtv="3"><span>Status</span><b>Exported</b></div></div>
+          </div>
+          <div class="fp-note" id="rtv-note">Return shipments export straight to Acumatica as RTV documents &mdash; the credit lands on the vendor.</div>
+        </div>
+
+        <!-- PO & Terms -->
+        <div class="fp-panel" id="panel-po">
+          <div class="fp-panel-head"><span class="fp-chip" id="chip-po">INBOUND PURCHASE ORDER &middot; TRACKED END-TO-END</span></div>
+          <div class="po-row" id="po-row"><span class="po-id">PO-4471</span><span class="po-meta">Uline &middot; inbound &middot; 6 pallets &middot; $2,140.00</span></div>
+          <div class="po-track">
+            <div class="po-node" data-n="0"><span class="dot">&#10003;</span><span class="plb">Created</span></div>
+            <div class="po-conn" data-c="0"><span class="pfill"></span></div>
+            <div class="po-node" data-n="1"><span class="dot">&#10003;</span><span class="plb">Approved</span></div>
+            <div class="po-conn" data-c="1"><span class="pfill"></span></div>
+            <div class="po-node" data-n="2"><span class="dot">&#10003;</span><span class="plb">In transit</span></div>
+            <div class="po-conn" data-c="2"><span class="pfill"></span></div>
+            <div class="po-node" data-n="3"><span class="dot">&#10003;</span><span class="plb">Received</span></div>
+          </div>
+          <div class="fp-chip teal" id="chip-terms">Shipping terms mapped &middot; native + custom fields</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,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">
+    <div style="height:44px"></div>
+    <div class="kicker">FREIGHTPOP &times; ACUMATICA &middot; AP &amp; RETURNS</div>
+    <h1 class="title-h1">Freight bills post themselves.</h1>
+    <div class="title-sub">Completed shipment costs export to Acumatica AP as coded Bills; returns export as RTV. No hand-keying.</div>
+  </div>
+
+  <div class="fullcard" id="scene-end">
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:82px;">The reconciliation backlog stops.</h1>
+    <div class="stat-tiles">
+      <div class="stat-tile" data-st="0"><div class="stat-num">Auto</div><div class="stat-lb">AP Bills posted with GL coding</div></div>
+      <div class="stat-tile" data-st="1"><div class="stat-num">RTV</div><div class="stat-lb">returns exported to Acumatica</div></div>
+      <div class="stat-tile" data-st="2"><div class="stat-num">PO&rarr;receipt</div><div class="stat-lb">inbound purchase orders tracked</div></div>
+      <div class="stat-tile" data-st="3"><div class="stat-num">0</div><div class="stat-lb">manual bill entry</div></div>
+    </div>
+    <div style="height:40px"></div>
+    <div class="cta">SCHEDULE A DEMO &rarr;</div>
+  </div>
+
+</div></div>
+
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button>
+  <button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  /* ═══ CONFIG — tools/new-module.js rewrites these ═══ */
+  const SYNC_CHANNEL = 'fp-acumatica-ap-export-video-sync';       // unique per module
+  const CH = [                              // chapters: contiguous, seconds
+    { id: 'title',   label: 'Intro',    start: 0,  end: 6 },
+    { id: 'problem', label: 'Problem',  start: 6,  end: 18 },
+    { id: 'postap',  label: 'Post AP',  start: 18, end: 33 },
+    { id: 'rtv',     label: 'Returns',  start: 33, end: 47 },
+    { id: 'po',      label: 'PO/Terms', start: 47, end: 62 },
+    { id: 'end',     label: 'Result',   start: 62, end: 80 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  /* ═══ easing helpers ═══ */
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  /* ═══ THE FILM — every visual from t, nothing free-running ═══ */
+  const CAPS = [
+    { a: 6,  n: '1', k: 'STEP 1 — THE PROBLEM', h: 'Freight bills pile up, uncoded',
+      b: 'Every carrier invoice hand-keyed into AP — coded from memory, reconciled by hand.' },
+    { a: 18, n: '2', k: 'STEP 2 — POST TO AP',  h: 'Booked cost posts to AP with GL coding',
+      b: 'A completed shipment becomes a coded Acumatica Bill — vendor, amount and GL account auto-filled.' },
+    { a: 33, n: '3', k: 'STEP 3 — RETURNS',     h: 'Returns export as RTV',
+      b: 'Return-to-vendor shipments export straight to Acumatica as RTV documents.' },
+    { a: 47, n: '4', k: 'STEP 4 — POs & TERMS', h: 'Inbound POs and shipping terms, mapped',
+      b: 'Purchase orders track from creation to receipt; shipping terms map to native and custom fields.' },
+  ];
+  function setCaption(t) {
+    let c = CAPS[0];
+    for (const x of CAPS) if (t >= x.a) c = x;
+    if ($('#cap-num').textContent !== c.n) {
+      $('#cap-num').textContent = c.n; $('#cap-kicker').textContent = c.k;
+      $('#cap-title').textContent = c.h; $('#cap-body').textContent = c.b;
+    }
+    const p = ease(seg(t, c.a + 0.4, c.a + 1.1));
+    $('#caption').style.opacity = String(p);
+    $('#caption').style.transform = `translateY(${26 * (1 - p)}px)`;
+  }
+  function panel(el, on, t, a) {
+    el.style.opacity = on ? String(ease(seg(t, a, a + 0.8))) : '0';
+    el.style.visibility = on ? 'visible' : 'hidden';
+  }
+  let curFrame = '';
+  function setFrame(t) {
+    let key, crumb, vendor, doc, amount, status;
+    if (t < 33)      { key = 'ap';  crumb = 'Payables &rsaquo; Bill &rsaquo; <b>AP-004821</b>';  vendor = 'Estes Express'; doc = 'AP Bill';          amount = '$312.40';   status = 'Ready to release'; }
+    else if (t < 47) { key = 'rtv'; crumb = 'Payables &rsaquo; RTV &rsaquo; <b>RTV-002317</b>';  vendor = 'Uline';         doc = 'Return to Vendor';  amount = '-$148.20';  status = 'Exported'; }
+    else             { key = 'po';  crumb = 'Purchases &rsaquo; PO &rsaquo; <b>PO-4471</b>';     vendor = 'Uline';         doc = 'Purchase Order';    amount = '$2,140.00'; status = 'Receiving'; }
+    if (key !== curFrame) {
+      curFrame = key;
+      $('#acu-crumb').innerHTML = crumb;
+      $('#acu-f-vendor').textContent = vendor;
+      $('#acu-f-doc').textContent = doc;
+      $('#acu-f-amount').textContent = amount;
+      $('#acu-f-status').textContent = status;
+    }
+  }
+  function apply(t) {
+    const title = $('#scene-title'), end = $('#scene-end'), app = $('#scene-app');
+
+    /* title card 0–6 */
+    title.style.opacity = String(Math.min(seg(t, 0, 0.8), 1 - seg(t, 5.2, 6.0)));
+    title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+
+    /* app scene 6–62 (problem pile → Acumatica frame) */
+    const appVis = t > 5.5 && t < 62.7;
+    app.style.opacity = String(Math.min(ease(seg(t, 5.6, 6.6)), 1 - seg(t, 61.6, 62.6)));
+    app.style.visibility = appVis ? 'visible' : 'hidden';
+    if (!appVis) $('#caption').style.opacity = '0'; // caption belongs to the app scene
+    if (appVis) {
+      setCaption(t);
+
+      /* The Problem 6–18: invoice cards cascade, callout lands */
+      const pileVis = t < 18.3;
+      $('#pile').style.opacity = String(Math.min(ease(seg(t, 6.4, 7.2)), 1 - seg(t, 17.2, 18.2)));
+      $('#pile').style.visibility = pileVis ? 'visible' : 'hidden';
+      $$('#pile .inv-card').forEach((r, i) => {
+        const p = ease(seg(t, 7.0 + i * 1.1, 8.0 + i * 1.1));
+        r.style.opacity = String(p);
+        r.style.transform = `translateX(${40 * (1 - p)}px)`;
+      });
+      const pcP = ease(seg(t, 12.5, 13.5));
+      $('#pile-callout').style.opacity = String(pcP);
+      $('#pile-callout').style.transform = `translateY(${20 * (1 - pcP)}px)`;
+
+      /* Acumatica frame 18–62 */
+      const frameVis = t >= 17.7;
+      const fr = ease(seg(t, 18, 19.2));
+      $('#acu-frame').style.opacity = String(fr);
+      $('#acu-frame').style.transform = `translateY(${50 * (1 - fr)}px)`;
+      $('#acu-frame').style.visibility = frameVis ? 'visible' : 'hidden';
+      if (frameVis) {
+        setFrame(t);
+        $('#acu-tab-fp').style.setProperty('--tabp', String(ease(seg(t, 19.5, 21))));
+
+        /* Post to AP 18–33: bill fields fill, GL auto-codes, note lands */
+        panel($('#panel-ap'), t >= 18 && t < 33, t, 18.4);
+        $$('#panel-ap [data-ap]').forEach((f, i) => {
+          f.style.opacity = String(0.25 + 0.75 * ease(seg(t, 22 + i * 1.3, 23 + i * 1.3)));
+        });
+        $('#panel-ap .map-arrow').style.opacity = String(0.4 + 0.6 * Math.abs(Math.sin(t * 1.7)));
+        $('#ap-note').style.opacity = String(ease(seg(t, 29, 30)));
+
+        /* Return-to-Vendor 33–47: RTV fields fill, reverse arrow, note */
+        panel($('#panel-rtv'), t >= 33 && t < 47, t, 33.4);
+        $$('#panel-rtv [data-rtv]').forEach((f, i) => {
+          f.style.opacity = String(0.25 + 0.75 * ease(seg(t, 36 + i * 1.4, 37 + i * 1.4)));
+        });
+        $('#rtv-arrow').style.opacity = String(0.4 + 0.6 * Math.abs(Math.sin(t * 1.7)));
+        $('#rtv-note').style.opacity = String(ease(seg(t, 43, 44)));
+
+        /* PO & Terms 47–62: PO row, stage tracker fills, terms chip */
+        panel($('#panel-po'), t >= 47 && t < 62, t, 47.4);
+        const poP = ease(seg(t, 48, 49));
+        $('#po-row').style.opacity = String(poP);
+        $('#po-row').style.transform = `translateY(${20 * (1 - poP)}px)`;
+        $$('#panel-po .po-node').forEach((n, i) => {
+          n.classList.toggle('on', t >= 49.5 + i * 2.4);
+        });
+        $$('#panel-po .po-conn').forEach((c, i) => {
+          c.querySelector('.pfill').style.width = (ease(seg(t, 50 + i * 2.4, 51.8 + i * 2.4)) * 100) + '%';
+        });
+        $('#chip-terms').style.opacity = String(ease(seg(t, 58, 59)));
+      }
+    }
+
+    /* end card 62–80: stat tiles cascade */
+    end.style.opacity = String(ease(seg(t, 62, 62.9)));
+    end.style.visibility = t > 61.9 ? 'visible' : 'hidden';
+    $$('.stat-tile').forEach((s, i) => {
+      const p = ease(seg(t, 63.5 + i * 1.0, 64.4 + i * 1.0));
+      s.style.opacity = String(p);
+      s.style.transform = `translateY(${30 * (1 - p)}px)`;
+    });
+  }
+
+  /* ═══ ENGINE (transport, chrome, sync, modes) — copy verbatim ═══ */
+  let T = 0, playing = false, lastTick = 0, autoPause = false;
+  // section boundaries for "pause after each section": chapter starts (past the first) + end
+  const BOUNDARIES = CH.slice(1).map((c) => c.start).concat([DURATION]);
+  function step(now) {
+    if (playing) {
+      const prevT = T;
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      let stopped = false;
+      if (autoPause) {
+        for (var bi = 0; bi < BOUNDARIES.length; bi++) {
+          var b = BOUNDARIES[bi];
+          if (prevT < b - 1e-4 && T >= b) { T = b; playing = false; updatePlayBtn(); broadcast(); stopped = true; break; }
+        }
+      }
+      if (!stopped && T >= DURATION) { if (EMBED) T = 0; else { playing = false; updatePlayBtn(); } }
+      apply(T); updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  CH.forEach((c) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); });
+    $('#chapters').appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => { cel.querySelector('.fill').style.width = (seg(T, CH[i].start, CH[i].end) * 100) + '%'; });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';
+  const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';
+  function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+
+  let hideTimer = null;
+  document.addEventListener('mousemove', () => {
+    if (EMBED) return;
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) {}
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', 'w', 'W', 's', 'S', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*'); e.preventDefault();
+    }
+  });
+
+  /* presenter/audience sync — file:// safe */
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  try {
+    if (!RENDER && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel(SYNC_CHANNEL);
+      bc.onmessage = (e) => {
+        const m = e.data || {};
+        if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+        if (m.cmd === 'play') { play(true); return; }
+        if (m.cmd === 'pause') { pause(true); return; }
+        if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+        if (m.cmd === 'autopause') { autoPause = !!m.on; return; }
+        if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+        if (typeof m.t !== 'number') return;
+        authority = false; lastRemoteState = Date.now(); // someone else is driving
+        applyingRemote = true;
+        if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+          T = m.t; playing = !!m.playing; lastTick = performance.now();
+          apply(T); updateChrome(); updatePlayBtn();
+        }
+        applyingRemote = false;
+      };
+      setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+    }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  /* stage scaling + embed text boost */
+  function fit() {
+    if (EMBED) {
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty('--fpb', String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  /* render contract (tools/render-video.mjs) */
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

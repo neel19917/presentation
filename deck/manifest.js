@@ -150,6 +150,81 @@ window.FP_DECK = {
       notes: 'Auto-plays (82s). NetSuite PO → tracked inbound shipment → milestone timeline to the dock → tracking writes back to the PO.',
     },
 
+    // ══ ACUMATICA DEMO TRACK ══ 5 films in module order (also embedded in the deck's Acumatica track;
+    // module 06 "Partners & Proof" is the editable modules/acumatica-partners.html, reachable inside the deck)
+    {
+      url: '/modules/acumatica-ship-inside.html',
+      fit: 'native',
+      title: 'Acumatica 01 — Ship Inside Acumatica',
+      section: 'Acumatica Demo Track',
+      videoChannel: 'fp-acumatica-ship-inside-video-sync',
+      deckHost: { view: 'feature', fi: 0, step: 2, sysKey: 'acumatica' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Order', t: 6 }, { label: 'AutoCalc', t: 19 },
+        { label: 'Rate+Book', t: 33 }, { label: 'Print', t: 48 }, { label: 'Result', t: 62 },
+      ],
+      notes:
+        'Auto-plays (82s). Space: play/pause · ←/→: chapter jump — synced between preview and big screen.\n' +
+        'A certified FreightPOP carrier plug-in, native inside Acumatica: rate shop + book from the Sales Order, AutoCalc packages from SO lines, labels auto-print to mapped user printers, tracking writes back — zero windows switched. Acumatica 2025 R1/R2, no middleware.\n' +
+        'Grounded in Confluence ERP Integration Docs (space EID). Anchor pain: legacy tool took 3–5 min per parcel outside the ERP.',
+    },
+
+    {
+      url: '/modules/acumatica-rate-shop.html',
+      fit: 'native',
+      title: 'Acumatica 02 — Dual Rate Shop & Auto-Select',
+      section: 'Acumatica Demo Track',
+      videoChannel: 'fp-acumatica-rate-shop-video-sync',
+      deckHost: { view: 'feature', fi: 1, step: 2, sysKey: 'acumatica' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Default', t: 6 }, { label: 'Rate Shop', t: 19 },
+        { label: 'Auto-Select', t: 34 }, { label: 'Result', t: 56 },
+      ],
+      notes: 'Auto-plays (78s). Dual Rate Shop compares contract vs spot side by side; Auto-Select books the cheapest compliant option — no manual carrier pick. Targeting Acumatica 2025 R2. Saves $51.10 vs the rep\'s default carrier in the demo scenario.',
+    },
+
+    {
+      url: '/modules/acumatica-order-sync.html',
+      fit: 'native',
+      title: 'Acumatica 03 — Plug & Play Order Sync',
+      section: 'Acumatica Demo Track',
+      videoChannel: 'fp-acumatica-order-sync-video-sync',
+      deckHost: { view: 'feature', fi: 2, step: 2, sysKey: 'acumatica' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Import', t: 6 }, { label: 'Item Sync', t: 20 },
+        { label: 'Book', t: 33 }, { label: 'Writeback', t: 46 }, { label: 'Result', t: 62 },
+      ],
+      notes: 'Auto-plays (82s). Bilateral Plug & Play: imports SO/RMA/Shipment/PO, stock-item sync keeps the catalog aligned, carrier + tracking + cost write back onto the Acumatica transaction. OAuth (ROPC) to the External API — no middleware. Data entered once, in Acumatica.',
+    },
+
+    {
+      url: '/modules/acumatica-ap-export.html',
+      fit: 'native',
+      title: 'Acumatica 04 — AP & Return-to-Vendor Export',
+      section: 'Acumatica Demo Track',
+      videoChannel: 'fp-acumatica-ap-export-video-sync',
+      deckHost: { view: 'feature', fi: 3, step: 2, sysKey: 'acumatica' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Problem', t: 6 }, { label: 'Post AP', t: 18 },
+        { label: 'Returns', t: 33 }, { label: 'PO/Terms', t: 47 }, { label: 'Result', t: 62 },
+      ],
+      notes: 'Auto-plays (80s). Completed shipment costs post to Acumatica AP as coded Bills (GL 5040 · Freight Out); Return-to-Vendor exports as RTV; PO integration tracks inbound freight Created→Received; shipping terms map from native or custom fields. The reconciliation backlog stops accumulating.',
+    },
+
+    {
+      url: '/modules/acumatica-product-catalog.html',
+      fit: 'native',
+      title: 'Acumatica 05 — Product Catalog & AutoCalc',
+      section: 'Acumatica Demo Track',
+      videoChannel: 'fp-acumatica-product-catalog-video-sync',
+      deckHost: { view: 'feature', fi: 4, step: 2, sysKey: 'acumatica' },
+      chapters: [
+        { label: 'Intro', t: 0 }, { label: 'Item', t: 6 }, { label: 'Sync', t: 20 },
+        { label: 'AutoCalc', t: 34 }, { label: 'Edit', t: 48 }, { label: 'Result', t: 62 },
+      ],
+      notes: 'Auto-plays (80s). Item dims + weights sync from Acumatica stock items (6,000+); AutoCalc builds Packages / Inner Pieces / Inner-Most Pieces from the SO lines; edit an item once and every quote re-rates. Accurate packaging = accurate rates, fewer carrier reclass surprises.',
+    },
+
     // ══ INTEGRATIONS ══ ERP + hardware connections (editable page; also the deck's ERP screen)
     {
       url: '/modules/erp-integrations.html',

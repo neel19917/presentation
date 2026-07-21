@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightPOP — Ship Inside Acumatica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════════
+   FreightPOP VIDEO MODULE TEMPLATE  (copy me: tools/new-module.js <name>)
+
+   You get for free: deterministic timeline (MP4-renderable + synced across
+   presenter/audience), chapters bar, fullscreen, white↔deck theme toggle,
+   URL modes (?render=1, ?seek=s, ?theme=deck, ?embed=1), brand tokens,
+   the real FreightPOP logo, dynamic text boost in embeds.
+
+   You write: the SCENES — markup in the stage + the apply(t) choreography.
+   RULES: every visual is a pure function of t. No CSS animations/transitions
+   on story elements. No emoji. Design at 1920×1080.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --navy: #051729; --navy-2: #0b2340; --blue: #4c8dde; --blue-deep: #2d6cc0;
+  --light-blue: #c1d4e9; --bg: #f7f9fc; --ink: #051729; --sub: rgba(5,23,41,0.72);
+  --green: #1f7a54; --success: #22c55e; --card-line: rgba(5,23,41,0.10); --teal: #3dd6b5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--navy); }
+body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+h1, h2, h3, .headline, .kicker, .stat-num { font-family: 'Manrope', 'DM Sans', sans-serif; }
+
+#viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); transform-origin: center center; flex: 0 0 auto; }
+#stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(5,23,41,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(5,23,41,0.035) 1px, transparent 1px);
+  background-size: 46px 46px; }
+.layer { position: absolute; inset: 0; z-index: 1; }
+
+/* full-bleed navy cards (title / end) */
+.fullcard { position: absolute; inset: 0; background: radial-gradient(1300px 700px at 72% -10%, #123a66 0%, var(--navy) 55%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.logo-img { display: block; }
+.logo-img.logo-lg { height: 58px; margin-bottom: 8px; }
+.kicker { font-size: 22px; font-weight: 700; letter-spacing: 0.28em; color: #7fd4ae; }
+.title-h1 { font-size: 118px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; margin: 26px 0 30px; }
+.title-sub { font-size: 34px; color: var(--light-blue); font-weight: 400; max-width: 1150px; line-height: 1.4; }
+.cta { display: inline-flex; align-items: center; gap: 14px; background: var(--blue); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 27px; padding: 22px 46px; border-radius: 14px; }
+
+/* step caption — number badge lives INSIDE the box so it can never clip */
+#caption { position: absolute; left: 90px; bottom: 130px; width: 720px; padding-left: 100px; z-index: 30; }
+#caption .step-num { position: absolute; left: 0; top: 6px; width: 74px; height: 74px; border-radius: 20px; background: var(--navy); color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+#caption .step-kicker { font-size: 19px; font-weight: 800; letter-spacing: 0.22em; color: var(--green); }
+#caption .step-title { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.08; margin: 12px 0 14px; }
+#caption .step-body { font-size: 24px; line-height: 1.5; color: var(--sub); }
+
+/* build-step reveal helper: elements fade/slide via apply(t), no CSS anim */
+
+/* player chrome */
+#controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 14px; background: rgba(5,23,41,0.92); border: 1px solid rgba(193,212,233,0.25); border-radius: 999px; padding: 10px 18px; color: #fff; font-size: 13px; backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+#controls.hidden { opacity: 0; pointer-events: none; }
+#btn-play { width: 38px; height: 38px; border-radius: 50%; border: 0; background: var(--blue); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.chapters { display: flex; gap: 6px; }
+.chapter { position: relative; width: 74px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.10); cursor: pointer; overflow: hidden; }
+.chapter .fill { position: absolute; inset: 0; width: 0%; background: rgba(76,141,222,0.85); }
+.chapter .lb { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+#timecode { font-variant-numeric: tabular-nums; color: var(--light-blue); min-width: 86px; text-align: right; }
+#btn-theme, #btn-fs, #btn-prev, #btn-next { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(193,212,233,0.35); background: transparent; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+#btn-theme:hover, #btn-fs:hover, #btn-prev:hover, #btn-next:hover { border-color: #fff; }
+
+/* embed mode: dedicated bottom bar + text boost */
+body.embed #viewport { bottom: 64px; }
+body.embed #controls { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; padding: 10px 18px; opacity: 1 !important; pointer-events: auto !important; background: rgba(5,23,41,0.97); border: 0; border-top: 1px solid rgba(61,214,181,0.3); }
+body.embed #controls .chapters { flex: 1; }
+body.embed .chapter { flex: 1; width: auto; height: 36px; }
+body.embed .chapter .lb { font-size: 13.5px; }
+body.embed #btn-play, body.embed #btn-theme, body.embed #btn-fs, body.embed #btn-prev, body.embed #btn-next { width: 44px; height: 44px; }
+body.embed #caption { left: 60px; bottom: 150px; width: 740px; padding-left: calc(26px + 70px * var(--fpb, 1.35)); }
+body.embed #caption .step-num { width: calc(70px * var(--fpb, 1.35)); height: calc(70px * var(--fpb, 1.35)); font-size: calc(33px * var(--fpb, 1.35)); border-radius: 24px; }
+body.embed #caption .step-kicker { font-size: calc(19px * var(--fpb, 1.35)); }
+body.embed #caption .step-title { font-size: calc(52px * var(--fpb, 1.35)); }
+body.embed #caption .step-body { font-size: calc(23px * var(--fpb, 1.35)); }
+
+/* deck theme: navy + teal + mono kickers + LIGHT-weight headings */
+body.theme-deck #stage { background: var(--navy); }
+body.theme-deck #stage::before { background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); }
+body.theme-deck .kicker, body.theme-deck #caption .step-kicker { font-family: 'DM Mono', monospace; color: var(--teal); letter-spacing: 0.18em; font-weight: 500; }
+body.theme-deck #caption .step-title { color: #fff; font-weight: 500; letter-spacing: -0.015em; }
+body.theme-deck .title-h1 { font-weight: 500; }
+body.theme-deck #caption .step-body { color: #b5cde0; }
+body.theme-deck #caption .step-num { background: var(--teal); color: var(--navy); }
+body.theme-deck .cta { background: var(--teal); color: var(--navy); }
+body.theme-deck .chapter .fill { background: rgba(61,214,181,0.75); }
+body.theme-deck #btn-play { background: var(--teal); color: var(--navy); }
+
+/* ═══ Acumatica app mock (right side; left edge 840px clears the caption) ═══ */
+#acu-frame { position: absolute; right: 70px; top: 96px; width: 1010px; height: 850px; background: #fff; border: 3px solid var(--navy); border-radius: 22px; overflow: hidden; box-shadow: 0 30px 80px rgba(5,23,41,0.18); }
+#acu-topbar { height: 64px; background: #1c2b3a; color: #fff; display: flex; align-items: center; gap: 26px; padding: 0 28px; }
+.acu-brand { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.22em; color: #d8e4f2; font-weight: 500; }
+.acu-crumb { font-size: 17px; color: #b7c8da; }
+.acu-crumb b { color: #fff; }
+.acu-user { margin-left: auto; font-size: 15px; color: #8fa6bd; }
+#acu-orderrow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 22px 28px 16px; }
+.acu-field span { display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(5,23,41,0.5); margin-bottom: 6px; }
+.acu-field b { font-size: 18px; color: var(--ink); font-weight: 700; }
+#acu-tabs { display: flex; gap: 6px; padding: 6px 28px 0; border-bottom: 2px solid var(--card-line); }
+.acu-tab { font-size: 17px; font-weight: 600; color: rgba(5,23,41,0.55); padding: 12px 22px 14px; border-radius: 10px 10px 0 0; }
+#acu-tab-fp { position: relative; color: var(--blue-deep); }
+#acu-tab-fp::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -2px; height: 4px; border-radius: 2px; background: var(--blue); transform: scaleX(var(--tabp, 0)); transform-origin: left; }
+#acu-panel { position: relative; height: 590px; }
+.fp-panel { position: absolute; inset: 0; padding: 26px 28px; opacity: 0; }
+.fp-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.fp-chip { display: inline-block; font-family: 'DM Mono', monospace; font-size: 13.5px; letter-spacing: 0.1em; color: var(--blue-deep); background: rgba(76,141,222,0.12); border: 1px solid rgba(76,141,222,0.4); border-radius: 999px; padding: 8px 16px; }
+.fp-chip.teal { color: var(--green); background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.45); }
+
+/* autocalc packages */
+.pkg-row { display: grid; grid-template-columns: 64px 2.2fr 1.3fr 1fr; align-items: center; gap: 18px; padding: 22px 24px; border: 1.5px solid var(--card-line); border-radius: 16px; margin-bottom: 16px; background: #fff; }
+.pkg-ic { width: 48px; height: 48px; border-radius: 12px; background: rgba(76,141,222,0.12); border: 1.5px solid rgba(76,141,222,0.4); display: flex; align-items: center; justify-content: center; font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--blue-deep); }
+.pkg-name { display: block; font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--ink); }
+.pkg-sub { display: block; font-size: 15.5px; color: var(--sub); margin-top: 4px; }
+.pkg-dims { font-size: 17px; color: var(--sub); }
+.pkg-wt { font-family: 'Manrope'; font-weight: 800; font-size: 21px; color: var(--ink); text-align: right; }
+.pkg-total { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; padding: 20px 26px; border-radius: 16px; background: rgba(5,23,41,0.04); border: 1.5px solid var(--card-line); }
+.pkg-total .pt-l { font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sub); }
+.pkg-total .pt-v { font-family: 'Manrope'; font-weight: 800; font-size: 30px; color: var(--ink); }
+
+/* rate + book */
+.rate-row { display: grid; grid-template-columns: 2fr 1.9fr 1fr 1.2fr; align-items: center; padding: 17px 22px; border: 1.5px solid var(--card-line); border-radius: 14px; margin-bottom: 12px; background: #fff; }
+.rate-row .rr-carrier { font-weight: 800; font-size: 20px; color: var(--ink); font-family: 'Manrope'; }
+.rate-row .rr-svc, .rate-row .rr-days { font-size: 16px; color: var(--sub); }
+.rate-row .rr-price { font-family: 'Manrope'; font-weight: 800; font-size: 21px; color: var(--ink); text-align: right; }
+.rate-row.best { border-color: var(--success); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+.rate-row.best .rr-price { color: var(--green); }
+.book-bar { display: flex; align-items: center; gap: 18px; margin: 22px 0 18px; padding-top: 22px; border-top: 1.5px solid var(--card-line); }
+.status-chip { font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.12em; padding: 11px 22px; border-radius: 12px; background: rgba(5,23,41,0.08); color: var(--sub); }
+.status-chip.booked { background: var(--success); color: #fff; }
+.book-price { margin-left: auto; font-family: 'Manrope'; font-weight: 800; font-size: 22px; color: var(--ink); }
+.doc-chips { display: flex; flex-direction: column; gap: 12px; }
+.doc-chip { font-size: 18px; font-weight: 600; color: var(--ink); background: #fff; border: 1.5px solid var(--card-line); border-left: 6px solid var(--blue); border-radius: 12px; padding: 15px 20px; }
+
+/* print + track */
+.print-list { display: flex; flex-direction: column; gap: 13px; margin-bottom: 24px; }
+.print-item { display: flex; align-items: center; gap: 16px; padding: 16px 22px; border: 1.5px solid var(--card-line); border-radius: 12px; background: #fff; }
+.print-item .pi-check { width: 34px; height: 34px; border-radius: 50%; background: var(--success); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 800; flex: 0 0 auto; }
+.print-item .pi-name { font-size: 19px; font-weight: 700; color: var(--ink); font-family: 'Manrope'; }
+.print-item .pi-meta { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.06em; color: var(--sub); }
+.track-card { display: flex; align-items: center; gap: 22px; padding: 22px 26px; border-radius: 16px; background: rgba(34,197,94,0.07); border: 1.5px solid rgba(34,197,94,0.45); }
+.track-card .tc-h { display: block; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sub); margin-bottom: 7px; }
+.track-card .tc-no { display: block; font-family: 'Manrope'; font-weight: 800; font-size: 30px; color: var(--ink); }
+.track-card .tc-status { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 16px; letter-spacing: 0.08em; color: var(--green); }
+
+/* end-card stat tiles */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 300px); gap: 22px; margin-top: 44px; }
+.stat-tile { background: rgba(255,255,255,0.05); border: 1px solid rgba(193,212,233,0.25); border-radius: 18px; padding: 28px 22px; text-align: left; }
+.stat-num { font-family: 'Manrope'; font-weight: 800; font-size: 54px; color: #7fd4ae; line-height: 1; }
+.stat-num.sm { font-size: 34px; }
+.stat-lb { font-size: 16.5px; color: var(--light-blue); line-height: 1.4; margin-top: 12px; }
+.stat-src { margin-top: 26px; font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.06em; color: rgba(193,212,233,0.6); }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <!-- ═══ SCENES: title → Acumatica app (order/autocalc/rate+book/print+track) → end ═══ -->
+  <div class="layer" id="scene-app">
+    <div id="caption">
+      <div class="step-num" id="cap-num">1</div>
+      <div class="step-kicker" id="cap-kicker">STEP 1 — THE ORDER</div>
+      <div class="step-title" id="cap-title">The order is already in Acumatica</div>
+      <div class="step-body" id="cap-body">Installed as an Acumatica customization package — talks to FreightPOP over the External API. No second window.</div>
+    </div>
+
+    <!-- Acumatica app mock (right side; left edge 840px clears the caption) -->
+    <div id="acu-frame">
+      <div id="acu-topbar">
+        <span class="acu-brand">ACUMATICA</span>
+        <span class="acu-crumb">Sales Orders &rsaquo; <b>SO006789</b></span>
+        <span class="acu-user">Cascade Industrial Supply</span>
+      </div>
+      <div id="acu-orderrow">
+        <div class="acu-field"><span>Customer</span><b>Cascade Industrial Supply</b></div>
+        <div class="acu-field"><span>Ship To</span><b>Boise, ID 83704</b></div>
+        <div class="acu-field"><span>Lines</span><b>3 lines &middot; 2 pallets &middot; 1,180 lb</b></div>
+        <div class="acu-field"><span>Status</span><b id="acu-status">Open</b></div>
+      </div>
+      <div id="acu-tabs">
+        <span class="acu-tab">Document</span>
+        <span class="acu-tab">Shipping</span>
+        <span class="acu-tab" id="acu-tab-fp">FreightPOP</span>
+        <span class="acu-tab">Totals</span>
+      </div>
+
+      <div id="acu-panel">
+        <!-- autocalc -->
+        <div class="fp-panel" id="panel-autocalc">
+          <div class="fp-panel-head"><span class="fp-chip" id="chip-autocalc">AUTOCALC &middot; PACKAGES + INNER PIECES FROM THE SO</span></div>
+          <div class="pkg-row" data-p="0"><span class="pkg-ic">P1</span><span><span class="pkg-name">Pallet 1</span><span class="pkg-sub">Lines 1&ndash;2 &middot; 14 inner cartons</span></span><span class="pkg-dims">48 &times; 40 &times; 52 in</span><span class="pkg-wt">610 lb</span></div>
+          <div class="pkg-row" data-p="1"><span class="pkg-ic">P2</span><span><span class="pkg-name">Pallet 2</span><span class="pkg-sub">Line 3 &middot; 9 inner cartons</span></span><span class="pkg-dims">48 &times; 40 &times; 48 in</span><span class="pkg-wt">570 lb</span></div>
+          <div class="pkg-total" data-p="2"><span class="pt-l">Shipment total</span><span class="pt-v">2 pallets &middot; 1,180 lb</span></div>
+        </div>
+        <!-- rate + book -->
+        <div class="fp-panel" id="panel-book">
+          <div class="fp-panel-head"><span class="fp-chip" id="chip-rate">RATE SHOP &middot; CONTRACT CARRIERS</span>
+            <span class="fp-chip teal" id="chip-best">AUTO&ndash;SELECT BEST OPTION</span></div>
+          <div class="rate-row" data-r="0"><span class="rr-carrier">Estes</span><span class="rr-svc">LTL Standard</span><span class="rr-days">4 days</span><span class="rr-price">$312.40</span></div>
+          <div class="rate-row" data-r="1"><span class="rr-carrier">Old Dominion</span><span class="rr-svc">LTL Standard</span><span class="rr-days">3 days</span><span class="rr-price">$318.10</span></div>
+          <div class="rate-row" data-r="2"><span class="rr-carrier">XPO</span><span class="rr-svc">LTL Priority</span><span class="rr-days">3 days</span><span class="rr-price">$329.75</span></div>
+          <div class="book-bar"><span id="book-chip" class="status-chip">PENDING</span><span class="book-price">Estes &middot; $312.40 &middot; 4 days</span></div>
+          <div class="doc-chips">
+            <span class="doc-chip" data-d="0">BOL &middot; generated</span>
+            <span class="doc-chip" data-d="1">Pallet labels &middot; generated</span>
+            <span class="doc-chip" data-d="2">Packing slip &middot; generated</span>
+          </div>
+        </div>
+        <!-- print + track -->
+        <div class="fp-panel" id="panel-print">
+          <div class="fp-panel-head"><span class="fp-chip teal" id="chip-print">USER PRINTERS &middot; ROUTED TO STATION 3</span></div>
+          <div class="print-list">
+            <div class="print-item" data-pr="0"><span class="pi-check">&#10003;</span><span class="pi-name">BOL</span><span class="pi-meta">STATION 3 &middot; LASER</span></div>
+            <div class="print-item" data-pr="1"><span class="pi-check">&#10003;</span><span class="pi-name">Pallet labels &times;2</span><span class="pi-meta">STATION 3 &middot; ZEBRA 4&times;6</span></div>
+            <div class="print-item" data-pr="2"><span class="pi-check">&#10003;</span><span class="pi-name">Packing slip</span><span class="pi-meta">STATION 3 &middot; LASER</span></div>
+          </div>
+          <div class="track-card" id="track-card"><span><span class="tc-h">Tracking on SO006789</span><span class="tc-no">784-100-455</span></span><span class="tc-status">In Transit</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullcard" id="scene-title">
+    <img class="logo-img logo-lg" alt="FreightPOP" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAAyCAMAAABrq554AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+Gkqr6gAAAL1QTFRFR3BM////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////aOqljwAAAD50Uk5TABUHM3+UVSrUqum4avcOjeIjv/CiCE3bHDg/RoZ4xpsxY2bMzVwZseVxIt32u6GZiHcKbkRMETv07l2ykB7PHtIRAAAFV0lEQVRo3uWa55arKhSA0aNiiSammzqZ9Gmnn3Or7/9YVwWkiELmJrOylvvPjIDI/mQ3DAA18hWCdoud+rDlANJ2I8gBtBoBAtBiBARAaxFQAC1FwAJoJQICwOq0FAEB0AFAiQBuLI/Kj2s8vpvP9NTc3vUEWfxlsGPNsb3q5SsfuMNO2ZOId3nLmQKACoHjcuaSPmqpOLMycWq7izk/NbcLz80l7Jpk5Ojc47q8GC+3elfqzpoBUASSJRl9cTo9AlaxqmsTSNMAI5g9V+hsagmk4V54zmfiA7j1pukflTWNtul9EcBr/vQi6XJqCaQvB+kOsCtNFUPopvdGYBBlXdGEXPU970jMIYS1BFhdpQDqEEA89PU8h0R+fSiBCXns3GMsF7+YCXY0cI2u+yUBm9y2WWFUIwWAGgRoZj+53NlDJ5Pk/xNwaR/2VsNsC4TFf6tI7JsTAha9bYi6fqgAyBEMiqaH6wfj9xDAZuESfcMp03ckdCoEpoLx1gKQIXgg0wpCzWuyIO9hunyl4Ym3gqgTTFibhIKN+8cZa3JkUIWARwggddfsktBSfQkBgJb1WQ0AgI01zDMI2rcnW6uWQJr2ijhsdkO2kSVgfh0IXglWvdxwdAkBpBMf5FHbVEWgEUCNO0thI4F0lWsZ8AoxBMQuOYH0TYPADhMw0QguQcR45lUCBhr9na8FRJVMOHaWFpLOg2AXtsWJSCB3E2LQZAhI4qmMQDpWEhijjiMZKLNhp0oAx4mfkkwQS9zxSivtrTdxhWtFO0RgDCHSbg9i9HLmkmg4RdYx2aDgxBFwiqbEw1ZtZheTst3kCRiJje3sjAn0ZPvVEgjEY7wFw1ENALg4lar1O8V+N5ysJFlGSgL54Gf0tEURcQ+yfGCJpjZZ+4FCLNgRY9LJiEIDE3CbCFRkLQcwo0n/ZJnHlsix8XMHy5EGgS166qqa/hACfeygmghYVCGtrPgdBAZT8jJYAAnVv+8U2rNFQKBDwHMz6aC0oU9dhUMJ+CRXuxKBvDJCBEIZgU5NZZQb6AFt9z+JZx99KfufMy/hvPL3bEelFdTEAlgTG5DmhEBx/eVqBP7JO55kntDjPCEvz7+RyftswgN3JZ8iqUnyLNZalRW1Aa5IwHo/gdAt5Tj8HrPPi7k1IY+XYAI+vc2zHeKFWAT7MoF55SbqswDugYAry1N2OAax8RylXZEkI2Idv4+N4rAuPcRelhhjANoECpwuPZc6UwLFwoIrE7BT3ruUJaELmgkQBMzxEaed6fEAtAnsquUDIVDYVRhdROBRRWBMkii6dJTSLFQERAR9/uQxEABoEyjeiT+SEVjwxZUWgTcVAYD09cvKwAjKalFBgEcQmM0AtAmgwuxvKCGAM9gg0SOA1rA0FQTGxOHMs8WaiYWr0i5QE2ARKAFoEyCJw4T4X6YuGNbXBRICi6bKCFSOPQSbNnUIUARupAKgT8Bwaysjw72EANQkYEqSNbR0NYEyKE6VAPQJEEOUnQ8YbxcQoJugmQAAjz35pwQNAhjBGCQqABcQyGoM75TWnBFBu6dNAIx3egSAuVkxx0xdyIVFS3GKecqdxjmciwC2PAAwhahOrUwgb47K8+Tszed/ppUuQiDOL0jwKMbGzGEFmj7mmyUSzTbFiYYTi4swFGc//55Oo8ML/YyAjWr77dZfK3/VbKqPF+gU3hRveltqArcQtEXNu/h2/EDjx40BQCqOz+fId0AgzwluvQMkJ4L3ITjsBN6tTUBSON7Zbyhu7QPET5gmuEcEt3SCLiPB8gnck9gfAeC+xW47AIygzQAKBO0GkCHYthwAAN/aouh/qM7e50mbxJsAAAAASUVORK5CYII=">
+    <div style="height:44px"></div>
+    <div class="kicker">FREIGHTPOP &times; ACUMATICA &middot; CERTIFIED ISV</div>
+    <h1 class="title-h1">Ship from inside Acumatica.</h1>
+    <div class="title-sub">The certified FreightPOP plug-in rates, books, prints and tracks &mdash; right on the Acumatica Sales Order.</div>
+  </div>
+
+  <div class="fullcard" id="scene-end">
+    <div class="kicker">THE RESULT</div>
+    <h1 class="title-h1" style="font-size:84px;">Zero windows switched.</h1>
+    <div class="stat-tiles">
+      <div class="stat-tile" data-st="0"><div class="stat-num">0</div><div class="stat-lb">windows switched</div></div>
+      <div class="stat-tile" data-st="1"><div class="stat-num sm">3&ndash;5 min<br>&rarr; seconds</div><div class="stat-lb">per parcel, vs legacy StarShip</div></div>
+      <div class="stat-tile" data-st="2"><div class="stat-num">1</div><div class="stat-lb">system of record</div></div>
+      <div class="stat-tile" data-st="3"><div class="stat-num sm">2025 R2</div><div class="stat-lb">Acumatica supported</div></div>
+    </div>
+    <div class="stat-src">Illustrative; StarShip timing per a won Acumatica deal (Buffalo Seal &amp; Gasket).</div>
+    <div style="height:34px"></div>
+    <div class="cta">SCHEDULE A DEMO &rarr;</div>
+  </div>
+
+</div></div>
+
+<div id="controls">
+  <button id="btn-prev" title="Previous chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button id="btn-play" title="Play / pause (Space)"></button>
+  <button id="btn-next" title="Next chapter"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="chapters" id="chapters"></div>
+  <div id="timecode">0:00 / 0:00</div>
+  <button id="btn-theme" title="Background: dark / white (T)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" stroke="none"/></svg></button>
+  <button id="btn-fs" title="Fullscreen (F)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  /* ═══ CONFIG — tools/new-module.js rewrites these ═══ */
+  const SYNC_CHANNEL = 'fp-acumatica-ship-inside-video-sync';       // unique per module
+  const CH = [                              // chapters: contiguous, seconds
+    { id: 'title', label: 'Intro',    start: 0,  end: 6 },
+    { id: 'order', label: 'Order',    start: 6,  end: 19 },
+    { id: 'calc',  label: 'AutoCalc', start: 19, end: 33 },
+    { id: 'book',  label: 'Rate+Book',start: 33, end: 48 },
+    { id: 'print', label: 'Print',    start: 48, end: 62 },
+    { id: 'end',   label: 'Result',   start: 62, end: 82 },
+  ];
+  const DURATION = CH[CH.length - 1].end;
+
+  const RENDER = /[?&]render=1/.test(location.search);
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (/[?&]theme=deck/.test(location.search)) document.body.classList.add('theme-deck');
+  if (EMBED) document.body.classList.add('embed');
+
+  /* ═══ easing helpers ═══ */
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+  const seg = (t, a, b) => clamp01((t - a) / (b - a));
+
+  /* ═══ THE FILM — every visual from t, nothing free-running ═══ */
+  const CAPS = [
+    { a: 6,  n: '1', k: 'STEP 1 — THE ORDER', h: 'The order is already in Acumatica',
+      b: 'Installed as an Acumatica customization package — talks to FreightPOP over the External API. No second window.' },
+    { a: 19, n: '2', k: 'STEP 2 — AUTOCALC',  h: 'AutoCalc builds the shipment',
+      b: 'Packages and inner pieces are built straight from the Sales Order lines — before anyone touches a carrier.' },
+    { a: 33, n: '3', k: 'STEP 3 — RATE & BOOK', h: 'Rate shop and book — in Acumatica',
+      b: 'Contract carriers rate live; the cheapest compliant option books itself and generates the paperwork.' },
+    { a: 48, n: '4', k: 'STEP 4 — PRINT & TRACK', h: 'Labels print themselves; tracking lands on the SO',
+      b: 'Documents route to the user’s mapped printer, and the tracking number writes back onto the Sales Order.' },
+  ];
+  function setCaption(t) {
+    let c = CAPS[0];
+    for (const x of CAPS) if (t >= x.a) c = x;
+    if ($('#cap-num').textContent !== c.n) {
+      $('#cap-num').textContent = c.n; $('#cap-kicker').textContent = c.k;
+      $('#cap-title').textContent = c.h; $('#cap-body').textContent = c.b;
+    }
+    const p = ease(seg(t, c.a + 0.4, c.a + 1.1));
+    $('#caption').style.opacity = String(p);
+    $('#caption').style.transform = `translateY(${26 * (1 - p)}px)`;
+  }
+  function panel(el, on, t, a) {
+    el.style.opacity = on ? String(ease(seg(t, a, a + 0.8))) : '0';
+    el.style.visibility = on ? 'visible' : 'hidden';
+  }
+  function apply(t) {
+    const title = $('#scene-title'), end = $('#scene-end'), app = $('#scene-app');
+
+    /* title card 0–6 */
+    title.style.opacity = String(Math.min(seg(t, 0, 0.8), 1 - seg(t, 5.2, 6.0)));
+    title.style.visibility = t < 6.05 ? 'visible' : 'hidden';
+
+    /* Acumatica app scene 6–62 */
+    const appVis = t > 5.5 && t < 62.3;
+    app.style.opacity = String(Math.min(ease(seg(t, 5.6, 6.6)), 1 - seg(t, 61.2, 62.1)));
+    app.style.visibility = appVis ? 'visible' : 'hidden';
+    if (!appVis) $('#caption').style.opacity = '0'; // caption belongs to the app scene
+    if (appVis) {
+      setCaption(t);
+      const fr = ease(seg(t, 6.0, 7.2));
+      $('#acu-frame').style.transform = `translateY(${60 * (1 - fr)}px)`;
+      $('#acu-frame').style.opacity = String(fr);
+      /* FreightPOP tab underline draws in as the order chapter closes */
+      $('#acu-tab-fp').style.setProperty('--tabp', String(ease(seg(t, 14, 15.5))));
+      /* order status flips once shipped */
+      $('#acu-status').textContent = t >= 56 ? 'Shipped — In Transit' : 'Open';
+
+      /* autocalc 19–33: package rows + total cascade */
+      panel($('#panel-autocalc'), t >= 19 && t < 33, t, 19);
+      $$('#panel-autocalc [data-p]').forEach((r, i) => {
+        const p = ease(seg(t, 21 + i * 1.6, 22.2 + i * 1.6));
+        r.style.opacity = String(p);
+        r.style.transform = `translateX(${40 * (1 - p)}px)`;
+      });
+      /* rate + book 33–48: rows cascade, best at 39, PENDING→BOOKED at 42, docs cascade */
+      panel($('#panel-book'), t >= 33 && t < 48, t, 33);
+      $$('#panel-book .rate-row').forEach((r, i) => {
+        const p = ease(seg(t, 34 + i * 1.0, 35 + i * 1.0));
+        r.style.opacity = String(p);
+        r.style.transform = `translateX(${40 * (1 - p)}px)`;
+        r.classList.toggle('best', i === 0 && t >= 39);
+      });
+      const bc2 = $('#book-chip');
+      bc2.textContent = t >= 42 ? 'BOOKED' : 'PENDING';
+      bc2.classList.toggle('booked', t >= 42);
+      $$('#panel-book .doc-chip').forEach((d, i) => {
+        const p = ease(seg(t, 43 + i * 1.1, 44 + i * 1.1));
+        d.style.opacity = String(p);
+        d.style.transform = `translateX(${40 * (1 - p)}px)`;
+      });
+      /* print + track 48–62: docs print, then tracking lands on the SO */
+      panel($('#panel-print'), t >= 48 && t < 62, t, 48);
+      $$('#panel-print .print-item').forEach((d, i) => {
+        const p = ease(seg(t, 50 + i * 1.4, 51 + i * 1.4));
+        d.style.opacity = String(p);
+        d.style.transform = `translateX(${40 * (1 - p)}px)`;
+      });
+      const tp = ease(seg(t, 56, 57.2));
+      $('#track-card').style.opacity = String(tp);
+      $('#track-card').style.transform = `translateY(${30 * (1 - tp)}px)`;
+    }
+
+    /* end card 62–82: stat tiles cascade */
+    end.style.opacity = String(ease(seg(t, 62, 63.0)));
+    end.style.visibility = t > 61.5 ? 'visible' : 'hidden';
+    $$('.stat-tile').forEach((s, i) => {
+      const p = ease(seg(t, 63.5 + i * 1.0, 64.4 + i * 1.0));
+      s.style.opacity = String(p);
+      s.style.transform = `translateY(${30 * (1 - p)}px)`;
+    });
+  }
+
+  /* ═══ ENGINE (transport, chrome, sync, modes) — copy verbatim ═══ */
+  let T = 0, playing = false, lastTick = 0, autoPause = false;
+  // section boundaries for "pause after each section": chapter starts (past the first) + end
+  const BOUNDARIES = CH.slice(1).map((c) => c.start).concat([DURATION]);
+  function step(now) {
+    if (playing) {
+      const prevT = T;
+      T = Math.min(DURATION, T + (now - lastTick) / 1000);
+      let stopped = false;
+      if (autoPause) {
+        for (var bi = 0; bi < BOUNDARIES.length; bi++) {
+          var b = BOUNDARIES[bi];
+          if (prevT < b - 1e-4 && T >= b) { T = b; playing = false; updatePlayBtn(); broadcast(); stopped = true; break; }
+        }
+      }
+      if (!stopped && T >= DURATION) { if (EMBED) T = 0; else { playing = false; updatePlayBtn(); } }
+      apply(T); updateChrome();
+    }
+    lastTick = now;
+  }
+  function tick(now) { step(now); requestAnimationFrame(tick); }
+  // rAF suspends in occluded/background windows — keep the clock alive
+  setInterval(() => step(performance.now()), 250);
+  function play(silent) { playing = true; lastTick = performance.now(); updatePlayBtn(); if (!silent) broadcast(); }
+  function pause(silent) { playing = false; updatePlayBtn(); if (!silent) broadcast(); }
+  function seek(t) { T = Math.max(0, Math.min(DURATION, t)); playing = false; apply(T); updateChrome(); updatePlayBtn(); }
+
+  CH.forEach((c) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = '<div class="fill"></div><div class="lb"></div>';
+    d.querySelector('.lb').textContent = c.label;
+    d.addEventListener('click', () => { seek(c.start); play(); });
+    $('#chapters').appendChild(d);
+  });
+  const chapterEls = $$('#chapters .chapter');
+  const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  function updateChrome() {
+    chapterEls.forEach((cel, i) => { cel.querySelector('.fill').style.width = (seg(T, CH[i].start, CH[i].end) * 100) + '%'; });
+    $('#timecode').textContent = fmt(T) + ' / ' + fmt(DURATION);
+  }
+  const SVG_PLAY = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l14 8-14 8z"/></svg>';
+  const SVG_PAUSE = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor"><rect x=5 y=4 width=5 height=16 rx=1></rect><rect x=14 y=4 width=5 height=16 rx=1></rect></svg>';
+  function updatePlayBtn() { $('#btn-play').innerHTML = playing ? SVG_PAUSE : SVG_PLAY; }
+  $('#btn-play').addEventListener('click', () => { playing ? pause() : play(); });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('#btn-fs').addEventListener('click', toggleFullscreen);
+  function toggleTheme(send) {
+    const on = !document.body.classList.contains('theme-deck');
+    document.body.classList.toggle('theme-deck', on);
+    if (send && bc) { try { bc.postMessage({ cmd: 'theme', deck: on }); } catch (e) {} }
+  }
+  $('#btn-theme').addEventListener('click', () => toggleTheme(true));
+  function chapterNext() { const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+  function chapterPrev() { const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+  $('#btn-prev').addEventListener('click', chapterPrev);
+  $('#btn-next').addEventListener('click', chapterNext);
+
+  let hideTimer = null;
+  document.addEventListener('mousemove', () => {
+    if (EMBED) return;
+    clearTimeout(hideTimer);
+    $('#controls').classList.remove('hidden');
+    hideTimer = setTimeout(() => { if (playing) $('#controls').classList.add('hidden'); }, 2600);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === ' ') { e.preventDefault(); playing ? pause() : play(); }
+    else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+    else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(true); }
+    else if (EMBED && ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'PageDown', 'PageUp', 'Escape'].includes(e.key)) {
+      e.preventDefault();
+      try { parent.document.dispatchEvent(new KeyboardEvent('keydown', { key: e.key, bubbles: true, cancelable: true })); } catch (err) {}
+    }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); const c = CH.find((c) => c.start > T + 0.01); seek(c ? c.start : DURATION); play(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); const p = [...CH].reverse().find((c) => c.start < T - 0.5); seek(p ? p.start : 0); play(); }
+    else if (['PageDown', 'PageUp', 'Home', 'End', 'g', 'G', 'b', 'B', 'a', 'A', 'p', 'P', 'w', 'W', 's', 'S', '[', ']', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(e.key) && window.parent !== window) {
+      window.parent.postMessage({ fp: 'key', key: e.key }, '*'); e.preventDefault();
+    }
+  });
+
+  /* presenter/audience sync — file:// safe */
+  let bc = null, applyingRemote = false, authority = false, lastRemoteState = 0;
+  try {
+    if (!RENDER && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel(SYNC_CHANNEL);
+      bc.onmessage = (e) => {
+        const m = e.data || {};
+        if (m.cmd === 'toggle') { playing ? pause(true) : play(true); return; }
+        if (m.cmd === 'play') { play(true); return; }
+        if (m.cmd === 'pause') { pause(true); return; }
+        if (m.cmd === 'theme') { document.body.classList.toggle('theme-deck', !!m.deck); return; }
+        if (m.cmd === 'autopause') { autoPause = !!m.on; return; }
+        if (m.cmd === 'sync-request') { if (playing) { try { bc.postMessage({ t: T, playing: true }); } catch (e2) {} } return; }
+        if (typeof m.t !== 'number') return;
+        authority = false; lastRemoteState = Date.now(); // someone else is driving
+        applyingRemote = true;
+        if (Math.abs(m.t - T) > 0.6 || playing !== !!m.playing) {
+          T = m.t; playing = !!m.playing; lastTick = performance.now();
+          apply(T); updateChrome(); updatePlayBtn();
+        }
+        applyingRemote = false;
+      };
+      setInterval(() => { if (playing && !applyingRemote && (authority || Date.now() - lastRemoteState > 5000)) { try { bc.postMessage({ t: T, playing: playing }); } catch (e2) {} } }, 2000);
+    }
+  } catch (e) { bc = null; }
+  function broadcast() { if (bc && !applyingRemote) { authority = true; try { bc.postMessage({ t: T, playing: playing }); } catch (e) {} } }
+
+  /* stage scaling + embed text boost */
+  function fit() {
+    if (EMBED) {
+      const boost = Math.max(1, Math.min(1.42, 1250 / Math.max(1, window.innerWidth)));
+      document.documentElement.style.setProperty('--fpb', String(boost.toFixed(3)));
+    }
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    $('#stage').style.transform = `scale(${k})`;
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  /* render contract (tools/render-video.mjs) */
+  window.FPVideo = { duration: DURATION, seek, play, pause };
+  if (RENDER) {
+    $('#controls').style.display = 'none';
+    const sm = /[?&]seek=([0-9.]+)/.exec(location.search);
+    seek(sm ? parseFloat(sm[1]) : 0);
+  } else {
+    seek(0);
+    setTimeout(() => { play(true); if (bc) { try { bc.postMessage({ cmd: 'sync-request' }); } catch (e) {} } }, 350);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
