@@ -50,6 +50,28 @@ next free port).
 5. Present from the laptop. Both windows stay in sync automatically —
    whichever window has focus, the arrow keys work.
 
+## Marketing tools — Generate & Edit (needs internet)
+
+Two self-serve tools on the launcher (`app/index.html`) let marketing build and
+edit assets without waiting on design or eng. They use the kit's built-in server
+(`node server.js`), so run the kit that way — not from a `file://` double-click.
+
+- **Generate an asset** (`app/generate.html`) — fill a brief (audience, product,
+  optional customer/deal, approved metrics) and get an on-brand **deck** and/or
+  **one-pager**. Generation runs through the FreightPOP Railway AI service
+  (`/api/deck-gen`), grounded in the brand rules, the approved-metrics list
+  (verbatim — it never invents numbers), Fathom customer quotes, and HubSpot deal
+  context. The result is written into the kit: present it via
+  `app/generated.html?deck=<slug>`, open the one-pager, or download PPTX/PDF.
+  *Needs internet + the `EC2_API_KEY` (read automatically from the FPPricer `.env`).*
+- **Edit decks** (`app/edit.html`) — edit the **interactive deck** (every
+  TMS/WMS/OMS/NetSuite/Acumatica module — copy, bullets, stats, quotes), the
+  **generated decks**, and the **ERP / ROI / screenshot pages**, with live preview.
+  Saving an interactive-deck edit auto-rebuilds the bundled deck; page and
+  generated-deck edits apply on reload. Every save keeps a `.bak`.
+
+Nothing here affects presenting — the deck stays fully offline at the booth.
+
 ## Controls
 
 | Key | Action |
