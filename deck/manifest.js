@@ -23,7 +23,7 @@
  * Order in this array = presentation order.
  */
 window.FP_DECK = {
-  title: 'FreightPOP — TMS Deck (July 2026)',
+  title: 'FreightPOP — The AI Supply Chain Platform',
   slides: [
     // ══ PLATFORM ══ the interactive driver: full TMS/WMS/OMS + NetSuite track
     {
@@ -31,7 +31,7 @@ window.FP_DECK = {
       fit: 'native',
       keys: 'relay',
       sync: 'dc',       // full state + click/input/scroll sync via the injected bridge
-      title: 'FreightPOP Platform',
+      title: 'FreightPOP — AI Supply Chain OS',
       section: 'Platform',
       notes:
         'FULLY SYNCED — every hotspot click, key press, screen change, search and scroll mirrors between this preview and the big screen (either direction).\n' +

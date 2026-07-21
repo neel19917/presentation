@@ -110,6 +110,7 @@
     "t2": "Vendor Export",
     "name": "AP & Return-to-Vendor Export",
     "tag": "Carrier invoices become Acumatica AP Bills — coded and ready",
+    "ai": "Freight invoices auto-reconcile before they post — the AI audit radar names the variance cause (an unexpected liftgate, a detention charge) and offers to save the rule so AP stops re-catching it.",
     "problem": {
       "heading": "Freight bills pile up, uncoded.",
       "body": "Carrier invoices arrive by email and PDF, then someone hand-keys each one into Acumatica AP with a GL code. Returns to vendors add another manual export. Accounting is always behind and always guessing at the coding.",

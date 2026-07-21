@@ -76,6 +76,7 @@ function exportOutline() {
       F('Title line 1', m.t1);
       F('Title line 2', m.t2);
       F('Tagline', m.tag);
+      F('AI callout', m.ai);
       L.push('### Problem');
       F('Heading', m.problem?.heading);
       F('Body', m.problem?.body);
@@ -120,10 +121,10 @@ function applyOutline() {
   for (const raw of lines) {
     const l = raw.trimEnd();
 
-    let m = l.match(/^## (TMS|WMS|OMS|NETSUITE) HUB — /);
+    let m = l.match(/^## (TMS|WMS|OMS|NETSUITE|ACUMATICA) HUB — /);
     if (m) { flushBullets(); curMod = null; curStep = null; curHub = sys[m[1].toLowerCase()]; curHub._cards = 0; continue; }
 
-    m = l.match(/^## (TMS|WMS|OMS|NETSUITE) (\d+) — (.*)$/);
+    m = l.match(/^## (TMS|WMS|OMS|NETSUITE|ACUMATICA) (\d+) — (.*)$/);
     if (m) {
       flushBullets(); curHub = null; curStep = null;
       curMod = (data[m[1]] || []).find(x => x.num === m[2]);
@@ -168,6 +169,7 @@ function applyOutline() {
       if (f.label === 'Title line 1') curMod.t1 = f.value;
       else if (f.label === 'Title line 2') curMod.t2 = f.value;
       else if (f.label === 'Tagline') curMod.tag = f.value;
+      else if (f.label === 'AI callout') curMod.ai = f.value;
     } else if (curStep === 'Problem') {
       curMod.problem = curMod.problem || {};
       if (f.label === 'Heading') curMod.problem.heading = f.value;

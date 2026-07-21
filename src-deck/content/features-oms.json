@@ -3,6 +3,7 @@
     "num": "01",
     "name": "Sales Order Management",
     "tag": "Capture every order once, cleanly",
+    "ai": "Ask Copilot about any order in plain language — status, landed cost, exceptions — answered from your live shipment data.",
     "problem": {
       "heading": "The same order gets typed three times.",
       "body": "Orders arrive by email, portal and ERP — then get re-keyed into whatever system comes next. Every re-entry is a chance for a wrong address, a wrong quantity, a wrong day.",

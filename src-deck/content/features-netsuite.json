@@ -41,6 +41,7 @@
     "t2": "Sync",
     "name": "Order-to-Ship Sync",
     "tag": "Orders flow in, tracking and cost flow back — automatically",
+    "ai": "Predictive delivery ETAs write back into NetSuite automatically — no manual status chasing on open sales orders.",
     "problem": {
       "heading": "Every shipment gets keyed twice.",
       "body": "The order is typed into NetSuite, re-typed into the shipping tool, then the tracking number and final cost get typed back by hand. Manual data entry and copy-paste between systems are the two most common pains NetSuite shippers bring to us.",
@@ -179,6 +180,7 @@
     "t2": "Visibility",
     "name": "Inbound PO Visibility",
     "tag": "Import purchase orders and track inbound freight to the dock",
+    "ai": "The AI exception agent predicts inbound delays and flags ocean Last Free Date before demurrage hits the PO.",
     "problem": {
       "heading": "Inbound is a black hole until it hits the dock.",
       "body": "Purchase orders go out, then silence. Receiving finds out a shipment arrived when the truck is in the yard, and production plans around inventory that may or may not be on a trailer somewhere.",

@@ -269,6 +269,9 @@ class Component extends DCLogic {
       crumb0, crumb0Click, crumb1, crumb1Click, hasCrumb1, crumbLeaf, hasLeaf,
       featBg: (fi % 2 === 0) ? "#051729" : "#0A2540",
       feat,
+      // AI Supply Chain OS thread — optional `ai` callout on modules with a real
+      // AI tie-in (Accessorial Agent, Copilot, predictive ETA/LFD, cost-model opt).
+      hasAi: !!feat.ai, aiText: feat.ai || "",
       isProblem: step === 0, isBenefit: step === 1, isDemo: step === 2, isRoi: step === 3,
       // Modular live-demo embeds: a module's demo.embed URL (in content JSON)
       // replaces the placeholder panel with a live iframe.

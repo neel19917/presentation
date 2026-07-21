@@ -63,6 +63,7 @@
 - **Title line 1:** Rate
 - **Title line 2:** Shopping
 - **Tagline:** Compare every carrier and mode in one screen
+- **AI callout:** AI Accessorial Agent flags likely-missing accessorials — liftgate, residential, inside delivery — with a confidence score and address evidence, before the rate comes back wrong.
 ### Problem
 - **Heading:** Your team visits every carrier portal. One at a time.
 - **Body:** Open FedEx, then UPS, then the LTL site. Screenshot the rates, paste them to a spreadsheet, pick the cheapest, then go back to book — on every single shipment.
@@ -109,6 +110,7 @@
 - **Title line 1:** Multi-Leg
 - **Title line 2:** Shipments
 - **Tagline:** Plan and track door-to-door, every leg
+- **AI callout:** Predictive ETAs and ocean Last Free Date on every leg; the exception agent surfaces slips before they turn into detention or demurrage.
 ### Problem
 - **Heading:** Hand-offs are where shipments go dark.
 - **Body:** A load that moves drayage to linehaul to final mile touches multiple carriers and systems. Every hand-off is a re-key, a phone call, and a blind spot the moment something slips.
@@ -132,6 +134,7 @@
 - **Title line 1:** Route
 - **Title line 2:** Optimization
 - **Tagline:** Fewer miles, tighter windows, lower cost
+- **AI callout:** AI cost-model optimization — pin a stop and re-run to compare routes and land on the cheapest compliant plan in seconds.
 ### Problem
 - **Heading:** Routes are built by whoever knows the territory.
 - **Body:** Stop sequencing and load assignment ride on tribal knowledge. Trucks run extra miles, deadhead, and miss the tighter delivery windows that better planning would have caught.
@@ -350,6 +353,7 @@
 
 ## OMS 01 — Sales Order Management
 - **Tagline:** Capture every order once, cleanly
+- **AI callout:** Ask Copilot about any order in plain language — status, landed cost, exceptions — answered from your live shipment data.
 ### Problem
 - **Heading:** The same order gets typed three times.
 - **Body:** Orders arrive by email, portal and ERP — then get re-keyed into whatever system comes next. Every re-entry is a chance for a wrong address, a wrong quantity, a wrong day.
@@ -515,6 +519,7 @@
 - **Title line 1:** Order-to-Ship
 - **Title line 2:** Sync
 - **Tagline:** Orders flow in, tracking and cost flow back — automatically
+- **AI callout:** Predictive delivery ETAs write back into NetSuite automatically — no manual status chasing on open sales orders.
 ### Problem
 - **Heading:** Every shipment gets keyed twice.
 - **Body:** The order is typed into NetSuite, re-typed into the shipping tool, then the tracking number and final cost get typed back by hand. Manual data entry and copy-paste between systems are the two most common pains NetSuite shippers bring to us.
@@ -605,6 +610,7 @@
 - **Title line 1:** Inbound PO
 - **Title line 2:** Visibility
 - **Tagline:** Import purchase orders and track inbound freight to the dock
+- **AI callout:** The AI exception agent predicts inbound delays and flags ocean Last Free Date before demurrage hits the PO.
 ### Problem
 - **Heading:** Inbound is a black hole until it hits the dock.
 - **Body:** Purchase orders go out, then silence. Receiving finds out a shipment arrived when the truck is in the yard, and production plans around inventory that may or may not be on a trailer somewhere.
@@ -732,6 +738,7 @@
 - **Title line 1:** AP & Return-to
 - **Title line 2:** Vendor Export
 - **Tagline:** Carrier invoices become Acumatica AP Bills — coded and ready
+- **AI callout:** Freight invoices auto-reconcile before they post — the AI audit radar names the variance cause (an unexpected liftgate, a detention charge) and offers to save the rule so AP stops re-catching it.
 ### Problem
 - **Heading:** Freight bills pile up, uncoded.
 - **Body:** Carrier invoices arrive by email and PDF, then someone hand-keys each one into Acumatica AP with a GL code. Returns to vendors add another manual export. Accounting is always behind and always guessing at the coding.
