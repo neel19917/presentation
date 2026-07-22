@@ -197,6 +197,9 @@ const PREVIEW_PAGE = {
   "erp-integrations": "/modules/erp-integrations.html",
   "roi-value": "/modules/roi-value.html",
   "real-ui": "/modules/product-ui.html",
+  "netsuite-partners": "/modules/netsuite-partners.html",
+  "acumatica-partners": "/modules/acumatica-partners.html",
+  "stories": null, // presenter scripts — no visual preview, form only
 };
 const INTERACTIVE_PREVIEW = "/Presentation/TMSDeck-dev.html";
 
@@ -355,6 +358,19 @@ function renderTree(){
     gI.appendChild(parent); gI.appendChild(kids);
   });
   tree.appendChild(gI);
+
+  // Deck screens (hero copy, system hub screens, workflows section)
+  if (Array.isArray(CATALOG.deckScreens) && CATALOG.deckScreens.length){
+    const gD = h("div",{class:"group"},[ h("div",{class:"g-head",text:"Deck screens"}) ]);
+    CATALOG.deckScreens.forEach(ds=>{
+      const item = h("button",{class:"tree-item parent", onclick:()=>selectDeckScreen(ds)},[
+        h("span",{class:"caret",style:"visibility:hidden",text:"▶"}), h("span",{class:"txt",text:ds.label})
+      ]);
+      item.dataset.key = ds.target;
+      gD.appendChild(item);
+    });
+    tree.appendChild(gD);
+  }
 
   // Pages
   const gP = h("div",{class:"group"},[ h("div",{class:"g-head",text:"Pages"}) ]);
@@ -518,12 +534,227 @@ function renderPageForm(id){
       })
     ]));
   }
+  else if (id === "netsuite-partners" || id === "acumatica-partners"){
+    const gk = id === "netsuite-partners" ? "FP_NS_PARTNERS" : "FP_ACU_PARTNERS";
+    const d = WORK[gk] = WORK[gk]||{};
+    d.links=d.links||[]; d.partners=d.partners||[]; d.caseStudies=d.caseStudies||[];
+    const cardFields=[
+      {key:"name",label:"Name"},
+      {key:"tag",label:"Description",textarea:true},
+      {key:"link",label:"Link (optional)",placeholder:"https://…"}
+    ];
+    frag.appendChild(section("Header", [
+      textField("Kicker", d, "kicker"),
+      textField("Title", d, "title"),
+      textField("Intro", d, "intro", {textarea:true}),
+    ]));
+    frag.appendChild(section("Links", [ linksEditor(d.links) ]));
+    frag.appendChild(section("Partners", [ objectListField("Partners", d.partners, cardFields, ()=>({name:"",tag:"",link:""}), {itemLabel:"Partner"}) ]));
+    frag.appendChild(section("Case studies", [ objectListField("Case studies", d.caseStudies, cardFields, ()=>({name:"",tag:"",link:""}), {itemLabel:"Case study"}) ]));
+  }
+  else if (id === "stories"){
+    const stories = WORK.FP_STORIES = WORK.FP_STORIES||{};
+    Object.keys(stories).forEach(sid=>{
+      const st = stories[sid]; st.beats = Array.isArray(st.beats)?st.beats:[];
+      const kids=[
+        twoCol(
+          textField("Story name", st, "name"),
+          textField("Vertical", st, "vertical")
+        ),
+      ];
+      st.beats.forEach((b, i)=>{
+        const beatCard = h("div",{class:"list-item"},[
+          h("div",{class:"li-bar"},[ h("span",{class:"li-idx",text:"Beat "+(i+1)}) ]),
+          textField("Script", b, "script", {textarea:true}),
+        ]);
+        // Jump targets — advanced, edited as JSON so structure is explicit.
+        ["slide","dc","video"].forEach(k=>{
+          if (b[k] !== undefined) beatCard.appendChild(jsonField(prettyKey(k)+" (advanced)", b, k,
+            "Advanced — controls where this beat jumps in the deck. Leave as-is unless you know the target."));
+        });
+        kids.push(beatCard);
+      });
+      frag.appendChild(section("Story · "+(st.name||sid), kids));
+    });
+    if (!Object.keys(stories).length){
+      frag.appendChild(section("Stories", [ h("div",{class:"hint",text:"No stories defined yet."}) ]));
+    }
+  }
+  else {
+    // Unknown page — render each global generically so future pages are still editable.
+    Object.keys(WORK||{}).forEach(gk=>{
+      const v = WORK[gk];
+      if (v && typeof v==="object" && !Array.isArray(v)){
+        const kids=[];
+        Object.keys(v).forEach(k=>{
+          const vv=v[k];
+          if (typeof vv==="string" || typeof vv==="number" || vv==null) kids.push(textField(prettyKey(k), v, k, {textarea: typeof vv==="string" && vv.length>60}));
+          else if (Array.isArray(vv) && vv.every(x=>typeof x==="string")) kids.push(stringListField(prettyKey(k), vv, {itemLabel:"Item"}));
+          else kids.push(jsonField(prettyKey(k)+" (JSON)", v, k));
+        });
+        frag.appendChild(section(gk, kids));
+      } else {
+        frag.appendChild(section(gk, [ jsonField(gk+" (JSON)", WORK, gk) ]));
+      }
+    });
+  }
   mountEditor(frag);
 }
 function linksEditor(arr){
   return objectListField("Links", arr,
     [{key:"label",label:"Label"},{key:"url",label:"URL",placeholder:"https://…"}],
     ()=>({label:"",url:""}), {itemLabel:"Link"});
+}
+
+// ── Read-only + structural helpers ───────────────────────
+function roField(labelText, value, hint){
+  const ctrl = h("input",{class:"inp", type:"text", disabled:true, style:"opacity:.55; cursor:not-allowed"});
+  ctrl.value = value==null ? "" : String(value);
+  const f = h("div",{class:"field"},[ h("label",{text:labelText}), ctrl ]);
+  if (hint) f.appendChild(h("div",{class:"hint",text:hint}));
+  return f;
+}
+// Fixed-length list of objects: roKeys shown read-only, editDefs editable.
+// No add/remove/reorder — items are structural (1:1 with modules / built films).
+function fixedObjectList(arr, roKeys, editDefs, opts){
+  opts = opts||{};
+  const container = h("div");
+  (arr||[]).forEach((obj, i)=>{
+    const idxBits = roKeys.map(k=>obj[k]).filter(v=>v!=null).join(" · ");
+    const card = h("div",{class:"list-item"},[
+      h("div",{class:"li-bar"},[ h("span",{class:"li-idx",text:(opts.itemLabel||"Item")+" "+(idxBits||String(i+1))}) ])
+    ]);
+    editDefs.forEach(fd=>{ card.appendChild(textField(fd.label, obj, fd.key, {textarea:fd.textarea, placeholder:fd.placeholder, hint:fd.hint})); });
+    container.appendChild(card);
+  });
+  return container;
+}
+// Editable JSON blob bound to obj[key] (parsed on change; invalid JSON is not applied).
+function jsonField(labelText, obj, key, hint){
+  const w = warnEl();
+  const ta = h("textarea",{class:"inp", style:"min-height:70px; font-family:'DM Mono',monospace; font-size:12px",
+    onchange:(e)=>{
+      const t=e.target.value.trim();
+      try{
+        if (t===""){ delete obj[key]; }
+        else obj[key]=JSON.parse(t);
+        w.hidden=true;
+      }catch(err){ w.hidden=false; w.style.color="var(--danger)"; w.textContent="⚠ Invalid JSON — not applied"; }
+    }});
+  ta.value = obj[key]===undefined ? "" : JSON.stringify(obj[key], null, 2);
+  const f = h("div",{class:"field"},[ h("label",{text:labelText}), ta ]);
+  if (hint) f.appendChild(h("div",{class:"hint",text:hint}));
+  f.appendChild(w);
+  return f;
+}
+
+// ── Selection: deck screens (deck:copy / deck:sysdata#key / deck:workflows) ─
+async function selectDeckScreen(entry){
+  markSelected(entry.target);
+  setHead("Deck screen", entry.label);
+  showLoading();
+  let j=null, errMsg=null;
+  try{
+    const r = await fetch("/api/content?target="+encodeURIComponent(entry.target));
+    if (!r.ok) errMsg = "HTTP "+r.status;
+    else j = await r.json();
+  }catch(e){ errMsg = e.message||String(e); }
+  if (!j || j.error){
+    // Server may still be deploying this target — offer a retry instead of dying.
+    const ed=$("editor"); ed.innerHTML="";
+    ed.appendChild(h("div",{class:"empty"},[
+      h("div",{class:"em-mark",text:"…"}),
+      h("h2",{text:"Not available yet"}),
+      h("p",{text:"The server did not serve "+entry.target+" ("+(errMsg||(j&&j.error))+"). It may be restarting — try again in a moment."}),
+      h("button",{class:"btn", onclick:()=>selectDeckScreen(entry), text:"Retry"})
+    ]));
+    return;
+  }
+  WORK = j.data;
+  SEL = { target: entry.target, kind: j.kind || "deck-screen" };
+
+  if (entry.target === "deck:copy"){
+    renderDeckCopyForm();
+    setPreview(INTERACTIVE_PREVIEW, true, { view:"intro", menuOpen:false });
+  } else if (entry.target.startsWith("deck:sysdata#")){
+    const key = entry.target.split("#")[1];
+    renderSysHubForm(key);
+    setPreview(INTERACTIVE_PREVIEW, true, { view:key, sysKey:key, menuOpen:false });
+  } else if (entry.target === "deck:workflows"){
+    renderWorkflowsForm();
+    setPreview(INTERACTIVE_PREVIEW, true, { view:"workflows", menuOpen:false });
+  } else {
+    // Unknown future deck screen — generic fallback.
+    renderGenericObjectForm(WORK, entry.label);
+    setPreview(INTERACTIVE_PREVIEW, true, null);
+  }
+}
+function renderDeckCopyForm(){
+  const d = WORK;
+  const frag = document.createDocumentFragment();
+  frag.appendChild(section("Hero", [
+    textField("Hero headline", d, "heroTitle"),
+    textField("Hero subtitle", d, "heroSub", {textarea:true}),
+  ]));
+  frag.appendChild(section("TMS hub", [
+    textField("TMS hub heading", d, "tmsHubTitle"),
+    textField("TMS hub intro", d, "tmsHubIntro", {textarea:true,
+      hint:"The preview shows the hero screen. The TMS hub fields are visible on the hub screen — navigate there in the preview (or edit a TMS module) to see them."}),
+  ]));
+  mountEditor(frag);
+}
+function renderSysHubForm(key){
+  const d = WORK; d.cards = Array.isArray(d.cards)?d.cards:[];
+  const frag = document.createDocumentFragment();
+  frag.appendChild(section("Hub screen", [
+    roField("Abbr", d.abbr, "Structural — shown as the big screen mark; not editable here."),
+    twoCol(
+      textField("Name", d, "name"),
+      textField("Kicker", d, "kicker")
+    ),
+    textField("Intro", d, "intro", {textarea:true}),
+  ]));
+  frag.appendChild(section("Module cards", [
+    h("div",{class:"hint", style:"margin-bottom:12px", text:"Cards are 1:1 with the system's modules — add or remove modules under Interactive Deck; here you edit their card copy."}),
+    fixedObjectList(d.cards, ["num"], [
+      {key:"title", label:"Card title"},
+      {key:"tag", label:"Card tagline", textarea:true},
+    ], {itemLabel:"Card"})
+  ]));
+  mountEditor(frag);
+}
+function renderWorkflowsForm(){
+  const d = WORK; d.items = Array.isArray(d.items)?d.items:[];
+  const frag = document.createDocumentFragment();
+  frag.appendChild(section("Workflows section", [
+    roField("Abbr", d.abbr, "Structural — not editable here."),
+    twoCol(
+      textField("Name", d, "name"),
+      textField("Kicker", d, "kicker")
+    ),
+    textField("Intro", d, "intro", {textarea:true}),
+  ]));
+  frag.appendChild(section("Workflow films", [
+    h("div",{class:"hint", style:"margin-bottom:12px", text:"Each item maps to a built film file (slug) — slug and number are fixed; edit the display name and tagline."}),
+    fixedObjectList(d.items, ["num","slug"], [
+      {key:"name", label:"Name"},
+      {key:"tag", label:"Tagline", textarea:true},
+    ], {itemLabel:"Film"})
+  ]));
+  mountEditor(frag);
+}
+// Generic form for an unknown flat object (future-proofing).
+function renderGenericObjectForm(obj, label){
+  const frag = document.createDocumentFragment();
+  const kids=[];
+  Object.keys(obj||{}).forEach(k=>{
+    const v=obj[k];
+    if (typeof v==="string" || typeof v==="number" || v==null) kids.push(textField(prettyKey(k), obj, k, {textarea: typeof v==="string" && v.length>60}));
+    else if (Array.isArray(v) && v.every(x=>typeof x==="string")) kids.push(stringListField(prettyKey(k), v, {itemLabel:"Item"}));
+    else kids.push(jsonField(prettyKey(k)+" (JSON)", obj, k));
+  });
+  frag.appendChild(section(label||"Content", kids));
+  mountEditor(frag);
 }
 
 // ── Selection: generated deck / slides ───────────────────
@@ -666,11 +897,12 @@ async function doSave(){
   if (saving || !SEL) return;
   saving=true;
   const btn=$("saveBtn"), status=$("saveStatus");
-  const isFeat = SEL.kind==="feature-set";
+  // feat:* and deck:* targets trigger a full interactive-deck rebundle on the server.
+  const isRebuild = SEL.kind==="feature-set" || SEL.target.indexOf("deck:")===0;
   btn.disabled=true;
   status.innerHTML="";
   status.appendChild(h("span",{class:"spinner"}));
-  status.appendChild(document.createTextNode(isFeat ? " Saving & rebuilding the deck…" : " Saving…"));
+  status.appendChild(document.createTextNode(isRebuild ? " Saving & rebuilding the deck…" : " Saving…"));
   try{
     const r=await fetch("/api/content",{method:"POST", headers:{"Content-Type":"application/json"},
       body:JSON.stringify({ target:SEL.target, data:WORK })});
@@ -680,7 +912,7 @@ async function doSave(){
     }
     let msg="Saved";
     if (j.rebundled) msg+=" · deck rebuilt";
-    else if (isFeat && CATALOG.canRebundle) msg+=" · rebuild skipped";
+    else if (isRebuild && CATALOG.canRebundle) msg+=" · rebuild skipped";
     toast(msg, false);
     status.textContent="";
     reloadPreview();

@@ -4,41 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FreightPOP × Acumatica — Partners & Case Studies</title>
-<script>
-/* ═══════════════════════════════════════════════════════════════════════════
-   ✏️  EDIT ME — this block is the ONLY thing you need to change.
-   Partners and case studies render automatically from this data.
-   After editing, just reload the deck (R in the presenter) — no rebuild needed,
-   because the deck embeds this file live as an iframe.
-
-   - `link` is optional: omit it (or set null) and the card renders without one.
-   - Case-study names/claims should be confirmed with marketing before a show.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const DATA = {
-  kicker: "FreightPOP × Acumatica",
-  title: "Partners & Proof",
-  intro: "FreightPOP is a certified Acumatica ISV — a listed, supported integration implemented alongside the Acumatica VAR ecosystem. Native plug-in inside Acumatica, or Plug & Play bilateral.",
-
-  links: [
-    { label: "Acumatica Marketplace", url: "https://www.acumatica.com/marketplace/" },
-    { label: "Case Study Library",    url: "https://www.freightpop.com/case-studies" },
-    { label: "Partner Program",       url: "https://www.freightpop.com/partners" },
-    { label: "All Integrations",      url: "https://www.freightpop.com/integrations" },
-    { label: "Book a Demo",           url: "https://www.freightpop.com/demo" }
-  ],
-
-  partners: [
-    { name: "Certified Acumatica ISV",   tag: "Listed, supported integration — Native carrier plug-in + Plug & Play bilateral, built for Acumatica 2025 R1/R2" },
-    { name: "Acumatica VAR ecosystem",   tag: "Implemented alongside your Acumatica reseller/implementation partner — not a from-scratch build" },
-    { name: "External API + OAuth",      tag: "Connects over the Acumatica External API with OAuth (ROPC) — no middleware to run" }
-  ],
-
-  caseStudies: [
-    { name: "Buffalo Seal & Gasket", tag: "Distribution · Acumatica LTL & Parcel — chose FreightPOP over StarShip (3–5 min per parcel)", link: null }
-  ]
-};
-/* ═══════════════════ end of editable block ═══════════════════ */
-</script>
+<script src="acumatica-partners-data.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; min-height:100vh; padding:56px 64px; overflow-x:hidden; }
@@ -78,6 +44,7 @@ const DATA = {
   <div class="foot">Edit this list in modules/acumatica-partners.html — the deck picks it up on reload.</div>
 </div>
 <script>
+  const DATA = window.FP_ACU_PARTNERS || {};
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   document.getElementById('kicker').textContent = DATA.kicker;
   document.getElementById('title').textContent = DATA.title;

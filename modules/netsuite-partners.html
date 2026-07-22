@@ -4,48 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FreightPOP × NetSuite — Partners & Case Studies</title>
-<script>
-/* ═══════════════════════════════════════════════════════════════════════════
-   ✏️  EDIT ME — this block is the ONLY thing you need to change.
-   Partners and case studies render automatically from this data.
-   After editing, just reload the deck (R in the presenter) — no rebuild needed,
-   because the deck embeds this file live as an iframe.
-
-   - `link` is optional: omit it (or set null) and the card renders without one.
-   - Case-study names/claims should be confirmed with marketing before a show.
-   ═══════════════════════════════════════════════════════════════════════════ */
-const DATA = {
-  kicker: "FreightPOP × NetSuite",
-  title: "Partners & Proof",
-  intro: "FreightPOP is implemented alongside the NetSuite partner ecosystem — VARs refer, we integrate, customers ship. 134 NetSuite shippers run FreightPOP today.",
-
-  links: [
-    { label: "SuiteApp Listing",   url: "https://www.suiteapp.com/FreightPOP" },
-    { label: "Built for NetSuite",  url: "https://www.netsuite.com/portal/partners/built-for-netsuite.shtml" },
-    { label: "Case Study Library",  url: "https://www.freightpop.com/case-studies" },
-    { label: "Partner Program",     url: "https://www.freightpop.com/partners" },
-    { label: "All Integrations",    url: "https://www.freightpop.com/integrations" },
-    { label: "Book a Demo",         url: "https://www.freightpop.com/demo" }
-  ],
-
-  partners: [
-    { name: "AppFiciency",              tag: "NetSuite alliance partner — referred and co-implemented FreightPOP rollouts" },
-    { name: "ScaleNorth",               tag: "NetSuite solution provider — full-service implementations with FreightPOP shipping" },
-    { name: "NetDynamic Consulting",    tag: "NetSuite consultancy — brings FreightPOP into food & CPG NetSuite builds" },
-    { name: "Beyond Cloud Consulting",  tag: "NetSuite implementation partner — direct customer referrals" },
-    { name: "RF-SMART",                 tag: "Technology partner — barcode/WMS workflows alongside FreightPOP shipping" }
-  ],
-
-  caseStudies: [
-    { name: "Tessco Technologies", tag: "Distribution · NetSuite + RF-SMART, every mode on one platform" },
-    { name: "Nice North America",  tag: "Manufacturing · rate optimization without new manual process" },
-    { name: "Pyramex",             tag: "Safety products · NetSuite + RF-SMART shipping automation" },
-    { name: "GrowGeneration",      tag: "Multi-location retail · coordinated shipping across sites" },
-    { name: "Tilemart",            tag: "Building materials · automated order-to-ship from NetSuite" }
-  ]
-};
-/* ═══════════════════ end of editable block ═══════════════════ */
-</script>
+<script src="netsuite-partners-data.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#051729; color:#fff; font-family:'Manrope','DM Sans',-apple-system,sans-serif; min-height:100vh; padding:56px 64px; overflow-x:hidden; }
@@ -85,6 +44,7 @@ const DATA = {
   <div class="foot">Edit this list in modules/netsuite-partners.html — the deck picks it up on reload.</div>
 </div>
 <script>
+  const DATA = window.FP_NS_PARTNERS || {};
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   document.getElementById('kicker').textContent = DATA.kicker;
   document.getElementById('title').textContent = DATA.title;

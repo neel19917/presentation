@@ -75,7 +75,41 @@ const PAGES = {
   'erp-integrations': { file: path.join(ROOT, 'modules', 'erp-integrations-data.js'), globals: ['FP_ERP_DATA'], label: 'ERP & Integrations page' },
   'roi-value': { file: path.join(ROOT, 'modules', 'roi-value-data.js'), globals: ['FP_ROI_DATA'], label: 'ROI / Value page' },
   'real-ui': { file: path.join(ROOT, 'modules', 'real-ui', 'shots-data.js'), globals: ['FP_SHOTS', 'FP_SHOT_ORDER'], label: 'Real Product screenshots' },
+  'netsuite-partners': { file: path.join(ROOT, 'modules', 'netsuite-partners-data.js'), globals: ['FP_NS_PARTNERS'], label: 'NetSuite Partners page' },
+  'acumatica-partners': { file: path.join(ROOT, 'modules', 'acumatica-partners-data.js'), globals: ['FP_ACU_PARTNERS'], label: 'Acumatica Partners page' },
+  'stories': { file: path.join(ROOT, 'deck', 'stories.js'), globals: ['FP_STORIES'], label: 'Story mode scripts (presenter)' },
 };
+
+// Deck-screen copy edited directly inside src-deck/template.html via
+// <!--<COPY:key>-->text<!--</COPY:key>--> sentinels (rebundle applies it).
+const TEMPLATE_PATH = path.join(ROOT, 'src-deck', 'template.html');
+const COPY_KEYS = ['heroTitle', 'heroSub', 'tmsHubTitle', 'tmsHubIntro'];
+function readDeckCopy() {
+  const src = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+  const out = {};
+  for (const k of COPY_KEYS) {
+    const m = src.match(new RegExp('<!--<COPY:' + k + '>-->([\\s\\S]*?)<!--</COPY:' + k + '>-->'));
+    // Decode the HTML-escaping writeDeckCopy applies, so read→save round-trips
+    // don't double-escape (&amp; → &amp;amp; …).
+    out[k] = m ? m[1].replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&') : '';
+  }
+  return out;
+}
+function writeDeckCopy(data) {
+  let src = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+  for (const k of COPY_KEYS) {
+    if (typeof data[k] !== 'string') continue;
+    // Escape HTML so marketing text can't break the template markup.
+    const safe = data[k].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    src = src.replace(
+      new RegExp('(<!--<COPY:' + k + '>-->)[\\s\\S]*?(<!--</COPY:' + k + '>-->)'),
+      '$1' + safe.replace(/\$/g, '$$$$') + '$2'
+    );
+  }
+  safeWrite(TEMPLATE_PATH, src);
+}
+const SYS_DATA_PATH = path.join(SRC_CONTENT, 'sys-data.json');
+const WORKFLOWS_PATH = path.join(SRC_CONTENT, 'workflows.json');
 
 const GENERATED_DIR = path.join(ROOT, 'modules', 'generated');
 const GEN_INDEX = path.join(ROOT, 'deck', 'generated-index.js');
@@ -181,7 +215,17 @@ function buildCatalog() {
   }
   const pages = Object.keys(PAGES).filter((id) => fs.existsSync(PAGES[id].file)).map((id) => ({ id, target: 'page:' + id, label: PAGES[id].label }));
   const generated = listGenerated().map((g) => ({ slug: g.slug, title: g.title, target: 'gen:' + g.slug }));
-  return { interactive, pages, generated, canRebundle: fs.existsSync(path.join(ROOT, 'tools', 'bundle.js')) && fs.existsSync(SRC_CONTENT) };
+  // Deck screens beyond the modules: hero/hub copy, system hub screens, workflows.
+  const deckScreens = [];
+  if (fs.existsSync(TEMPLATE_PATH)) deckScreens.push({ target: 'deck:copy', label: 'Hero & TMS hub copy' });
+  if (fs.existsSync(SYS_DATA_PATH)) {
+    try {
+      const sd = JSON.parse(fs.readFileSync(SYS_DATA_PATH, 'utf8'));
+      for (const key of Object.keys(sd)) deckScreens.push({ target: 'deck:sysdata#' + key, label: (sd[key].name || key.toUpperCase()) + ' hub screen' });
+    } catch (e) {}
+  }
+  if (fs.existsSync(WORKFLOWS_PATH)) deckScreens.push({ target: 'deck:workflows', label: 'Shipping Workflows section' });
+  return { interactive, deckScreens, pages, generated, canRebundle: fs.existsSync(path.join(ROOT, 'tools', 'bundle.js')) && fs.existsSync(SRC_CONTENT) };
 }
 
 // ── Generated deck read/write (deck-data.js via sentinel) ──────────────────
@@ -287,6 +331,15 @@ async function handleApi(req, res, urlPath, query) {
       } else if (target.startsWith('gen:')) {
         const slug = target.slice(4);
         sendJson(res, 200, { target, kind: 'generated-deck', data: readGenDeck(slug) });
+      } else if (target === 'deck:copy') {
+        sendJson(res, 200, { target, kind: 'deck-copy', label: 'Hero & TMS hub copy', data: readDeckCopy() });
+      } else if (target.startsWith('deck:sysdata#')) {
+        const key = target.slice('deck:sysdata#'.length);
+        const sd = JSON.parse(fs.readFileSync(SYS_DATA_PATH, 'utf8'));
+        if (!sd[key]) { sendJson(res, 404, { error: 'unknown hub ' + key }); return true; }
+        sendJson(res, 200, { target, kind: 'sys-hub', label: (sd[key].name || key) + ' hub', data: sd[key] });
+      } else if (target === 'deck:workflows') {
+        sendJson(res, 200, { target, kind: 'workflows', label: 'Shipping Workflows section', data: JSON.parse(fs.readFileSync(WORKFLOWS_PATH, 'utf8')) });
       } else { sendJson(res, 400, { error: 'unknown target ' + target }); }
       return true;
     }
@@ -310,6 +363,22 @@ async function handleApi(req, res, urlPath, query) {
       } else if (target.startsWith('gen:')) {
         writeGenDeck(target.slice(4), data);
         sendJson(res, 200, { ok: true, rebundled: false });
+      } else if (target === 'deck:copy') {
+        writeDeckCopy(data);
+        const rb = await runBundle();
+        sendJson(res, 200, { ok: true, rebundled: rb.ok, rebundleLog: rb.ok ? undefined : (rb.error || rb.log) });
+      } else if (target.startsWith('deck:sysdata#')) {
+        const key = target.slice('deck:sysdata#'.length);
+        const sd = JSON.parse(fs.readFileSync(SYS_DATA_PATH, 'utf8'));
+        if (!sd[key]) { sendJson(res, 404, { error: 'unknown hub ' + key }); return true; }
+        sd[key] = data;
+        safeWrite(SYS_DATA_PATH, JSON.stringify(sd, null, 2) + '\n');
+        const rb = await runBundle();
+        sendJson(res, 200, { ok: true, rebundled: rb.ok, rebundleLog: rb.ok ? undefined : (rb.error || rb.log) });
+      } else if (target === 'deck:workflows') {
+        safeWrite(WORKFLOWS_PATH, JSON.stringify(data, null, 2) + '\n');
+        const rb = await runBundle();
+        sendJson(res, 200, { ok: true, rebundled: rb.ok, rebundleLog: rb.ok ? undefined : (rb.error || rb.log) });
       } else { sendJson(res, 400, { error: 'unknown target' }); }
       return true;
     }
