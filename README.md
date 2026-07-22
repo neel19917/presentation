@@ -50,11 +50,24 @@ next free port).
 5. Present from the laptop. Both windows stay in sync automatically —
    whichever window has focus, the arrow keys work.
 
-## Marketing tools — Generate & Edit (needs internet)
+## Marketing tools — Generate, Edit & Design
 
-Two self-serve tools on the launcher (`app/index.html`) let marketing build and
-edit assets without waiting on design or eng. They use the kit's built-in server
+Self-serve tools on the kit home (`app/index.html`) let marketing build and edit
+assets without waiting on design or eng. They use the kit's built-in server
 (`node server.js`), so run the kit that way — not from a `file://` double-click.
+The home page also lists **every generated and designed deck** with one-click
+Present / One-pager / Edit / **PPTX** / **PDF** buttons.
+
+- **Design Studio** (`app/design.html`) — a Canva-style slide designer on the
+  vendored open-source **Fabric.js** (MIT, fully offline): drag/resize text,
+  shapes and images on a 16:9 canvas, brand-locked color swatches and fonts,
+  one-click starter layouts (title / bullets / big stat), multi-slide filmstrip.
+  **Save to kit** publishes it as a presentable deck (and it reopens for editing).
+- **✨ AI Clean** (inside Edit decks) — sends any module/page/slide copy to the
+  FreightPOP AI with the brand guardrails and returns fixes (banned phrases,
+  approved-metric phrasing, tighter wording) as accept/reject diffs. A
+  **Clean whole deck…** sweep reviews all ~48 content items in one pass
+  (confirm-gated; needs internet).
 
 - **Generate an asset** (`app/generate.html`) — fill a brief (audience, product,
   optional customer/deal, approved metrics) and get an on-brand **deck** and/or
