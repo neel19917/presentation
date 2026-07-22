@@ -193,13 +193,53 @@ select option { background: var(--navy); color: #fff; }
 .foot { margin-top: 40px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: rgba(181,205,224,.5); }
 .foot a { color: rgba(181,205,224,.7); text-decoration: none; }
 .foot a:hover { color: var(--mint); }
+
+/* Kit home link */
+.home-link {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .08em;
+  color: var(--label); text-decoration: none; display: inline-flex; align-items: center;
+  gap: 7px; margin-bottom: 26px;
+}
+.home-link:hover { color: var(--mint); }
+
+/* Last-generated banner */
+.lastgen {
+  display: none; margin-top: 28px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 13px; padding: 14px 18px; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.lastgen.on { display: flex; }
+.lastgen .lg-info { flex: 1 1 200px; min-width: 0; }
+.lastgen .lg-k { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--mint); margin-bottom: 4px; }
+.lastgen .lg-t { font-size: 14px; color: #fff; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lastgen .lg-links { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.lg-btn {
+  font-family: 'DM Mono', monospace; font-size: 11.5px; letter-spacing: .04em; color: #fff;
+  text-decoration: none; padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px;
+  background: rgba(255,255,255,.04); white-space: nowrap;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.lg-btn:hover { border-color: var(--mint); color: var(--mint); background: rgba(61,214,181,.06); }
+.lg-btn.primary { background: rgba(61,214,181,.12); border-color: rgba(61,214,181,.4); color: var(--mint); }
+.lg-x { flex: none; background: none; border: none; cursor: pointer; color: var(--label); font-size: 17px; line-height: 1; padding: 4px 6px; }
+.lg-x:hover { color: #fff; }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <a class="home-link" href="index.html">&larr; Kit home</a>
   <div class="kicker">FreightPOP · AI Asset Generator</div>
   <h1>Build a deck in a minute.</h1>
   <p class="sub">Write a short brief, tick the approved figures, and generate a presenter-ready deck and one-pager tailored to your audience. <b>The generator never invents numbers.</b></p>
+
+  <!-- LAST GENERATED BANNER -->
+  <div class="lastgen" id="lastgen">
+    <div class="lg-info">
+      <div class="lg-k">Your last generated asset</div>
+      <div class="lg-t" id="lg-title"></div>
+    </div>
+    <div class="lg-links" id="lg-links"></div>
+    <button type="button" class="lg-x" id="lg-x" aria-label="Dismiss">&times;</button>
+  </div>
 
   <!-- FORM -->
   <form id="gen-form" autocomplete="off">
@@ -338,6 +378,14 @@ select option { background: var(--navy); color: #fff; }
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/></svg>
           Open one-pager
         </a>
+        <a class="btn btn-ghost" id="r-pptx" style="display:none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PPTX
+        </a>
+        <a class="btn btn-ghost" id="r-pdf" style="display:none">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF
+        </a>
       </div>
       <div class="r-grounding" id="r-grounding" style="display:none"></div>
       <button type="button" class="r-reset" id="r-reset">Generate another</button>
@@ -427,6 +475,33 @@ select option { background: var(--navy); color: #fff; }
       op.style.display = 'none';
     }
 
+    // PPTX / PDF export links (only when the server returned a jobId)
+    var pptx = document.getElementById('r-pptx');
+    var pdf = document.getElementById('r-pdf');
+    if (data.jobId && data.slug) {
+      pptx.href = '/api/export/' + encodeURIComponent(data.slug) + '.pptx';
+      pdf.href = '/api/export/' + encodeURIComponent(data.slug) + '.pdf';
+      pptx.style.display = 'inline-flex';
+      pdf.style.display = 'inline-flex';
+    } else {
+      pptx.style.display = 'none';
+      pdf.style.display = 'none';
+    }
+
+    // Persist for the "Your last generated asset" banner
+    if (data.slug) {
+      try {
+        localStorage.setItem('fp-last-generated', JSON.stringify({
+          slug: data.slug,
+          title: data.title || '',
+          presentUrl: present.href,
+          onePagerUrl: data.onePagerUrl || '',
+          jobId: data.jobId || '',
+          ts: Date.now()
+        }));
+      } catch (e) { /* private mode / quota — non-fatal */ }
+    }
+
     // Grounding line
     var g = data.grounding;
     var groundEl = document.getElementById('r-grounding');
@@ -510,6 +585,40 @@ select option { background: var(--navy); color: #fff; }
   document.getElementById('err-reset').addEventListener('click', function () {
     showForm();
   });
+
+  // ---- "Your last generated asset" banner ----
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  window.renderLastGen = function () {
+    var banner = document.getElementById('lastgen');
+    var rec = null;
+    try { rec = JSON.parse(localStorage.getItem('fp-last-generated') || 'null'); } catch (e) {}
+    if (!rec || !rec.slug) { banner.classList.remove('on'); return; }
+
+    var slug = encodeURIComponent(rec.slug);
+    document.getElementById('lg-title').textContent = rec.title || rec.slug;
+
+    var links = '<a class="lg-btn primary" href="'
+      + escHtml(rec.presentUrl || ('generated.html?deck=' + slug)) + '">&#9654; Present</a>';
+    if (rec.onePagerUrl) links += '<a class="lg-btn" href="' + escHtml(rec.onePagerUrl) + '" target="_blank" rel="noopener">One-pager</a>';
+    if (rec.jobId) {
+      links += '<a class="lg-btn" href="/api/export/' + slug + '.pptx">PPTX</a>';
+      links += '<a class="lg-btn" href="/api/export/' + slug + '.pdf">PDF</a>';
+    }
+    document.getElementById('lg-links').innerHTML = links;
+    banner.classList.add('on');
+  };
+
+  document.getElementById('lg-x').addEventListener('click', function () {
+    try { localStorage.removeItem('fp-last-generated'); } catch (e) {}
+    document.getElementById('lastgen').classList.remove('on');
+  });
+
+  window.renderLastGen();
 })();
 </script>
 </body>

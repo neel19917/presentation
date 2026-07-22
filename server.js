@@ -117,7 +117,7 @@ const GEN_INDEX = path.join(ROOT, 'deck', 'generated-index.js');
 function readBody(req) {
   return new Promise((resolve) => {
     let b = '';
-    req.on('data', (c) => { b += c; if (b.length > 8e6) req.destroy(); });
+    req.on('data', (c) => { b += c; if (b.length > 64e6) req.destroy(); }); // 64MB — design saves carry PNG dataURIs
     req.on('end', () => resolve(b));
     req.on('error', () => resolve(b));
   });
@@ -214,7 +214,8 @@ function buildCatalog() {
     } catch (e) { /* src-deck not present in this (packaged) copy */ }
   }
   const pages = Object.keys(PAGES).filter((id) => fs.existsSync(PAGES[id].file)).map((id) => ({ id, target: 'page:' + id, label: PAGES[id].label }));
-  const generated = listGenerated().map((g) => ({ slug: g.slug, title: g.title, target: 'gen:' + g.slug }));
+  // Designed decks (Design Studio) are edited in design.html, not the content editor.
+  const generated = listGenerated().filter((g) => g.type !== 'designed').map((g) => ({ slug: g.slug, title: g.title, target: 'gen:' + g.slug }));
   // Deck screens beyond the modules: hero/hub copy, system hub screens, workflows.
   const deckScreens = [];
   if (fs.existsSync(TEMPLATE_PATH)) deckScreens.push({ target: 'deck:copy', label: 'Hero & TMS hub copy' });
@@ -266,10 +267,61 @@ function persistGeneratedDeck(deckSpec, onePagerHtml, meta) {
   safeWrite(path.join(ROOT, 'deck', 'manifest-generated-' + slug + '.js'), manifest);
 
   const list = listGenerated().filter((g) => g.slug !== slug);
-  list.unshift({ slug, title, created: new Date().toISOString(), hasOnePager });
+  list.unshift({ slug, title, created: new Date().toISOString(), hasOnePager, jobId: (meta && meta.__jobId) || null, type: 'generated' });
   writeGeneratedIndex(list);
 
   return { slug, presentUrl: '/app/generated.html?deck=' + slug, onePagerUrl: hasOnePager ? '/modules/generated/' + slug + '/one-pager.html' : null };
+}
+
+// ── Design Studio (Canva-style, Fabric.js) persistence ─────────────────────
+// POST /api/design body: { slug?, title, slides: [ { png: dataURI, json: fabricJSON } ] }
+// Writes modules/designed/<slug>/slide-N.png + design.json + a tiny viewer page,
+// emits a manifest so the deck presents via app/generated.html?deck=<slug>,
+// and lists it in generated-index (type:'designed').
+const DESIGNED_DIR = path.join(ROOT, 'modules', 'designed');
+const DESIGN_VIEWER = [
+  '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Slide</title><style>',
+  'html,body{height:100%;margin:0;background:#051729;display:flex;align-items:center;justify-content:center;}',
+  'img{max-width:100vw;max-height:100vh;display:block;}',
+  '</style></head><body><img id="s" alt="slide"><script>',
+  "var i=new URLSearchParams(location.search).get('i')||'0';",
+  "document.getElementById('s').src='slide-'+i.replace(/[^0-9]/g,'')+'.png';",
+  '</scr' + 'ipt></body></html>',
+].join('\n');
+
+function saveDesign(payload) {
+  const title = String(payload.title || 'Designed Deck').slice(0, 120);
+  const slug = payload.slug && /^[a-z0-9-]+$/.test(payload.slug)
+    ? payload.slug
+    : slugify(title) + '-d' + Date.now().toString(36).slice(-4);
+  const slides = Array.isArray(payload.slides) ? payload.slides : [];
+  if (!slides.length) throw new Error('slides required');
+  const dir = path.join(DESIGNED_DIR, slug);
+  fs.mkdirSync(dir, { recursive: true });
+  const designJson = { slug, title, updated: new Date().toISOString(), slides: [] };
+  slides.forEach((s, i) => {
+    const m = /^data:image\/png;base64,(.+)$/.exec(String(s.png || ''));
+    if (!m) throw new Error('slide ' + i + ': png dataURI required');
+    fs.writeFileSync(path.join(dir, 'slide-' + i + '.png'), Buffer.from(m[1], 'base64'));
+    designJson.slides.push({ json: s.json || null });
+  });
+  safeWrite(path.join(dir, 'design.json'), JSON.stringify(designJson, null, 2));
+  safeWrite(path.join(dir, 'view.html'), DESIGN_VIEWER);
+  const manSlides = slides.map((_, i) => ({
+    url: '/modules/designed/' + slug + '/view.html?i=' + i,
+    fit: 'native', title: title + ' — ' + (i + 1), section: 'Designed Deck',
+  }));
+  safeWrite(path.join(ROOT, 'deck', 'manifest-generated-' + slug + '.js'),
+    '// Designed in the kit Design Studio (app/design.html?slug=' + slug + ')\n'
+    + 'window.FP_DECK = ' + JSON.stringify({ title, slides: manSlides }, null, 2) + ';\n');
+  const list = listGenerated().filter((g) => g.slug !== slug);
+  list.unshift({ slug, title, created: new Date().toISOString(), hasOnePager: false, jobId: null, type: 'designed', slideCount: slides.length });
+  writeGeneratedIndex(list);
+  return { slug, presentUrl: '/app/generated.html?deck=' + slug, editUrl: '/app/design.html?slug=' + slug };
+}
+function readDesign(slug) {
+  const f = path.join(DESIGNED_DIR, String(slug).replace(/[^a-z0-9-]/gi, ''), 'design.json');
+  return JSON.parse(fs.readFileSync(f, 'utf8'));
 }
 
 // ── Generator: proxy Railway /api/deck-gen, poll, persist ──────────────────
@@ -306,7 +358,7 @@ async function handleGenerate(body) {
   }
   if (!result) return { code: 504, obj: { error: 'deck-gen timed out' } };
 
-  const persisted = persistGeneratedDeck(result.deckSpec || result.deck_spec, result.onePagerHtml || result.one_pager_html, brief);
+  const persisted = persistGeneratedDeck(result.deckSpec || result.deck_spec, result.onePagerHtml || result.one_pager_html, Object.assign({}, brief, { __jobId: jobId }));
   return { code: 200, obj: Object.assign({ ok: true, jobId, grounding: result.grounding || null }, persisted) };
 }
 
@@ -393,6 +445,61 @@ async function handleApi(req, res, urlPath, query) {
       const body = await readBody(req);
       const { code, obj } = await handleGenerate(body);
       sendJson(res, code, obj);
+      return true;
+    }
+
+    // ── Export proxy: stream Railway PPTX/PDF for a generated deck ─────────
+    const exp = urlPath.match(/^\/api\/export\/([a-z0-9-]+)\.(pptx|pdf)$/);
+    if (req.method === 'GET' && exp) {
+      const [, slug, ext] = exp;
+      const entry = listGenerated().find((g) => g.slug === slug);
+      if (!entry) { sendJson(res, 404, { error: 'unknown deck ' + slug }); return true; }
+      if (!entry.jobId) { sendJson(res, 409, { error: 'No export available — this deck has no generation job (designed or pre-export deck).' }); return true; }
+      const key = loadApiKey();
+      if (!key) { sendJson(res, 500, { error: 'No EC2_API_KEY available for export.' }); return true; }
+      try {
+        const r = await fetch(RAILWAY_BASE + '/api/deck-gen/' + entry.jobId + '/export.' + ext, { headers: { 'X-Api-Key': key } });
+        if (!r.ok) { sendJson(res, r.status, { error: 'Export failed upstream (' + r.status + ').' }); return true; }
+        const buf = Buffer.from(await r.arrayBuffer());
+        res.writeHead(200, {
+          'Content-Type': ext === 'pptx' ? 'application/vnd.openxmlformats-officedocument.presentationml.presentation' : 'application/pdf',
+          'Content-Disposition': 'attachment; filename="' + slug + '.' + ext + '"',
+          'Cache-Control': 'no-store',
+        });
+        res.end(buf);
+      } catch (e) { sendJson(res, 502, { error: 'Railway unreachable: ' + e.message }); }
+      return true;
+    }
+
+    // ── AI Clean proxy (editor) ────────────────────────────────────────────
+    if (req.method === 'POST' && urlPath === '/api/ai-clean') {
+      const key = loadApiKey();
+      if (!key) { sendJson(res, 500, { error: 'No EC2_API_KEY — AI Clean needs the FreightPOP API key.' }); return true; }
+      const body = await readBody(req);
+      try {
+        const r = await fetch(RAILWAY_BASE + '/api/deck-gen/clean', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Api-Key': key }, body,
+        });
+        const text = await r.text();
+        res.writeHead(r.status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+        res.end(text);
+      } catch (e) { sendJson(res, 502, { error: 'AI Clean unavailable — cannot reach the FreightPOP AI service (' + e.message + ').' }); }
+      return true;
+    }
+
+    // ── Design Studio save / load ──────────────────────────────────────────
+    if (req.method === 'POST' && urlPath === '/api/design') {
+      const body = await readBody(req);
+      let payload;
+      try { payload = JSON.parse(body || '{}'); } catch (e) { sendJson(res, 400, { error: 'invalid JSON' }); return true; }
+      try { sendJson(res, 200, Object.assign({ ok: true }, saveDesign(payload))); }
+      catch (e) { sendJson(res, 400, { error: e.message }); }
+      return true;
+    }
+    if (req.method === 'GET' && urlPath === '/api/design') {
+      const slug = query.get('slug') || '';
+      try { sendJson(res, 200, readDesign(slug)); }
+      catch (e) { sendJson(res, 404, { error: 'design not found: ' + slug }); }
       return true;
     }
 

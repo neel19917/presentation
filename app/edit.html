@@ -143,6 +143,48 @@ textarea.inp{resize:vertical; min-height:74px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 .loading{padding:40px; color:var(--muted); display:flex; align-items:center; gap:10px; font-size:14px;}
+
+/* home link */
+.homelink{display:block; color:inherit; text-decoration:none;}
+.homelink .kit-home{font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--label); margin-bottom:8px;}
+.homelink:hover .kit-home{color:var(--mint);}
+
+/* rail footer (sweep) */
+.rail-foot{padding:12px; border-top:1px solid var(--line); flex:0 0 auto;}
+.rail-foot .btn{width:100%;}
+
+/* AI Clean review */
+.review-wrap{border:1px solid rgba(61,214,181,.35); background:rgba(61,214,181,.05); border-radius:var(--r-lg); padding:18px 20px; margin-bottom:20px;}
+.rv-head{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+.rv-title{font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--mint); flex:1;}
+.rv-group-title{font-family:'Manrope',sans-serif; font-weight:500; font-size:15px; color:#fff; margin:16px 0 10px; display:flex; align-items:center; gap:10px;}
+.rv-group-title:first-of-type{margin-top:0;}
+.rv-group-title .btn{margin-left:auto;}
+.rv-card{background:var(--panel-2); border:1px solid var(--line); border-radius:var(--r-md); padding:13px 14px; margin-bottom:10px;}
+.rv-card.accepted{border-color:rgba(61,214,181,.55);}
+.rv-card.accepted .rv-actions{display:none;}
+.rv-card.rejected{display:none;}
+.rv-key{font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--label);}
+.rv-old{color:#68809b; text-decoration:line-through; font-size:12.5px; line-height:1.5; margin-top:7px; white-space:pre-wrap;}
+.rv-new{color:#fff; font-size:13.5px; line-height:1.5; margin-top:6px; white-space:pre-wrap;}
+.rv-note{color:var(--mint); font-size:11.5px; line-height:1.4; margin-top:7px;}
+.rv-state{font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--mint); margin-top:8px;}
+.rv-actions{display:flex; gap:8px; margin-top:11px;}
+.rv-actions .btn{padding:6px 13px; font-size:12px;}
+
+/* sweep progress */
+.prog{height:8px; background:var(--panel-2); border:1px solid var(--line); border-radius:999px; overflow:hidden; margin:14px 0 10px;}
+.prog i{display:block; height:100%; width:0%; background:var(--mint); border-radius:999px; transition:width .25s ease;}
+.prog-line{font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:.04em; color:var(--muted);}
+.sweep-log{font-family:'DM Mono',monospace; font-size:11px; color:var(--label); margin-top:14px; max-height:180px; overflow-y:auto; line-height:1.7;}
+.sweep-log .bad{color:var(--danger);}
+
+/* modal */
+.modal-back{position:fixed; inset:0; background:rgba(3,12,22,.72); display:flex; align-items:center; justify-content:center; z-index:60;}
+.modal{background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); padding:24px 26px; max-width:480px; width:calc(100% - 48px); box-shadow:0 24px 80px rgba(0,0,0,.6);}
+.modal h3{font-family:'Manrope',sans-serif; font-weight:500; font-size:19px; margin-bottom:10px;}
+.modal p{font-size:13.5px; line-height:1.6; color:var(--muted); margin-bottom:18px;}
+.modal .m-actions{display:flex; gap:10px; justify-content:flex-end;}
 </style>
 </head>
 <body>
@@ -150,11 +192,17 @@ textarea.inp{resize:vertical; min-height:74px;}
   <!-- Left rail -->
   <aside class="rail">
     <div class="rail-top">
-      <div class="brandmark">FreightPOP<span class="dot">.</span> Deck Editor</div>
+      <a class="homelink" href="index.html" title="Back to the kit launcher">
+        <div class="kit-home">← Kit home</div>
+        <div class="brandmark">FreightPOP<span class="dot">.</span> Deck Editor</div>
+      </a>
       <div class="brandsub">Marketing content authoring</div>
     </div>
     <div class="rail-scroll" id="tree">
       <div class="loading"><span class="spinner"></span> Loading catalog…</div>
+    </div>
+    <div class="rail-foot">
+      <button class="btn" id="sweepBtn" title="Run AI Clean over every module, deck screen and page">✨ Clean whole deck…</button>
     </div>
   </aside>
 
@@ -169,10 +217,13 @@ textarea.inp{resize:vertical; min-height:74px;}
     </div>
     <div class="pane-body" id="paneBody">
       <div class="editor-scroll" id="editor">
-        <div class="empty">
-          <div class="em-mark">✎</div>
-          <h2>Pick a deck, page, or module</h2>
-          <p>Choose an item from the left. Edit its content through the form, preview it live, then save — the interactive deck rebuilds itself.</p>
+        <div id="reviewPanel"></div>
+        <div id="formArea">
+          <div class="empty">
+            <div class="em-mark">✎</div>
+            <h2>Pick a deck, page, or module</h2>
+            <p>Choose an item from the left. Edit its content through the form, preview it live, then save — the interactive deck rebuilds itself.</p>
+          </div>
         </div>
       </div>
       <div class="preview-wrap" id="previewWrap">
@@ -234,6 +285,8 @@ let CURRENT_MODULE = null; // for feat: the module object inside WORK
 let previewTarget = null;  // url string
 let previewDc = null;      // interactive-deck state to jump the preview to {view,fi,step,sysKey}
 let saving = false;
+let RERENDER = null;       // re-renders the current form (used by AI Clean Accept)
+let sweepAbort = false;    // set true to stop a running whole-deck sweep
 
 // ── Field builders (bind directly onto an object) ────────
 function warnEl(){ return h("div",{class:"warn-line",hidden:true}); }
@@ -421,6 +474,7 @@ async function selectModule(sys, mod, treeEl){
   setPreview(INTERACTIVE_PREVIEW, true, { view:'feature', fi:fi, step:0, sysKey:sys.sys, menuOpen:false });
 }
 function renderModuleForm(){
+  RERENDER = renderModuleForm;
   const m = CURRENT_MODULE;
   if (!m){ $("editor").innerHTML=""; $("editor").appendChild(h("div",{class:"empty"},[h("p",{text:"Module not found in feature set."})])); return; }
   m.problem = m.problem||{}; m.problem.quote = m.problem.quote||{};
@@ -476,6 +530,7 @@ async function selectPage(p, treeEl){
   setPreview(previewTarget, true);
 }
 function renderPageForm(id){
+  RERENDER = ()=>renderPageForm(id);
   const frag = document.createDocumentFragment();
   if (id === "erp-integrations"){
     const d = WORK.FP_ERP_DATA = WORK.FP_ERP_DATA||{};
@@ -690,6 +745,7 @@ async function selectDeckScreen(entry){
   }
 }
 function renderDeckCopyForm(){
+  RERENDER = renderDeckCopyForm;
   const d = WORK;
   const frag = document.createDocumentFragment();
   frag.appendChild(section("Hero", [
@@ -704,6 +760,7 @@ function renderDeckCopyForm(){
   mountEditor(frag);
 }
 function renderSysHubForm(key){
+  RERENDER = ()=>renderSysHubForm(key);
   const d = WORK; d.cards = Array.isArray(d.cards)?d.cards:[];
   const frag = document.createDocumentFragment();
   frag.appendChild(section("Hub screen", [
@@ -724,6 +781,7 @@ function renderSysHubForm(key){
   mountEditor(frag);
 }
 function renderWorkflowsForm(){
+  RERENDER = renderWorkflowsForm;
   const d = WORK; d.items = Array.isArray(d.items)?d.items:[];
   const frag = document.createDocumentFragment();
   frag.appendChild(section("Workflows section", [
@@ -745,6 +803,7 @@ function renderWorkflowsForm(){
 }
 // Generic form for an unknown flat object (future-proofing).
 function renderGenericObjectForm(obj, label){
+  RERENDER = ()=>renderGenericObjectForm(obj, label);
   const frag = document.createDocumentFragment();
   const kids=[];
   Object.keys(obj||{}).forEach(k=>{
@@ -782,6 +841,7 @@ async function selectGenerated(d, parentEl, kidsEl){
   setPreview(previewTarget, true);
 }
 function renderDeckOverview(){
+  RERENDER = renderDeckOverview;
   const frag=document.createDocumentFragment();
   frag.appendChild(section("Deck", [
     textField("Deck title", WORK, "title"),
@@ -800,6 +860,7 @@ function renderDeckOverview(){
 }
 const SLIDE_LAYOUTS=["title","section","bullets","callout","quote","split","table","content","footer"];
 function openSlide(i, treeEl){
+  RERENDER = ()=>openSlide(i);
   SEL.slideIndex=i;
   const s = WORK.slides[i];
   setHead("Generated Deck · "+(WORK.title||WORK.slug), "Slide "+(i+1)+" · "+(s.layout||"?"));
@@ -837,9 +898,14 @@ function prettyKey(k){ return k.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCa
 
 // ── Editor mount + head + preview ────────────────────────
 function setHead(kicker, name){ $("phKicker").textContent=kicker; $("phName").textContent=name; renderActions(); }
-function showLoading(){ $("editor").innerHTML=""; $("editor").appendChild(h("div",{class:"loading"},[h("span",{class:"spinner"}),document.createTextNode(" Loading content…")])); }
+function showLoading(){
+  $("reviewPanel").innerHTML="";   // new selection → drop any pending AI Clean review
+  const fa=$("formArea"); fa.innerHTML="";
+  fa.appendChild(h("div",{class:"loading"},[h("span",{class:"spinner"}),document.createTextNode(" Loading content…")]));
+}
 function mountEditor(frag){
-  const ed=$("editor"); ed.innerHTML="";
+  renderActions();   // SEL is set by the time a form mounts — keep header actions in sync
+  const ed=$("formArea"); ed.innerHTML="";
   ed.appendChild(frag);
   // save bar
   const status=h("div",{class:"save-status", id:"saveStatus"});
@@ -850,6 +916,7 @@ function mountEditor(frag){
 function renderActions(){
   const box=$("phActions"); box.innerHTML="";
   if (!SEL) return;
+  box.appendChild(h("button",{class:"btn", id:"aiCleanBtn", title:"Suggest brand-safe rewrites for this item's text", onclick:aiCleanCurrent, text:"✨ AI Clean"}));
   const tog=h("div",{class:"toggle"},[
     h("button",{id:"tgSplit",text:"Preview", onclick:()=>setSplit(true)}),
     h("button",{id:"tgFull",text:"Form only", onclick:()=>setSplit(false)}),
@@ -924,8 +991,343 @@ async function doSave(){
   }
 }
 
+// ═════════════════════════════════════════════════════════
+//  AI Clean — per-item review + whole-deck sweep
+// ═════════════════════════════════════════════════════════
+
+// Keys that are structural / non-copy — never sent to AI Clean.
+const CLEAN_SKIP_KEYS = new Set([
+  "num","slug","abbr","url","link","file","embed","progress","created","fmt",
+  "min","max","step","value","dc","slide","video","layout","overlays","ring",
+  "key","id","FP_SHOT_ORDER"
+]);
+// Flatten every editable text field of a data node into { "dotted.key": text }.
+function flattenText(node, prefix, out){
+  if (typeof node === "string"){ if (node.trim()) out[prefix] = node; return; }
+  if (Array.isArray(node)){ node.forEach((v,i)=>flattenText(v, prefix ? prefix+"."+i : String(i), out)); return; }
+  if (node && typeof node === "object"){
+    for (const k of Object.keys(node)){
+      if (CLEAN_SKIP_KEYS.has(k)) continue;
+      flattenText(node[k], prefix ? prefix+"."+k : k, out);
+    }
+  }
+}
+function setByPath(root, dotted, val){
+  const parts = dotted.split(".");
+  let n = root;
+  for (let i=0; i<parts.length-1; i++){
+    const p = Array.isArray(n) ? Number(parts[i]) : parts[i];
+    n = n[p];
+    if (n == null) return false;
+  }
+  const last = Array.isArray(n) ? Number(parts[parts.length-1]) : parts[parts.length-1];
+  n[last] = val;
+  return true;
+}
+function getByPath(root, dotted){
+  let n = root;
+  for (const p of dotted.split(".")){
+    if (n == null) return undefined;
+    n = n[Array.isArray(n) ? Number(p) : p];
+  }
+  return n;
+}
+function cleanKindForSel(){
+  if (!SEL) return null;
+  if (SEL.kind === "feature-set") return "module";
+  if (SEL.target.indexOf("deck:") === 0) return "copy";
+  if (SEL.kind === "generated-deck") return "slide";
+  return "page";
+}
+function cleanRootForSel(){
+  if (!SEL) return null;
+  if (SEL.kind === "feature-set") return CURRENT_MODULE;
+  if (SEL.kind === "generated-deck" && SEL.slideIndex != null) return WORK.slides[SEL.slideIndex];
+  return WORK;
+}
+async function postAiClean(kind, label, fields){
+  const r = await fetch("/api/ai-clean", { method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ kind, label, fields }) });
+  const j = await r.json().catch(()=>({error:"bad response"}));
+  if (!r.ok || j.error) {
+    const msg = j.error || ("HTTP "+r.status);
+    const friendly = /unreach|unavail/i.test(msg) ? "AI Clean needs internet + the FreightPOP AI service" : msg;
+    const e = new Error(friendly); e.raw = msg; throw e;
+  }
+  return j.fields || {};
+}
+
+// ── Per-item AI Clean ────────────────────────────────────
+async function aiCleanCurrent(){
+  const btn = $("aiCleanBtn");
+  if (!SEL || !btn || btn.disabled) return;
+  const root = cleanRootForSel();
+  if (!root){ toast("Nothing to clean here", true); return; }
+  const fields = {};
+  flattenText(root, "", fields);
+  if (!Object.keys(fields).length){ toast("No text fields on this item", false); return; }
+  btn.disabled = true;
+  const oldText = btn.textContent;
+  btn.textContent = "✨ Cleaning…";
+  try{
+    const res = await postAiClean(cleanKindForSel(), $("phName").textContent, fields);
+    const items = [];
+    Object.keys(res).forEach(k=>{
+      const f = res[k];
+      if (f && f.changed) items.push({ key:k, old:fields[k], cleaned:f.cleaned, note:f.note });
+    });
+    if (!items.length){ toast("Already clean ✓", false); return; }
+    renderItemReview(root, items);
+  }catch(e){
+    toast("AI Clean failed: "+(e.message||e), true);
+  }finally{
+    btn.disabled = false; btn.textContent = oldText;
+  }
+}
+function makeReviewCard(item, onAccept, onReject){
+  const state = h("div",{class:"rv-state"});
+  const card = h("div",{class:"rv-card"},[
+    h("div",{class:"rv-key",text:item.key}),
+    h("div",{class:"rv-old",text:item.old}),
+    h("div",{class:"rv-new",text:item.cleaned}),
+    item.note ? h("div",{class:"rv-note",text:item.note}) : null,
+    state,
+    h("div",{class:"rv-actions"},[
+      h("button",{class:"btn primary", onclick:()=>card._accept(), text:"Accept"}),
+      h("button",{class:"btn", onclick:()=>card._reject(), text:"Reject"}),
+    ]),
+  ]);
+  card._done = false;
+  card._accept = ()=>{ if(card._done) return; card._done=true; card.classList.add("accepted"); state.textContent="Accepted ✓"; onAccept(item); };
+  card._reject = ()=>{ if(card._done) return; card._done=true; card.classList.add("rejected"); onReject && onReject(item); };
+  return card;
+}
+function renderItemReview(root, items){
+  const panel = $("reviewPanel"); panel.innerHTML = "";
+  const cards = items.map(it => makeReviewCard(it, (item)=>{
+    setByPath(root, item.key, item.cleaned);
+    if (RERENDER) RERENDER();       // reflect the accepted text in the live form
+  }));
+  const wrap = h("div",{class:"review-wrap"},[
+    h("div",{class:"rv-head"},[
+      h("div",{class:"rv-title",text:"✨ AI Clean review · "+items.length+" suggested edit"+(items.length===1?"":"s")}),
+      h("button",{class:"btn ghost", onclick:()=>cards.forEach(c=>c._accept()), text:"Accept all"}),
+      h("button",{class:"btn ghost", onclick:()=>cards.forEach(c=>c._reject()), text:"Reject all"}),
+      h("button",{class:"icobtn", title:"Close review", onclick:()=>{panel.innerHTML="";}, text:"✕"}),
+    ]),
+    h("div",{class:"hint", style:"margin-bottom:12px", text:"Accepting fills the form below — review, then press Save as usual. Nothing is saved automatically."}),
+    ...cards,
+  ]);
+  panel.appendChild(wrap);
+  panel.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+// ── Whole-deck sweep ─────────────────────────────────────
+function confirmModal(title, bodyText, okLabel){
+  return new Promise((resolve)=>{
+    let back;
+    const done=(v)=>{ back.remove(); document.removeEventListener("keydown", esc); resolve(v); };
+    const esc=(e)=>{ if(e.key==="Escape") done(false); };
+    const cancelBtn = h("button",{class:"btn primary", onclick:()=>done(false), text:"Cancel"});
+    back = h("div",{class:"modal-back", onclick:(e)=>{ if(e.target===back) done(false); }},[
+      h("div",{class:"modal"},[
+        h("h3",{text:title}),
+        h("p",{text:bodyText}),
+        h("div",{class:"m-actions"},[
+          h("button",{class:"btn", onclick:()=>done(true), text:okLabel}),
+          cancelBtn,
+        ]),
+      ]),
+    ]);
+    document.body.appendChild(back);
+    document.addEventListener("keydown", esc);
+    cancelBtn.focus();   // Cancel is the default
+  });
+}
+async function fetchContent(target){
+  const r = await fetch("/api/content?target="+encodeURIComponent(target));
+  if (!r.ok) throw new Error("HTTP "+r.status+" for "+target);
+  const j = await r.json();
+  if (j.error) throw new Error(j.error);
+  return j.data;
+}
+$("sweepBtn").addEventListener("click", startSweep);
+async function startSweep(){
+  if (!CATALOG) return;
+  const nMods = (CATALOG.interactive||[]).reduce((a,s)=>a+(s.modules||[]).length, 0);
+  const nDs = (CATALOG.deckScreens||[]).length;
+  const nPg = (CATALOG.pages||[]).length;
+  const total = nMods + nDs + nPg;
+  const ok = await confirmModal("Clean the whole deck?",
+    "Runs AI Clean over every module ("+nMods+"), deck screen ("+nDs+"), and page ("+nPg+") — ~"+total+
+    " AI calls, roughly a dollar or two, a few minutes. Nothing is saved until you review and accept the results. Proceed?",
+    "Run AI Clean");
+  if (!ok) return;
+  runSweep(total);
+}
+async function runSweep(total){
+  sweepAbort = false;
+  SEL = null; previewTarget = null; previewDc = null;
+  setHead("Deck sweep", "✨ AI Clean — whole deck");
+  setPreview(null, false);
+  $("reviewPanel").innerHTML = "";
+  const fa = $("formArea"); fa.innerHTML = "";
+  const bar = h("i");
+  const line = h("div",{class:"prog-line",text:"Starting…"});
+  const log = h("div",{class:"sweep-log"});
+  const abortBtn = h("button",{class:"btn", onclick:()=>{ sweepAbort=true; abortBtn.disabled=true; abortBtn.textContent="Stopping…"; }, text:"Abort"});
+  fa.appendChild(section("Cleaning every module, deck screen and page", [
+    h("div",{class:"prog"},[bar]), line, h("div",{style:"margin-top:12px"},[abortBtn]), log
+  ]));
+
+  // fetched data copies (per POST target) + accumulated suggestions
+  const fetched = new Map();     // target -> data (the exact shape to POST back)
+  const groups = [];             // { label, target, moduleIndex?, items:[{key,old,cleaned,note,accepted}] }
+  let done = 0;
+  const tick = (label)=>{ done++; bar.style.width = Math.round(done/total*100)+"%"; line.textContent = done+" / "+total+" · "+label; };
+  const fail = (label, e)=>{ log.appendChild(h("div",{class:"bad",text:"✕ "+label+" — "+(e.message||e)})); };
+  const noteOk = (label, n)=>{ if(n) log.appendChild(h("div",{text:"✓ "+label+" — "+n+" suggestion"+(n===1?"":"s")})); };
+
+  async function cleanOne(kind, label, rootObj, target, moduleIndex){
+    const fields = {};
+    flattenText(rootObj, "", fields);
+    if (!Object.keys(fields).length) return;
+    const res = await postAiClean(kind, label, fields);
+    const items = [];
+    Object.keys(res).forEach(k=>{ const f=res[k]; if (f && f.changed) items.push({key:k, old:fields[k], cleaned:f.cleaned, note:f.note, accepted:null}); });
+    if (items.length) groups.push({ label, target, moduleIndex, items });
+    noteOk(label, items.length);
+  }
+
+  outer:
+  {
+    // 1. every module of every interactive system
+    for (const sys of (CATALOG.interactive||[])){
+      if (sweepAbort) break outer;
+      let data;
+      try{ data = await fetchContent(sys.target); fetched.set(sys.target, data); }
+      catch(e){ fail(sys.label, e); (sys.modules||[]).forEach(()=>tick(sys.label+" (skipped)")); continue; }
+      for (let i=0; i<data.length; i++){
+        if (sweepAbort) break outer;
+        const m = data[i];
+        const label = sys.sys.toUpperCase()+" "+(m.num||String(i+1))+" "+(m.name||"");
+        tick(label+"…");
+        try{ await cleanOne("module", label, m, sys.target, i); }
+        catch(e){ fail(label, e); }
+      }
+    }
+    // 2. deck screens
+    for (const ds of (CATALOG.deckScreens||[])){
+      if (sweepAbort) break outer;
+      tick(ds.label+"…");
+      try{
+        const data = await fetchContent(ds.target); fetched.set(ds.target, data);
+        await cleanOne("copy", ds.label, data, ds.target);
+      }catch(e){ fail(ds.label, e); }
+    }
+    // 3. pages
+    for (const p of (CATALOG.pages||[])){
+      if (sweepAbort) break outer;
+      tick(p.label+"…");
+      try{
+        const data = await fetchContent(p.target); fetched.set(p.target, data);
+        await cleanOne("page", p.label, data, p.target);
+      }catch(e){ fail(p.label, e); }
+    }
+  }
+  renderSweepReview(fetched, groups, sweepAbort);
+}
+function renderSweepReview(fetched, groups, aborted){
+  setHead("Deck sweep", aborted ? "AI Clean — stopped early" : "✨ AI Clean — review");
+  const fa=$("formArea"); fa.innerHTML="";
+  const totalItems = groups.reduce((a,g)=>a+g.items.length, 0);
+  if (!totalItems){
+    fa.appendChild(h("div",{class:"empty"},[
+      h("div",{class:"em-mark",text:"✓"}),
+      h("h2",{text: aborted ? "Stopped — no changes collected" : "Everything is already clean"}),
+      h("p",{text:"AI Clean found nothing to improve"+(aborted?" before the sweep was stopped.":" across the deck.")}),
+    ]));
+    return;
+  }
+  const frag=document.createDocumentFragment();
+  frag.appendChild(h("div",{class:"hint", style:"margin-bottom:16px",
+    text:(aborted?"Sweep stopped early — showing what was collected. ":"")+
+      totalItems+" suggested edits across "+groups.length+" items. Accept what you want, then press “Save accepted changes” — each affected deck/page is saved once."}));
+  const allCards=[];
+  groups.forEach(g=>{
+    const cards = g.items.map(it => makeReviewCard(it, (item)=>{ item.accepted=true; }, (item)=>{ item.accepted=false; }));
+    allCards.push(...cards);
+    frag.appendChild(h("div",{class:"rv-group-title"},[
+      document.createTextNode(g.label),
+      h("button",{class:"btn ghost", onclick:()=>cards.forEach(c=>c._accept()), text:"Accept all"}),
+    ]));
+    cards.forEach(c=>frag.appendChild(c));
+  });
+  const saveStatus=h("div",{class:"save-status"});
+  const saveBtn=h("button",{class:"btn primary", text:"Save accepted changes",
+    onclick:()=>saveSweepAccepted(fetched, groups, saveBtn, saveStatus)});
+  frag.appendChild(h("div",{class:"savebar"},[
+    saveBtn,
+    h("button",{class:"btn", onclick:()=>allCards.forEach(c=>c._accept()), text:"Accept all"}),
+    h("button",{class:"btn", onclick:()=>allCards.forEach(c=>c._reject()), text:"Reject all"}),
+    saveStatus
+  ]));
+  fa.appendChild(frag);
+}
+async function saveSweepAccepted(fetched, groups, btn, status){
+  const accepted = groups.map(g=>({...g, items:g.items.filter(i=>i.accepted===true)})).filter(g=>g.items.length);
+  if (!accepted.length){ toast("Nothing accepted yet", true); return; }
+  btn.disabled = true;
+  // apply accepted values into the fetched copies
+  const targets = new Set();
+  for (const g of accepted){
+    const data = fetched.get(g.target);
+    if (!data){ continue; }
+    const root = (g.moduleIndex != null) ? data[g.moduleIndex] : data;
+    g.items.forEach(it=>setByPath(root, it.key, it.cleaned));
+    targets.add(g.target);
+  }
+  let okN=0, failN=0;
+  for (const target of targets){
+    const isRebuild = target.indexOf("feat:")===0 || target.indexOf("deck:")===0;
+    status.innerHTML="";
+    status.appendChild(h("span",{class:"spinner"}));
+    status.appendChild(document.createTextNode(" Saving "+target+(isRebuild?" — rebuilding deck…":"…")));
+    try{
+      const r=await fetch("/api/content",{method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ target, data: fetched.get(target) })});
+      const j=await r.json();
+      if (!r.ok || j.ok===false) throw new Error(j.error||j.rebundleLog||("HTTP "+r.status));
+      okN++;
+    }catch(e){ failN++; toast("Save failed for "+target+": "+(e.message||e), true); }
+  }
+  status.textContent = okN+" target"+(okN===1?"":"s")+" saved"+(failN?(" · "+failN+" failed"):"");
+  toast(failN ? "Saved with errors — see status" : "Accepted changes saved ✓", !!failN);
+  btn.disabled = false;
+}
+
+// ── Hash deep-link (#feat:tms#11, #page:roi-value, #deck:copy, #gen:slug) ──
+function applyHashSelection(){
+  const raw = location.hash;
+  if (!raw || raw.length < 2) return;
+  let key;
+  try{ key = decodeURIComponent(raw.slice(1)); }catch(e){ return; }
+  const el = document.querySelector('.tree-item[data-key="'+CSS.escape(key)+'"]');
+  if (!el) return;   // unknown hash → ignore
+  if (el.classList.contains("child")){
+    const kids = el.parentElement;
+    if (kids && kids.classList.contains("tree-children")){
+      kids.classList.add("open");
+      const parentBtn = kids.previousElementSibling;
+      if (parentBtn && parentBtn.classList.contains("tree-item")) parentBtn.classList.add("open");
+    }
+  }
+  el.click();
+}
+window.addEventListener("hashchange", applyHashSelection);
+
 // ── Boot ─────────────────────────────────────────────────
-loadCatalog().catch(e=>{
+loadCatalog().then(applyHashSelection).catch(e=>{
   $("tree").innerHTML="";
   $("tree").appendChild(h("div",{class:"loading", style:"color:var(--danger)", text:"Failed to load catalog: "+(e.message||e)}));
 });
