@@ -5,7 +5,7 @@
     "tag": "Model the floor you actually run",
     "problem": {
       "heading": "The system's warehouse isn't your warehouse.",
-      "body": "Bins, lots and license plates exist on the floor but not in the software. When the digital layout doesn't match the physical one, every downstream scan, count and pick inherits the gap.",
+      "body": "Bins, lots and license plates exist on the floor but not in the software. When the digital layout doesn't match the physical one, every downstream scan, count and pick inherits the gap",
       "quote": {
         "text": "Our system says the part is 'in the warehouse.' Which shelf? Nobody knows.",
         "who": "— Inventory Manager, Industrial Distribution"

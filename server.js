@@ -446,6 +446,9 @@ const server = http.createServer((req, res) => {
   let urlPath = decodeURIComponent(parsed.pathname);
   if (urlPath === '/' || urlPath === '') urlPath = '/app/index.html';
 
+  // No favicon shipped — answer 204 so every page stops logging a 404.
+  if (urlPath === '/favicon.ico') { res.writeHead(204); res.end(); return; }
+
   // Dynamic API layer first (Generator / Editor). Everything else is static.
   if (urlPath.startsWith('/api/')) {
     handleApi(req, res, urlPath, parsed.searchParams).then((handled) => {

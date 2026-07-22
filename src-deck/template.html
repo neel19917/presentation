@@ -334,7 +334,7 @@
   <!-- ═══════════ INTERACTIVE WALKTHROUGH (embedded netlify) ═══════════ -->
   <sc-if value="{{ isExplore }}" hint-placeholder-val="{{ false }}">
     <section data-screen-label="Interactive Walkthrough" style="position:absolute;inset:0;z-index:20;background:#051729;padding-top:53px;">
-      <iframe src="{{ startUrl }}" title="FreightPOP Interactive" allow="fullscreen" style="width:100%;height:100%;border:0;display:block;background:#051729;"></iframe>
+      <iframe src="about:blank" data-fp-src="{{ startUrl }}" title="FreightPOP Interactive" allow="fullscreen" style="width:100%;height:100%;border:0;display:block;background:#051729;"></iframe>
       <div onclick="{{ goMainMenu }}" style="position:absolute;bottom:26px;right:26px;z-index:150;display:inline-flex;align-items:center;gap:12px;padding:15px 26px;background:#3DD6B5;border-radius:999px;color:#051729;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 10px 30px rgba(61,214,181,.35);">
         <span style="display:flex;flex-direction:column;line-height:1.1;"><span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;">Next section</span>Main Menu</span>
         <svg width="22" height="13" viewBox="0 0 26 14" fill="none"><path d="M1 7h22M18 1l6 6-6 6" stroke="#051729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -420,7 +420,7 @@
   <!-- ═══════════ STANDARD SHIPPING WORKFLOWS — animated diagram detail ═══════════ -->
   <sc-if value="{{ isWorkflow }}" hint-placeholder-val="{{ false }}">
     <section data-screen-label="Workflow Detail" style="position:absolute;inset:0;z-index:20;background:#051729;padding-top:53px;">
-      <iframe src="{{ wfSrc }}" title="{{ wfName }}" allow="fullscreen" style="width:100%;height:100%;border:0;display:block;background:#051729;"></iframe>
+      <iframe src="about:blank" data-fp-src="{{ wfSrc }}" title="{{ wfName }}" allow="fullscreen" style="width:100%;height:100%;border:0;display:block;background:#051729;"></iframe>
       <div onclick="{{ wfPrev }}" style="position:absolute;top:50%;left:20px;transform:translateY(-50%);z-index:150;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(5,23,41,.72);border:1px solid rgba(61,214,181,.4);color:#fff;cursor:pointer;backdrop-filter:blur(6px);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></div>
       <div onclick="{{ wfNext }}" style="position:absolute;top:50%;right:20px;transform:translateY(-50%);z-index:150;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(5,23,41,.72);border:1px solid rgba(61,214,181,.4);color:#fff;cursor:pointer;backdrop-filter:blur(6px);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></svg></div>
     </section>
@@ -547,7 +547,7 @@
               <sc-if value="{{ hasDemoEmbed }}" hint-placeholder-val="{{ false }}">
                 <div class="fp-demo-wrap">
                   <div class="fp-demo-panel">
-                    <iframe src="{{ demoEmbedSrc }}" title="Live demo" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#051729;" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                    <iframe src="about:blank" data-fp-src="{{ demoEmbedSrc }}" title="Live demo" style="position:absolute;inset:0;width:100%;height:100%;border:0;background:#051729;" allow="autoplay; fullscreen" allowfullscreen></iframe>
                     <button class="fp-demo-resize" title="Larger / smaller"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
                   </div>
                   <p class="fp-demo-caption" style="max-width:760px;text-align:center;font-size:16px;line-height:1.5;color:#B5CDE0;font-style:italic;margin:22px 0 0;">“{{ feat.demo.caption }}”</p>
@@ -1177,6 +1177,39 @@
 })();
 </script>
 
+<script>
+/* Deferred iframe src hydration.
+   Template iframes carry data-fp-src="{{ … }}" and start at about:blank —
+   otherwise the browser fetches the literal unhydrated placeholder
+   ("/Presentation/{{ demoEmbedSrc }}") on every render, 404s, and flashes
+   "Not found" in the panel before the real content loads (was a real bug).
+   This observer copies data-fp-src → src only once the value is hydrated,
+   and re-copies when navigation changes the attribute. */
+(function () {
+  function hydrate(f) {
+    var want = f.getAttribute('data-fp-src');
+    if (!want || want.indexOf('{{') !== -1) return;         // not hydrated yet
+    if (f.getAttribute('src') !== want) f.setAttribute('src', want);
+  }
+  function sweep(root) {
+    (root.querySelectorAll ? root.querySelectorAll('iframe[data-fp-src]') : []).forEach(hydrate);
+  }
+  new MutationObserver(function (muts) {
+    for (var i = 0; i < muts.length; i++) {
+      var m = muts[i];
+      if (m.type === 'attributes' && m.target.tagName === 'IFRAME') hydrate(m.target);
+      else if (m.addedNodes) for (var j = 0; j < m.addedNodes.length; j++) {
+        var n = m.addedNodes[j];
+        if (n.nodeType !== 1) continue;
+        if (n.tagName === 'IFRAME' && n.hasAttribute('data-fp-src')) hydrate(n);
+        else sweep(n);
+      }
+    }
+  }).observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-fp-src'] });
+  sweep(document);
+  setInterval(function () { sweep(document); }, 800); // safety net for renderer paths the observer misses
+})();
+</script>
 <script>
 /* Demo-embed panel: dynamic sizing + XL (theater) toggle.
    Injected as a top-level script because the DC renderer strips <style> and
