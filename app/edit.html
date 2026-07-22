@@ -229,6 +229,7 @@ let SEL = null;          // { target, kind, ... }
 let WORK = null;         // working data clone (POSTed as-is)
 let CURRENT_MODULE = null; // for feat: the module object inside WORK
 let previewTarget = null;  // url string
+let previewDc = null;      // interactive-deck state to jump the preview to {view,fi,step,sysKey}
 let saving = false;
 
 // ── Field builders (bind directly onto an object) ────────
@@ -398,9 +399,10 @@ async function selectModule(sys, mod, treeEl){
   WORK = j.data;                                   // whole array — POSTed as-is
   CURRENT_MODULE = WORK.find(m=>m.num===mod.num) || WORK.find(m=>m.name===mod.name);
   SEL = { target: sys.target, kind:"feature-set", sys:sys.sys, moduleNum:mod.num };
-  previewTarget = INTERACTIVE_PREVIEW;
+  const fi = Math.max(0, WORK.indexOf(CURRENT_MODULE));
   renderModuleForm();
-  setPreview(previewTarget, true);
+  // Preview the bundled deck AND jump it to this module (feature view) so edits are visible in context.
+  setPreview(INTERACTIVE_PREVIEW, true, { view:'feature', fi:fi, step:0, sysKey:sys.sys, menuOpen:false });
 }
 function renderModuleForm(){
   const m = CURRENT_MODULE;
@@ -632,8 +634,9 @@ function updateToggle(){
   s.classList.toggle("on", on); f.classList.toggle("on", !on);
   s.disabled = !previewTarget;
 }
-function setPreview(url, forceOpen){
+function setPreview(url, forceOpen, dcState){
   previewTarget=url||null;
+  previewDc = dcState || null;   // for the interactive deck: jump to the edited module
   if (forceOpen && url) splitOn=true;
   $("paneBody").classList.toggle("split", splitOn && !!url);
   updateToggle();
@@ -643,6 +646,17 @@ function reloadPreview(){
   if (!previewTarget) return;
   const f=$("previewFrame");
   const bust=(previewTarget.includes("?")?"&":"?")+"_ts="+Date.now();
+  // Jump the bundled deck to the module being edited once its sync bridge is up.
+  // The server injects deck-bridge.js into TMSDeck-dev.html; it applies
+  // {fp:'dcApply', payload:{kind:'state', state}} messages. The bridge mounts a
+  // beat after load, so retry a few times.
+  f.onload = () => {
+    if (!previewDc) return;
+    const msg = { fp:'dcApply', payload:{ kind:'state', state: previewDc } };
+    [300, 800, 1500, 2400, 3500].forEach(t => setTimeout(() => {
+      try { f.contentWindow && f.contentWindow.postMessage(msg, '*'); } catch(e){}
+    }, t));
+  };
   f.src=previewTarget+bust;
 }
 $("previewReload").addEventListener("click", reloadPreview);
