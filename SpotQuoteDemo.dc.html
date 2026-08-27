@@ -1143,7 +1143,7 @@ class Component extends DCLogic {
     { carrier: "Old Dominion", src: "API", svc: "Volume LTL", days: "4", fr: "3,404.00", fuel: "801.00", acc: "0.00", tot: "4,205.00", qn: "—" },
     { carrier: "TForce Freight", src: "API", svc: "Volume LTL", days: "6", fr: "3,610.00", fuel: "858.00", acc: "0.00", tot: "4,468.00", qn: "—" }
   ];
-  SPOT = [
+  SPOT_BIDS = [
     { carrier: "Ridgeline Carriers", src: "SPOT BID", svc: "FTL Dry Van", days: "3", fr: "2,750.00", fuel: "465.00", acc: "125.00", tot: "3,340.00", qn: "RC-88214", best: true },
     { carrier: "Keystone Freight Co.", src: "SPOT BID", svc: "FTL Dry Van", days: "3", fr: "2,980.00", fuel: "512.00", acc: "0.00", tot: "3,492.00", qn: "KF-40771" },
     { carrier: "Atlas Van Lines", src: "SPOT BID", svc: "FTL Dry Van", days: "4", fr: "3,120.00", fuel: "498.00", acc: "150.00", tot: "3,768.00", qn: "AVL-2261" }
@@ -1208,7 +1208,7 @@ class Component extends DCLogic {
   renderVals() {
     const a = this.anim;
     const sc = a.scene;
-    const list = this.SPOT.slice(0, a.bids).concat(this.BASE);
+    const list = this.SPOT_BIDS.slice(0, a.bids).concat(this.BASE);
     const rateRows = list.map((r, i) => {
       const isSpot = r.src === "SPOT BID";
       const sel = a.selected === i;

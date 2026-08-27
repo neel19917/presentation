@@ -394,19 +394,13 @@ class Component extends DCLogic {
     if (this.anim.playing) this._start();
     this.forceUpdate();
   };
-  restart = (e) => {
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
   scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
   _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
-    if (e) e.stopPropagation();
-    this.seek(0);
-    if (!this.anim.playing) { this.anim.playing = true; }
-    this._start();
-    this.forceUpdate();
-  };
   renderVals() {
     const a = this.anim;
     const rateRows = a.ratesOn ? this.ROWS.map((r, i) => ({ ...r,
