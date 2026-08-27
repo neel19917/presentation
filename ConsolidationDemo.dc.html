@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <!-- TOP NAV -->
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+      <span style="color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;">✦ AI BETA</span>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span style="color:#fff;font-weight:600;">Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <!-- PAGE HEADER + TABS -->
+  <div style="position:absolute;left:30px;top:70px;font-size:19px;font-weight:700;color:#1A1A1A;">{{ pageTitle }}</div>
+  <div style="position:absolute;left:30px;top:104px;display:flex;gap:32px;font-size:11.5px;font-weight:700;letter-spacing:.045em;color:#5E7186;">
+    <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">OPEN SALES ORDERS</span><span>OPEN OUTBOUND TRANSACTIONS</span><span>OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:131px;height:1px;background:#E4E9EF;"></div>
+  <div style="position:absolute;right:34px;top:118px;width:34px;height:34px;border-radius:50%;background:#1F8AE0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:300;line-height:1;">+</div>
+
+  <!-- ORDERS GRID -->
+  <sc-if value="{{ showOrders }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:20px;top:148px;width:1400px;height:530px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;box-shadow:0 1px 2px rgba(16,42,67,.06);">
+
+      <!-- TOOLBAR -->
+      <div style="position:absolute;left:0;right:0;top:0;height:56px;">
+        <div style="position:absolute;left:20px;top:10px;width:250px;height:36px;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;box-sizing:border-box;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
+        <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:292px;top:20px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+        <div style="position:absolute;left:790px;top:12px;display:flex;height:32px;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;"><span style="display:flex;align-items:center;padding:0 12px;background:#EDF1F6;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#24354A;">ORDERS</span><span style="display:flex;align-items:center;padding:0 12px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">ITEMS</span></div>
+        <span style="position:absolute;left:906px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">AUTO DISPATCH</span>
+        <span style="position:absolute;left:1046px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">BATCHES <span style="opacity:.6;">ⓘ</span></span>
+        <span style="{{ filtersBtn }}"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M3 6 L21 6 M6 12 L18 12 M10 18 L14 18" stroke="#4088CF" stroke-width="2.2"></path></svg> FILTERS</span>
+        <span style="{{ moreBtn }}">···</span>
+      </div>
+
+      <!-- COLUMN HEADERS -->
+      <div style="position:absolute;left:0;right:0;top:56px;height:30px;background:#fff;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;font-size:11px;font-weight:700;color:#3A4B60;">
+        <span style="{{ allCb }}"><sc-if value="{{ allChecked }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+        <span style="position:absolute;left:58px;top:9px;">Order Number</span>
+        <span style="position:absolute;left:175px;top:9px;">Consolidation Number</span>
+        <span style="position:absolute;left:322px;top:9px;">Shipment Details</span>
+        <span style="position:absolute;left:428px;top:9px;">Order Type</span>
+        <span style="{{ custHdr }}">Ship To Company <span style="{{ caretStyle }}">▲</span></span>
+        <span style="position:absolute;left:672px;top:9px;">Ship To</span>
+        <span style="position:absolute;left:880px;top:9px;">Ship To City</span>
+        <span style="position:absolute;left:978px;top:9px;">State</span>
+        <span style="position:absolute;left:1030px;top:9px;">Zip Code</span>
+        <span style="position:absolute;left:1104px;top:9px;">Created Date</span>
+      </div>
+
+      <!-- ROWS -->
+      <div style="position:absolute;left:0;right:0;top:86px;">
+        <sc-for list="{{ orderRows }}" as="o" hint-placeholder-count="9">
+          <div style="{{ o.rowStyle }}">
+            <span style="{{ o.cbStyle }}"><sc-if value="{{ o.checked }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+            <span style="position:absolute;left:58px;top:10px;font-size:11.5px;color:#4088CF;text-decoration:underline;">{{ o.num }}</span>
+            <span style="position:absolute;left:175px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.consol }}</span>
+            <span style="position:absolute;left:322px;top:10px;font-size:11.5px;color:#3A4B60;">Yes</span>
+            <span style="position:absolute;left:428px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.otype }}</span>
+            <span style="position:absolute;left:516px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.cust }}</span>
+            <span style="position:absolute;left:672px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.to }}</span>
+            <span style="position:absolute;left:880px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.city }}</span>
+            <span style="position:absolute;left:978px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.state }}</span>
+            <span style="position:absolute;left:1030px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.zip }}</span>
+            <span style="position:absolute;left:1104px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.date }}</span>
+            <span style="position:absolute;right:16px;top:9px;display:flex;align-items:center;gap:18px;">
+              <svg width="14" height="14" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="#8A97A8" stroke-width="1.8"></rect><path d="M9 7 H15" stroke="#8A97A8" stroke-width="1.8"></path></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24"><path d="M2 7 H14 V16 H2 Z M14 10 H19 L22 13 V16 H14 Z" fill="none" stroke="#8A97A8" stroke-width="1.8"></path><circle cx="6" cy="18" r="2" fill="#8A97A8"></circle><circle cx="17" cy="18" r="2" fill="#8A97A8"></circle></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24"><path d="M4 20 L4 16 L16 4 L20 8 L8 20 Z" fill="none" stroke="#4088CF" stroke-width="1.8"></path></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24"><path d="M5 7 H19 L17.5 21 H6.5 Z M9 7 V4 H15 V7" fill="none" stroke="#D4483B" stroke-width="1.9"></path></svg>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="position:absolute;left:0;right:0;bottom:0;height:44px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11.5px;color:#4A5B70;">
+        <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span>
+        <span>{{ resultLabel }}</span>
+        <span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> ›</span>
+      </div>
+      <sc-if value="{{ selBar }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:20px;bottom:14px;font-size:11.5px;font-weight:600;color:#4088CF;animation:srFadeUp .3s both;">4 orders selected — Summit Foods Group, Denver metro, 07/22/2026</div>
+      </sc-if>
+
+      <!-- MORE MENU -->
+      <sc-if value="{{ menu }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:1190px;top:52px;width:190px;background:#fff;border:1px solid #C6D0DC;border-radius:3px;box-shadow:0 12px 26px rgba(10,30,55,.24);z-index:14;padding:4px 0;animation:srFadeUp .16s both;">
+          <div style="{{ menuRow1 }}">Start Consolidation</div>
+          <div style="display:flex;align-items:center;height:34px;padding:0 14px;font-size:12px;color:#24354A;">Add to Batch</div>
+          <div style="display:flex;align-items:center;height:34px;padding:0 14px;font-size:12px;color:#24354A;">Export to CSV</div>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- FILTER SALES ORDERS DRAWER -->
+    <sc-if value="{{ panel }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:1000px;top:52px;width:440px;height:758px;background:#fff;border-left:1px solid #DDE4EC;box-shadow:-14px 0 40px rgba(10,30,55,.14);z-index:16;animation:srFadeUp .22s both;">
+        <div style="position:absolute;left:32px;top:26px;font-size:21px;font-weight:600;color:#1A2634;">Filter Sales Orders</div>
+        <span style="position:absolute;right:26px;top:30px;font-size:17px;color:#5E7186;">✕</span>
+        <div style="position:absolute;left:0;right:0;top:76px;height:1px;background:#E8ECF1;"></div>
+
+        <div style="position:absolute;left:32px;top:96px;font-size:12.5px;color:#4A5B70;">Created Date</div>
+        <span style="{{ cbDate }}"><sc-if value="{{ dateOn }}" hint-placeholder-val="{{ false }}"><svg width="9" height="9" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+        <div style="position:absolute;left:60px;top:118px;width:180px;">
+          <div style="font-size:10.5px;color:#8A97A8;">From</div>
+          <div style="{{ fromBox }}"><span style="{{ fromVal }}">{{ fromText }}</span><svg width="13" height="13" viewBox="0 0 24 24" style="margin-left:auto;"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#8A97A8" stroke-width="1.8"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#8A97A8" stroke-width="1.8"></path></svg></div>
+        </div>
+        <div style="position:absolute;left:256px;top:118px;width:152px;">
+          <div style="font-size:10.5px;color:#8A97A8;">To</div>
+          <div style="{{ toBox }}"><span style="{{ toVal }}">{{ toText }}</span><svg width="13" height="13" viewBox="0 0 24 24" style="margin-left:auto;"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#8A97A8" stroke-width="1.8"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#8A97A8" stroke-width="1.8"></path></svg></div>
+        </div>
+
+        <sc-for list="{{ textFields }}" as="tf" hint-placeholder-count="4">
+          <div style="{{ tf.wrap }}">
+            <span style="position:absolute;left:0;top:22px;width:14px;height:14px;border-radius:2px;border:1.5px solid #B9C3CF;background:#fff;display:inline-block;"></span>
+            <div style="position:absolute;left:28px;top:0;width:348px;">
+              <div style="font-size:10.5px;color:#8A97A8;">{{ tf.label }}</div>
+              <div style="margin-top:4px;height:38px;background:#F4F6F9;border:1px solid #E4E9EF;border-radius:3px;"></div>
+            </div>
+          </div>
+        </sc-for>
+
+        <sc-for list="{{ toggles }}" as="tg" hint-placeholder-count="3">
+          <div style="{{ tg.wrap }}">
+            <span style="width:14px;height:14px;border-radius:2px;border:1.5px solid #B9C3CF;background:#fff;display:inline-block;flex-shrink:0;"></span>
+            <span style="{{ tg.track }}"><span style="{{ tg.knob }}"></span></span>
+            <span style="font-size:13.5px;color:#3A4B60;">{{ tg.label }}</span>
+          </div>
+        </sc-for>
+
+        <span style="position:absolute;left:32px;bottom:28px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">CLEAR ALL</span>
+        <span style="{{ applyBtn }}">APPLY FILTERS</span>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- CONSOLIDATION MODAL -->
+  <sc-if value="{{ showModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.42);z-index:20;"></div>
+    <div style="position:absolute;left:370px;top:118px;width:700px;height:540px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:21;animation:srFadeUp .3s ease both;">
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:600;color:#14263C;">Shipment Consolidation</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="position:absolute;left:24px;top:66px;font-size:12px;font-weight:700;color:#24354A;letter-spacing:.03em;">4 ORDERS → 1 LTL SHIPMENT</div>
+      <div style="position:absolute;left:24px;top:92px;width:652px;height:150px;background:#F7F9FB;border:1px solid #E1E7EF;border-radius:4px;padding:12px 14px;box-sizing:border-box;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#3A4B60;padding:5px 0;border-bottom:1px solid #EDF1F6;"><span><b>SO-99120</b> · Summit Foods Group — Denver DC</span><span>2 PLT · 840 lb</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#3A4B60;padding:5px 0;border-bottom:1px solid #EDF1F6;"><span><b>SO-99126</b> · Summit Foods Group — Stapleton</span><span>1 PLT · 410 lb</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#3A4B60;padding:5px 0;border-bottom:1px solid #EDF1F6;"><span><b>SO-99131</b> · Summit Foods Group — Aurora</span><span>2 PLT · 900 lb</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#3A4B60;padding:5px 0;"><span><b>SO-99138</b> · Summit Foods Group — Commerce City</span><span>1 PLT · 385 lb</span></div>
+      </div>
+      <div style="position:absolute;left:24px;top:258px;width:652px;font-size:11.5px;color:#8A97A8;white-space:normal;">Every order's shipment details are copied into the consolidated shipment; product lines merge with a reference back to the original order. Orders lock in Order Management once the shipment is confirmed.</div>
+      <div style="position:absolute;left:24px;top:316px;display:flex;gap:14px;">
+        <div style="width:206px;height:110px;border:1px solid #E1E7EF;border-radius:4px;padding:12px 14px;box-sizing:border-box;"><div style="font-size:10.5px;font-weight:700;color:#8A97A8;letter-spacing:.05em;">SHIPPED SEPARATELY</div><div style="font-size:24px;font-weight:700;color:#24354A;margin-top:8px;">$1,872</div><div style="font-size:11.5px;color:#5E7186;margin-top:4px;">4 × LTL minimums</div></div>
+        <div style="width:206px;height:110px;border:1px solid #E1E7EF;border-radius:4px;padding:12px 14px;box-sizing:border-box;"><div style="font-size:10.5px;font-weight:700;color:#8A97A8;letter-spacing:.05em;">CONSOLIDATED</div><div style="font-size:24px;font-weight:700;color:#24354A;margin-top:8px;">$743</div><div style="font-size:11.5px;color:#5E7186;margin-top:4px;">1 LTL · 6 pallets · 2,535 lb</div></div>
+        <div style="width:206px;height:110px;border:1.5px solid #3B9E4E;background:#F1F9EF;border-radius:4px;padding:12px 14px;box-sizing:border-box;"><div style="font-size:10.5px;font-weight:700;color:#2E5E33;letter-spacing:.05em;">YOU SAVE</div><div style="font-size:24px;font-weight:700;color:#2E5E33;margin-top:8px;">$1,129</div><div style="font-size:11.5px;color:#2E5E33;margin-top:4px;">60% on this lane, before you commit</div></div>
+      </div>
+      <div style="position:absolute;right:24px;bottom:22px;display:flex;gap:10px;">
+        <span style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 16px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+        <span style="background:{{ createBg }};border-radius:3px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">CREATE CONSOLIDATED SHIPMENT</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ showResult }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:20px;top:148px;width:1400px;height:50px;box-sizing:border-box;background:#E7F4E4;border:1px solid #BFDFB8;border-radius:3px;display:flex;align-items:center;gap:10px;padding:0 18px;animation:srFadeUp .35s both;"><svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">Consolidation Number 46266716 created — 4 orders locked and linked. Full audit trail: which orders merged, and when.</span></div>
+
+    <div style="position:absolute;left:20px;top:216px;width:1400px;height:330px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;box-shadow:0 1px 2px rgba(16,42,67,.06);animation:srFadeUp .4s .1s both;">
+      <div style="height:40px;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 18px;font-size:13.5px;font-weight:600;color:#24354A;">Consolidated Shipment · Consolidation Number 46266716</div>
+      <div style="position:absolute;left:22px;top:62px;width:640px;height:44px;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Order Import</span><div style="padding:13px 0 0 12px;font-size:12.5px;color:#2A3B50;">SO-99120, SO-99126, SO-99131, SO-99138</div></div>
+      <div style="position:absolute;left:22px;top:126px;width:310px;height:44px;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship To Company</span><div style="padding:13px 0 0 12px;font-size:12.5px;color:#2A3B50;">Summit Foods Group</div></div>
+      <div style="position:absolute;left:352px;top:126px;width:310px;height:44px;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship To</span><div style="padding:13px 0 0 12px;font-size:12.5px;color:#2A3B50;">Denver, CO metro · 4 stops</div></div>
+      <div style="position:absolute;left:22px;top:190px;width:310px;height:44px;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Shipment Details</span><div style="padding:13px 0 0 12px;font-size:12.5px;color:#2A3B50;">6 PALLET · 2,535 lb · Class 85</div></div>
+      <div style="position:absolute;left:352px;top:190px;width:310px;height:44px;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Created Date</span><div style="padding:13px 0 0 12px;font-size:12.5px;color:#2A3B50;">07/22/2026</div></div>
+      <div style="position:absolute;left:22px;top:254px;width:640px;font-size:11.5px;color:#5E7186;white-space:normal;line-height:1.5;">Product lines merged and linked back to their original orders. Each order keeps its own tracking and ERP writeback.</div>
+
+      <div style="position:absolute;left:700px;top:62px;width:678px;height:246px;box-sizing:border-box;background:#F7F9FB;border:1px solid #E4E9EF;border-radius:3px;padding:14px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#8A97A8;">MERGED ORDERS</div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#3A4B60;padding:7px 0;border-bottom:1px solid #E7EDF4;"><span><b>SO-99120</b> · Denver DC</span><span>2 PLT · 840 lb</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#3A4B60;padding:7px 0;border-bottom:1px solid #E7EDF4;"><span><b>SO-99126</b> · Stapleton</span><span>1 PLT · 410 lb</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#3A4B60;padding:7px 0;border-bottom:1px solid #E7EDF4;"><span><b>SO-99131</b> · Aurora</span><span>2 PLT · 900 lb</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#3A4B60;padding:7px 0;"><span><b>SO-99138</b> · Commerce City</span><span>1 PLT · 385 lb</span></div>
+        <div style="margin-top:12px;display:flex;align-items:baseline;gap:12px;"><span style="font-size:25px;font-weight:700;color:#2E5E33;">$1,129</span><span style="font-size:12.5px;color:#5E7186;">avoided against four separate LTL minimums</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- OVERLAYS -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { scene: "orders", modal: false, playing: true, cap: "01 · A day's open sales orders — nineteen of them",
+    curX: 700, curY: 640, ripple: false, ripX: 0, ripY: 0,
+    panel: false, menu: false, dateOn: false, fromSet: false, toSet: false, allowConsol: false, applied: false, checks: 0, sorted: false, hdrHot: false,
+    fBg: "#fff", moreBg: "#fff", applyBg: "#4088CF", createBg: "#4088CF", menuHot: false };
+  DUR = 32;
+  KF = [
+    { t: 1.4, s: { curX: 1274, curY: 176 } },
+    { t: 2.3, s: { ripple: true, ripX: 1274, ripY: 176, fBg: "#EAF3FF" } },
+    { t: 2.7, s: { ripple: false, panel: true, fBg: "#fff", cap: "02 · Filter Sales Orders" } },
+    { t: 4.0, s: { curX: 1150, curY: 215 } },
+    { t: 4.9, s: { ripple: true, ripX: 1150, ripY: 215, dateOn: true, fromSet: true } },
+    { t: 6.0, s: { ripple: false, curX: 1336, curY: 215 } },
+    { t: 6.9, s: { ripple: true, ripX: 1336, ripY: 215, toSet: true } },
+    { t: 8.2, s: { ripple: false, curX: 1085, curY: 675, cap: "03 · Only orders that allow consolidation" } },
+    { t: 9.1, s: { ripple: true, ripX: 1085, ripY: 675, allowConsol: true } },
+    { t: 10.4, s: { ripple: false, curX: 1360, curY: 769 } },
+    { t: 11.3, s: { ripple: true, ripX: 1360, ripY: 769, applyBg: "#1557B0" } },
+    { t: 11.7, s: { ripple: false, panel: false, applied: true, applyBg: "#4088CF", cap: "04 · One created date — 19 orders down to 7" } },
+    { t: 13.4, s: { curX: 591, curY: 219, hdrHot: true } },
+    { t: 14.3, s: { ripple: true, ripX: 591, ripY: 219 } },
+    { t: 14.7, s: { ripple: false, hdrHot: false, sorted: true, cap: "05 · Click the column title to sort — one customer, together" } },
+    { t: 16.4, s: { curX: 50, curY: 316 } },
+    { t: 17.2, s: { ripple: true, ripX: 50, ripY: 316, checks: 1 } },
+    { t: 17.9, s: { ripple: true, ripX: 50, ripY: 349, checks: 2, curY: 349 } },
+    { t: 18.6, s: { ripple: true, ripX: 50, ripY: 382, checks: 3, curY: 382 } },
+    { t: 19.3, s: { ripple: true, ripX: 50, ripY: 415, checks: 4, curY: 415 } },
+    { t: 19.8, s: { ripple: false, cap: "06 · Four to the Denver metro — the Phoenix order stays behind" } },
+    { t: 21.4, s: { curX: 1374, curY: 177 } },
+    { t: 22.3, s: { ripple: true, ripX: 1374, ripY: 177, moreBg: "#EDF1F6" } },
+    { t: 22.7, s: { ripple: false, menu: true, moreBg: "#fff" } },
+    { t: 23.7, s: { curX: 1290, curY: 229, menuHot: true } },
+    { t: 24.6, s: { ripple: true, ripX: 1290, ripY: 229 } },
+    { t: 25.0, s: { ripple: false, menu: false, menuHot: false, modal: true, cap: "07 · See the savings before you commit", curX: 720, curY: 470 } },
+    { t: 27.8, s: { curX: 960, curY: 630 } },
+    { t: 28.7, s: { ripple: true, ripX: 960, ripY: 630, createBg: "#1557B0" } },
+    { t: 29.1, s: { ripple: false, modal: false, scene: "result", createBg: "#4088CF", cap: "08 · One shipment — orders locked and linked", curX: 700, curY: 620 } },
+  ];
+  ORDERS = [
+    { num: "SO-99142", consol: "", otype: "FP", cust: "Baird Electric", to: "Baird Electric, 900 Kalamath", city: "Denver", state: "CO", zip: "80204", date: "07/22/2026", d: 1, metro: 1 },
+    { num: "SO-99126", consol: "", otype: "FP", cust: "Summit Foods Group", to: "Stapleton, 7550 E 40th Ave", city: "Denver", state: "CO", zip: "80239", date: "07/22/2026", d: 1, metro: 1, sum: 1 },
+    { num: "SO-99155", consol: "", otype: "FP", cust: "Kessler Industrial", to: "Kessler, 1155 Trademark Dr", city: "Reno", state: "NV", zip: "89502", date: "07/24/2026" },
+    { num: "SO-99120", consol: "", otype: "FP", cust: "Summit Foods Group", to: "Denver DC, 4100 Havana St", city: "Denver", state: "CO", zip: "80216", date: "07/22/2026", d: 1, metro: 1, sum: 1 },
+    { num: "SO-99151", consol: "", otype: "FP", cust: "Cascade Outfitters", to: "Cascade, 8200 NE Alderwood", city: "Portland", state: "OR", zip: "97218", date: "07/22/2026", d: 1 },
+    { num: "SO-99138", consol: "", otype: "FP", cust: "Summit Foods Group", to: "Commerce City, 6001 E 64th", city: "Commerce City", state: "CO", zip: "80022", date: "07/22/2026", d: 1, metro: 1, sum: 1 },
+    { num: "SO-99160", consol: "", otype: "IAA", cust: "Hollis Supply", to: "Hollis, 4805 Fox St", city: "Denver", state: "CO", zip: "80216", date: "07/25/2026" },
+    { num: "SO-99131", consol: "", otype: "FP", cust: "Summit Foods Group", to: "Aurora DC, 1420 Chambers Rd", city: "Aurora", state: "CO", zip: "80011", date: "07/22/2026", d: 1, metro: 1, sum: 1 },
+    { num: "SO-99147", consol: "", otype: "Export", cust: "Summit Foods Group", to: "Phoenix DC, 3300 S 35th Ave", city: "Phoenix", state: "AZ", zip: "85009", date: "07/22/2026", d: 1, sum: 1 },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    if (window.ResizeObserver && this._wrap) { this._ro = new ResizeObserver(this._onResize); this._ro.observe(this._wrap); }
+    requestAnimationFrame(this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const w = this._wrap.getBoundingClientRect().width - 2; const s = w / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    let visible = this.ORDERS.filter((o) => !a.applied || o.d);
+    if (a.sorted) visible = visible.slice().sort((x, y) => x.cust.localeCompare(y.cust) || x.num.localeCompare(y.num));
+    const CHECKABLE = ["SO-99120", "SO-99126", "SO-99131", "SO-99138"];
+    const orderRows = visible.map((o) => {
+      const ci = CHECKABLE.indexOf(o.num);
+      const checked = ci > -1 && a.checks > ci;
+      return { ...o, checked,
+        rowStyle: "position:relative;height:33px;border-bottom:1px solid #EFF2F6;background:" + (checked ? "#EAF3FF" : "#fff") + ";transition:background .25s;",
+        cbStyle: "position:absolute;left:24px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (checked ? "#4088CF" : "#B9C3CF") + ";background:" + (checked ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;",
+      };
+    });
+    const dateBox = (set) => "margin-top:4px;height:38px;box-sizing:border-box;display:flex;align-items:center;gap:8px;padding:0 11px;border-radius:3px;border:1px solid " + (set ? "#B9CDE8" : "#E4E9EF") + ";background:" + (set ? "#F4F9FF" : "#F4F6F9") + ";transition:all .2s;";
+    const textFields = ["Status", "Order Type", "Ship From Zip Code", "Ship To Zip Code"].map((label, i) => ({
+      label, wrap: "position:absolute;left:32px;top:" + (196 + i * 76) + "px;width:376px;height:62px;" }));
+    const toggles = [["Can Ship Early", false], ["Can Arrive Early", false], ["Allow Consolidations", a.allowConsol]].map((tg, i) => ({
+      label: tg[0],
+      wrap: "position:absolute;left:32px;top:" + (510 + i * 52) + "px;display:flex;align-items:center;gap:16px;",
+      track: "width:34px;height:18px;border-radius:9px;background:" + (tg[1] ? "#4088CF" : "#D5DDE7") + ";display:flex;align-items:center;padding:0 2px;box-sizing:border-box;transition:background .2s;",
+      knob: "width:14px;height:14px;border-radius:50%;background:#fff;display:block;transform:translateX(" + (tg[1] ? "16px" : "0") + ");transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.25);" }));
+    return { ...a,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      pageTitle: "Order Management",
+      showOrders: a.scene === "orders", showModal: a.modal, showResult: a.scene === "result",
+      textFields, toggles, dateOn: a.dateOn,
+      fromBox: dateBox(a.fromSet), toBox: dateBox(a.toSet),
+      fromText: a.fromSet ? "07/22/2026" : "MM/DD/YYYY", toText: a.toSet ? "07/22/2026" : "MM/DD/YYYY",
+      fromVal: "font-size:12.5px;color:" + (a.fromSet ? "#1F5FBF" : "#9AA7B8") + ";font-weight:" + (a.fromSet ? "600" : "400") + ";",
+      toVal: "font-size:12.5px;color:" + (a.toSet ? "#1F5FBF" : "#9AA7B8") + ";font-weight:" + (a.toSet ? "600" : "400") + ";",
+      cbDate: "position:absolute;left:32px;top:140px;width:14px;height:14px;border-radius:2px;border:1.5px solid " + (a.dateOn ? "#4088CF" : "#B9C3CF") + ";background:" + (a.dateOn ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;",
+      custHdr: "position:absolute;left:516px;top:9px;display:flex;align-items:center;gap:5px;color:" + (a.hdrHot || a.sorted ? "#4088CF" : "#3A4B60") + ";transition:color .2s;",
+      caretStyle: "font-size:8px;opacity:" + (a.sorted ? "1" : "0") + ";transition:opacity .25s;",
+      resultLabel: "1–" + visible.length + " of " + (a.applied ? 7 : 19),
+      filtersBtn: "position:absolute;left:1190px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;background:" + a.fBg + ";color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;",
+      moreBtn: "position:absolute;left:1330px;top:12px;width:46px;height:32px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid #C6D0DC;border-radius:3px;background:" + a.moreBg + ";color:#5E7186;font-size:14px;letter-spacing:.06em;transition:background .2s;",
+      applyBtn: "position:absolute;right:26px;bottom:24px;background:" + a.applyBg + ";border-radius:3px;padding:10px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;",
+      menuRow1: "display:flex;align-items:center;height:34px;padding:0 14px;font-size:12px;font-weight:600;color:#24354A;background:" + (a.menuHot ? "#EAF3FF" : "#fff") + ";",
+      allChecked: a.checks >= 4,
+      allCb: "position:absolute;left:24px;top:8px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (a.checks >= 4 ? "#4088CF" : "#B9C3CF") + ";background:" + (a.checks >= 4 ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;",
+      selBar: a.checks >= 4,
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      orderRows,
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

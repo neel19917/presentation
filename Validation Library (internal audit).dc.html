@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body { margin:0; background:#04121F; }
+a { color:#3DD6B5; text-decoration:none; }
+a:hover { color:#5FE3C6; }
+*::-webkit-scrollbar { width:7px; height:0; }
+*::-webkit-scrollbar-track { background:transparent; }
+*::-webkit-scrollbar-thumb { background:rgba(255,255,255,.16); border-radius:4px; }
+* { scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.16) transparent; }
+select { -webkit-appearance:none; appearance:none; }
+select option { background:#0A2540; color:#fff; }
+@keyframes vlSlide { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</helmet>
+<div style="height:100vh;min-height:440px;overflow:hidden;background:#04121F;font-family:'Manrope',sans-serif;color:#fff;display:flex;flex-direction:column;">
+
+  <div style="flex:none;border-bottom:1px solid rgba(255,255,255,.08);padding:11px 26px;display:flex;align-items:center;gap:16px;">
+    <div style="flex:none;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#3DD6B5;line-height:1.5;">Validation<br>Library</div>
+
+    <div style="display:flex;gap:4px;flex:1 1 auto;min-width:0;flex-wrap:wrap;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="7">
+        <span onclick="{{ t.pick }}" style="font-size:11px;font-weight:{{ t.weight }};padding:6px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.border }};">{{ t.label }} <span style="font-family:'DM Mono',monospace;font-size:9px;opacity:.55;">{{ t.count }}</span></span>
+      </sc-for>
+    </div>
+
+    <select value="{{ tag }}" onChange="{{ onTag }}" style="flex:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:6px;color:#B5CDE0;font-family:'Manrope',sans-serif;font-size:11.5px;padding:7px 11px;outline:0;max-width:190px;">
+      <sc-for list="{{ tagOptions }}" as="o" hint-placeholder-count="8">
+        <option value="{{ o.v }}">{{ o.n }}</option>
+      </sc-for>
+    </select>
+
+    <div style="flex:none;display:flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:7px 10px;width:132px;">
+      <span style="color:#5E7C96;font-size:11px;flex:none;">⌕</span>
+      <input value="{{ q }}" onChange="{{ onSearch }}" placeholder="Search" style="flex:1;min-width:0;background:transparent;border:0;outline:0;color:#fff;font-family:'Manrope',sans-serif;font-size:11.5px;" />
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 246px;">
+
+    <div style="min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,3.4vh,40px) clamp(26px,3.6vw,54px);">
+
+        <sc-if value="{{ hasItem }}" hint-placeholder-val="{{ true }}">
+          <div style="max-width:700px;animation:vlSlide .28s ease-out;display:flex;flex-direction:column;min-height:0;">
+
+            <div style="flex:none;display:flex;align-items:center;gap:10px;margin-bottom:clamp(8px,1.8vh,20px);">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:{{ cur.gradeBg }};color:{{ cur.gradeColor }};border:1px solid {{ cur.gradeBorder }};white-space:nowrap;">{{ cur.grade }}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#6E869C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ cur.kind }} · {{ cur.company }}</span>
+            </div>
+
+            <div style="flex:none;font-size:clamp(18px,3.5vh,30px);font-weight:700;letter-spacing:-.03em;line-height:1.15;text-wrap:pretty;margin-bottom:clamp(10px,2vh,22px);">{{ cur.title }}</div>
+
+            <sc-if value="{{ cur.hasQuote }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:none;margin-bottom:clamp(10px,2vh,22px);">
+                <div style="font-size:clamp(14px,2.4vh,21px);font-weight:300;line-height:1.48;color:#DCEAF4;font-style:italic;text-wrap:pretty;">“{{ cur.quote }}”</div>
+                <div style="font-family:'DM Mono',monospace;font-size:10px;color:#7E97AC;margin-top:clamp(6px,1.2vh,12px);">{{ cur.who }}</div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ cur.hasFigures }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:none;display:flex;gap:clamp(16px,2.6vw,34px);flex-wrap:wrap;margin-bottom:clamp(10px,2vh,22px);padding:clamp(9px,1.7vh,18px) 0;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);">
+                <sc-for list="{{ cur.figures }}" as="f" hint-placeholder-count="3">
+                  <div>
+                    <div style="font-size:clamp(21px,4.4vh,36px);font-weight:700;color:#3DD6B5;letter-spacing:-.035em;line-height:1;">{{ f.v }}</div>
+                    <div style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:#7E97AC;margin-top:clamp(4px,.9vh,8px);max-width:132px;line-height:1.4;">{{ f.k }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ cur.hasBody }}" hint-placeholder-val="{{ false }}">
+              <div style="flex:0 1 auto;min-height:0;overflow:hidden;font-size:clamp(12px,1.85vh,15px);font-weight:300;line-height:1.6;color:#A8BECF;text-wrap:pretty;max-width:600px;">{{ cur.body }}</div>
+            </sc-if>
+
+            <div style="flex:none;margin-top:clamp(12px,2.4vh,28px);display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);">
+              <div style="display:flex;align-items:baseline;gap:9px;">
+                <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:#546F87;flex:none;">Source</span>
+                <span style="font-size:11.5px;color:#8FA9C0;line-height:1.4;">{{ cur.source }}</span>
+              </div>
+              <sc-if value="{{ cur.hasTags }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:baseline;gap:9px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:#546F87;flex:none;">Proves</span>
+                  <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                    <sc-for list="{{ cur.tags }}" as="tg" hint-placeholder-count="3">
+                      <span onclick="{{ tg.pick }}" style="font-size:10.5px;cursor:pointer;background:{{ tg.bg }};color:{{ tg.color }};border:1px solid {{ tg.border }};border-radius:999px;padding:3px 10px;white-space:nowrap;">{{ tg.n }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="color:#7E97AC;font-size:13.5px;">Nothing matches. Clear the filters or pick another feature.</div>
+        </sc-if>
+      </div>
+
+      <div style="flex:none;padding:11px clamp(26px,3.6vw,54px);border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:14px;">
+        <span onclick="{{ prev }}" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B5CDE0;font-size:13px;flex:none;">←</span>
+        <span onclick="{{ next }}" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B5CDE0;font-size:13px;flex:none;">→</span>
+        <span style="font-family:'DM Mono',monospace;font-size:10.5px;color:#5E7C96;letter-spacing:.08em;flex:none;">{{ position }}</span>
+        <sc-if value="{{ hasFilter }}" hint-placeholder-val="{{ false }}">
+          <span onclick="{{ clearAll }}" style="font-size:10.5px;color:#3DD6B5;cursor:pointer;white-space:nowrap;flex:none;">clear filters</span>
+        </sc-if>
+        <div style="flex:1;min-width:0;height:2px;background:rgba(255,255,255,.09);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:{{ progress }};background:#3DD6B5;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-left:1px solid rgba(255,255,255,.08);background:#051729;display:flex;flex-direction:column;min-height:0;overflow:hidden;">
+      <div style="flex:none;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#5E7C96;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ railLabel }}</div>
+      <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:6px 0;">
+        <sc-for list="{{ list }}" as="l" hint-placeholder-count="14">
+          <div onclick="{{ l.pick }}" style="padding:9px 18px;cursor:pointer;background:{{ l.bg }};border-left:2px solid {{ l.accent }};display:flex;flex-direction:column;gap:3px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="width:5px;height:5px;border-radius:50%;background:{{ l.dot }};flex:none;"></span>
+              <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:#6E869C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.company }}</span>
+            </div>
+            <div style="font-size:11.5px;font-weight:{{ l.weight }};color:{{ l.color }};line-height:1.35;">{{ l.title }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:800}}">
+const GRADES = {
+  Measured: { bg: "rgba(61,214,181,.13)", fg: "#3DD6B5", br: "rgba(61,214,181,.42)" },
+  Reported: { bg: "rgba(232,181,74,.13)", fg: "#E8B54A", br: "rgba(232,181,74,.4)" },
+  Baseline: { bg: "rgba(127,182,232,.13)", fg: "#7FB6E8", br: "rgba(64,136,207,.42)" },
+  Platform: { bg: "rgba(157,182,204,.12)", fg: "#9DB6CC", br: "rgba(157,182,204,.32)" },
+  "Do not use": { bg: "rgba(179,38,30,.14)", fg: "#F08A82", br: "rgba(179,38,30,.45)" }
+};
+
+const DATA = [
+  { kind: "Win analysis", company: "Buffalo Seal & Gasket", grade: "Measured", cat: "wins",
+    title: "The only complete dollar model we own",
+    figures: [{ v: "$140,294", k: "modeled annual savings" }, { v: "$23,661", k: "ARR, 3-year term" }, { v: "5.9×", k: "savings to spend" }],
+    body: "Sold as the cost of doing nothing rather than a software line item. Every future ROI conversation should copy this shape.",
+    source: "Closed Won analysis, Dec 22 2025",
+    tags: ["Rate Shopping", "Freight Invoice Audit", "Parcel", "ROI tool"] },
+
+  { kind: "Discovery", company: "Buffalo Seal & Gasket", grade: "Measured", cat: "metrics",
+    title: "What the legacy TMS was costing them",
+    figures: [{ v: "3–5 min", k: "per parcel in Starship" }, { v: "20–30", k: "packages unshipped daily" }],
+    body: "Our best before-picture: afternoon parcel volume simply did not get out the door.",
+    source: "Buffalo Seal discovery (Matt Brantner)",
+    tags: ["Parcel", "Batch Ship", "Quote & Ship"] },
+
+  { kind: "Win analysis", company: "Buffalo Seal & Gasket", grade: "Measured", cat: "wins",
+    title: "A $225 discrepancy sold freight audit",
+    figures: [{ v: "$225", k: "single billing error" }],
+    body: "One overcharge the owner could see for himself did more than any percentage. Small, specific and checkable beats big and abstract.",
+    source: "Buffalo Seal win analysis",
+    tags: ["Freight Invoice Audit"] },
+
+  { kind: "Reference", company: "Buffalo Seal & Gasket", grade: "Reported", cat: "cases",
+    title: "Freight cost back on the ERP order",
+    body: "The owner called freight cost written back to the order record a big deal for invoicing. Our only direct testimony on the ERP handoff.",
+    source: "Buffalo Seal account notes",
+    tags: ["Order → Ship Handoff", "Sales Order Intake"] },
+
+  { kind: "G2 review", company: "Catherine C.", grade: "Reported", cat: "quotes",
+    title: "Bulk quoting — our strongest testimony",
+    quote: "I spend many many hours quoting customers with hundreds or thousands of locations… This feature alone has saved me days of work in the last couple of months.",
+    who: "— G2 review, Catherine C.",
+    source: "G2", tags: ["Batch Ship", "Spot Quote"] },
+
+  { kind: "G2 review", company: "Francisco A.", grade: "Reported", cat: "quotes",
+    title: "Savings in freight and in payroll",
+    quote: "Saved us a TON of money in both shipment costs and payroll costs due to the saved time.",
+    who: "— G2 review, Francisco A.",
+    body: "The only review naming labor cost alongside freight cost. Unquantified — pair it with the calculator, do not attach a number.",
+    source: "G2", tags: ["Rate Shopping", "Labor"] },
+
+  { kind: "G2 review", company: "Anonymous", grade: "Reported", cat: "quotes",
+    title: "Keying errors gone after ERP integration",
+    quote: "An extra number here or there when manually keyed has killed us on shipments in the past… This problem is virtually eliminated now.",
+    who: "— G2 review",
+    source: "G2", tags: ["Sales Order Intake", "Order → Ship Handoff"] },
+
+  { kind: "Software Advice", company: "Anonymous", grade: "Reported", cat: "quotes",
+    title: "Reporting changed which carriers they used",
+    quote: "The reporting allowed us to save considerable money by illuminating which carriers can deliver each kind of product at the lowest cost and highest service levels.",
+    who: "— Software Advice review",
+    body: "The same reviewer runs 85 carriers on one system — useful proof the network is real at scale.",
+    source: "Software Advice", tags: ["Reports & Analytics", "Carrier Management", "Rate Shopping"] },
+
+  { kind: "Aggregate", company: "G2", grade: "Reported", cat: "quotes",
+    title: "Third-party standing",
+    figures: [{ v: "4.8★", k: "39 reviews" }, { v: "9.7", k: "quality of support" }, { v: "9.6", k: "ease of use" }],
+    body: "57.9% of reviewers are mid-market, matching the ICP we sell into.",
+    source: "G2 profile", tags: ["Company"] },
+
+  { kind: "Case study intake", company: "Alley-Cassetty", grade: "Baseline", cat: "cases",
+    title: "Largest operation on record — pre-FreightPOP baseline",
+    figures: [{ v: "49,680", k: "deliveries per year" }, { v: "115+", k: "owned trucks" }, { v: "15", k: "locations" }],
+    body: "Ran on Excel, Word and pegboards, each location on its own spreadsheet. Roughly 4,000 FTL and 10,000 invoices a month. Still in pilot, so no after-numbers yet.",
+    source: "Case Study Intake, Feb 2026",
+    tags: ["Fleet & Dispatch", "Freight Invoice Audit", "Tracking & Notifications", "Route Optimization"] },
+
+  { kind: "Case study intake", company: "Alley-Cassetty", grade: "Reported", cat: "cases",
+    title: "The coordinator fields status calls all day",
+    body: "Their transportation coordinator spends the day answering where-is-my-load questions by phone. The clearest statement of the tracking problem we have.",
+    source: "Case Study Intake, Feb 2026",
+    tags: ["Tracking & Notifications", "Driver App & POD"] },
+
+  { kind: "Case study intake", company: "Callaway Blue", grade: "Baseline", cat: "cases",
+    title: "Dock scheduling before software",
+    figures: [{ v: "20", k: "docks, one facility" }, { v: "1×", k: "schedule refresh per day" }],
+    body: "Appointments on Excel and clipboards, no carrier no-show tracking, nearly all volume customer-pickup. Measured results are due at their 90-day review — our nearest chance at real after-numbers.",
+    source: "Case Study Intake, Jun 2026",
+    tags: ["Dock Scheduling", "Tracking & Notifications"] },
+
+  { kind: "Case study intake", company: "Callaway Blue", grade: "Baseline", cat: "cases",
+    title: "Every PO re-keyed from a printed PDF",
+    body: "Orders arrived as PDFs and were typed into the system by hand. Pair this with the G2 keying-error quote — together they are the best-evidenced story in the deck.",
+    source: "Case Study Intake, Jun 2026",
+    tags: ["Sales Order Intake", "Order Management"] },
+
+  { kind: "Closed lost", company: "Hero Bread", grade: "Measured", cat: "wins",
+    title: "Where our ROI questions failed",
+    quote: "The questions asked would not be great for determining our ROI.",
+    who: "— Hero Bread, closed lost",
+    body: "A one-person shipping team has no labor hours to recover. They needed absolute cost reduction. The calculator needs a profile that hides labor lines entirely.",
+    source: "Closed Lost analysis, Mar 2025",
+    tags: ["ROI tool", "Labor"] },
+
+  { kind: "Partner training", company: "Acumatica", grade: "Baseline", cat: "metrics",
+    title: "Where ROI actually lands",
+    figures: [{ v: "100+", k: "freight shipments per month" }],
+    body: "Below that threshold the freight-side math gets thin. Double entry between ERP and TMS is named as the number one buying trigger.",
+    source: "Acumatica partner training",
+    tags: ["ICP", "Sales Order Intake", "ROI tool"] },
+
+  { kind: "Benchmark", company: "ROI tool spec", grade: "Baseline", cat: "metrics",
+    title: "Modeled savings ranges",
+    figures: [{ v: "5–15%", k: "rate shopping, of mode spend" }, { v: "1–3%", k: "invoice audit recovery" }],
+    body: "Volume and DIM optimization is the third lever. Per-mode overrides exist for parcel, LTL, FTL, ocean and air. Always present as a range — a point estimate reads as invented.",
+    source: "Mode-Level ROI spec, Jan 2026",
+    tags: ["Rate Shopping", "Freight Invoice Audit", "Multi-Leg / International", "ROI tool"] },
+
+  { kind: "Target", company: "Anchor Distributing", grade: "Baseline", cat: "metrics",
+    title: "Automation ceiling in a live account",
+    figures: [{ v: "80–90%", k: "shipments hands-off" }],
+    body: "Their stated target for rules-driven auto-ship. A goal, not yet a measured result.",
+    source: "Anchor Distributing account notes",
+    tags: ["Shipping Rules", "Auto-Dispatch"] },
+
+  { kind: "Platform fact", company: "FreightPOP", grade: "Platform", cat: "facts",
+    title: "Carrier network, built in-house",
+    figures: [{ v: "1,500+", k: "carrier and system connections" }],
+    body: "Not resold through an aggregator. Verifiable in the integrations catalog in front of the prospect.",
+    source: "Integrations catalog",
+    tags: ["Carrier Management", "Rate Shopping"] },
+
+  { kind: "Platform fact", company: "FreightPOP", grade: "Platform", cat: "facts",
+    title: "No per-seat pricing",
+    body: "CSRs, sales, accounting, drivers and carrier users cost nothing extra. A live differentiator against per-seat competitors, checkable in any quote we issue.",
+    source: "Commercial model", tags: ["Users & Roles"] },
+
+  { kind: "Platform fact", company: "FreightPOP", grade: "Platform", cat: "facts",
+    title: "Parcel included at no extra cost",
+    body: "Parcel and freight on one screen, one rate shop, one bill. Competitors commonly charge for parcel separately or omit it.",
+    source: "Commercial model", tags: ["Parcel", "Rate Shopping"] },
+
+  { kind: "Platform fact", company: "FreightPOP", grade: "Platform", cat: "facts",
+    title: "Free driver app, yours and your carriers'",
+    body: "Status, weights and photo POD from any driver's phone at no licence cost. Demoed live, so the capability needs no third-party proof.",
+    source: "Product · mobile app", tags: ["Driver App & POD", "Users & Roles"] },
+
+  { kind: "Retired claim", company: "GetApp listing", grade: "Do not use", cat: "banned",
+    title: "“Up to 30% freight spend reduction”",
+    body: "Our own marketing listing with no customer number behind it. Usable only as a published ceiling beside the modeled 5–15% range — never as a working assumption or a promise.",
+    source: "GetApp listing", tags: ["Rate Shopping", "ROI tool"] },
+
+  { kind: "Retired claim", company: "Unsourced", grade: "Do not use", cat: "banned",
+    title: "“40% increase in on-time deliveries”",
+    body: "No source exists in Confluence, Fathom or any of our listings. Removed from the Route Optimization card. Do not reintroduce.",
+    source: "Origin unknown", tags: ["Route Optimization"] },
+
+  { kind: "Standing gap", company: "All accounts", grade: "Do not use", cat: "banned",
+    title: "Any post-go-live percentage",
+    figures: [{ v: "0", k: "post-implementation metrics on file" }],
+    body: "Every case-study intake grades Quantified Results 1 out of 5. If a number describes life after implementation, we cannot currently source it. Callaway Blue's 90-day review is the nearest chance to change that.",
+    source: "Case-study intake audit", tags: ["ROI tool"] }
+];
+
+const TABS = [
+  { id: "all", label: "All" },
+  { id: "quotes", label: "Quotes" },
+  { id: "cases", label: "Cases" },
+  { id: "wins", label: "Wins" },
+  { id: "metrics", label: "Metrics" },
+  { id: "facts", label: "Facts" },
+  { id: "banned", label: "Do not use" }
+];
+
+class Component extends DCLogic {
+  state = { tab: "all", q: "", tag: "", i: 0 };
+
+  componentDidMount() {
+    this._key = (e) => {
+      if (e.target && /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+      if (e.key === "ArrowRight") this._step(1);
+      else if (e.key === "ArrowLeft") this._step(-1);
+    };
+    window.addEventListener("keydown", this._key);
+  }
+  componentWillUnmount() { window.removeEventListener("keydown", this._key); }
+
+  _filtered = () => {
+    const st = this.state;
+    const q = st.q.trim().toLowerCase();
+    return DATA.filter((d) => {
+      if (st.tab !== "all" && d.cat !== st.tab) return false;
+      if (st.tag && (d.tags || []).indexOf(st.tag) < 0) return false;
+      if (!q) return true;
+      return [d.title, d.company, d.kind, d.body, d.quote, d.source, (d.tags || []).join(" ")]
+        .join(" ").toLowerCase().indexOf(q) > -1;
+    });
+  };
+
+  _step = (n) => {
+    const len = this._filtered().length;
+    if (!len) return;
+    this.setState({ i: (this.state.i + n + len) % len });
+  };
+
+  renderVals() {
+    const st = this.state;
+    const shown = this._filtered();
+    const i = Math.min(st.i, Math.max(0, shown.length - 1));
+    const d = shown[i];
+
+    const pool = DATA.filter((x) => st.tab === "all" || x.cat === st.tab);
+    const tagCounts = {};
+    pool.forEach((x) => (x.tags || []).forEach((t) => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
+    const tagNames = Object.keys(tagCounts).sort();
+
+    const mkTag = (n) => ({
+      n: n,
+      pick: () => this.setState({ tag: st.tag === n ? "" : n, i: 0 }),
+      bg: st.tag === n ? "rgba(61,214,181,.18)" : "rgba(255,255,255,.03)",
+      color: st.tag === n ? "#3DD6B5" : "#9DB6CC",
+      border: st.tag === n ? "rgba(61,214,181,.5)" : "rgba(255,255,255,.12)"
+    });
+
+    const g = d ? (GRADES[d.grade] || GRADES.Platform) : GRADES.Platform;
+
+    return {
+      q: st.q,
+      tag: st.tag,
+      onSearch: (e) => this.setState({ q: e.target.value, i: 0 }),
+      onTag: (e) => this.setState({ tag: e.target.value, i: 0 }),
+      tagOptions: [{ v: "", n: "All features" }].concat(tagNames.map((n) => ({ v: n, n: n + "  (" + tagCounts[n] + ")" }))),
+
+      hasItem: !!d,
+      empty: shown.length === 0,
+      hasFilter: !!(st.tag || st.q || st.tab !== "all"),
+      clearAll: () => this.setState({ tab: "all", tag: "", q: "", i: 0 }),
+
+      cur: d ? {
+        title: d.title, kind: d.kind, company: d.company, grade: d.grade,
+        source: d.source, body: d.body || "", quote: d.quote || "", who: d.who || "",
+        hasQuote: !!d.quote, hasBody: !!d.body,
+        hasFigures: !!(d.figures && d.figures.length), figures: d.figures || [],
+        hasTags: !!(d.tags && d.tags.length),
+        tags: (d.tags || []).map(mkTag),
+        gradeBg: g.bg, gradeColor: g.fg, gradeBorder: g.br
+      } : {},
+
+      position: shown.length ? (i + 1) + " / " + shown.length : "0 / 0",
+      progress: shown.length ? Math.round(((i + 1) / shown.length) * 100) + "%" : "0%",
+      prev: () => this._step(-1),
+      next: () => this._step(1),
+
+      tabs: TABS.map((t) => {
+        const c = t.id === "all" ? DATA.length : DATA.filter((x) => x.cat === t.id).length;
+        const on = st.tab === t.id;
+        const isBan = t.id === "banned";
+        return {
+          label: t.label, count: c,
+          pick: () => this.setState({ tab: t.id, i: 0 }),
+          bg: on ? (isBan ? "rgba(179,38,30,.2)" : "#3DD6B5") : "rgba(255,255,255,.03)",
+          color: on ? (isBan ? "#F08A82" : "#051729") : (isBan ? "#C48A85" : "#9DB6CC"),
+          border: on ? (isBan ? "rgba(179,38,30,.5)" : "#3DD6B5") : "rgba(255,255,255,.12)",
+          weight: on ? "700" : "400"
+        };
+      }),
+
+      railLabel: shown.length + (shown.length === 1 ? " item" : " items") + (st.tag ? " · " + st.tag : ""),
+      list: shown.map((x, n) => {
+        const on = n === i;
+        const xg = GRADES[x.grade] || GRADES.Platform;
+        return {
+          title: x.title, company: x.company,
+          pick: () => this.setState({ i: n }),
+          bg: on ? "rgba(61,214,181,.08)" : "transparent",
+          accent: on ? "#3DD6B5" : "transparent",
+          color: on ? "#fff" : "#9DB6CC",
+          weight: on ? "700" : "400",
+          dot: xg.fg
+        };
+      })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

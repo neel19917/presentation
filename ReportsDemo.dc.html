@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span style="color:#fff;font-weight:600;">Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">Analytics — Freight Spend</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">SPEND</span><span>SERVICE &amp; ON-TIME</span><span>CARRIER SCORECARD</span><span>SAVED REPORTS</span></div>
+  </div>
+
+  <div style="position:absolute;left:30px;top:132px;width:1380px;height:60px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);display:flex;align-items:center;gap:12px;padding:0 16px;">
+    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4"><span style="{{ f.style }}">{{ f.label }}<span style="{{ f.valStyle }}">{{ f.val }}</span></span></sc-for>
+    <span style="margin-left:auto;display:flex;gap:9px;align-items:center;"><span style="border:1px solid #C6D0DC;border-radius:4px;padding:8px 11px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SCHEDULE</span><span style="border:1px solid #B9CDE8;border-radius:4px;padding:8px 11px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">EXPORT XLSX</span><span style="background:#4088CF;border-radius:4px;padding:9px 14px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SAVE VIEW</span></span>
+  </div>
+
+  <div style="position:absolute;left:30px;top:208px;width:1380px;height:92px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);display:flex;align-items:center;">
+    <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+      <div style="{{ k.style }}"><div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">{{ k.k }}</div><div style="{{ k.vStyle }}">{{ k.v }}</div><div style="{{ k.dStyle }}">{{ k.d }}</div></div>
+    </sc-for>
+  </div>
+
+  <div style="position:absolute;left:30px;top:316px;width:820px;height:416px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Spend by Carrier</span><span style="font-size:11px;color:#8A97A8;">{{ periodLabel }}</span></div>
+    <div style="position:absolute;left:24px;right:24px;top:56px;height:280px;">
+      <sc-for list="{{ gridY }}" as="g" hint-placeholder-count="4"><div style="{{ g.style }}"><span style="position:absolute;left:-46px;top:-7px;font-size:10.5px;color:#9AA7B8;">{{ g.label }}</span></div></sc-for>
+      <div style="position:absolute;left:44px;right:0;bottom:0;top:0;display:flex;align-items:flex-end;gap:22px;">
+        <sc-for list="{{ bars }}" as="b" hint-placeholder-count="6">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
+            <span style="{{ b.valStyle }}">{{ b.val }}</span>
+            <div style="{{ b.barStyle }}"></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="position:absolute;left:68px;right:24px;top:348px;display:flex;gap:22px;">
+      <sc-for list="{{ bars }}" as="b" hint-placeholder-count="6"><span style="flex:1;text-align:center;font-size:11px;color:#5E7186;">{{ b.name }}</span></sc-for>
+    </div>
+    <div style="position:absolute;left:24px;bottom:14px;font-size:11.5px;color:#8A97A8;">Click a bar to drill into its lanes — the grid on the right follows the filter.</div>
+  </div>
+
+  <div style="position:absolute;left:870px;top:316px;width:540px;height:416px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">{{ laneTitle }}</span><span style="font-size:11px;color:#8A97A8;">{{ laneCount }}</span></div>
+    <div style="position:absolute;left:0;right:0;top:36px;height:28px;background:#F7F9FB;border-bottom:1px solid #EDF1F6;font-size:10.5px;font-weight:700;color:#4A5B70;"><span style="position:absolute;left:16px;top:8px;">LANE</span><span style="position:absolute;left:300px;top:8px;">LOADS</span><span style="position:absolute;left:370px;top:8px;">SPEND</span><span style="position:absolute;left:470px;top:8px;">ON-TIME</span></div>
+    <div style="position:absolute;left:0;right:0;top:64px;">
+      <sc-for list="{{ lanes }}" as="l" hint-placeholder-count="7">
+        <div style="{{ l.rowStyle }}">
+          <span style="position:absolute;left:16px;top:12px;font-size:12px;color:#24354A;">{{ l.lane }}</span>
+          <span style="position:absolute;left:300px;top:12px;font-size:12px;color:#4A5B70;">{{ l.loads }}</span>
+          <span style="position:absolute;left:370px;top:12px;font-size:12px;font-weight:600;color:#24354A;">{{ l.spend }}</span>
+          <span style="{{ l.otStyle }}">{{ l.ot }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:16px;right:16px;bottom:14px;height:52px;border-radius:6px;background:#F7FAFF;border:1px solid #DCE6F2;display:flex;align-items:center;gap:12px;padding:0 14px;">
+      <span style="font-size:11.5px;color:#5E7186;white-space:normal;line-height:1.5;">{{ insight }}</span>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:16px;bottom:24px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Freight spend, current — not a month-end export", curX: 700, curY: 700,
+    ripple: false, ripX: 0, ripY: 0, mode: "all", drill: -1, siteFilter: false };
+  DUR = 22;
+  KF = [
+    { t: 2.4, s: { cap: "02 · Filter to one site and the whole page follows", curX: 420, curY: 162 } },
+    { t: 3.0, s: { ripple: true, ripX: 420, ripY: 162, siteFilter: true } },
+    { t: 3.4, s: { ripple: false } },
+    { t: 6.2, s: { cap: "03 · Narrow to LTL", curX: 620, curY: 162 } },
+    { t: 6.8, s: { ripple: true, ripX: 620, ripY: 162, mode: "ltl" } },
+    { t: 7.2, s: { ripple: false } },
+    { t: 10.0, s: { cap: "04 · Drill into a carrier's lanes", curX: 300, curY: 500 } },
+    { t: 10.7, s: { ripple: true, ripX: 300, ripY: 500, drill: 1 } },
+    { t: 11.1, s: { ripple: false } },
+    { t: 15.0, s: { cap: "05 · Save the view or schedule it to a mailbox", curX: 1230, curY: 162 } },
+    { t: 18.4, s: { cap: "06 · Nobody exports to a spreadsheet to answer this" } },
+  ];
+  CARRIERS = [
+    { name: "Old Dominion", all: 148, ltl: 148 },
+    { name: "XPO", all: 122, ltl: 122 },
+    { name: "FedEx Freight", all: 96, ltl: 96 },
+    { name: "Estes", all: 74, ltl: 74 },
+    { name: "UPS Parcel", all: 68, ltl: 0 },
+    { name: "Schneider FTL", all: 132, ltl: 0 }
+  ];
+  LANES_ALL = [
+    { lane: "Lake Forest, CA → Boise, ID", loads: "84", spend: "$41,220", ot: "96%" },
+    { lane: "Lake Forest, CA → Portland, OR", loads: "61", spend: "$33,940", ot: "92%" },
+    { lane: "Columbus, OH → Chicago, IL", loads: "58", spend: "$21,105", ot: "98%" },
+    { lane: "Lake Forest, CA → Phoenix, AZ", loads: "47", spend: "$18,880", ot: "94%" },
+    { lane: "Columbus, OH → Nashville, TN", loads: "39", spend: "$15,410", ot: "89%" },
+    { lane: "Lake Forest, CA → Las Vegas, NV", loads: "35", spend: "$12,760", ot: "97%" },
+    { lane: "Reno, NV → Salt Lake City, UT", loads: "28", spend: "$9,340", ot: "91%" }
+  ];
+  LANES_XPO = [
+    { lane: "Lake Forest, CA → Portland, OR", loads: "34", spend: "$19,640", ot: "88%" },
+    { lane: "Lake Forest, CA → Seattle, WA", loads: "27", spend: "$16,220", ot: "90%" },
+    { lane: "Lake Forest, CA → Spokane, WA", loads: "19", spend: "$11,480", ot: "84%" },
+    { lane: "Lake Forest, CA → Eugene, OR", loads: "16", spend: "$8,910", ot: "93%" },
+    { lane: "Lake Forest, CA → Medford, OR", loads: "12", spend: "$6,040", ot: "95%" },
+    { lane: "Lake Forest, CA → Boise, ID", loads: "9", spend: "$4,720", ot: "89%" },
+    { lane: "Lake Forest, CA → Missoula, MT", loads: "5", spend: "$2,890", ot: "80%" }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const ltl = a.mode === "ltl";
+    const scale = a.siteFilter ? 0.72 : 1;
+    const vals = this.CARRIERS.map((c) => Math.round((ltl ? c.ltl : c.all) * scale));
+    const max = 160;
+    const bars = this.CARRIERS.map((c, i) => {
+      const v = vals[i]; const on = v > 0; const hot = a.drill === i;
+      return { name: c.name, val: on ? "$" + v + "k" : "—",
+        barStyle: "width:100%;max-width:74px;border-radius:5px 5px 0 0;transition:height .7s cubic-bezier(.3,.02,.2,1),background .3s;height:" + Math.round((v / max) * 258) + "px;background:" + (hot ? "#14459B" : on ? "#4088CF" : "#E1E7EF") + ";",
+        valStyle: "font-size:11.5px;font-weight:700;margin-bottom:7px;color:" + (on ? "#24354A" : "#C6D0DC") + ";",
+      };
+    });
+    const gridY = [0, 1, 2, 3].map((i) => ({ label: "$" + (160 - i * 40) + "k",
+      style: "position:absolute;left:44px;right:0;top:" + (i * 66) + "px;height:1px;background:#EDF1F6;",
+    }));
+    const FILTERS = [
+      { label: "Period", val: "Jul 1 – Jul 28, 2026" },
+      { label: "Site", val: a.siteFilter ? "Lake Forest, CA" : "All sites", hot: a.siteFilter },
+      { label: "Mode", val: ltl ? "LTL only" : "All modes", hot: ltl },
+      { label: "Customer", val: "All" }
+    ];
+    const filters = FILTERS.map((f) => ({ ...f,
+      style: "display:flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:6px;font-size:11.5px;color:#5E7186;border:1px solid " + (f.hot ? "#B9CDE8" : "#E1E7EF") + ";background:" + (f.hot ? "#EAF3FF" : "#fff") + ";transition:all .3s;",
+      valStyle: "font-weight:700;color:" + (f.hot ? "#4088CF" : "#24354A") + ";",
+    }));
+    const spend = a.siteFilter ? (ltl ? "$316,400" : "$460,800") : (ltl ? "$439,000" : "$640,000");
+    const KPIS = [
+      { k: "TOTAL SPEND", v: spend, d: "−7.4% vs Jun", good: true },
+      { k: "LOADS", v: a.siteFilter ? "1,284" : "1,842", d: "+3.1%" },
+      { k: "COST PER LOAD", v: a.siteFilter ? "$359" : "$347", d: "−9.8% vs Jun", good: true },
+      { k: "ON-TIME", v: "94.2%", d: "+2.6 pts", good: true },
+      { k: "ACCESSORIAL SHARE", v: "6.1%", d: "−1.4 pts", good: true }
+    ];
+    const kpis = KPIS.map((k, i) => ({ ...k,
+      style: "flex:1;padding:0 22px;" + (i > 0 ? "border-left:1px solid #EDF1F6;" : ""),
+      vStyle: "font-size:24px;font-weight:700;color:#24354A;margin-top:6px;transition:color .3s;",
+      dStyle: "font-size:11px;margin-top:4px;color:" + (k.good ? "#0F8A6D" : "#5E7186") + ";",
+    }));
+    const src = a.drill === 1 ? this.LANES_XPO : this.LANES_ALL;
+    const lanes = src.map((l, i) => ({ ...l,
+      rowStyle: "position:relative;height:38px;border-bottom:1px solid #F2F5F9;background:#fff;animation:rsFadeUp .3s " + (i * 0.04) + "s both;",
+      otStyle: "position:absolute;left:470px;top:12px;font-size:12px;font-weight:600;color:" + (parseInt(l.ot) < 90 ? "#B03A2E" : "#0F8A6D") + ";",
+    }));
+    return { ...a, bars, gridY, filters, kpis, lanes,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      periodLabel: (a.siteFilter ? "Lake Forest, CA · " : "All sites · ") + (ltl ? "LTL" : "all modes"),
+      laneTitle: a.drill === 1 ? "XPO — Top Lanes" : "Top Lanes",
+      laneCount: a.drill === 1 ? "122 loads" : "352 loads",
+      insight: a.drill === 1 ? "Spokane runs 84% on-time at $604 a load — the lane to renegotiate or re-bid first." : "Portland is your second-largest lane and your weakest on-time. Drill into a carrier to see why.",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

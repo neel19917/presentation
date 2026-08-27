@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes ocClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes ocFade { from{opacity:0;} to{opacity:1;} }
+@keyframes ocUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+@keyframes ocIn { from{opacity:0;transform:translateX(28px);} to{opacity:1;transform:translateX(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#F1F4F8;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:44px;background:#0B2039;display:flex;align-items:center;gap:14px;padding:0 16px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:170px;width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+    <span style="color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;flex-shrink:0;background:{{ dashHl }};padding:6px 8px;border-radius:3px;transition:background .3s;">DASHBOARD</span>
+    <span style="width:1px;height:26px;background:#2C4460;flex-shrink:0;"></span>
+    <div style="display:flex;align-items:center;gap:14px;font-size:11px;color:#C7D3E0;white-space:nowrap;"><span style="color:{{ navOrders }};font-weight:600;">Orders</span><span style="color:{{ navQs }};">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <!-- ═══ ORDER MANAGEMENT · OPEN OUTBOUND TRANSACTIONS ═══ -->
+  <sc-if value="{{ sOrders }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:44px;left:0;right:0;height:82px;background:#fff;padding:12px 20px 0;z-index:4;">
+      <div style="font-size:17px;font-weight:700;color:#14263C;">Order Management</div>
+      <div style="display:flex;gap:24px;margin-top:12px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>OPEN SALES ORDERS</span><span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:8px;">OPEN OUTBOUND TRANSACTIONS</span><span>OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span></div>
+    </div>
+    <div style="position:absolute;top:110px;right:22px;width:38px;height:38px;border-radius:50%;background:#4088CF;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:6;box-shadow:0 2px 6px rgba(16,42,67,.28);">+</div>
+
+    <div style="position:absolute;left:20px;right:20px;top:140px;bottom:52px;background:#fff;border:1px solid #E3E9F0;border-radius:2px;z-index:3;overflow:hidden;">
+      <div style="height:56px;display:flex;align-items:center;padding:0 14px;gap:13px;">
+        <div style="width:250px;height:34px;border:1px solid #C9D4E0;border-radius:3px;display:flex;align-items:center;padding:0 12px;gap:9px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11.5px;">Search</span><span style="margin-left:auto;color:#33465C;font-size:11px;font-weight:700;letter-spacing:.05em;">GO</span></div>
+        <svg width="17" height="17" viewBox="0 0 24 24" style="flex-shrink:0;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.8"></path></svg>
+        <span style="border:1px solid #C9D4E0;border-radius:999px;color:#33465C;font-size:11.5px;padding:8px 15px;flex-shrink:0;">Past Shipments</span>
+        <span style="display:flex;gap:18px;font-size:11.5px;color:#33465C;flex-shrink:0;"><span>Total Handling Units: {{ tbHU }}</span><span>Total Weight: {{ tbWt }}</span><span>Total Linear Feet: {{ tbLF }}</span></span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <div style="display:flex;border:1px solid #C9D4E0;border-radius:3px;overflow:hidden;"><span style="background:#EDF1F6;color:#33465C;font-size:10px;font-weight:700;letter-spacing:.05em;padding:9px 12px;">ORDERS</span><span style="background:#fff;color:#5E7186;font-size:10px;font-weight:700;letter-spacing:.05em;padding:9px 12px;">ITEMS</span></div>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10px;font-weight:700;letter-spacing:.05em;padding:10px 13px;">METRICS</span>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10px;font-weight:700;letter-spacing:.05em;padding:10px 13px;">AUTO DISPATCH</span>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10px;font-weight:700;letter-spacing:.05em;padding:10px 13px;display:flex;align-items:center;gap:6px;">BATCHES <svg width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#2C6DB5" stroke-width="1.8"></circle><path d="M12 10.5 L12 17" stroke="#2C6DB5" stroke-width="2"></path><circle cx="12" cy="7.4" r="1.2" fill="#2C6DB5"></circle></svg></span>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10px;font-weight:700;letter-spacing:.05em;padding:10px 13px;display:flex;align-items:center;gap:7px;"><svg width="12" height="12" viewBox="0 0 24 24"><path d="M3 6 L21 6 M6 12 L18 12 M10 18 L14 18" stroke="#2C6DB5" stroke-width="2"></path></svg>FILTERS</span>
+          <span style="border:1px solid #C9D4E0;border-radius:3px;color:#33465C;font-size:13px;font-weight:700;padding:7px 13px 11px;line-height:1;">···</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ barOn }}" hint-placeholder-val="{{ false }}">
+        <div style="height:48px;background:#3A86D8;display:flex;align-items:center;gap:10px;padding:0 14px;animation:ocFade .2s both;">
+          <span style="color:#fff;font-size:12.5px;font-weight:600;margin-right:6px;">{{ selCount }} Selected</span>
+          <span style="{{ barBtn }}">QUOTE SELECTED</span>
+          <span style="{{ barBtn }}">SPOT QUOTE SELECTED</span>
+          <span style="{{ barBtn }}">SHIP SELECTED</span>
+          <span style="{{ consolBtn }}">CONSOLIDATE SELECTED</span>
+          <span style="{{ barBtn }}">CREATE SAVED SHIPMENT FOR SELECTED</span>
+          <span style="{{ barBtn }}">···</span>
+          <span style="margin-left:auto;display:flex;gap:10px;"><span style="{{ barBtn }}">SHOW SELECTED</span><span style="{{ barBtn }}">CLEAR SELECTED</span></span>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;align-items:center;height:36px;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:11.5px;font-weight:700;color:#33465C;padding:0 14px;">
+        <span style="width:34px;flex-shrink:0;"><span style="display:inline-block;width:13px;height:13px;border:1.5px solid #93A2B4;border-radius:2px;background:{{ headBox }};"></span></span>
+        <span style="width:140px;flex-shrink:0;">Order Number</span><span style="width:150px;flex-shrink:0;">Consolidation Number</span><span style="width:105px;flex-shrink:0;">Quote Id</span><span style="width:110px;flex-shrink:0;">Shipment Id</span><span style="width:118px;flex-shrink:0;">Shipment Details</span><span style="width:110px;flex-shrink:0;">Customer Job</span><span style="width:100px;flex-shrink:0;">Order Type</span><span style="width:150px;flex-shrink:0;">Ship From Company Id</span><span style="width:190px;flex-shrink:0;">Ship To</span>
+      </div>
+
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;height:34px;border-bottom:1px solid #EDF1F6;font-size:11.5px;padding:0 14px;background:{{ r.bg }};transition:background .25s;">
+          <span style="width:34px;flex-shrink:0;"><span style="display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border:1.5px solid {{ r.boxBorder }};border-radius:2px;background:{{ r.boxBg }};"><sc-if value="{{ r.on }}" hint-placeholder-val="{{ false }}"><svg width="9" height="9" viewBox="0 0 24 24"><path d="M4 12 L10 18 L20 6" fill="none" stroke="#fff" stroke-width="3.4"></path></svg></sc-if></span></span>
+          <span style="width:140px;flex-shrink:0;color:#2C6DB5;text-decoration:underline;">{{ r.num }}</span>
+          <span style="width:150px;flex-shrink:0;color:#3C4B5C;font-weight:{{ r.consolW }};">{{ r.consol }}</span>
+          <span style="width:105px;flex-shrink:0;color:#3C4B5C;">{{ r.quote }}</span>
+          <span style="width:110px;flex-shrink:0;color:#3C4B5C;">{{ r.shipment }}</span>
+          <span style="width:118px;flex-shrink:0;color:#3C4B5C;">Yes</span>
+          <span style="width:110px;flex-shrink:0;color:#3C4B5C;"></span>
+          <span style="width:100px;flex-shrink:0;color:#3C4B5C;">{{ r.type }}</span>
+          <span style="width:150px;flex-shrink:0;color:#3C4B5C;">{{ r.sfc }}</span>
+          <span style="width:190px;flex-shrink:0;color:#3C4B5C;overflow:hidden;text-overflow:ellipsis;">{{ r.shipTo }}</span>
+          <span style="margin-left:auto;display:flex;gap:18px;padding-left:14px;padding-right:10px;align-items:center;">
+            <svg width="14" height="16" viewBox="0 0 20 24"><rect x="3" y="3" width="14" height="19" rx="2" fill="none" stroke="#93A2B4" stroke-width="1.7"></rect><rect x="7" y="1" width="6" height="4" rx="1" fill="#93A2B4"></rect></svg>
+            <svg width="18" height="14" viewBox="0 0 26 20"><path d="M1 3 L15 3 L15 14 L1 14 Z M15 6.5 L20 6.5 L24 10.5 L24 14 L15 14 Z" fill="none" stroke="#4088CF" stroke-width="1.7"></path><circle cx="6" cy="16" r="2.2" fill="#4088CF"></circle><circle cx="19" cy="16" r="2.2" fill="#4088CF"></circle></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24"><path d="M4 20 L4.6 15.6 L16.4 3.9 L20.1 7.6 L8.4 19.4 Z" fill="none" stroke="#2C6DB5" stroke-width="1.9"></path></svg>
+            <svg width="14" height="15" viewBox="0 0 22 24"><path d="M3 6 L19 6 M9 3 L13 3 M6 6 L7.4 21 L14.6 21 L16 6" fill="none" stroke="#D93A2B" stroke-width="1.8"></path></svg>
+          </span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:12px;height:40px;display:flex;align-items:center;justify-content:center;gap:16px;font-size:11.5px;color:#33465C;z-index:3;">
+      <span>Results Per Page:</span><span style="font-weight:600;">50 ▾</span><span style="margin-left:14px;">1–8 of 8</span>
+      <span style="margin-left:14px;display:flex;align-items:center;gap:14px;color:#93A2B4;">‹<span style="color:#33465C;border-bottom:1px solid #33465C;">1</span>›</span>
+    </div>
+  </sc-if>
+
+  <!-- ═══ CONSOLIDATE ORDERS MODAL ═══ -->
+  <sc-if value="{{ consolModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(64,136,207,.24);z-index:20;"></div>
+    <div style="position:absolute;left:460px;top:210px;width:520px;background:#fff;border-radius:3px;box-shadow:0 22px 56px rgba(5,20,40,.34);z-index:21;animation:ocUp .24s both;">
+      <div style="height:56px;background:#F2F4F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:17px;color:#1A2634;">Consolidate Orders<span style="color:#5E7186;font-size:15px;">✕</span></div>
+      <div style="padding:22px;">
+        <div style="font-size:14px;color:#24354A;white-space:normal;line-height:1.5;">Are you sure you want to consolidate the 3 selected orders?</div>
+        <div style="margin-top:16px;background:#EEF6E9;border-radius:3px;padding:14px 16px;display:flex;gap:11px;align-items:flex-start;">
+          <svg width="17" height="17" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#4E9A3D" stroke-width="1.8"></circle><path d="M7 12.5 L10.5 16 L17 8" fill="none" stroke="#4E9A3D" stroke-width="2.2"></path></svg>
+          <span style="font-size:13.5px;color:#33465C;white-space:normal;line-height:1.5;">All 3 orders ship to the same address. Confirming will create one saved shipment for them.</span>
+        </div>
+        <div style="margin-top:22px;display:flex;gap:14px;">
+          <span style="background:{{ confirmBg }};color:#fff;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.05em;padding:13px 26px;transition:background .3s;">CONFIRM</span>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:12px;font-weight:700;letter-spacing:.05em;padding:13px 24px;">CANCEL</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ QUOTE / SHIP (GENERAL) ═══ -->
+  <sc-if value="{{ sQs }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;height:96px;background:#fff;z-index:5;">
+      <div style="position:absolute;left:20px;top:14px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship</div>
+      <div style="position:absolute;left:20px;top:56px;display:flex;gap:30px;font-size:10.5px;font-weight:700;letter-spacing:.05em;">
+        <span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:8px;">GENERAL</span>
+        <span style="color:#5E7186;padding-bottom:8px;">PRODUCT DETAILS</span>
+        <span style="color:#5E7186;padding-bottom:8px;">ADDITIONAL DETAILS</span>
+        <span style="color:#5E7186;padding-bottom:8px;">DOCUMENTS</span>
+      </div>
+      <div style="position:absolute;right:20px;top:26px;display:flex;align-items:center;gap:12px;">
+        <div style="position:relative;width:220px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;gap:8px;font-size:12.5px;color:#9AA7B8;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Order Import</span><span style="color:#8A97A8;">⚙</span>Use a comma to separate<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">START CONSOLIDATION</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">RECENT QUOTES</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">TEMPLATES</span>
+        <div style="position:relative;width:150px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Process Date</span>08/16/2026<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+      </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:140px;bottom:0;background:#EDF2F9;z-index:2;"></div>
+
+    <!-- LOCATIONS -->
+    <div style="position:absolute;left:20px;top:156px;width:690px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:14.5px;color:#33465C;">Locations<span style="display:flex;align-items:center;gap:8px;font-size:12px;color:#5E7186;"><span style="width:30px;height:16px;border-radius:8px;background:#C6CED8;position:relative;display:inline-block;"><span style="position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;"></span></span>Search by Zip</span></div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="position:relative;height:46px;width:372px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Ship From</span>Lake Forest DC, 25601 Commercentre Dr, Lake Forest, CA…<span style="margin-left:auto;color:#4088CF;">⌕</span><span style="margin-left:10px;color:#4088CF;">▤</span></div>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.04em;padding:14px 14px;">✎ FORM</span>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.04em;padding:14px 14px;">ADDRESS BOOK</span>
+        </div>
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#2C6DB5;">⇅ SWAP FROM &amp; TO</span>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="position:relative;height:46px;width:372px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Ship To</span>Crestline Medical, 440 W Commercial Blvd, Ft Lauderdale…<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.04em;padding:14px 14px;">✎ FORM</span>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.04em;padding:14px 14px;">ADDRESS BOOK</span>
+        </div>
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#2C6DB5;">✓ VERIFY ADDRESSES</span>
+      </div>
+    </div>
+
+    <!-- SHIPMENT DETAILS -->
+    <div style="position:absolute;left:20px;top:404px;width:690px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:14.5px;color:#33465C;">Shipment Details<span style="display:flex;align-items:center;gap:10px;"><span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:8px 12px;background:#fff;">+ ADD OUTER HANDLING UNIT</span><span style="color:#5E7186;">⚙</span></span></div>
+      <div style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:12px;font-size:12.5px;color:#33465C;"><span style="color:#5E7186;">⌃ ⠿</span><b>18</b><span>52x44x41 @ 9,140 lb</span><span style="color:#5E7186;">Consolidated · 3 orders</span><span style="margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#2C6DB5;">CUBISCAN ···</span></div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Quantity</span>18<span style="margin-left:auto;color:#5E7186;">▤</span></div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Type</span>Pallet<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Container Type</span><span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.04em;padding:15px 10px;text-align:center;">INNER PIECES</span>
+        </div>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Length</span>52</div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Width</span>44</div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Height</span>41</div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Weight (per piece)</span>508</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE PICKUP -->
+    <div style="position:absolute;left:730px;right:20px;top:156px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;padding:0 16px;font-size:14.5px;color:#33465C;">Schedule Pickup</div>
+      <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Pickup Date</span>08/17/2026<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Delivery Date</span><span style="color:#9AA7B8;">MM/DD/YYYY</span><span style="margin-left:auto;color:#5E7186;">▦</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Ready Time</span>08:00 am<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Open Time</span>07:00 am<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Cutoff Time</span>04:00 pm<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Close Time</span>05:00 pm<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Transit Days</span><span style="margin-left:auto;color:#93A2B4;">ⓘ</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Pickup Request Email</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Dock</span><span style="margin-left:auto;color:#4088CF;">⌕</span><span style="margin-left:10px;color:#93A2B4;">ⓘ</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Equipment</span>0 selected<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+      </div>
+    </div>
+
+    <!-- CARRIER -->
+    <div style="position:absolute;left:730px;right:20px;top:436px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;padding:0 16px;font-size:14.5px;color:#33465C;">Carrier</div>
+      <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Carrier</span>Rate Shop<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Service</span><span style="margin-left:auto;color:#5E7186;">▾</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Payee</span>Sender<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Payment Type</span>Prepaid (Carrier Account Sel…<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:110px;height:52px;background:#fff;border:1px solid #E1E7EF;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:6;">
+      <div style="display:flex;gap:20px;font-size:12.5px;color:#3A4B60;white-space:nowrap;"><span>Total Outer Handling Units: 0</span><span>Total Handling Units: 18</span><span>Total Weight: 9,140 LB</span><span>Total Linear Feet: 16</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+        <span style="border:1px solid #C9D4E0;border-radius:3px;color:#33465C;font-size:13px;font-weight:700;padding:8px 13px 12px;line-height:1;">···</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">CLEAR SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">PREVIEW BOL</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">SAVE SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">SPOT QUOTE</span>
+        <span data-t="rateShop" style="background:{{ rateShopBg }};color:#fff;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.05em;padding:13px 17px;transition:background .3s;">RATE SHOP</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ RATES SCREEN ═══ -->
+  <sc-if value="{{ sRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;height:76px;background:#fff;z-index:5;">
+      <div style="position:absolute;left:20px;top:16px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship (Quote Id: 46277402)</div>
+      <div style="position:absolute;left:20px;top:48px;font-size:12px;color:#5E7186;">Consolidation CN-40126 · SO-118402, SO-118411, SO-118423 · Crestline Medical, Ft Lauderdale FL</div>
+      <div style="position:absolute;right:20px;top:28px;display:flex;align-items:center;gap:20px;font-size:12.5px;color:#3A4B60;"><span>Total Handling Units: <b>18</b></span><span>Total Weight: <b>9,140 LB</b></span><span>Total Linear Feet: <b>16</b></span></div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:120px;bottom:0;background:#EDF2F9;z-index:2;"></div>
+    <div style="position:absolute;left:20px;right:20px;top:140px;background:#fff;border:1px solid #E3E9F0;border-radius:3px;z-index:3;animation:ocUp .3s both;">
+      <div style="height:44px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:14.5px;color:#33465C;">Rates<span style="font-size:12px;color:#5E7186;">Rated once, on the consolidated load</span></div>
+      <div style="display:flex;align-items:center;height:34px;background:#F7F9FC;border-bottom:1px solid #EDF1F6;font-size:11px;font-weight:700;color:#33465C;padding:0 18px;"><span style="width:56px;"></span><span style="width:320px;">Carrier</span><span style="width:180px;">Mode / Service</span><span style="width:140px;">Transit</span><span style="width:180px;">Est. Delivery</span><span style="width:140px;text-align:right;">Total</span></div>
+      <sc-for list="{{ rates }}" as="r" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;height:46px;border-bottom:1px solid #EDF1F6;font-size:12.5px;color:#3C4B5C;padding:0 18px;background:{{ r.bg }};">
+          <span style="width:56px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid {{ r.radio }};background:{{ r.radioFill }};"></span></span>
+          <span style="width:320px;font-weight:600;color:#1B2B3D;">{{ r.carrier }}</span><span style="width:180px;">{{ r.service }}</span><span style="width:140px;">{{ r.transit }}</span><span style="width:180px;">{{ r.eta }}</span><span style="width:140px;text-align:right;font-weight:700;color:#1B2B3D;">{{ r.total }}</span>
+          <span style="margin-left:auto;border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:9px 16px;">SHIP</span>
+        </div>
+      </sc-for>
+      <div style="padding:14px 18px;font-size:12.5px;color:#5E7186;white-space:normal;line-height:1.5;">One consolidated shipment, one booking, one BOL, one pickup. The same three orders booked separately came to $2,910 across three LTL minimums.</div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ DASHBOARD DRAWER ═══ -->
+  <sc-if value="{{ dashOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(64,136,207,.20);z-index:22;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:400px;background:#fff;box-shadow:-14px 0 40px rgba(5,20,40,.24);z-index:23;animation:ocIn .28s both;overflow:hidden;">
+      <div style="height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:21px;color:#1A2634;">Dashboard<span style="color:#5E7186;font-size:16px;">✕</span></div>
+      <div style="padding:0 22px;">
+        <div style="position:relative;height:48px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Location</span>31959478, Lake Forest DC<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <div style="margin-top:20px;font-size:15px;font-weight:700;color:#1A2634;">Processed Shipments</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#8A97A8;padding:9px 8px;border-bottom:1px solid #EDF1F6;"><span>Shipped Today</span><span>0</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#8A97A8;padding:9px 8px;border-bottom:1px solid #EDF1F6;"><span>Shipped Yesterday</span><span>0</span></div>
+        <div style="margin-top:18px;font-size:15px;font-weight:700;color:#1A2634;">Saved Shipments</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#33465C;padding:9px 8px;border-bottom:1px solid #EDF1F6;background:{{ savedRowBg }};transition:background .25s;"><span>Last 10 days</span><span style="font-weight:700;">{{ savedCount }}</span></div>
+        <div style="margin-top:18px;font-size:15px;font-weight:700;color:#1A2634;">Pending Spot Quotes</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#33465C;padding:9px 8px;border-bottom:1px solid #EDF1F6;"><span>Last 10 days</span><span>1</span></div>
+        <div style="margin-top:18px;font-size:15px;font-weight:700;color:#1A2634;">Schedules Pickups</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#8A97A8;padding:9px 8px;border-bottom:1px solid #EDF1F6;"><span>Upcoming</span><span>0</span></div>
+        <div style="margin-top:18px;font-size:15px;font-weight:700;color:#1A2634;">Open Orders</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#33465C;padding:9px 8px;border-bottom:1px solid #EDF1F6;"><span>Open</span><span>1281</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ SAVED SHIPMENTS MODAL ═══ -->
+  <sc-if value="{{ savedModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(64,136,207,.24);z-index:26;"></div>
+    <div style="position:absolute;left:150px;top:56px;width:1140px;background:#fff;border-radius:3px;box-shadow:0 22px 56px rgba(5,20,40,.34);z-index:27;animation:ocUp .26s both;">
+      <div style="height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:19px;color:#1A2634;">Saved Shipments (Past 10 Days)<span style="color:#5E7186;font-size:15px;">✕</span></div>
+      <div style="padding:0 26px 20px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:250px;height:40px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;font-size:12.5px;color:#9AA7B8;">⌕ Search<span style="margin-left:auto;color:#33465C;font-size:11px;font-weight:700;letter-spacing:.05em;">GO</span></div>
+          <svg width="17" height="17" viewBox="0 0 24 24"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.8"></path></svg>
+          <span style="margin-left:auto;border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 20px;">EXPORT</span>
+        </div>
+        <div style="margin-top:16px;border:1px solid #E5EAF0;border-radius:2px;">
+          <div style="display:flex;align-items:center;height:36px;background:#F7F9FC;border-bottom:1px solid #EDF1F6;font-size:11px;font-weight:700;color:#33465C;padding:0 14px;"><span style="width:34px;"><span style="display:inline-block;width:13px;height:13px;border:1.5px solid #93A2B4;border-radius:2px;"></span></span><span style="width:110px;">Quote Id</span><span style="width:120px;">Shipment Id</span><span style="width:130px;">Shipment Date</span><span style="width:250px;">Order Number</span><span style="width:130px;">Inner Pieces Count</span><span style="width:110px;">Handling Units</span><span style="width:130px;">Shipment Weight</span></div>
+          <sc-for list="{{ savedRows }}" as="s" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;height:36px;border-bottom:1px solid #EDF1F6;font-size:12px;color:#3C4B5C;padding:0 14px;background:{{ s.bg }};transition:background .25s;">
+              <span style="width:34px;"><span style="display:inline-block;width:13px;height:13px;border:1.5px solid #B4C0CE;border-radius:2px;background:#fff;"></span></span>
+              <span style="width:110px;">{{ s.quote }}</span><span style="width:120px;">{{ s.shipment }}</span><span style="width:130px;">{{ s.date }}</span><span style="width:250px;font-weight:{{ s.w }};color:#1B2B3D;overflow:hidden;text-overflow:ellipsis;">{{ s.order }}</span><span style="width:130px;">{{ s.inner }}</span><span style="width:110px;color:#2C6DB5;">{{ s.hu }}</span><span style="width:130px;">{{ s.wt }}</span>
+              <span style="margin-left:auto;padding-right:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid {{ s.iconBorder }};border-radius:3px;background:{{ s.iconBg }};transition:all .25s;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M14 4 L20 4 L20 10 M20 4 L11 13" fill="none" stroke="#2C6DB5" stroke-width="2"></path><path d="M18 15 L18 20 L4 20 L4 6 L9 6" fill="none" stroke="#2C6DB5" stroke-width="2"></path></svg></span></span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;font-size:11.5px;color:#33465C;"><span>Results Per Page:</span><span style="font-weight:600;">10 ▾</span><span style="margin-left:10px;">1–7 of 7</span><span style="margin-left:10px;color:#93A2B4;">‹ <span style="color:#33465C;border-bottom:1px solid #33465C;">1</span> ›</span></div>
+        <div style="margin-top:18px;"><span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11.5px;font-weight:700;letter-spacing:.05em;padding:12px 22px;">CLOSE</span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:ocClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  BASE = [
+    { num: "SO-118402", consol: "", quote: "46277188", shipment: "14714208", type: "", sfc: "31959478", shipTo: "Crestline Medical, 440 W Com" },
+    { num: "SO-118411", consol: "", quote: "46277190", shipment: "14714211", type: "", sfc: "31959478", shipTo: "Crestline Medical, 440 W Com" },
+    { num: "SO-118423", consol: "", quote: "46277194", shipment: "14714216", type: "", sfc: "31959478", shipTo: "Crestline Medical, 440 W Com" },
+    { num: "SO-118436", consol: "", quote: "46277201", shipment: "14714224", type: "", sfc: "19056841", shipTo: "Closter Supply Co, 1 Maplew" },
+    { num: "SO-118447", consol: "", quote: "46277208", shipment: "14714229", type: "IAA", sfc: "", shipTo: "Chicago Pool Hub, 4200 W Og" },
+    { num: "SO-118455", consol: "", quote: "46277215", shipment: "14714233", type: "", sfc: "68096084", shipTo: "Ramsey Corp, 65 New Jersey" },
+    { num: "SO-118468", consol: "", quote: "46277221", shipment: "14714240", type: "Export", sfc: "44120871", shipTo: "Harbor Crossdock, 1420 Pier" },
+    { num: "SO-118474", consol: "", quote: "46277228", shipment: "14714246", type: "", sfc: "51220913", shipTo: "Pacific Drayage, 2826 W Roo" }
+  ];
+  CONSOL_ROWS = [
+    { num: "SO-118402", hu: "6", wt: "3,120 LB", lf: "5" },
+    { num: "SO-118411", hu: "7", wt: "3,480 LB", lf: "6" },
+    { num: "SO-118423", hu: "5", wt: "2,540 LB", lf: "5" }
+  ];
+  SAVED = [
+    { quote: "46277402", shipment: "14714318", date: "08/16/2026", order: "SO-118402|SO-118411|SO-118423", inner: "0", hu: "18", wt: "9,140", isNew: true },
+    { quote: "46276233", shipment: "14714073", date: "08/15/2026", order: "SO-118486", inner: "0", hu: "2", wt: "215", isNew: false },
+    { quote: "46276229", shipment: "14714070", date: "08/15/2026", order: "SO-118492", inner: "0", hu: "1", wt: "425", isNew: false },
+    { quote: "46275118", shipment: "14713904", date: "08/14/2026", order: "SO-118474", inner: "0", hu: "1", wt: "50", isNew: false },
+    { quote: "46274802", shipment: "14713866", date: "08/13/2026", order: "SO-118468", inner: "0", hu: "1", wt: "8", isNew: false },
+    { quote: "46274415", shipment: "14713810", date: "08/12/2026", order: "SO-118455", inner: "0", hu: "2", wt: "20", isNew: false },
+    { quote: "46273990", shipment: "14713744", date: "08/11/2026", order: "SO-118447", inner: "0", hu: "1", wt: "5", isNew: false }
+  ];
+  RATES = [
+    { carrier: "Old Dominion Freight Line", service: "LTL Standard", transit: "3 days", eta: "08/19/2026", total: "$1,284.00", bg: "#EAF2FB", radio: "#2C6DB5", radioFill: "#2C6DB5" },
+    { carrier: "XPO Logistics", service: "LTL Standard", transit: "3 days", eta: "08/19/2026", total: "$1,347.55", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" },
+    { carrier: "Werner Enterprises", service: "FTL Dry Van", transit: "2 days", eta: "08/18/2026", total: "$1,410.00", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" },
+    { carrier: "A Duie Pyle", service: "LTL Standard", transit: "4 days", eta: "08/20/2026", total: "$1,468.20", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" }
+  ];
+
+  A0 = { playing: true, cap: "01 · Order Management, Open Outbound Transactions",
+    scene: "orders", curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    sel: [], consolHot: false, consolModal: false, confirmHot: false, consolDone: false,
+    dashHot: false, dashOn: false, savedHot: false, savedModal: false, rowIconHot: false,
+    ratesOn: false, rateShopHot: false };
+  DUR = 52;
+  KF = [
+    { t: 2.4, s: { curX: 41, curY: 248, cap: "02 · Three orders, same delivery address" } },
+    { t: 3.0, s: { ripple: true, ripX: 41, ripY: 248, sel: [0] } },
+    { t: 3.5, s: { ripple: false, curX: 41, curY: 330 } },
+    { t: 4.0, s: { ripple: true, ripX: 41, ripY: 330, sel: [0, 1] } },
+    { t: 4.5, s: { ripple: false, curX: 41, curY: 364 } },
+    { t: 5.0, s: { ripple: true, ripX: 41, ripY: 364, sel: [0, 1, 2] } },
+    { t: 5.5, s: { ripple: false, curX: 700, curY: 300, cap: "03 · Selecting them brings up the action bar" } },
+    { t: 7.6, s: { curX: 599, curY: 221, consolHot: true, cap: "04 · Consolidate Selected" } },
+    { t: 8.2, s: { ripple: true, ripX: 599, ripY: 221 } },
+    { t: 8.8, s: { ripple: false, consolHot: false, consolModal: true, curX: 700, curY: 400, cap: "05 · Confirm the consolidation" } },
+    { t: 11.4, s: { curX: 538, curY: 439, confirmHot: true } },
+    { t: 12.0, s: { ripple: true, ripX: 538, ripY: 439 } },
+    { t: 12.6, s: { ripple: false, confirmHot: false, consolModal: false, consolDone: true, sel: [], curX: 700, curY: 300, cap: "06 · One saved shipment, three orders on it" } },
+    { t: 15.4, s: { cap: "07 · The orders carry the consolidation number now" } },
+    { t: 18.0, s: { curX: 737, curY: 22, dashHot: true, cap: "08 · The saved shipment lives on your dashboard" } },
+    { t: 18.8, s: { ripple: true, ripX: 737, ripY: 22 } },
+    { t: 19.4, s: { ripple: false, dashHot: false, dashOn: true, curX: 1240, curY: 320, cap: "09 · Dashboard" } },
+    { t: 22.0, s: { curX: 1105, curY: 284, savedHot: true, cap: "10 · Saved Shipments, last 10 days" } },
+    { t: 22.8, s: { ripple: true, ripX: 1105, ripY: 284 } },
+    { t: 23.4, s: { ripple: false, savedHot: false, savedModal: true, curX: 700, curY: 300, cap: "11 · The consolidated shipment is at the top" } },
+    { t: 27.0, s: { cap: "12 · All three order numbers on one shipment record" } },
+    { t: 30.0, s: { curX: 1227, curY: 230, rowIconHot: true, cap: "13 · Open it in Quote/Ship" } },
+    { t: 30.8, s: { ripple: true, ripX: 1227, ripY: 230 } },
+    { t: 31.4, s: { ripple: false, rowIconHot: false, savedModal: false, dashOn: false, scene: "qs", curX: 700, curY: 300, cap: "14 · The consolidated load, ready to rate" } },
+    { t: 35.0, s: { curX: 1368, curY: 673, rateShopHot: true, cap: "15 · Rate shop it once" } },
+    { t: 35.8, s: { ripple: true, ripX: 1368, ripY: 673 } },
+    { t: 36.4, s: { ripple: false, rateShopHot: false, scene: "rates", curX: 700, curY: 400, cap: "16 · Rates open on their own screen" } },
+    { t: 41.0, s: { cap: "17 · One booking instead of three — $2,910 separately" } },
+    { t: 45.0, s: { cap: "18 · Orders can still be added or removed until pickup" } },
+    { t: 48.5, s: { curX: 700, curY: 620, cap: "19 · One shipment, one BOL, one pickup" } },
+    { t: 51.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim, sel = a.sel || [];
+    const rows = this.BASE.map((o, i) => {
+      const on = sel.indexOf(i) >= 0;
+      const inLoad = i < 3 && a.consolDone;
+      return { ...o, on,
+        consol: inLoad ? "CN-40126" : o.consol,
+        consolW: inLoad ? "700" : "400",
+        bg: on ? "#EAF2FB" : inLoad ? "#F6FAFE" : "#fff",
+        boxBg: on ? "#2C6DB5" : "#fff",
+        boxBorder: on ? "#2C6DB5" : "#B4C0CE" };
+    });
+    const savedRows = this.SAVED.map((s) => ({ ...s,
+      w: s.isNew ? "700" : "400",
+      bg: s.isNew ? "#EAF2FB" : "#fff",
+      iconBorder: s.isNew && a.rowIconHot ? "#2C6DB5" : "#DDE4EC",
+      iconBg: s.isNew && a.rowIconHot ? "#EAF1FB" : "#fff" }));
+    const btn = "height:32px;display:flex;align-items:center;padding:0 13px;border-radius:4px;font-size:10.5px;font-weight:700;letter-spacing:.04em;border:1px solid rgba(255,255,255,.55);color:#fff;background:transparent;white-space:nowrap;";
+    return { ...a, rows, savedRows,
+      sOrders: a.scene === "orders", sQs: a.scene === "qs", sRates: a.scene === "rates",
+      navOrders: a.scene === "orders" ? "#fff" : "#C7D3E0", navQs: a.scene === "qs" || a.scene === "rates" ? "#fff" : "#C7D3E0",
+      dashHl: a.dashHot ? "#2C6DB5" : "transparent",
+      qsTitle: a.ratesOn ? "Quote/Ship (Quote Id: 46277402)" : "Quote/Ship",
+      barOn: sel.length > 0, selCount: sel.length,
+      headBox: sel.length > 0 ? "#2C6DB5" : "#fff",
+      barBtn: btn,
+      consolBtn: a.consolHot ? btn.replace("border:1px solid rgba(255,255,255,.55);color:#fff;background:transparent;", "border:1px solid #fff;color:#1557B0;background:#fff;") : btn,
+      confirmBg: a.confirmHot ? "#1A4C86" : "#1F63A8",
+      tbHU: a.consolDone ? "18" : "0", tbWt: a.consolDone ? "9,140 LB" : "0 LB", tbLF: a.consolDone ? "16" : "0",
+      consolRows: this.CONSOL_ROWS, rates: this.RATES,
+      savedCount: a.consolDone ? "7" : "6",
+      savedRowBg: a.savedHot ? "#EAF1FB" : "#fff",
+      rateShopBg: a.rateShopHot ? "#1F63A8" : "#4088CF",
+      scale: this.scaleVal,
+      paused: !a.playing, playing: a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsSpin { to{transform:rotate(360deg);} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span style="color:#fff;font-weight:600;">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">Quote/Ship</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+  </div>
+
+  <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:30px;top:132px;width:820px;height:118px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Locations</div>
+      <div style="position:absolute;left:20px;top:50px;width:380px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship From</span><div style="padding:12px 0 0 12px;font-size:12.5px;color:#2A3B50;">Lake Forest, CA, 92630</div></div>
+      <div style="position:absolute;left:412px;top:50px;width:388px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship To</span><div style="padding:12px 0 0 12px;font-size:12.5px;color:#2A3B50;">Boise Tool Works, Boise, ID, 83702</div></div>
+    </div>
+
+    <div style="position:absolute;left:30px;top:266px;width:820px;height:270px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Shipment Details</span><span style="color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">CUBISCAN</span></div>
+      <div style="position:absolute;left:20px;top:52px;width:120px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Quantity</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">1</div></div>
+      <div style="position:absolute;left:152px;top:52px;width:180px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Type</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">BOX</div></div>
+      <div style="position:absolute;left:344px;top:52px;width:150px;height:42px;border:1.5px solid {{ dimBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">L × W × H (in)</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ dims }}<sc-if value="{{ dimCaret }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></sc-if></div></div>
+      <div style="position:absolute;left:506px;top:52px;width:150px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Weight</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ wt }}</div><span style="position:absolute;right:10px;top:13px;font-size:12px;color:#8A97A8;">lb</span></div>
+      <div style="position:absolute;left:668px;top:52px;width:132px;height:42px;border:1px solid #E1E7EF;border-radius:4px;background:#F7F9FB;"><span style="position:absolute;top:-7px;left:10px;background:#F7F9FB;padding:0 4px;font-size:10px;color:#8A97A8;">Freight Class</span><div style="padding:12px 0 0 12px;font-size:12px;color:#9AA7B8;">n/a — parcel</div></div>
+      <div style="position:absolute;left:20px;top:114px;width:780px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Description</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Impact driver kits (6) — from product catalog</div></div>
+      <div style="position:absolute;left:20px;top:174px;display:flex;gap:26px;align-items:center;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#C6D0DC;position:relative;display:inline-block;"><span style="position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Hazmat</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#C6D0DC;position:relative;display:inline-block;"><span style="position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Saturday Delivery</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Signature Required</span>
+      </div>
+      <div style="position:absolute;left:20px;top:218px;font-size:11.5px;color:#5E7186;">Parcel needs no freight class — but it does need dims, or the carrier will pick them for you.</div>
+    </div>
+
+    <!-- DIM PANEL -->
+    <div style="position:absolute;left:870px;top:132px;width:540px;height:404px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Dimensional Weight</span><span style="font-size:11px;color:#8A97A8;">per carrier DIM factor</span></div>
+      <sc-if value="{{ dimIdle }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;left:0;right:0;top:160px;text-align:center;font-size:12.5px;color:#9AA7B8;">Enter dims to see billable weight per carrier.</div>
+      </sc-if>
+      <sc-if value="{{ dimShow }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:16px;top:52px;width:508px;height:70px;border:1px solid #DCE6F2;border-radius:6px;background:#F7FAFF;padding:12px 14px;animation:rsFadeUp .3s both;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">(L × W × H) ÷ DIM FACTOR</div>
+          <div style="margin-top:9px;font-family:'DM Mono',monospace;font-size:14px;color:#24354A;">18 × 14 × 12 = 3,024 in³ &nbsp;÷&nbsp; {{ factor }} &nbsp;=&nbsp; <b>{{ dimWt }} lb</b></div>
+        </div>
+        <div style="position:absolute;left:16px;top:138px;width:246px;height:78px;border:1px solid #E1E7EF;border-radius:6px;background:#FAFBFD;padding:11px 14px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">ACTUAL WEIGHT</div><div style="margin-top:8px;font-size:22px;font-weight:700;color:#24354A;">23.0 lb</div></div>
+        <div style="position:absolute;left:278px;top:138px;width:246px;height:78px;border:1.5px solid {{ billBorder }};border-radius:6px;background:{{ billBg }};padding:11px 14px;transition:all .3s;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#0F8A6D;">BILLABLE WEIGHT</div><div style="margin-top:8px;font-size:22px;font-weight:700;color:#146B3A;">{{ billWt }} lb</div></div>
+        <div style="position:absolute;left:16px;top:236px;width:508px;height:52px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">DIM Factor Override (this account)</span><div style="padding:17px 0 0 12px;font-size:13px;color:#2A3B50;">{{ factorLabel }}</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:12px;top:22px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+        <div style="position:absolute;left:16px;top:304px;width:508px;font-size:11.5px;color:#5E7186;line-height:1.8;white-space:normal;">Each carrier has its own DIM factor. FreightPOP rates on whichever is higher — actual or dimensional — so the number on the screen is the number that gets billed.</div>
+      </sc-if>
+    </div>
+
+    <div style="position:absolute;left:30px;top:758px;left:0;right:0;height:52px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;padding:0 24px;z-index:6;">
+      <div style="display:flex;gap:24px;font-size:12px;color:#3A4B60;"><span>Total Packages: <b>1</b></span><span>Total Weight: <b>23 LB</b></span><span>Billable: <b>{{ billWt }} LB</b></span></div>
+      <div style="margin-left:auto;display:flex;gap:9px;align-items:center;">
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 12px;color:#24354A;font-size:10.5px;font-weight:700;letter-spacing:.04em;">CLEAR SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:4px;padding:10px 12px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SAVE SHIPMENT</span>
+        <span style="background:{{ shopBg }};border-radius:4px;padding:11px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:background .2s;">RATE SHOP</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- RATES -->
+  <sc-if value="{{ showRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;top:132px;width:1380px;height:600px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);animation:rsFadeUp .3s both;">
+      <div style="height:40px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Rates</span><span style="font-size:11px;color:#4088CF;background:#EAF3FF;padding:4px 10px;border-radius:9px;font-weight:700;letter-spacing:.05em;">MULTI RATE SHOP — PARCEL &amp; LTL TOGETHER</span></div>
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:0;right:0;top:200px;display:flex;flex-direction:column;align-items:center;gap:16px;"><div style="width:42px;height:42px;border-radius:50%;border:4px solid #DCE6F2;border-top-color:#4088CF;animation:rsSpin .9s linear infinite;"></div><span style="font-size:12.5px;color:#5E7186;">Rating the same order boxed as parcel and palletized as LTL…</span></div>
+      </sc-if>
+      <sc-if value="{{ ratesOn }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:0;right:0;top:40px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+          <span style="position:absolute;left:16px;top:8px;">Mode</span><span style="position:absolute;left:130px;top:8px;">Carrier</span><span style="position:absolute;left:380px;top:8px;">Service</span><span style="position:absolute;left:620px;top:8px;">Days</span><span style="position:absolute;left:710px;top:8px;">Packaging</span><span style="position:absolute;left:930px;top:8px;">Billable Wt</span><span style="position:absolute;left:1070px;top:8px;">Rate</span><span style="position:absolute;left:1230px;top:8px;">Marked Up</span>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:72px;">
+          <sc-for list="{{ rateRows }}" as="r" hint-placeholder-count="6">
+            <div style="{{ r.rowStyle }}">
+              <span style="{{ r.modeStyle }}">{{ r.mode }}</span>
+              <span style="position:absolute;left:130px;top:15px;font-size:12.5px;font-weight:600;color:#24354A;">{{ r.carrier }}</span>
+              <span style="position:absolute;left:380px;top:15px;font-size:12.5px;color:#24354A;">{{ r.svc }}</span>
+              <span style="position:absolute;left:620px;top:15px;font-size:12.5px;color:#24354A;">{{ r.days }}</span>
+              <span style="position:absolute;left:710px;top:15px;font-size:12px;color:#4A5B70;">{{ r.pack }}</span>
+              <span style="position:absolute;left:930px;top:15px;font-size:12.5px;color:#4A5B70;">{{ r.bw }}</span>
+              <span style="position:absolute;left:1070px;top:14px;font-size:13px;font-weight:700;color:#24354A;">{{ r.rate }}</span>
+              <span style="position:absolute;left:1230px;top:15px;font-size:12.5px;color:#4A5B70;">{{ r.mu }}</span>
+              <sc-if value="{{ r.best }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:280px;top:15px;background:#DCF5EE;color:#0F8A6D;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2.5px 7px;border-radius:9px;">LOWEST</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:absolute;left:16px;bottom:16px;right:16px;height:72px;border-radius:6px;background:#F7FAFF;border:1px solid #DCE6F2;display:flex;align-items:center;gap:30px;padding:0 20px;">
+          <div><div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">CHEAPEST PARCEL</div><div style="font-size:18px;font-weight:700;color:#24354A;margin-top:5px;">$31.84</div></div>
+          <div style="width:1px;height:44px;background:#DCE6F2;"></div>
+          <div><div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">CHEAPEST LTL</div><div style="font-size:18px;font-weight:700;color:#24354A;margin-top:5px;">$142.60</div></div>
+          <div style="width:1px;height:44px;background:#DCE6F2;"></div>
+          <div style="font-size:12px;color:#5E7186;white-space:normal;">One 23 lb box shouldn't move on a pallet. Because parcel and freight rate on the same screen, nobody has to guess which mode was right.</div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:24px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { scene: "form", playing: true, cap: "01 · A 23 lb box — parcel or freight?", curX: 700, curY: 640,
+    ripple: false, ripX: 0, ripY: 0, dims: "", dimBorder: "#C6D0DC", dimCaret: false, wt: "23",
+    dimShown: false, factor: "139", dimWt: "21.8", billWt: "23.0", billBorder: "#3B9E4E", billBg: "#F2FBF5",
+    factorLabel: "139 — FedEx / UPS domestic default", shopBg: "#4088CF", loading: false, ratesOn: false };
+  DUR = 22;
+  KF = [
+    { t: 0.7, s: { curX: 420, curY: 385, dimBorder: "#4088CF", dimCaret: true } },
+    { t: 3.2, s: { dimCaret: false, dimBorder: "#C6D0DC", dimShown: true, cap: "02 · Dimensional weight is computed as you type" } },
+    { t: 6.0, s: { cap: "03 · Rated on whichever is higher — actual or DIM", curX: 1150, curY: 300 } },
+    { t: 7.2, s: { curX: 1150, curY: 420, cap: "04 · Contracted DIM factor can override the default" } },
+    { t: 7.9, s: { ripple: true, ripX: 1150, ripY: 420 } },
+    { t: 8.3, s: { ripple: false, factor: "166", dimWt: "18.2", factorLabel: "166 — negotiated on this UPS account" } },
+    { t: 10.4, s: { cap: "05 · Rate parcel and LTL in one pass", curX: 1330, curY: 782 } },
+    { t: 11.1, s: { ripple: true, ripX: 1330, ripY: 782, shopBg: "#1557B0" } },
+    { t: 11.5, s: { ripple: false, scene: "rates", loading: true, shopBg: "#4088CF", curX: 800, curY: 500 } },
+    { t: 13.2, s: { loading: false, ratesOn: true, cap: "06 · Every parcel carrier, on the same screen as freight" } },
+    { t: 17.0, s: { cap: "07 · The mode decision stops being a guess" } },
+  ];
+  TYPERS = [ { t0: 1.0, dur: 1.9, field: "dims", text: "18 × 14 × 12", until: Infinity } ];
+  ROWS = [
+    { mode: "PARCEL", carrier: "UPS", svc: "Ground", days: "3", pack: "1 BOX 18×14×12", bw: "23.0 lb", rate: "$31.84", mu: "$34.99", best: true },
+    { mode: "PARCEL", carrier: "FedEx", svc: "Ground / Home Delivery", days: "3", pack: "1 BOX 18×14×12", bw: "23.0 lb", rate: "$33.10", mu: "$36.41" },
+    { mode: "PARCEL", carrier: "USPS", svc: "Priority Mail", days: "2", pack: "1 BOX 18×14×12", bw: "23.0 lb", rate: "$38.75", mu: "$42.63" },
+    { mode: "PARCEL", carrier: "FedEx", svc: "2Day", days: "2", pack: "1 BOX 18×14×12", bw: "23.0 lb", rate: "$64.20", mu: "$70.62" },
+    { mode: "LTL", carrier: "Estes Express", svc: "LTL Standard", days: "4", pack: "1 PALLET 48×40×18", bw: "150 lb min", rate: "$142.60", mu: "$156.86" },
+    { mode: "LTL", carrier: "Old Dominion", svc: "LTL Standard", days: "3", pack: "1 PALLET 48×40×18", bw: "150 lb min", rate: "$168.35", mu: "$185.19" }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } for (const ty of this.TYPERS) { if (this.t >= ty.t0 && this.t < ty.until) { const f = Math.min(1, (this.t - ty.t0) / ty.dur); this.anim[ty.field] = ty.text.slice(0, Math.round(f * ty.text.length)); } } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const rateRows = a.ratesOn ? this.ROWS.map((r, i) => ({ ...r,
+      rowStyle: "position:relative;height:46px;border-bottom:1px solid #EDF1F6;background:" + (r.best ? "#F6FBF9" : "#fff") + ";animation:rsFadeUp .35s " + (i * 0.07) + "s both;",
+      modeStyle: "position:absolute;left:16px;top:14px;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:9px;" + (r.mode === "PARCEL" ? "background:#EAF3FF;color:#4088CF;" : "background:#F0EDF9;color:#5B4B9E;"),
+    })) : [];
+    return { ...a, rateRows,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      showForm: a.scene === "form", showRates: a.scene === "rates",
+      dimIdle: !a.dimShown, dimShow: a.dimShown,
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

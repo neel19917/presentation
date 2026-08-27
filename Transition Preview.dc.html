@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#02101d; }
+  a { color:#3DD6B5; text-decoration:none; }
+  a:hover { color:#7BE8D2; }
+  @keyframes fpSettle { from { opacity:0; transform:translateY(10px) scale(.96); } to { opacity:1; transform:none; } }
+  @keyframes fpSlideR { from { opacity:0; transform:translateX(46px); } to { opacity:1; transform:none; } }
+  @keyframes fpSlideL { from { opacity:0; transform:translateX(-46px); } to { opacity:1; transform:none; } }
+  @keyframes fpWipe { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0 0 0 0); } }
+  @keyframes fpBar { from { left:-4px; opacity:1; } 80% { opacity:1; } to { left:100%; opacity:0; } }
+  @keyframes fpZoomIn { from { opacity:0; transform:scale(.8); } to { opacity:1; transform:scale(1); } }
+  @keyframes fpZoomOut { from { opacity:0; transform:scale(1.14); } to { opacity:1; transform:scale(1); } }
+</style>
+</helmet>
+<div style="min-height:100vh;background:#02101d;padding:48px 56px 72px;font-family:'Manrope',sans-serif;">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:8px;">
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#3DD6B5;margin-bottom:12px;">Transition study</div>
+      <div style="font-family:'Manrope',sans-serif;font-weight:600;font-size:34px;letter-spacing:-.02em;color:#fff;">Four ways into a new page</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span onclick="{{ replayAll }}" style="padding:11px 20px;border-radius:999px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:#3DD6B5;color:#02101d;font-weight:500;">Replay all</span>
+    </div>
+  </div>
+  <div style="font-family:'Manrope',sans-serif;font-size:15px;line-height:1.6;color:rgba(255,255,255,.55);max-width:640px;margin-bottom:34px;">Click a card in any panel to go forward, the back arrow to return. Each panel runs the same mock module page with a different transition.</div>
+  {{ panels }}
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const el = React.createElement;
+const TEAL = '#3DD6B5';
+const CARD = '#0A2540';
+const BORD = 'rgba(255,255,255,.10)';
+
+const MODES = [
+  { id:'A', label:'01 / Stagger + scale-settle', note:'Cards assemble on a 45ms cascade from scale(.96).' },
+  { id:'B', label:'02 / Directional slide', note:'Enters from the side you navigated from.' },
+  { id:'C', label:'03 / Clip wipe + teal edge', note:'Vertical reveal with the accent rule racing ahead.' },
+  { id:'D', label:'04 / Card-to-page zoom', note:'Page grows out of the card you clicked.' }
+];
+
+const MODULES = [
+  { n:'01', t:'Rate Shopping' }, { n:'02', t:'Spot Quoting' }, { n:'03', t:'Load Tendering' },
+  { n:'04', t:'Address Validator' }, { n:'05', t:'Freight Audit' }, { n:'06', t:'Documents' }
+];
+
+class Component extends DCLogic {
+  state = {
+    panes: { A:{v:'hub',k:0,dir:1,o:'50% 50%',t:''}, B:{v:'hub',k:0,dir:1,o:'50% 50%',t:''}, C:{v:'hub',k:0,dir:1,o:'50% 50%',t:''}, D:{v:'hub',k:0,dir:1,o:'50% 50%',t:''} }
+  };
+
+  set(id, patch) {
+    this.setState(s => ({ panes: Object.assign({}, s.panes, { [id]: Object.assign({}, s.panes[id], patch) }) }));
+  }
+
+  open(id, mod, ev) {
+    let o = '50% 50%';
+    if (ev && ev.currentTarget) {
+      const c = ev.currentTarget.getBoundingClientRect();
+      const p = ev.currentTarget.closest('[data-pane]').getBoundingClientRect();
+      o = Math.round(c.left - p.left + c.width / 2) + 'px ' + Math.round(c.top - p.top + c.height / 2) + 'px';
+    }
+    this.set(id, { v:'detail', k:this.state.panes[id].k + 1, dir:1, o, t:mod.t });
+  }
+
+  back(id) { this.set(id, { v:'hub', k:this.state.panes[id].k + 1, dir:-1 }); }
+
+  replayAll = () => {
+    this.setState(s => {
+      const p = {};
+      for (const m of MODES) p[m.id] = Object.assign({}, s.panes[m.id], { k: s.panes[m.id].k + 1 });
+      return { panes: p };
+    });
+  };
+
+  stageStyle(mode, st) {
+    const base = { position:'absolute', inset:0, padding:'20px 22px', boxSizing:'border-box', display:'flex', flexDirection:'column' };
+    if (mode === 'B') base.animation = (st.dir > 0 ? 'fpSlideR' : 'fpSlideL') + ' .34s cubic-bezier(.22,.9,.28,1) both';
+    if (mode === 'C') base.animation = 'fpWipe .52s cubic-bezier(.65,0,.35,1) both';
+    if (mode === 'D') { base.animation = (st.dir > 0 ? 'fpZoomIn' : 'fpZoomOut') + ' .38s cubic-bezier(.22,.9,.28,1) both'; base.transformOrigin = st.o; }
+    return base;
+  }
+
+  itemStyle(mode, i) {
+    if (mode === 'A') return { animation:'fpSettle .42s cubic-bezier(.22,1,.32,1.15) both', animationDelay:(i * 45) + 'ms' };
+    return null;
+  }
+
+  hub(mode, st) {
+    return el('div', { key:'hub' + st.k, style:this.stageStyle(mode, st) },
+      el('div', { style:{ fontFamily:"'DM Mono',monospace", fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', color:TEAL, marginBottom:14 } }, 'TMS / Modules'),
+      el('div', { style:{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, flex:1 } },
+        MODULES.map((m, i) => el('div', {
+          key:m.n,
+          onClick:(e) => this.open(mode, m, e),
+          style: Object.assign({ background:CARD, border:'1px solid ' + BORD, borderRadius:10, padding:'12px 12px 14px', cursor:'pointer', display:'flex', flexDirection:'column', justifyContent:'space-between' }, this.itemStyle(mode, i) || {})
+        },
+          el('div', { style:{ fontFamily:"'DM Mono',monospace", fontSize:9.5, letterSpacing:'.12em', color:TEAL } }, m.n),
+          el('div', { style:{ fontFamily:"'Manrope',sans-serif", fontWeight:500, fontSize:13, lineHeight:1.25, color:'#fff', marginTop:14 } }, m.t)
+        ))
+      )
+    );
+  }
+
+  detail(mode, st) {
+    const rows = ['Carrier coverage', 'Rules and guardrails', 'Audit trail'];
+    return el('div', { key:'det' + st.k, style:this.stageStyle(mode, st) },
+      el('div', { onClick:() => this.back(mode), style:{ fontFamily:"'DM Mono',monospace", fontSize:10, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.6)', cursor:'pointer', marginBottom:12 } }, '\u2190 Back'),
+      el('div', { style:Object.assign({ fontFamily:"'Manrope',sans-serif", fontWeight:600, fontSize:24, letterSpacing:'-.02em', color:'#fff', marginBottom:16 }, this.itemStyle(mode, 0) || {}) }, st.t),
+      el('div', { style:{ display:'flex', flexDirection:'column', gap:8 } },
+        rows.map((r, i) => el('div', {
+          key:r,
+          style: Object.assign({ background:CARD, border:'1px solid ' + BORD, borderRadius:10, padding:'13px 14px', fontFamily:"'Manrope',sans-serif", fontSize:13, color:'rgba(255,255,255,.8)' }, this.itemStyle(mode, i + 1) || {})
+        }, r))
+      )
+    );
+  }
+
+  pane(m) {
+    const st = this.state.panes[m.id];
+    return el('div', { key:m.id, style:{ display:'flex', flexDirection:'column', gap:14 } },
+      el('div', { 'data-pane':m.id, style:{ position:'relative', height:300, background:'#041b2d', border:'1px solid ' + BORD, borderRadius:16, overflow:'hidden' } },
+        st.v === 'hub' ? this.hub(m.id, st) : this.detail(m.id, st),
+        m.id === 'C' ? el('div', { key:'bar' + st.k, style:{ position:'absolute', top:0, bottom:0, width:3, background:TEAL, boxShadow:'0 0 22px 4px rgba(61,214,181,.55)', animation:'fpBar .52s cubic-bezier(.65,0,.35,1) both', pointerEvents:'none' } }) : null
+      ),
+      el('div', { style:{ display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:16 } },
+        el('div', { style:{ fontFamily:"'DM Mono',monospace", fontSize:11, letterSpacing:'.12em', textTransform:'uppercase', color:'#fff' } }, m.label),
+        el('span', { onClick:() => this.set(m.id, { k:st.k + 1 }), style:{ fontFamily:"'DM Mono',monospace", fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', color:TEAL, cursor:'pointer' } }, 'Replay')
+      ),
+      el('div', { style:{ fontFamily:"'Manrope',sans-serif", fontSize:13.5, lineHeight:1.5, color:'rgba(255,255,255,.5)' } }, m.note)
+    );
+  }
+
+  renderVals() {
+    return {
+      replayAll: this.replayAll,
+      panels: el('div', { style:{ display:'grid', gridTemplateColumns:'repeat(2,minmax(0,1fr))', gap:'40px 36px' } }, MODES.map(m => this.pane(m)))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

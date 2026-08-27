@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+@keyframes rsFlash { 0%{background:#FFF3CF;} 100%{background:transparent;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span style="color:#fff;font-weight:600;">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">Shipment Details (Shipment Id: 14571908)</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">DOCUMENTS</span></div>
+  </div>
+
+  <!-- DOC LIST -->
+  <div style="position:absolute;left:30px;top:132px;width:600px;height:600px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Documents</span><span style="font-size:11px;color:#8A97A8;">Generated at booking</span></div>
+    <div style="position:absolute;left:0;right:0;top:44px;">
+      <sc-for list="{{ docs }}" as="d" hint-placeholder-count="6">
+        <div style="{{ d.rowStyle }}">
+          <span style="{{ d.iconStyle }}">{{ d.ext }}</span>
+          <span style="display:flex;flex-direction:column;gap:3px;">
+            <span style="font-size:12.5px;font-weight:600;color:#24354A;">{{ d.name }}<span style="{{ d.verStyle }}">{{ d.ver }}</span></span>
+            <span style="font-size:11px;color:#8A97A8;">{{ d.meta }}</span>
+          </span>
+          <span style="margin-left:auto;display:flex;gap:12px;align-items:center;">
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;">PREVIEW</span>
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;">PRINT</span>
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;">EMAIL</span>
+          </span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:16px;right:16px;bottom:78px;height:52px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Printer Routing</span><div style="padding:18px 0 0 12px;font-size:12.5px;color:#2A3B50;">BOL &amp; packing list → Dock 2 laser · Labels → Zebra ZT410 (Dock 2)</div></div>
+    <div style="position:absolute;left:16px;right:16px;bottom:16px;display:flex;gap:9px;align-items:center;">
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 12px;color:#24354A;font-size:10.5px;font-weight:700;letter-spacing:.04em;">EMAIL DOC LINK</span>
+      <span style="border:1.5px solid {{ correctBorder }};border-radius:4px;padding:10px 12px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:{{ correctBg }};transition:all .2s;">CORRECT WEIGHT</span>
+      <span style="margin-left:auto;background:{{ printBg }};border-radius:4px;padding:11px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:background .2s;">PRINT ALL</span>
+    </div>
+  </div>
+
+  <!-- BOL PREVIEW -->
+  <div style="position:absolute;left:650px;top:132px;width:760px;height:600px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Bill of Lading — Preview</span><span style="{{ badgeStyle }}">{{ badge }}</span></div>
+    <div style="position:absolute;left:20px;top:52px;width:720px;height:498px;background:#fff;border:1px solid #DDE3EB;box-shadow:0 2px 10px rgba(16,42,67,.08);padding:16px 20px;box-sizing:border-box;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+        <div><div style="font-size:15px;font-weight:700;color:#14263C;letter-spacing:.02em;">STRAIGHT BILL OF LADING</div><div style="font-size:10.5px;color:#5E7186;margin-top:3px;">Not Negotiable — Short Form · Original</div></div>
+        <div style="text-align:right;"><div style="font-size:11px;color:#5E7186;">BOL #</div><div style="font-family:'DM Mono',monospace;font-size:13px;color:#14263C;">FP-14571908</div><div style="font-size:11px;color:#5E7186;margin-top:5px;">Date {{ bolDate }}</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;">
+        <div style="border:1px solid #DDE3EB;padding:9px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">SHIP FROM</div><div style="font-size:11.5px;color:#24354A;margin-top:5px;line-height:1.6;">Northland Supply — WH-01<br>1 Rancho Circle<br>Lake Forest, CA 92630</div></div>
+        <div style="border:1px solid #DDE3EB;padding:9px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">SHIP TO</div><div style="font-size:11.5px;color:#24354A;margin-top:5px;line-height:1.6;">Great Basin Hardware<br>2210 Warm Springs Ave<br>Boise, ID 83712</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px;">
+        <div style="border:1px solid #DDE3EB;padding:8px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">CARRIER</div><div style="font-size:11.5px;color:#24354A;margin-top:4px;">Old Dominion Freight Line</div></div>
+        <div style="border:1px solid #DDE3EB;padding:8px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">PRO NUMBER</div><div style="font-family:'DM Mono',monospace;font-size:11.5px;color:#24354A;margin-top:4px;">0441-772-9086</div></div>
+        <div style="border:1px solid #DDE3EB;padding:8px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">TERMS</div><div style="font-size:11.5px;color:#24354A;margin-top:4px;">Prepaid — Sender</div></div>
+      </div>
+      <div style="margin-top:14px;border:1px solid #DDE3EB;">
+        <div style="display:grid;grid-template-columns:70px 90px 1fr 90px 110px 90px;background:#F3F6FA;border-bottom:1px solid #DDE3EB;font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">
+          <span style="padding:7px 9px;">QTY</span><span style="padding:7px 9px;">TYPE</span><span style="padding:7px 9px;">DESCRIPTION</span><span style="padding:7px 9px;">CLASS</span><span style="padding:7px 9px;">NMFC</span><span style="padding:7px 9px;text-align:right;">WEIGHT</span>
+        </div>
+        <sc-for list="{{ bolLines }}" as="b" hint-placeholder-count="2">
+          <div style="{{ b.rowStyle }}">
+            <span style="padding:8px 9px;font-size:11.5px;color:#24354A;">{{ b.qty }}</span><span style="padding:8px 9px;font-size:11.5px;color:#24354A;">{{ b.type }}</span><span style="padding:8px 9px;font-size:11.5px;color:#24354A;">{{ b.desc }}</span><span style="padding:8px 9px;font-size:11.5px;color:#24354A;">{{ b.cls }}</span><span style="padding:8px 9px;font-size:11.5px;color:#24354A;">{{ b.nmfc }}</span><span style="{{ b.wtStyle }}">{{ b.wt }}</span>
+          </div>
+        </sc-for>
+        <div style="display:grid;grid-template-columns:70px 90px 1fr 90px 110px 90px;border-top:1px solid #DDE3EB;background:#FAFBFD;">
+          <span style="padding:8px 9px;font-size:11.5px;font-weight:700;color:#24354A;">{{ totQty }}</span><span></span><span style="padding:8px 9px;font-size:11.5px;font-weight:700;color:#24354A;">TOTAL</span><span></span><span></span><span style="{{ totWtStyle }}">{{ totWt }}</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 200px;gap:12px;">
+        <div style="border:1px solid #DDE3EB;padding:8px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">SPECIAL INSTRUCTIONS</div><div style="font-size:11px;color:#24354A;margin-top:4px;">Delivery appointment required. Call 24h ahead.</div></div>
+        <div style="border:1px solid #DDE3EB;padding:8px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">SHIPPER SIGNATURE</div><div style="height:22px;border-bottom:1px solid #C6D0DC;margin-top:8px;"></div></div>
+      </div>
+      <sc-if value="{{ changeLog }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:12px;border:1px solid #E8C88A;background:#FFF9EE;border-radius:4px;padding:8px 11px;animation:rsFadeUp .3s both;">
+          <div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#9A5B0A;">CHANGE LOG</div>
+          <div style="font-size:11px;color:#6B4A12;margin-top:4px;">07/28 3:14 PM · Weight 1,240 lb → 1,412 lb · Reason: Carrier reweigh at terminal · D. Alvarez · BOL reissued v2</div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- CORRECTION MODAL -->
+  <sc-if value="{{ modal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+    <div style="position:absolute;left:420px;top:220px;width:600px;height:330px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .3s ease both;">
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:600;color:#14263C;">Correct Shipment Weight</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="position:absolute;left:24px;top:66px;width:260px;height:46px;border:1px solid #E1E7EF;border-radius:4px;background:#F7F9FB;"><span style="position:absolute;top:-7px;left:10px;background:#F7F9FB;padding:0 4px;font-size:10px;color:#8A97A8;">Weight on BOL</span><div style="padding:14px 0 0 12px;font-size:13px;color:#2A3B50;">1,240 lb</div></div>
+      <div style="position:absolute;left:308px;top:66px;width:260px;height:46px;border:1.5px solid {{ newBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Actual Weight</span><div style="padding:14px 0 0 12px;font-size:13px;color:#2A3B50;">{{ newWt }}<sc-if value="{{ newCaret }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></sc-if></div><span style="position:absolute;right:10px;top:15px;font-size:12px;color:#8A97A8;">lb</span></div>
+      <div style="position:absolute;left:24px;top:132px;width:544px;height:46px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Reason</span><div style="padding:14px 0 0 12px;font-size:13px;color:#2A3B50;">{{ reason }}</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:12px;top:19px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+      <div style="position:absolute;left:24px;top:196px;width:544px;display:flex;flex-direction:column;gap:10px;">
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="width:30px;height:16px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;"><span style="position:absolute;right:1.5px;top:1.5px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Reissue BOL and packing list</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="width:30px;height:16px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;"><span style="position:absolute;right:1.5px;top:1.5px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Send the corrected weight to the carrier</span>
+      </div>
+      <div style="position:absolute;right:150px;bottom:16px;width:104px;height:40px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</div>
+      <div style="position:absolute;right:24px;bottom:16px;width:116px;height:40px;background:{{ applyBg }};border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;">SAVE &amp; REISSUE</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;bottom:64px;width:1380px;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;z-index:9;animation:rsFadeUp .3s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">BOL v2 and packing list reprinted to Dock 2 · corrected weight sent to Old Dominion · change logged against the shipment.</span></div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:24px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Every document generated the moment it books", curX: 700, curY: 640,
+    ripple: false, ripX: 0, ripY: 0, v2: false, changeLog: false,
+    correctBorder: "#B9CDE8", correctBg: "#fff", modal: false, newWt: "", newBorder: "#C6D0DC", newCaret: false,
+    reason: "Carrier reweigh at terminal", applyBg: "#4088CF", printBg: "#4088CF", toast: false, flash: false };
+  DUR = 21;
+  KF = [
+    { t: 1.0, s: { curX: 900, curY: 300, cap: "02 · BOL, labels, packing list, DG paperwork — all on the record" } },
+    { t: 3.6, s: { cap: "03 · Printers routed per document, per dock", curX: 300, curY: 660 } },
+    { t: 5.6, s: { cap: "04 · The carrier reweighs it at the terminal", curX: 300, curY: 715, correctBorder: "#4088CF", correctBg: "#EAF3FF" } },
+    { t: 6.3, s: { ripple: true, ripX: 300, ripY: 715 } },
+    { t: 6.7, s: { ripple: false, modal: true, correctBorder: "#B9CDE8", correctBg: "#fff", newBorder: "#4088CF", newCaret: true, curX: 620, curY: 300 } },
+    { t: 8.8, s: { newCaret: false, newBorder: "#C6D0DC", cap: "05 · Correct it once — with a reason on the record" } },
+    { t: 10.6, s: { curX: 980, curY: 520 } },
+    { t: 11.3, s: { ripple: true, ripX: 980, ripY: 520, applyBg: "#1557B0" } },
+    { t: 11.7, s: { ripple: false, modal: false, applyBg: "#4088CF", v2: true, flash: true, cap: "06 · BOL reissued as v2 — the old one is superseded, not lost", curX: 1000, curY: 420 } },
+    { t: 13.2, s: { changeLog: true } },
+    { t: 15.4, s: { curX: 560, curY: 715, cap: "07 · Reprint to the dock, notify the carrier" } },
+    { t: 16.1, s: { ripple: true, ripX: 560, ripY: 715, printBg: "#1557B0" } },
+    { t: 16.5, s: { ripple: false, printBg: "#4088CF", toast: true, curX: 700, curY: 640 } },
+  ];
+  TYPERS = [ { t0: 7.0, dur: 1.4, field: "newWt", text: "1,412", until: Infinity } ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } for (const ty of this.TYPERS) { if (this.t >= ty.t0 && this.t < ty.until) { const f = Math.min(1, (this.t - ty.t0) / ty.dur); this.anim[ty.field] = ty.text.slice(0, Math.round(f * ty.text.length)); } } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const wt1 = a.v2 ? "912 lb" : "740 lb";
+    const tot = a.v2 ? "1,412 lb" : "1,240 lb";
+    const DOCS = [
+      { ext: "PDF", name: "Bill of Lading", ver: a.v2 ? "v2" : "v1", meta: a.v2 ? "Reissued 07/28 3:14 PM — supersedes v1" : "Generated 07/27 9:02 AM" },
+      { ext: "ZPL", name: "Shipping Labels (4)", ver: "", meta: "Zebra ZT410 · Dock 2" },
+      { ext: "PDF", name: "Packing List", ver: a.v2 ? "v2" : "v1", meta: a.v2 ? "Reissued 07/28 3:14 PM" : "Generated 07/27 9:02 AM" },
+      { ext: "PDF", name: "Commercial Invoice", ver: "", meta: "Generated 07/27 9:02 AM" },
+      { ext: "ZPL", name: "Pallet Labels (4)", ver: "", meta: "Zebra ZT410 · Dock 2" },
+      { ext: "PDF", name: "Carrier Rate Confirmation", ver: "", meta: "Old Dominion · Q45911284" }
+    ];
+    const docs = DOCS.map((d) => ({ ...d,
+      rowStyle: "position:relative;height:60px;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:13px;padding:0 16px;background:#fff;" + (d.ver === "v2" ? "animation:rsFlash 1.6s ease-out both;" : ""),
+      iconStyle: "width:34px;height:40px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;letter-spacing:.04em;color:#fff;background:" + (d.ext === "PDF" ? "#C0392B" : "#2E6B8A") + ";",
+      verStyle: d.ver ? ("margin-left:8px;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:8px;" + (d.ver === "v2" ? "background:#FFF1DC;color:#9A5B0A;" : "background:#EDF2F8;color:#5E7186;")) : "display:none;",
+    }));
+    const bolLines = [
+      { qty: "4", type: "PALLET", desc: "Cabinet hardware, boxed", cls: "70", nmfc: "149600-03", wt: wt1 },
+      { qty: "2", type: "CRATE", desc: "Countertop brackets", cls: "85", nmfc: "133300", wt: "500 lb" }
+    ].map((b, i) => ({ ...b,
+      rowStyle: "display:grid;grid-template-columns:70px 90px 1fr 90px 110px 90px;border-bottom:1px solid #EEF1F5;",
+      wtStyle: "padding:8px 9px;font-size:11.5px;text-align:right;font-weight:" + (i === 0 && a.v2 ? "700" : "400") + ";color:" + (i === 0 && a.v2 ? "#9A5B0A" : "#24354A") + ";" + (i === 0 && a.v2 ? "background:#FFF6E6;" : ""),
+    }));
+    return { ...a, docs, bolLines,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      bolDate: a.v2 ? "07/28/2026 (reissued)" : "07/27/2026",
+      badge: a.v2 ? "VERSION 2 — SUPERSEDES V1" : "VERSION 1",
+      badgeStyle: "font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:4px 9px;border-radius:9px;" + (a.v2 ? "background:#FFF1DC;color:#9A5B0A;" : "background:#EDF2F8;color:#5E7186;"),
+      totQty: "6", totWt: tot,
+      totWtStyle: "padding:8px 9px;font-size:11.5px;text-align:right;font-weight:700;color:" + (a.v2 ? "#9A5B0A" : "#24354A") + ";" + (a.v2 ? "background:#FFF6E6;" : ""),
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

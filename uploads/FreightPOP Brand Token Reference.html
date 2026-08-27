@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreightPOP Brand Token Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Brand tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Core primitives */
+  --navy:          #051729;
+  --blue:          #4088CF;
+  --mint-deep:     #0F7B6C;  /* updated from #136E72 */
+  --mint-bright:   #3DD6B5;
+  --white:         #FFFFFF;
+
+  /* Surfaces */
+  --surf-subtle:       #F4F7FB;
+  --surf-card:         #E8EFF7;
+  --surf-dark-raised:  #0A2540;
+
+  /* Text */
+  --txt-secondary:     #3D5670;
+  --txt-muted:         #7A96B0;
+  --txt-on-dark:       #FFFFFF;
+  --txt-sec-on-dark:   #B5CDE0;
+  --txt-muted-on-dark: #7A96B0;
+
+  /* Feedback */
+  --fb-success:    #2E7D32;
+  --fb-warning:    #F59E0B;
+  --fb-error:      #D32F2F;
+  --fb-info:       #1565C0;
+
+  /* Borders */
+  --border-default:   #D0DCE8;
+  --border-emphasis:  #7A96B0;
+  --border-focus:     #0F7B6C;
+  --border-accent:    #4088CF;
+
+  /* Data viz */
+  --chart-1: #4088CF;
+  --chart-2: #0F7B6C;
+  --chart-3: #3AADBC;
+  --chart-4: #0A3D6B;
+  --chart-5: #4CAF85;
+  --chart-6: #7A96B0;
+
+  /* Page */
+  --page-bg: #F4F7FB;
+  --card-bg: #FFFFFF;
+}
+
+/* ── Reset ────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  background: var(--page-bg);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Manrope', sans-serif;
+  line-height: 1.1;
+}
+h1, h2 { font-weight: 400; }
+h3, h4, h5 { font-weight: 500; }
+
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.page { max-width: 1120px; margin: 0 auto; padding: 48px 32px 96px; }
+
+/* ── Cover ────────────────────────────────────────────────────────────────── */
+.cover {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 52px 56px;
+  margin-bottom: 64px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(61,214,181,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cover-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mint-bright);
+  margin-bottom: 14px;
+}
+
+.cover-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.cover-sub {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #7A96B0;
+  max-width: 580px;
+  margin-bottom: 36px;
+}
+.cover-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #7A96B0; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Phase label ──────────────────────────────────────────────────────────── */
+.phase-label {
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mint-deep);
+  margin-bottom: 32px;
+}
+
+/* ── Section ──────────────────────────────────────────────────────────────── */
+.section { margin-bottom: 72px; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--mint-deep);
+  background: rgba(15,123,108,0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+.section-rule { height: 1px; background: var(--border-default); margin: 16px 0 20px; }
+.section-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--txt-secondary);
+  background: rgba(15,123,108,0.05);
+  border-left: 3px solid var(--mint-deep);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 24px;
+}
+.sub-heading {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+  margin: 24px 0 12px;
+}
+
+hr.divider { border: none; border-top: 1px solid var(--border-default); margin: 56px 0; }
+
+/* ── Chips ────────────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+.chip-confirmed { background: #E8F5E9; color: #2E7D32; }
+.chip-proposed  { background: #E3F0FB; color: #1565C0; }
+.chip-pending   { background: #FFF8E1; color: #8B6800; }
+
+/* ── Color rows ───────────────────────────────────────────────────────────── */
+.color-grid { display: grid; gap: 6px; }
+.color-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 2fr;
+  align-items: stretch;
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 56px;
+}
+.color-swatch { min-height: 56px; }
+.color-meta { padding: 10px 16px; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+.color-name { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: var(--navy); }
+.color-hex  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--txt-muted); }
+.color-use  { padding: 10px 16px; display: flex; align-items: center; font-size: 13px; color: var(--txt-secondary); line-height: 1.4; }
+
+/* ── Token table ──────────────────────────────────────────────────────────── */
+.token-table { width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-default); }
+.token-table th {
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 10px 14px;
+  text-align: left;
+}
+.token-table td {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--navy);
+  border-top: 1px solid var(--border-default);
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.token-table tr.confirmed td { background: #F6FBF6; }
+.token-table tr.pending td   { background: #FFFDF0; color: var(--txt-muted); font-style: italic; }
+.token-table td.mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+.sw {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.08);
+  vertical-align: middle;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Surface cards ────────────────────────────────────────────────────────── */
+.surface-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
+.surface-card { border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--border-default); }
+
+/* ── Text examples ────────────────────────────────────────────────────────── */
+.text-ex { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.text-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+}
+.text-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--txt-muted); }
+.text-spec  { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--border-emphasis); margin-top: 2px; }
+
+/* ── Feedback banners ─────────────────────────────────────────────────────── */
+.fb-stack { display: flex; flex-direction: column; gap: 8px; }
+.fb-banner { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border-radius: 8px; }
+.fb-icon { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; color: #fff; }
+.fb-col { display: flex; flex-direction: column; gap: 2px; }
+.fb-title { font-weight: 500; font-size: 14px; }
+.fb-sub { font-size: 12px; opacity: 0.75; }
+
+/* ── Border previews ──────────────────────────────────────────────────────── */
+.border-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+.border-card { background: var(--card-bg); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+.border-bar  { height: 40px; border-radius: 6px; background: var(--surf-subtle); }
+
+/* ── Typography ───────────────────────────────────────────────────────────── */
+.type-ex { display: flex; flex-direction: column; gap: 6px; }
+.type-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+}
+.type-meta { display: flex; flex-direction: column; gap: 3px; }
+.type-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--txt-muted); }
+.type-spec  { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--border-emphasis); }
+
+/* ── Spacing ──────────────────────────────────────────────────────────────── */
+.spacing-grid { display: flex; flex-direction: column; gap: 6px; }
+.spacing-row {
+  display: grid;
+  grid-template-columns: 110px 56px 180px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+}
+.spacing-bar { height: 8px; background: var(--blue); border-radius: 2px; opacity: 0.5; }
+.sp-token { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: var(--navy); }
+.sp-val   { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt-secondary); }
+.sp-use   { font-size: 12px; color: var(--txt-secondary); }
+.sp-fill  { font-size: 12px; color: var(--txt-muted); font-style: italic; }
+
+/* ── Shadow cards ─────────────────────────────────────────────────────────── */
+.shadow-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.shadow-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 28px 22px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+  min-height: 140px;
+}
+.sh-none { box-shadow: none; border: 1px solid var(--border-default); }
+.sh-xs   { box-shadow: 0 1px 2px rgba(5,23,41,0.05); }
+.sh-sm   { box-shadow: 0 1px 4px rgba(5,23,41,0.07), 0 1px 2px rgba(5,23,41,0.04); }
+.sh-md   { box-shadow: 0 4px 12px rgba(5,23,41,0.08), 0 1px 4px rgba(5,23,41,0.04); }
+.sh-lg   { box-shadow: 0 8px 24px rgba(5,23,41,0.10), 0 2px 6px rgba(5,23,41,0.05); }
+.sh-xl   { box-shadow: 0 16px 40px rgba(5,23,41,0.12), 0 4px 10px rgba(5,23,41,0.06); }
+.sh-token { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--navy); }
+.sh-use   { font-size: 12px; color: var(--txt-secondary); }
+.sh-val   { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--txt-muted); line-height: 1.6; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-default); word-break: break-all; }
+
+/* ── Radius ───────────────────────────────────────────────────────────────── */
+.radius-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.radius-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  padding: 20px 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.radius-box { width: 56px; height: 56px; background: var(--surf-card); border: 2px solid var(--blue); }
+.r-default  { border-color: var(--mint-deep); border-width: 2px; }
+.r-token { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: var(--navy); text-align: center; }
+.r-px    { font-size: 12px; color: var(--txt-secondary); }
+.r-use   { font-size: 11px; color: var(--txt-muted); text-align: center; line-height: 1.4; }
+.r-star  { color: var(--mint-deep); }
+
+/* ── Data viz ─────────────────────────────────────────────────────────────── */
+.chart-bars { display: flex; gap: 10px; align-items: flex-end; height: 120px; margin-bottom: 14px; }
+.chart-bar  { flex: 1; border-radius: 4px 4px 0 0; }
+.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+.leg-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--txt-secondary); }
+.leg-sq { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.state-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px; }
+.state-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.state-lbl { font-size: 11px; color: var(--txt-muted); }
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+/* Primary light bg */
+.b-pl-def { background: #0F7B6C; color: #fff; }
+.b-pl-hov { background: #0A5C51; color: #fff; }
+.b-pl-act { background: #073D36; color: #fff; }
+.b-pl-foc { background: #0F7B6C; color: #fff; outline: 2px solid #0F7B6C; outline-offset: 3px; }
+.b-pl-dis { background: #A8CCC8; color: #fff; cursor: not-allowed; }
+/* Primary dark bg */
+.b-pd-def { background: #3DD6B5; color: #051729; }
+.b-pd-hov { background: #2EB89A; color: #051729; }
+.b-pd-act { background: #239B80; color: #051729; }
+.b-pd-dis { background: #1A4040; color: #3D5670; cursor: not-allowed; }
+/* Ghost light bg */
+.b-gl-def { background: transparent; color: #0F7B6C; border: 1.5px solid #0F7B6C; }
+.b-gl-hov { background: rgba(15,123,108,0.06); color: #0F7B6C; border: 1.5px solid #0F7B6C; }
+/* Ghost dark bg */
+.b-gd-def { background: transparent; color: #3DD6B5; border: 1.5px solid #3DD6B5; }
+.b-gd-hov { background: rgba(61,214,181,0.1); color: #3DD6B5; border: 1.5px solid #3DD6B5; }
+.dark-surface { background: var(--navy); border-radius: 10px; padding: 20px 24px; }
+
+/* ── Forms ────────────────────────────────────────────────────────────────── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-card { background: var(--card-bg); border: 1px solid var(--border-default); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.form-lbl  { font-size: 12px; font-weight: 500; color: var(--txt-secondary); }
+.form-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-default);
+  background: #fff;
+  color: var(--navy);
+  width: 100%;
+  outline: none;
+}
+.form-input::placeholder { color: var(--txt-muted); }
+.fi-focus    { border-color: #0F7B6C; box-shadow: 0 0 0 3px rgba(15,123,108,0.1); }
+.fi-error    { border-color: var(--fb-error); box-shadow: 0 0 0 3px rgba(211,47,47,0.08); }
+.fi-disabled { background: var(--surf-subtle); color: var(--txt-muted); cursor: not-allowed; }
+.form-state  { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--txt-muted); }
+.err-msg     { font-size: 12px; color: var(--fb-error); }
+
+/* ── Nav ──────────────────────────────────────────────────────────────────── */
+.nav-bar {
+  background: var(--navy);
+  border-radius: 10px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 56px;
+  margin-bottom: 10px;
+}
+.nav-logo { font-family: 'Manrope', sans-serif; font-weight: 500; font-size: 16px; color: #fff; margin-right: 20px; letter-spacing: -0.01em; flex-shrink: 0; }
+.nav-item { font-size: 14px; padding: 8px 14px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+.n-default { color: #7A96B0; }
+.n-hover   { color: #fff; background: rgba(255,255,255,0.06); }
+.n-active  { color: var(--mint-bright); }
+.n-cta     { background: var(--mint-bright); color: var(--navy); font-weight: 500; margin-left: auto; border-radius: 6px; }
+
+/* ── Accordion ────────────────────────────────────────────────────────────── */
+.acc-stack { display: flex; flex-direction: column; gap: 6px; }
+.acc-item  { border: 1px solid var(--border-default); border-radius: 10px; overflow: hidden; }
+.acc-head  { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--card-bg); }
+.acc-head.open { background: var(--surf-subtle); border-bottom: 1px solid var(--border-default); }
+.acc-title { font-size: 14px; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+.acc-icon  { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+.acc-chev  { font-size: 11px; color: var(--txt-muted); }
+.acc-body  { padding: 16px 18px; background: var(--card-bg); font-size: 13px; color: var(--txt-secondary); line-height: 1.5; }
+
+/* ── Cards ────────────────────────────────────────────────────────────────── */
+.cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: 0 1px 4px rgba(5,23,41,0.07), 0 1px 2px rgba(5,23,41,0.04);
+  transition: box-shadow 0.2s;
+}
+.feature-card:hover { box-shadow: 0 4px 12px rgba(5,23,41,0.08), 0 1px 4px rgba(5,23,41,0.04); }
+.card-icon-block {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.card-title { font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: var(--navy); }
+.card-body  { font-size: 13px; color: var(--txt-secondary); line-height: 1.5; }
+
+.stat-card { background: var(--card-bg); border: 1px solid var(--border-default); border-radius: 12px; padding: 28px 24px; box-shadow: 0 1px 4px rgba(5,23,41,0.07); }
+.stat-num  { font-family: 'Manrope', sans-serif; font-size: 40px; font-weight: 500; letter-spacing: -0.02em; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+.stat-num span { color: var(--mint-deep); }
+.stat-lbl  { font-size: 13px; color: var(--txt-secondary); }
+
+/* ── Pricing ──────────────────────────────────────────────────────────────── */
+.pricing-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.price-card { background: var(--card-bg); border: 1px solid var(--border-default); border-radius: 12px; padding: 20px; }
+.price-card.featured { border: 2px solid var(--mint-deep); box-shadow: 0 4px 12px rgba(5,23,41,0.08); position: relative; }
+.price-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--mint-deep); color: #fff; font-size: 11px; font-weight: 500; padding: 3px 12px; border-radius: 9999px; white-space: nowrap; }
+.price-title { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; color: var(--navy); margin-bottom: 6px; }
+.price-sub   { font-size: 12px; color: var(--txt-muted); }
+
+/* ── Badges ───────────────────────────────────────────────────────────────── */
+.badge-wrap { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { display: inline-block; font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 9999px; }
+.chip-unsel { background: var(--surf-card); color: var(--txt-secondary); border: 1px solid var(--border-default); }
+.chip-sel   { background: rgba(15,123,108,0.1); color: var(--mint-deep); border: 1px solid var(--mint-deep); }
+
+/* ── Logo grid ────────────────────────────────────────────────────────────── */
+.logo-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+.logo-cell {
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--txt-muted);
+  box-shadow: 0 1px 2px rgba(5,23,41,0.05);
+  transition: box-shadow 0.15s;
+}
+.logo-cell:hover { box-shadow: 0 4px 12px rgba(5,23,41,0.08); }
+
+/* ── Data table ───────────────────────────────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-default); font-size: 13px; }
+.data-table th { background: var(--surf-subtle); color: var(--txt-secondary); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-default); }
+.data-table th.sort { color: var(--blue); }
+.data-table th.sort::after { content: ' \2193'; font-size: 10px; }
+.data-table td { padding: 11px 14px; border-top: 1px solid var(--border-default); color: var(--navy); }
+.data-table tr.row-hover td { background: var(--surf-subtle); }
+.data-table tr.row-selected td { background: rgba(64,136,207,0.06); }
+.data-table tr.row-error td { background: rgba(211,47,47,0.04); }
+.status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+/* ── Empty state ──────────────────────────────────────────────────────────── */
+.empty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.empty-state { background: var(--card-bg); border: 1px solid var(--border-default); border-radius: 12px; padding: 56px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.empty-icon { width: 48px; height: 48px; color: var(--txt-muted); }
+.empty-h { font-family: 'Manrope', sans-serif; font-size: 16px; font-weight: 500; color: var(--navy); }
+.empty-b { font-size: 13px; color: var(--txt-secondary); max-width: 280px; line-height: 1.5; }
+
+/* ── Checklist ────────────────────────────────────────────────────────────── */
+.checklist { display: flex; flex-direction: column; gap: 6px; }
+.check-row { display: grid; grid-template-columns: 28px 1fr 140px 120px; align-items: center; gap: 12px; padding: 10px 14px; background: var(--card-bg); border: 1px solid var(--border-default); border-radius: 8px; font-size: 13px; }
+.check-row.hdr { background: var(--navy); border-color: var(--navy); }
+.check-row.hdr span { color: #fff; font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 500; }
+.check-box { width: 18px; height: 18px; border: 1.5px solid var(--border-default); border-radius: 4px; flex-shrink: 0; }
+.check-item  { color: var(--navy); }
+.check-owner { color: var(--txt-muted); font-size: 12px; font-style: italic; }
+.check-date  { color: var(--txt-muted); font-size: 12px; font-style: italic; }
+
+@media (max-width: 760px) {
+  .shadow-grid, .cards-grid, .empty-grid { grid-template-columns: 1fr 1fr; }
+  .radius-grid, .pricing-grid { grid-template-columns: repeat(2,1fr); }
+  .form-grid, .border-grid { grid-template-columns: 1fr; }
+  .color-row { grid-template-columns: 56px 1fr; }
+  .color-use, .color-badges { display: none; }
+  .check-row { grid-template-columns: 28px 1fr; }
+  .check-owner, .check-date { display: none; }
+  .logo-grid { grid-template-columns: repeat(3,1fr); }
+  .spacing-row { grid-template-columns: 100px 48px 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">FreightPOP - Brand System</div>
+  <div class="cover-title">Token &amp; Component Reference</div>
+  <div class="cover-sub">Visual examples for every design token and component across all five project phases. For leadership review and design team reference.</div>
+  <div class="cover-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#2E7D32;"></div>Confirmed</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1565C0;"></div>Proposed - needs approval</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;"></div>Needs input</div>
+  </div>
+</div>
+
+<!-- ══════════════ PHASE 1 ══════════════ -->
+<div class="phase-label">Phase 1 - Foundation</div>
+
+<!-- 1A -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1A</span><span class="section-title">Color Palette</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Every hex value in the FreightPOP palette. This is the single source of truth - all other sections reference these colors by name. CMYK and Pantone values to be confirmed before first commercial print run.</div>
+
+  <div class="sub-heading">Core brand</div>
+  <div class="color-grid" style="margin-bottom:24px;">
+    <div class="color-row">
+      <div class="color-swatch" style="background:#051729;"></div>
+      <div class="color-meta"><div class="color-name">color-brand-navy</div><div class="color-hex">#051729</div></div>
+      <div class="color-use">Primary brand color. Dark backgrounds, nav bar, body text on light surfaces.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#4088CF;"></div>
+      <div class="color-meta"><div class="color-name">color-brand-blue</div><div class="color-hex">#4088CF</div></div>
+      <div class="color-use">Headlines, accents, primary CTAs on white. Data viz series 1.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#FFFFFF; border-right:1px solid #D0DCE8;"></div>
+      <div class="color-meta"><div class="color-name">color-brand-white</div><div class="color-hex">#FFFFFF</div></div>
+      <div class="color-use">Page backgrounds, reversed text on dark surfaces.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#0F7B6C;"></div>
+      <div class="color-meta"><div class="color-name">color-accent-mint-deep</div><div class="color-hex">#0F7B6C</div></div>
+      <div class="color-use">Buttons, links, focus rings on light backgrounds. Data viz series 2.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#3DD6B5;"></div>
+      <div class="color-meta"><div class="color-name">color-accent-mint-bright</div><div class="color-hex">#3DD6B5</div></div>
+      <div class="color-use">Buttons, highlights, CTAs on dark backgrounds. 9.9:1 on navy.</div>
+      
+    </div>
+  </div>
+
+  <div class="sub-heading">Additional colors</div>
+  <div class="color-grid" style="margin-bottom:24px;">
+    <div class="color-row">
+      <div class="color-swatch" style="background:#3AADBC;"></div>
+      <div class="color-meta"><div class="color-name">color-extended-sky-teal</div><div class="color-hex">#3AADBC</div></div>
+      <div class="color-use">Data viz series 3. Supporting UI accents.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#0A3D6B;"></div>
+      <div class="color-meta"><div class="color-name">color-extended-deep-navy</div><div class="color-hex">#0A3D6B</div></div>
+      <div class="color-use">Data viz series 4. Dark illustrative elements.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#4CAF85;"></div>
+      <div class="color-meta"><div class="color-name">color-extended-sage</div><div class="color-hex">#4CAF85</div></div>
+      <div class="color-use">Data viz series 5. Positive trend indicators.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#7A96B0;"></div>
+      <div class="color-meta"><div class="color-name">color-extended-slate</div><div class="color-hex">#7A96B0</div></div>
+      <div class="color-use">Data viz series 6. Neutral baselines, muted UI text.</div>
+      
+    </div>
+  </div>
+
+  <div class="sub-heading">Status / feedback</div>
+  <div class="color-grid">
+    <div class="color-row">
+      <div class="color-swatch" style="background:#2E7D32;"></div>
+      <div class="color-meta"><div class="color-name">color-feedback-success</div><div class="color-hex">#2E7D32</div></div>
+      <div class="color-use">Confirmations, completed states, positive metrics.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#F59E0B;"></div>
+      <div class="color-meta"><div class="color-name">color-feedback-warning</div><div class="color-hex">#F59E0B</div></div>
+      <div class="color-use">Alerts, delays, attention-needed states.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#D32F2F;"></div>
+      <div class="color-meta"><div class="color-name">color-feedback-error</div><div class="color-hex">#D32F2F</div></div>
+      <div class="color-use">Failures, validation errors, critical alerts.</div>
+      
+    </div>
+    <div class="color-row">
+      <div class="color-swatch" style="background:#1565C0;"></div>
+      <div class="color-meta"><div class="color-name">color-feedback-info</div><div class="color-hex">#1565C0</div></div>
+      <div class="color-use">Informational banners, neutral notifications.</div>
+      
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 1B -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1B</span><span class="section-title">Semantic Tokens</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Proposed values derived from brand primitives. To be reviewed and confirmed before locking.</div>
+
+  <div class="sub-heading">Surface tokens</div>
+  <div class="surface-grid">
+    <div class="surface-card" style="background:#FFFFFF;">
+      <div class="color-name">color-surface-page</div><div class="color-hex" style="color:var(--txt-muted);">#FFFFFF</div>
+      <div style="font-size:12px;color:var(--txt-muted);margin-top:4px;">Main page background</div>
+      
+    </div>
+    <div class="surface-card" style="background:#F4F7FB;border-color:#E0E8F0;">
+      <div class="color-name">color-surface-subtle</div><div class="color-hex" style="color:var(--txt-muted);">#F4F7FB</div>
+      <div style="font-size:12px;color:var(--txt-muted);margin-top:4px;">Section fills, zebra rows, input backgrounds</div>
+      
+    </div>
+    <div class="surface-card" style="background:#E8EFF7;border-color:#D0DCE8;">
+      <div class="color-name">color-surface-card</div><div class="color-hex" style="color:var(--txt-muted);">#E8EFF7</div>
+      <div style="font-size:12px;color:var(--txt-muted);margin-top:4px;">Card fills on white backgrounds</div>
+      
+    </div>
+    <div class="surface-card" style="background:#051729;border-color:#051729;">
+      <div class="color-name" style="color:#fff;">color-surface-dark</div><div class="color-hex" style="color:#3D5670;">#051729</div>
+      <div style="font-size:12px;color:#3D5670;margin-top:4px;">Dark backgrounds, hero sections</div>
+      
+    </div>
+    <div class="surface-card" style="background:#0A2540;border-color:#0A2540;">
+      <div class="color-name" style="color:#fff;">color-surface-dark-raised</div><div class="color-hex" style="color:#3D5670;">#0A2540</div>
+      <div style="font-size:12px;color:#3D5670;margin-top:4px;">Cards and panels on dark backgrounds</div>
+      
+    </div>
+  </div>
+
+  <div class="sub-heading">Text tokens - light background</div>
+  <div class="text-ex" style="margin-bottom:24px;">
+    <div class="text-row">
+      <div class="type-meta"><div class="text-label">color-text-primary</div><div class="text-spec">#051729</div></div>
+      <span style="font-size:15px;font-weight:500;color:#051729;">Primary heading or body copy on white</span>
+    </div>
+    <div class="text-row">
+      <div class="type-meta"><div class="text-label">color-text-secondary</div><div class="text-spec">#3D5670</div></div>
+      <span style="font-size:14px;color:#3D5670;">Subheadings, metadata, and caption text</span>
+    </div>
+    <div class="text-row">
+      <div class="type-meta"><div class="text-label">color-text-muted</div><div class="text-spec">#7A96B0</div></div>
+      <span style="font-size:14px;color:#7A96B0;">Placeholder text, disabled labels, helper text</span>
+    </div>
+  </div>
+
+  <div class="sub-heading">Text tokens - dark background</div>
+  <div class="text-ex" style="margin-bottom:24px;">
+    <div class="text-row" style="background:#051729;border-color:#0A2540;">
+      <div class="type-meta"><div class="text-label" style="color:#3D5670;">color-text-primary-on-dark</div><div class="text-spec" style="color:#3D5670;">#FFFFFF</div></div>
+      <span style="font-size:15px;font-weight:500;color:#FFFFFF;">Primary heading or body copy on navy</span>
+    </div>
+    <div class="text-row" style="background:#051729;border-color:#0A2540;">
+      <div class="type-meta"><div class="text-label" style="color:#3D5670;">color-text-secondary-on-dark</div><div class="text-spec" style="color:#3D5670;">#B5CDE0</div></div>
+      <span style="font-size:14px;color:#B5CDE0;">Subheadings, metadata, captions on dark surfaces</span>
+    </div>
+    <div class="text-row" style="background:#051729;border-color:#0A2540;">
+      <div class="type-meta"><div class="text-label" style="color:#3D5670;">color-text-muted-on-dark</div><div class="text-spec" style="color:#3D5670;">#7A96B0</div></div>
+      <span style="font-size:14px;color:#7A96B0;">Placeholder text and disabled labels on dark surfaces</span>
+    </div>
+    <div class="text-row" style="background:#051729;border-color:#0A2540;">
+      <div class="type-meta"><div class="text-label" style="color:#3D5670;">color-text-accent-on-dark</div><div class="text-spec" style="color:#3D5670;">#3DD6B5</div></div>
+      <span style="font-size:14px;color:#3DD6B5;">Links and highlights on dark backgrounds</span>
+    </div>
+  </div>
+
+  <div class="sub-heading">Border tokens</div>
+  <div class="border-grid">
+    <div class="border-card"><div class="border-bar" style="border:1px solid #D0DCE8;"></div><div class="color-name">color-border-default</div><div class="color-hex">#D0DCE8 - card outlines, inputs, dividers</div></div>
+    <div class="border-card"><div class="border-bar" style="border:1.5px solid #7A96B0;"></div><div class="color-name">color-border-emphasis</div><div class="color-hex">#7A96B0 - hover state borders, selected rows</div></div>
+    <div class="border-card"><div class="border-bar" style="border:2px solid #0F7B6C;"></div><div class="color-name">color-border-focus</div><div class="color-hex">#0F7B6C - keyboard focus rings</div></div>
+    <div class="border-card"><div class="border-bar" style="border:2px solid #4088CF;"></div><div class="color-name">color-border-accent</div><div class="color-hex">#4088CF - selected state, active tab, highlighted card</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 1C -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1C</span><span class="section-title">Typography Scale</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Headings: Manrope 400, line-height 1.1, letter-spacing -0.02em at large sizes / -0.01em at smaller sizes. H3/H4 use Manrope 500 for legibility at smaller sizes. Body: DM Sans 400, line-height 1.5 (website/marketing context). Exact sizes shown here as recommended values to be confirmed.</div>
+  <div class="type-ex">
+    <div class="type-row"><div class="type-meta"><div class="type-label">Display</div><div class="type-spec">Manrope 400 / 56px / lh 1.05 / ls -0.02em</div></div><span style="font-family:'Manrope',sans-serif;font-size:40px;font-weight:400;line-height:1.05;letter-spacing:-0.02em;color:#051729;">Supply chain, simplified.</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">H1</div><div class="type-spec">Manrope 400 / 40px / lh 1.1 / ls -0.02em</div></div><span style="font-family:'Manrope',sans-serif;font-size:32px;font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:#051729;">Transportation Management System</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">H2</div><div class="type-spec">Manrope 400 / 32px / lh 1.1 / ls -0.01em</div></div><span style="font-family:'Manrope',sans-serif;font-size:26px;font-weight:400;line-height:1.1;letter-spacing:-0.01em;color:#051729;">Rate Shopping &amp; Carrier Management</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">H3</div><div class="type-spec">Manrope 500 / 24px / lh 1.1 / ls -0.01em</div></div><span style="font-family:'Manrope',sans-serif;font-size:22px;font-weight:500;line-height:1.1;letter-spacing:-0.01em;color:#051729;">Auto Dispatch &amp; Route Optimization</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">H4</div><div class="type-spec">Manrope 500 / 18px / lh 1.2 / ls 0</div></div><span style="font-family:'Manrope',sans-serif;font-size:18px;font-weight:500;line-height:1.2;color:#051729;">Invoice Auditing and Analytics</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">Body large</div><div class="type-spec">DM Sans 400 / 18px / lh 1.5</div></div><span style="font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.5;color:#051729;">FreightPOP unifies order management, warehouse operations, and transportation execution into one connected platform.</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">Body default</div><div class="type-spec">DM Sans 400 / 15px / lh 1.5</div></div><span style="font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;color:#051729;">Instead of stitching together disconnected systems, teams operate from a single workflow, eliminating rework and improving visibility across the supply chain.</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">Body small</div><div class="type-spec">DM Sans 400 / 13px / lh 1.5</div></div><span style="font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.5;color:#3D5670;">Reduce missed pickups, staging delays, and shipment errors by keeping every step coordinated.</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">Caption</div><div class="type-spec">DM Sans 400 / 12px / lh 1.4</div></div><span style="font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.4;color:#7A96B0;">Last updated April 16, 2026 · 3 min read</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">Label</div><div class="type-spec">DM Sans 500 / 12px / lh 1</div></div><span style="font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;line-height:1;color:#051729;">Annual savings</span></div>
+    <div class="type-row"><div class="type-meta"><div class="type-label">Overline</div><div class="type-spec">DM Sans 500 / 11px / ls 0.08em / uppercase</div></div><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#7A96B0;">Transportation Management</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 1D -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1D</span><span class="section-title">Spacing Scale</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Base-4 system. Typical use column shows where each step is applied across website and marketing layouts.</div>
+  <div class="spacing-grid">
+    <div class="spacing-row"><span class="sp-token">space-1</span><span class="sp-val">4px</span><div><div class="spacing-bar" style="width:4px;"></div></div><span class="sp-use">Gap between an icon and its label; gap between a badge and inline text</span></div>
+    <div class="spacing-row"><span class="sp-token">space-2</span><span class="sp-val">8px</span><div><div class="spacing-bar" style="width:8px;"></div></div><span class="sp-use">Padding inside tags and badges; gap between stacked form label and input</span></div>
+    <div class="spacing-row"><span class="sp-token">space-3</span><span class="sp-val">12px</span><div><div class="spacing-bar" style="width:12px;"></div></div><span class="sp-use">Gap between nav items; button internal padding; gap between icon and card title</span></div>
+    <div class="spacing-row"><span class="sp-token">space-4</span><span class="sp-val">16px</span><div><div class="spacing-bar" style="width:16px;"></div></div><span class="sp-use">Internal card padding (small); gap between form fields; gap between heading and subheading</span></div>
+    <div class="spacing-row"><span class="sp-token">space-6</span><span class="sp-val">24px</span><div><div class="spacing-bar" style="width:24px;"></div></div><span class="sp-use">Standard card padding; gap between sections within a card; margin below section heading</span></div>
+    <div class="spacing-row"><span class="sp-token">space-8</span><span class="sp-val">32px</span><div><div class="spacing-bar" style="width:32px;"></div></div><span class="sp-use">Gap between cards in a grid; gap between hero heading and CTA</span></div>
+    <div class="spacing-row"><span class="sp-token">space-12</span><span class="sp-val">48px</span><div><div class="spacing-bar" style="width:48px;"></div></div><span class="sp-use">Vertical padding for a page section block; gap between major content sections</span></div>
+    <div class="spacing-row"><span class="sp-token">space-16</span><span class="sp-val">64px</span><div><div class="spacing-bar" style="width:64px;"></div></div><span class="sp-use">Large section breaks; top/bottom padding on hero sections and full-width banners</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 1E -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1E</span><span class="section-title">Shadow Elevation</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Proposed values. Shadow color is keyed to brand navy rgba(5,23,41,...) rather than pure black. The dual-layer approach gives a natural, modern quality. Differences are subtle by design.</div>
+  <div class="shadow-grid">
+    <div class="shadow-card sh-none"><div class="sh-token">shadow-none</div><div class="sh-use">Flat surfaces, table rows, tags</div><div class="sh-val">none + border: 1px solid border-default</div></div>
+    <div class="shadow-card sh-xs"><div class="sh-token">shadow-xs</div><div class="sh-use">Input fields, small badges</div><div class="sh-val">0 1px 2px rgba(5,23,41,0.05)</div></div>
+    <div class="shadow-card sh-sm"><div class="sh-token">shadow-sm</div><div class="sh-use">Cards at rest, dropdowns</div><div class="sh-val">0 1px 4px rgba(5,23,41,0.07)<br>0 1px 2px rgba(5,23,41,0.04)</div></div>
+    <div class="shadow-card sh-md"><div class="sh-token">shadow-md</div><div class="sh-use">Hover state cards, popovers</div><div class="sh-val">0 4px 12px rgba(5,23,41,0.08)<br>0 1px 4px rgba(5,23,41,0.04)</div></div>
+    <div class="shadow-card sh-lg"><div class="sh-token">shadow-lg</div><div class="sh-use">Modals, command palettes</div><div class="sh-val">0 8px 24px rgba(5,23,41,0.10)<br>0 2px 6px rgba(5,23,41,0.05)</div></div>
+    <div class="shadow-card sh-xl"><div class="sh-token">shadow-xl</div><div class="sh-use">Overlays, side drawers</div><div class="sh-val">0 16px 40px rgba(5,23,41,0.12)<br>0 4px 10px rgba(5,23,41,0.06)</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 1F -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1F</span><span class="section-title">Border Radius</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Proposed values. radius-lg (12px) is the recommended default card radius, marked with a star. To be adjusted if existing designs use a different value consistently.</div>
+  <div class="radius-grid">
+    <div class="radius-card" style="border-radius:4px;"><div class="radius-box" style="border-radius:0;"></div><div class="r-token">radius-none</div><div class="r-px">0px</div><div class="r-use">Full-bleed images, flush table edges</div></div>
+    <div class="radius-card" style="border-radius:6px;"><div class="radius-box" style="border-radius:4px;"></div><div class="r-token">radius-xs</div><div class="r-px">4px</div><div class="r-use">Tags, badges, code snippets</div></div>
+    <div class="radius-card" style="border-radius:8px;"><div class="radius-box" style="border-radius:6px;"></div><div class="r-token">radius-sm</div><div class="r-px">6px</div><div class="r-use">Buttons, inputs, chips</div></div>
+    <div class="radius-card" style="border-radius:8px;"><div class="radius-box" style="border-radius:8px;"></div><div class="r-token">radius-md</div><div class="r-px">8px</div><div class="r-use">Icon containers, tooltips</div></div>
+    <div class="radius-card r-default" style="border-radius:12px;"><div class="radius-box" style="border-radius:12px;border-color:#0F7B6C;"></div><div class="r-token">radius-lg <span class="r-star">&#9733;</span></div><div class="r-px">12px</div><div class="r-use">Cards, panels, modals - default</div></div>
+    <div class="radius-card" style="border-radius:12px;"><div class="radius-box" style="border-radius:16px;"></div><div class="r-token">radius-xl</div><div class="r-px">16px</div><div class="r-use">Feature cards, hero sections</div></div>
+    <div class="radius-card" style="border-radius:12px;"><div class="radius-box" style="border-radius:24px;"></div><div class="r-token">radius-2xl</div><div class="r-px">24px</div><div class="r-use">Marketing callout blocks</div></div>
+    <div class="radius-card" style="border-radius:12px;"><div class="radius-box" style="border-radius:9999px;"></div><div class="r-token">radius-full</div><div class="r-px">pill</div><div class="r-use">Pills, avatars, toggles</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 1G -->
+<div class="section">
+  <div class="section-header"><span class="section-num">1G</span><span class="section-title">Data Visualization Palette</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Six-color categorical palette derived from the core brand palette. Series 1 and 2 are brand anchors. Remaining series are systematically spaced for perceptual distinction at small sizes and in legends.</div>
+  <div class="chart-bars">
+    <div class="chart-bar" style="background:#4088CF;height:88%;"></div>
+    <div class="chart-bar" style="background:#0F7B6C;height:64%;"></div>
+    <div class="chart-bar" style="background:#3AADBC;height:50%;"></div>
+    <div class="chart-bar" style="background:#0A3D6B;height:78%;"></div>
+    <div class="chart-bar" style="background:#4CAF85;height:42%;"></div>
+    <div class="chart-bar" style="background:#7A96B0;height:58%;"></div>
+  </div>
+  <div class="chart-legend">
+    <div class="leg-item"><div class="leg-sq" style="background:#4088CF;"></div>Series 1 - Brand blue #4088CF</div>
+    <div class="leg-item"><div class="leg-sq" style="background:#0F7B6C;"></div>Series 2 - Mint deep #0F7B6C</div>
+    <div class="leg-item"><div class="leg-sq" style="background:#3AADBC;"></div>Series 3 - Sky teal #3AADBC</div>
+    <div class="leg-item"><div class="leg-sq" style="background:#0A3D6B;"></div>Series 4 - Deep navy #0A3D6B</div>
+    <div class="leg-item"><div class="leg-sq" style="background:#4CAF85;"></div>Series 5 - Sage green #4CAF85</div>
+    <div class="leg-item"><div class="leg-sq" style="background:#7A96B0;"></div>Series 6 - Slate neutral #7A96B0</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════ PHASE 2 ══════════════ -->
+<div class="phase-label">Phase 2 - Core Interactive Components</div>
+
+<!-- 2A -->
+<div class="section">
+  <div class="section-header"><span class="section-num">2A</span><span class="section-title">Buttons</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Primary and ghost button states shown for both light and dark backgrounds. Ghost buttons use the same mint tokens as primary, with a transparent fill.</div>
+
+  <div class="sub-heading">Primary - light background</div>
+  <div class="state-row">
+    <div class="state-col"><button class="btn b-pl-def">Get a demo</button><div class="state-lbl">Default</div></div>
+    <div class="state-col"><button class="btn b-pl-hov">Get a demo</button><div class="state-lbl">Hover</div></div>
+    <div class="state-col"><button class="btn b-pl-act">Get a demo</button><div class="state-lbl">Active</div></div>
+    <div class="state-col"><button class="btn b-pl-foc">Get a demo</button><div class="state-lbl">Focus</div></div>
+    <div class="state-col"><button class="btn b-pl-dis" disabled>Get a demo</button><div class="state-lbl">Disabled</div></div>
+  </div>
+
+  <div class="sub-heading">Ghost - light background</div>
+  <div class="state-row">
+    <div class="state-col"><button class="btn b-gl-def">Learn more</button><div class="state-lbl">Default</div></div>
+    <div class="state-col"><button class="btn b-gl-hov">Learn more</button><div class="state-lbl">Hover</div></div>
+  </div>
+
+  <div class="sub-heading">Primary - dark background</div>
+  <div class="dark-surface" style="margin-bottom:20px;">
+    <div class="state-row" style="margin-bottom:0;">
+      <div class="state-col"><button class="btn b-pd-def">Get a demo</button><div class="state-lbl" style="color:#7A96B0;">Default</div></div>
+      <div class="state-col"><button class="btn b-pd-hov">Get a demo</button><div class="state-lbl" style="color:#7A96B0;">Hover</div></div>
+      <div class="state-col"><button class="btn b-pd-act">Get a demo</button><div class="state-lbl" style="color:#7A96B0;">Active</div></div>
+      <div class="state-col"><button class="btn b-pd-dis" disabled>Get a demo</button><div class="state-lbl" style="color:#7A96B0;">Disabled</div></div>
+    </div>
+  </div>
+
+  <div class="sub-heading">Ghost - dark background</div>
+  <div class="dark-surface">
+    <div class="state-row" style="margin-bottom:0;">
+      <div class="state-col"><button class="btn b-gd-def">Learn more</button><div class="state-lbl" style="color:#7A96B0;">Default</div></div>
+      <div class="state-col"><button class="btn b-gd-hov">Learn more</button><div class="state-lbl" style="color:#7A96B0;">Hover</div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 2B -->
+<div class="section">
+  <div class="section-header"><span class="section-num">2B</span><span class="section-title">Form Elements</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">All states shown. Focus ring uses color-border-focus (#0F7B6C). Error state uses color-feedback-error. To be confirmed against the border and feedback tokens in 1B.</div>
+  <div class="form-grid">
+    <div class="form-card"><div class="form-state">Default</div><div class="form-lbl">Company name</div><input class="form-input" placeholder="e.g. Acme Logistics" /></div>
+    <div class="form-card"><div class="form-state">Focus</div><div class="form-lbl">Company name</div><input class="form-input fi-focus" value="Acme Logistics" /></div>
+    <div class="form-card"><div class="form-state">Error</div><div class="form-lbl">Email address</div><input class="form-input fi-error" value="not-an-email" /><div class="err-msg">Enter a valid email address.</div></div>
+    <div class="form-card"><div class="form-state">Disabled</div><div class="form-lbl">Company name</div><input class="form-input fi-disabled" value="Acme Logistics" disabled /></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 2C -->
+<div class="section">
+  <div class="section-header"><span class="section-num">2C</span><span class="section-title">Navigation</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Nav bar uses dark navy background. Active state uses mint-bright (#3DD6B5). CTA button uses mint-bright fill with navy text. Dropdown panel treatment to be confirmed.</div>
+  <div class="nav-bar">
+    <div class="nav-logo">FreightPOP</div>
+    <div class="nav-item n-active">Solutions</div>
+    <div class="nav-item n-hover">Integrations</div>
+    <div class="nav-item n-default">Resources</div>
+    <div class="nav-item n-default">Pricing</div>
+    <div class="nav-item n-default">About</div>
+    <div class="nav-item n-cta">Get a demo</div>
+  </div>
+  <div style="font-size:12px;color:var(--txt-muted);">Active: mint-bright #3DD6B5 / Hover: white + subtle bg / Default: slate #7A96B0 / CTA: mint-bright fill + navy text</div>
+</div>
+
+<hr class="divider">
+
+<!-- 2D -->
+<div class="section">
+  <div class="section-header"><span class="section-num">2D</span><span class="section-title">Feedback Components</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Toast notifications and alert banners. Colors reference feedback tokens from 1B. Dismiss timing and positioning to be defined in the product spec.</div>
+  <div class="fb-stack">
+    <div class="fb-banner" style="background:#E8F5E9;"><div class="fb-icon" style="background:#2E7D32;">✓</div><div class="fb-col"><div class="fb-title" style="color:#1B5E20;">Success - bg #E8F5E9 / accent #2E7D32</div><div class="fb-sub" style="color:#2E7D32;">Auto-dismiss timing to be defined.</div></div></div>
+    <div class="fb-banner" style="background:#FFF8E1;"><div class="fb-icon" style="background:#F59E0B;">!</div><div class="fb-col"><div class="fb-title" style="color:#6D4C00;">Warning - bg #FFF8E1 / accent #F59E0B</div><div class="fb-sub" style="color:#F59E0B;">Persists until dismissed.</div></div></div>
+    <div class="fb-banner" style="background:#FFEBEE;"><div class="fb-icon" style="background:#D32F2F;">✕</div><div class="fb-col"><div class="fb-title" style="color:#7B1A1A;">Error - bg #FFEBEE / accent #D32F2F</div><div class="fb-sub" style="color:#D32F2F;">Requires user action to dismiss.</div></div></div>
+    <div class="fb-banner" style="background:#E3F0FB;"><div class="fb-icon" style="background:#1565C0;">i</div><div class="fb-col"><div class="fb-title" style="color:#0D3A6B;">Info - bg #E3F0FB / accent #1565C0</div><div class="fb-sub" style="color:#1565C0;">Dismiss timing to be defined.</div></div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 2E -->
+<div class="section">
+  <div class="section-header"><span class="section-num">2E</span><span class="section-title">Accordion / Collapsible Panels</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Appears in the ROI tool and on product pages. Header background, title color, chevron color, and border treatment to be confirmed.</div>
+  <div class="acc-stack">
+    <div class="acc-item">
+      <div class="acc-head">
+        <div class="acc-title"><div class="acc-icon" style="background:#E8EFF7;border:1.5px solid #D0DCE8;"></div>Customer Information</div>
+        <span class="acc-chev">&#9662;</span>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head open">
+        <div class="acc-title"><div class="acc-icon" style="background:rgba(15,123,108,0.12);border:1.5px solid #0F7B6C;"></div>Analysis Information</div>
+        <span class="acc-chev" style="transform:rotate(180deg);display:inline-block;">&#9662;</span>
+      </div>
+      <div class="acc-body">Section content appears when expanded. Background, border, and text colors for this state to be confirmed as part of Phase 2E token decisions.</div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head">
+        <div class="acc-title"><div class="acc-icon" style="background:#E8EFF7;border:1.5px solid #D0DCE8;"></div>Shipping Information</div>
+        <span class="acc-chev">&#9662;</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════ PHASE 3 ══════════════ -->
+<div class="phase-label">Phase 3 - Content and Marketing Components</div>
+
+<!-- 3A -->
+<div class="section">
+  <div class="section-header"><span class="section-num">3A</span><span class="section-title">Card Styles</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Card specs apply equally in print - shadows are approximated using soft drop shadow effects in your design tool. Surface token, border, radius, and shadow level per card type to be confirmed.</div>
+
+  <div class="sub-heading">Feature cards - hover to see shadow transition</div>
+  <div class="cards-grid">
+    <div class="feature-card">
+      <div class="card-icon-block" style="background:#E8EFF7;border:1.5px solid #D0DCE8;display:flex;align-items:center;justify-content:center;">
+        <div style="width:18px;height:18px;border-radius:50%;border:2px solid #4088CF;"></div>
+      </div>
+      <div class="card-title">Rate Shopping</div>
+      <div class="card-body">Compare negotiated, partner, and marketplace rates side by side to make faster, smarter decisions.</div>
+    </div>
+    <div class="feature-card">
+      <div class="card-icon-block" style="background:rgba(15,123,108,0.1);border:1.5px solid rgba(15,123,108,0.3);display:flex;align-items:center;justify-content:center;">
+        <div style="width:18px;height:18px;border-radius:3px;border:2px solid #0F7B6C;"></div>
+      </div>
+      <div class="card-title">Auto Dispatch</div>
+      <div class="card-body">Automates carrier selection and booking without sacrificing control over your shipping rules.</div>
+    </div>
+    <div class="feature-card">
+      <div class="card-icon-block" style="background:#E8EFF7;border:1.5px solid #D0DCE8;display:flex;align-items:center;justify-content:center;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#4088CF;box-shadow:8px 0 0 #4088CF, -8px 0 0 #4088CF;"></div>
+      </div>
+      <div class="card-title">Analytics</div>
+      <div class="card-body">Analyze, audit, and report on your process to identify and eliminate root causes of extra charges.</div>
+    </div>
+  </div>
+
+  <div class="sub-heading">Stat callout cards</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+    <div class="stat-card"><div class="stat-num"><span>30%</span></div><div class="stat-lbl">reduction in freight spend</div></div>
+    <div class="stat-card"><div class="stat-num">1,500<span>+</span></div><div class="stat-lbl">pre-built carrier integrations</div></div>
+    <div class="stat-card"><div class="stat-num" style="font-size:28px;">Inc. 5000</div><div class="stat-lbl">fastest growing logistics tech, 2024 and 2025</div></div>
+  </div>
+
+
+</div>
+
+<hr class="divider">
+
+<!-- 3B -->
+<div class="section">
+  <div class="section-header"><span class="section-num">3B</span><span class="section-title">Badges, Tags and Toggle Chips</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Static badges are labels. Toggle chips are interactive, switching between selected and unselected states. Seen in the ROI tool's Current Challenges and Integration Requirements sections. Colors per category type to be confirmed.</div>
+  <div class="sub-heading">Static category badges</div>
+  <div class="badge-wrap" style="margin-bottom:20px;">
+    <span class="badge" style="background:#E8EFF7;color:#051729;">TMS</span>
+    <span class="badge" style="background:#E8EFF7;color:#051729;">WMS</span>
+    <span class="badge" style="background:#E8EFF7;color:#051729;">OMS</span>
+    <span class="badge" style="background:#E8F5E9;color:#2E7D32;">Active</span>
+    <span class="badge" style="background:#FFF8E1;color:#8B6800;">Pending</span>
+    <span class="badge" style="background:#E3F0FB;color:#1565C0;">Integration</span>
+  </div>
+  <div class="sub-heading">Toggle chips - unselected vs selected (mint deep proposed for selected state)</div>
+  <div class="badge-wrap">
+    <span class="badge chip-unsel">Manual Entry</span>
+    <span class="badge chip-sel">Multiple Logins</span>
+    <span class="badge chip-unsel">No Rate Compare</span>
+    <span class="badge chip-sel">Overpaying</span>
+    <span class="badge chip-unsel">No Auditing</span>
+    <span class="badge chip-sel">ERP</span>
+    <span class="badge chip-unsel">WMS</span>
+    <span class="badge chip-sel">E-commerce</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 3C -->
+<div class="section">
+  <div class="section-header"><span class="section-num">3C</span><span class="section-title">Logo / Integration Grid</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Container background, border, radius, shadow, hover state, and logo color treatment (full color vs grayscale) to be confirmed.</div>
+  <div class="logo-grid">
+    <div class="logo-cell">NetSuite</div>
+    <div class="logo-cell">SAP</div>
+    <div class="logo-cell">FedEx</div>
+    <div class="logo-cell">UPS</div>
+    <div class="logo-cell">Shopify</div>
+    <div class="logo-cell">Acumatica</div>
+    <div class="logo-cell">Salesforce</div>
+    <div class="logo-cell">D365</div>
+    <div class="logo-cell">Amazon</div>
+    <div class="logo-cell">+1,490</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ══════════════ PHASE 4 ══════════════ -->
+<div class="phase-label">Phase 4 - Product and Data UI Components</div>
+
+<!-- 4A -->
+<div class="section">
+  <div class="section-header"><span class="section-num">4A</span><span class="section-title">Data Tables</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Row states shown: default, hover, selected, error. Header, sort indicator, and pagination colors to be confirmed with the product team.</div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th class="sort">Carrier</th>
+        <th>Mode</th>
+        <th>Transit</th>
+        <th>Rate</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Echo Global Logistics</td><td>LTL</td><td>5 days</td><td>$1,048.13</td><td><span class="status-dot" style="background:#2E7D32;"></span>Booked</td></tr>
+      <tr class="row-hover"><td>FedEx Freight</td><td>LTL</td><td>3 days</td><td>$1,312.40</td><td><span class="status-dot" style="background:#F59E0B;"></span>Pending</td></tr>
+      <tr class="row-selected"><td>UPS Freight</td><td>FTL</td><td>2 days</td><td>$2,840.00</td><td><span class="status-dot" style="background:#4088CF;"></span>Selected</td></tr>
+      <tr class="row-error"><td>XPO Logistics</td><td>LTL</td><td>4 days</td><td>$1,180.00</td><td><span class="status-dot" style="background:#D32F2F;"></span>Error</td></tr>
+      <tr><td>Old Dominion</td><td>LTL</td><td>4 days</td><td>$1,095.50</td><td><span class="status-dot" style="background:#7A96B0;"></span>Available</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider">
+
+<!-- 4B -->
+<div class="section">
+  <div class="section-header"><span class="section-num">4B</span><span class="section-title">Empty States</span></div>
+  <div class="section-rule"></div>
+  <div class="section-note">Illustration style, icon size, heading and body text tokens, CTA variant, and background to be confirmed.</div>
+  <div class="empty-grid">
+    <div class="empty-state">
+      <svg class="empty-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="16" width="32" height="22" rx="3" stroke="#7A96B0" stroke-width="2"/><path d="M16 16V12a8 8 0 0116 0v4" stroke="#7A96B0" stroke-width="2"/><circle cx="24" cy="27" r="3" stroke="#7A96B0" stroke-width="2"/></svg>
+      <div class="empty-h">No shipping data available</div>
+      <div class="empty-b">Add your shipping profile to see carrier options and rate comparisons here.</div>
+      <button class="btn b-pl-def" style="font-size:13px;padding:8px 18px;">Add shipping data</button>
+    </div>
+    <div class="empty-state">
+      <svg class="empty-icon" viewBox="0 0 48 48" fill="none"><path d="M8 38L20 14l8 16 6-10 6 18" stroke="#7A96B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="empty-h">No analytics data yet</div>
+      <div class="empty-b">Start shipping with FreightPOP to see performance data and cost savings appear here.</div>
+      <button class="btn b-gl-def" style="font-size:13px;padding:8px 18px;">View shipments</button>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<div style="text-align:center;font-size:12px;color:var(--txt-muted);padding:32px 0 0;border-top:1px solid var(--border-default);margin-top:32px;">
+  FreightPOP Brand Token Reference - Internal Use Only
+</div>
+
+</div>
+</body>
+</html>

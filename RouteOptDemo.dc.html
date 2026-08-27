@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srSpin { to{transform:rotate(360deg);} }
+@keyframes srFade { from{opacity:0;} to{opacity:1;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:870px;transform:scale({{ scale }});transform-origin:top left;background:#EFF3F9;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <!-- TOP NAV -->
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span style="{{ navOrders }}">Orders</span><span>Quote/Ship</span><span style="{{ navRO }}">Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <!-- ══════════ SCENE A · ORDER MANAGEMENT ══════════ -->
+  <sc-if value="{{ sOrders }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:60px;background:#fff;">
+      <div style="position:absolute;left:30px;top:18px;font-size:19px;font-weight:700;color:#1A1A1A;">Order Management</div>
+      <div style="position:absolute;left:30px;top:52px;display:flex;gap:32px;font-size:11.5px;font-weight:700;letter-spacing:.045em;color:#5E7186;">
+        <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">OPEN SALES ORDERS</span><span>OPEN OUTBOUND TRANSACTIONS</span><span>OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:79px;height:1px;background:#E4E9EF;"></div>
+      <div style="position:absolute;right:34px;top:66px;width:34px;height:34px;border-radius:50%;background:#1F8AE0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:300;line-height:1;">+</div>
+
+      <div style="position:absolute;left:20px;top:96px;width:1400px;height:600px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;box-shadow:0 1px 2px rgba(16,42,67,.06);">
+        <div style="position:absolute;left:20px;top:10px;width:210px;height:36px;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;box-sizing:border-box;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
+        <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:250px;top:20px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+        <span style="position:absolute;left:1204px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M3 6 L21 6 M6 12 L18 12 M10 18 L14 18" stroke="#4088CF" stroke-width="2.2"></path></svg> FILTERS</span>
+        <span style="{{ ellBtn }}">···</span>
+
+        <sc-if value="{{ ordBar }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:0;right:0;top:56px;height:44px;background:#3A86D8;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFade .2s both;">
+            <span style="color:#fff;font-size:12.5px;font-weight:600;margin-right:6px;">{{ ordSel }} Selected</span>
+            <span style="{{ barBtn }}">QUOTE SELECTED</span>
+            <span style="{{ barBtn }}">SPOT QUOTE SELECTED</span>
+            <span style="{{ barBtn }}">SHIP SELECTED</span>
+            <span style="{{ barBtn }}">CREATE DELIVERY</span>
+            <span style="{{ barBtn }}">AUTO SPLIT DELIVERIES</span>
+            <span style="{{ barBtn }}">CREATE SAVED SHIPMENT FOR SELECTED</span>
+            <span ref="{{ setBarEll }}" style="{{ barEllBtn }}">···</span>
+            <span style="margin-left:auto;display:flex;gap:10px;"><span style="{{ barBtn }}">SHOW SELECTED</span><span style="{{ barBtn }}">CLEAR SELECTED</span></span>
+          </div>
+        </sc-if>
+
+        <div style="position:absolute;left:0;right:0;top:{{ ordHeadTop }};height:30px;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;background:#fff;font-size:11px;font-weight:700;color:#3A4B60;">
+          <span style="position:absolute;left:24px;top:8px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:block;"></span>
+          <span style="position:absolute;left:58px;top:9px;">Order Number</span>
+          <span style="position:absolute;left:178px;top:9px;">Order Type</span>
+          <span style="position:absolute;left:296px;top:9px;">Ship From Company</span>
+          <span style="position:absolute;left:452px;top:9px;">Ship To</span>
+          <span style="position:absolute;left:706px;top:9px;">Ship To Company</span>
+          <span style="position:absolute;left:880px;top:9px;">Total Handling Units</span>
+          <span style="position:absolute;left:1036px;top:9px;">Total Weight</span>
+          <span style="position:absolute;left:1168px;top:9px;">Locked For Optimization</span>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:{{ ordRowsTop }};bottom:52px;overflow:hidden;">
+          <sc-for list="{{ orders }}" as="o" hint-placeholder-count="9">
+            <div style="{{ o.row }}">
+              <span style="{{ o.cb }}"><sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+              <span style="position:absolute;left:58px;top:11px;font-size:11.5px;color:#4088CF;">{{ o.num }}</span>
+              <span style="position:absolute;left:178px;top:11px;font-size:11.5px;color:#3A4B60;">Outbound</span>
+              <span style="position:absolute;left:296px;top:11px;font-size:11.5px;color:#3A4B60;">FreightPOP</span>
+              <span style="position:absolute;left:452px;top:11px;font-size:11.5px;color:#3A4B60;">{{ o.to }}</span>
+              <span style="position:absolute;left:706px;top:11px;font-size:11.5px;color:#3A4B60;">{{ o.co }}</span>
+              <span style="position:absolute;left:880px;top:11px;font-size:11.5px;color:#3A4B60;">2</span>
+              <span style="position:absolute;left:1036px;top:11px;font-size:11.5px;color:#3A4B60;">{{ o.wt }}</span>
+              <span style="position:absolute;left:1168px;top:11px;font-size:11.5px;font-weight:600;color:{{ o.lockColor }};">{{ o.lockText }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:52px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11.5px;color:#4A5B70;">
+          <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span><span>1–9 of 9</span><span style="display:flex;align-items:center;gap:12px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> ›</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ ellMenu }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:1046px;top:197px;width:306px;background:#fff;border:1px solid #E1E7EF;border-radius:3px;box-shadow:0 12px 30px rgba(5,20,40,.20);z-index:12;animation:srFade .15s both;padding:4px 0;">
+          <div style="{{ menuItem }}">Update Carrier Details for Selected</div>
+          <div style="{{ menuItem }}">Update Return Address for Selected</div>
+          <div style="{{ menuItem }}">Update Shipment Details for Selected</div>
+          <div style="{{ menuItem }}">Delete Selected</div>
+          <div style="{{ menuItem }}">Print Packing Slips for Selected</div>
+          <div style="{{ menuItem }}">Print Consolidated Pick List for Selected</div>
+          <div style="{{ menuItem }}">Print Single Pick List for Selected</div>
+          <div style="{{ menuItem }}">Calculate ROI for Selected</div>
+          <div style="{{ menuItem }}">Print License Plate for Selected</div>
+          <div style="{{ menuItem }}">Create Route Optimization Transaction</div>
+          <div style="{{ menuItemHot }}">Lock for Route Optimization</div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ lockToast }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:520px;top:640px;width:420px;box-sizing:border-box;background:#EFF7E9;border:1px solid #C6E0B4;border-radius:3px;padding:14px 16px;z-index:14;animation:srFade .2s both;white-space:normal;">
+          <div style="font-size:13px;font-weight:700;color:#2E5E33;">Success</div>
+          <div style="margin-top:4px;font-size:12px;color:#3A5A3F;line-height:1.5;">3 orders have been locked for optimization and are now available in Route Optimization.</div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ SCENE B · ROUTING / PLAN ROUTE ══════════ -->
+  <sc-if value="{{ sPlan }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:60px;background:#EFF3F9;">
+      <div style="position:absolute;left:0;right:0;top:0;height:140px;background:#fff;">
+        <div style="position:absolute;left:30px;top:14px;font-size:11.5px;font-weight:700;color:#8A97A8;">Route Optimization <span style="color:#C6D0DC;">/</span> Routing</div>
+        <div style="position:absolute;left:30px;top:38px;font-size:20px;font-weight:700;color:#1A1A1A;">Routing</div>
+        <sc-if value="{{ planOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:30px;top:88px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">PLAN ROUTE</div>
+          <div style="position:absolute;right:266px;top:80px;width:200px;height:44px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Start Date</span><span style="position:absolute;left:12px;top:14px;font-size:13px;color:#24354A;">08/12/2026</span><svg width="15" height="15" viewBox="0 0 24 24" style="position:absolute;right:12px;top:14px;"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg></div>
+          <div style="position:absolute;right:34px;top:80px;width:200px;height:44px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Start Time</span><span style="position:absolute;left:12px;top:14px;font-size:13px;color:#24354A;">03:30 PM</span><svg width="15" height="15" viewBox="0 0 24 24" style="position:absolute;right:12px;top:14px;"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7 V12 L16 14" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg></div>
+        </sc-if>
+        <sc-if value="{{ planEmpty }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;right:34px;top:66px;width:38px;height:38px;border-radius:50%;background:#1F8AE0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:300;line-height:1;">+</div>
+          <div style="position:absolute;left:30px;top:96px;font-size:12.5px;color:#8A97A8;">No route plans in progress. Use the + to plan a route.</div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ planOpen }}" hint-placeholder-val="{{ false }}">
+        <!-- LOCATION -->
+        <div style="position:absolute;left:300px;top:152px;width:470px;height:120px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;">
+          <div style="position:absolute;left:0;right:0;top:0;height:34px;background:#F1F3F6;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#3A4B60;">Location</div>
+          <div style="position:absolute;left:14px;right:14px;top:48px;height:40px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:8px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship From Address</span><span style="position:absolute;left:11px;top:12px;font-size:12.5px;color:#24354A;">{{ shipFrom }}</span><svg width="14" height="14" viewBox="0 0 24 24" style="position:absolute;right:10px;top:12px;"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.4"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.4"></path></svg></div>
+          <div style="position:absolute;left:14px;top:96px;display:flex;align-items:center;gap:10px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:12px;color:#3A4B60;">Only Use Predefined Routes</span></div>
+        </div>
+        <sc-if value="{{ locMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:314px;top:238px;width:442px;background:#fff;border:1px solid #E1E7EF;border-radius:3px;box-shadow:0 12px 30px rgba(5,20,40,.20);z-index:12;animation:srFade .15s both;padding:4px 0;">
+            <div style="{{ menuItemHot }}">FreightPOP Demo, 1 Rancho Cir, Lake Forest CA 92630</div>
+            <div style="{{ menuItem }}">FreightPOP DC East, 40 Goodyear, Irvine CA 92618</div>
+            <div style="{{ menuItem }}">Port of Long Beach, 123 Maine Ave, Long Beach CA 90802</div>
+          </div>
+        </sc-if>
+
+        <!-- EQUIPMENT -->
+        <div style="position:absolute;left:790px;top:152px;width:470px;height:196px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;">
+          <div style="position:absolute;left:0;right:0;top:0;height:34px;background:#F1F3F6;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#3A4B60;">Equipment<span style="margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12px;color:#3A4B60;">Use 3rd Party Carrier <span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span></span></div>
+          <sc-if value="{{ equipAdded }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:14px;right:14px;top:44px;border:1px solid #E4E9EF;border-radius:3px;animation:srFade .25s both;">
+              <div style="height:26px;background:#F7F9FB;border-bottom:1px solid #E4E9EF;font-size:10.5px;font-weight:700;color:#3A4B60;position:relative;"><span style="position:absolute;left:12px;top:7px;">Equipment Name</span><span style="position:absolute;left:200px;top:7px;">Equipment Type</span><span style="position:absolute;left:320px;top:7px;">Max Volume Allowed</span></div>
+              <div style="height:28px;border-bottom:1px solid #EDF1F6;font-size:11.5px;color:#3A4B60;position:relative;"><span style="position:absolute;left:12px;top:7px;">Truck #1</span><span style="position:absolute;left:200px;top:7px;">TRUCKLOAD</span><span style="position:absolute;left:330px;top:7px;">3930.21</span></div>
+              <div style="height:28px;font-size:11.5px;color:#3A4B60;position:relative;"><span style="position:absolute;left:12px;top:7px;">Truck #3</span><span style="position:absolute;left:200px;top:7px;">TRUCKLOAD</span><span style="position:absolute;left:330px;top:7px;">3930.21</span></div>
+            </div>
+          </sc-if>
+          <span style="{{ addEquipBtn }}">ADD EQUIPMENT</span>
+        </div>
+
+        <!-- ROUTE METRICS -->
+        <div style="position:absolute;left:300px;top:284px;width:470px;height:150px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;">
+          <div style="position:absolute;left:0;right:0;top:0;height:34px;background:#F1F3F6;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#3A4B60;">Route Metrics<span style="{{ viewEditBtn }}">VIEW/EDIT ROUTE</span></div>
+          <div style="position:absolute;left:14px;top:46px;width:200px;{{ mFld }}"><span style="{{ mLbl }}">Route Optimization Id</span><span style="{{ mVal }}">{{ mId }}</span></div>
+          <div style="position:absolute;left:224px;top:46px;width:110px;{{ mFld }}"><span style="{{ mLbl }}">Total Trip Time</span><span style="{{ mVal }}">{{ mTrip }}</span></div>
+          <div style="position:absolute;left:344px;top:46px;width:110px;{{ mFld }}"><span style="{{ mLbl }}">Total Distance</span><span style="{{ mVal }}">{{ mDist }}</span></div>
+          <div style="position:absolute;left:14px;top:100px;width:95px;{{ mFld }}"><span style="{{ mLbl }}">Total Stops</span><span style="{{ mVal }}">{{ mStops }}</span></div>
+          <div style="position:absolute;left:119px;top:100px;width:95px;{{ mFld }}"><span style="{{ mLbl }}">Total Orders</span><span style="{{ mVal }}">{{ mOrders }}</span></div>
+          <div style="position:absolute;left:224px;top:100px;width:110px;{{ mFld }}"><span style="{{ mLbl }}">Est. Operating Cost</span><span style="{{ mVal }}">--</span></div>
+          <div style="position:absolute;left:344px;top:100px;width:110px;{{ mFld }}"><span style="{{ mLbl }}">Total Customer Cost</span><span style="{{ mVal }}">--</span></div>
+          <sc-if value="{{ optimizing }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:1px;right:1px;top:35px;bottom:1px;background:rgba(255,255,255,.82);display:flex;align-items:center;justify-content:center;gap:12px;"><span style="width:20px;height:20px;border-radius:50%;border:3px solid #B9CDE8;border-top-color:#4088CF;animation:srSpin .8s linear infinite;display:inline-block;"></span><span style="font-size:12.5px;font-weight:600;color:#24354A;">Optimizing…</span></div>
+          </sc-if>
+        </div>
+
+        <!-- ORDERS -->
+        <div style="position:absolute;left:300px;top:446px;width:960px;height:300px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;overflow:hidden;">
+          <div style="position:absolute;left:0;right:0;top:0;height:34px;background:#F1F3F6;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#3A4B60;">Orders</div>
+          <div style="position:absolute;left:14px;top:46px;display:flex;gap:26px;font-size:11.5px;font-weight:700;letter-spacing:.045em;">
+            <span style="{{ tabUn }}">UNASSIGNED</span><span style="{{ tabRfo }}">READY FOR OPTIMIZATION</span><span style="{{ tabRfd }}">READY FOR DISPATCH</span>
+          </div>
+          <div style="position:absolute;left:14px;top:78px;width:190px;height:32px;box-sizing:border-box;background:#F4F6F9;border:1px solid #E4E9EF;border-radius:3px;display:flex;align-items:center;gap:8px;padding:0 10px;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11.5px;">Search</span><span style="margin-left:auto;font-size:10.5px;font-weight:700;color:#4A5B70;">GO</span></div>
+          <svg width="15" height="15" viewBox="0 0 24 24" style="position:absolute;left:216px;top:87px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+          <span style="position:absolute;right:14px;top:78px;width:44px;height:32px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:14px;">···</span>
+
+          <sc-if value="{{ roBar }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:120px;height:44px;background:#3A86D8;display:flex;align-items:center;gap:10px;padding:0 14px;animation:srFade .2s both;">
+              <span style="color:#fff;font-size:12.5px;font-weight:600;margin-right:6px;">{{ roSel }} Selected</span>
+              <span style="{{ barBtn }}">REMOVE FROM RO AND UNLOCK IN ORDERS</span>
+              <span style="{{ moveBtn }}">MOVE TO READY FOR OPTIMIZATION</span>
+              <span style="margin-left:auto;"><span style="{{ barBtn }}">CLEAR SELECTED</span></span>
+            </div>
+          </sc-if>
+
+          <div style="position:absolute;left:0;right:0;top:{{ roHeadTop }};height:28px;background:#fff;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;font-size:10.5px;font-weight:700;color:#3A4B60;">
+            <span style="{{ roAllCb }}"><sc-if value="{{ roAll }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+            <span style="position:absolute;left:54px;top:8px;">Order Number</span>
+            <span style="position:absolute;left:170px;top:8px;">Ship From</span>
+            <span style="position:absolute;left:330px;top:8px;">Ship From Company</span>
+            <span style="position:absolute;left:480px;top:8px;">Ship To</span>
+            <span style="position:absolute;left:672px;top:8px;">Ship To Company</span>
+            <span style="position:absolute;left:820px;top:8px;">Total HU</span>
+            <span style="position:absolute;left:888px;top:8px;">Total Cubic Ft</span>
+          </div>
+          <div style="position:absolute;left:0;right:0;top:{{ roRowsTop }};bottom:0;overflow:hidden;">
+            <sc-if value="{{ roEmpty }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:26px 16px;font-size:12px;color:#8A97A8;">Select a ship-from location to load orders locked for optimization.</div>
+            </sc-if>
+            <sc-for list="{{ roRows }}" as="r" hint-placeholder-count="3">
+              <div style="{{ r.row }}">
+                <span style="{{ r.cb }}"><sc-if value="{{ r.on }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+                <span style="position:absolute;left:54px;top:9px;font-size:11.5px;color:#3A4B60;">{{ r.num }}</span>
+                <span style="position:absolute;left:170px;top:9px;font-size:11.5px;color:#3A4B60;">FreightPOP, Shipping, 1 Ra…</span>
+                <span style="position:absolute;left:330px;top:9px;font-size:11.5px;color:#3A4B60;">FreightPOP</span>
+                <span style="position:absolute;left:480px;top:9px;font-size:11.5px;color:#3A4B60;">{{ r.to }}</span>
+                <span style="position:absolute;left:672px;top:9px;font-size:11.5px;color:#3A4B60;">{{ r.co }}</span>
+                <span style="position:absolute;left:820px;top:9px;font-size:11.5px;color:#3A4B60;">2</span>
+                <span style="position:absolute;left:888px;top:9px;font-size:11.5px;color:#3A4B60;">97.78</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- BOTTOM ACTION BAR -->
+        <div style="position:absolute;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 22px;">
+          <span style="{{ ghostBtn }}">CANCEL</span>
+          <span style="{{ ghostBtn }}">SAVE</span>
+          <span style="{{ optimizeBtn }}">OPTIMIZE</span>
+          <span style="{{ dispatchBtn }}">DISPATCH</span>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ ADD EQUIPMENT MODAL ══════════ -->
+  <sc-if value="{{ equipModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:52px;right:0;bottom:60px;background:rgba(120,150,185,.42);z-index:20;"></div>
+    <div style="position:absolute;left:270px;top:120px;width:900px;height:600px;background:#fff;border-radius:4px;box-shadow:0 18px 50px rgba(5,20,40,.35);z-index:21;animation:srFade .2s both;">
+      <div style="position:absolute;left:0;right:0;top:0;height:56px;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 22px;font-size:16px;color:#24354A;">Add Available Equipment<span style="margin-left:auto;font-size:17px;color:#8A97A8;">✕</span></div>
+      <div style="position:absolute;left:22px;top:74px;width:200px;height:40px;box-sizing:border-box;background:#F4F6F9;border:1px solid #E4E9EF;border-radius:3px;display:flex;align-items:center;gap:8px;padding:0 12px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;color:#4A5B70;">GO</span></div>
+      <svg width="16" height="16" viewBox="0 0 24 24" style="position:absolute;left:236px;top:86px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+      <div style="position:absolute;left:470px;top:74px;width:190px;height:40px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Start Date</span><span style="position:absolute;left:12px;top:12px;font-size:12.5px;color:#24354A;">08/12/2026</span><svg width="14" height="14" viewBox="0 0 24 24" style="position:absolute;right:10px;top:12px;"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg></div>
+      <div style="position:absolute;left:678px;top:74px;width:190px;height:40px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Start Time</span><span style="position:absolute;left:12px;top:12px;font-size:12.5px;color:#24354A;">03:35 PM</span><svg width="14" height="14" viewBox="0 0 24 24" style="position:absolute;right:10px;top:12px;"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7 V12 L16 14" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg></div>
+      <div style="position:absolute;left:22px;right:22px;top:132px;bottom:78px;border:1px solid #E4E9EF;border-radius:2px;">
+        <div style="position:absolute;left:0;right:0;top:0;height:34px;background:#F7F9FB;border-bottom:1px solid #E4E9EF;font-size:11.5px;font-weight:700;color:#3A4B60;">
+          <span style="position:absolute;left:22px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:block;"></span>
+          <span style="position:absolute;left:64px;top:10px;">Equipment Name</span>
+          <span style="position:absolute;left:560px;top:10px;">Equipment Type</span>
+          <span style="position:absolute;left:730px;top:10px;">Max Volume Allowed</span>
+        </div>
+        <sc-for list="{{ equipRows }}" as="e" hint-placeholder-count="2">
+          <div style="{{ e.row }}">
+            <span style="{{ e.cb }}"><sc-if value="{{ e.on }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+            <span style="position:absolute;left:64px;top:11px;font-size:12px;color:#3A4B60;">{{ e.name }}</span>
+            <span style="position:absolute;left:560px;top:11px;font-size:12px;color:#3A4B60;">TRUCKLOAD</span>
+            <span style="position:absolute;left:730px;top:11px;font-size:12px;color:#3A4B60;">3930.21</span>
+          </div>
+        </sc-for>
+      </div>
+      <span style="{{ addSelBtn }}">ADD SELECTED EQUIPMENT</span>
+      <span style="position:absolute;left:266px;bottom:22px;height:36px;box-sizing:border-box;display:flex;align-items:center;padding:0 18px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ ROUTE OVERVIEW MODAL ══════════ -->
+  <sc-if value="{{ roModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:52px;right:0;bottom:60px;background:rgba(120,150,185,.42);z-index:20;"></div>
+    <div style="position:absolute;left:190px;top:78px;width:1060px;height:670px;background:#fff;border-radius:4px;box-shadow:0 18px 50px rgba(5,20,40,.35);z-index:21;animation:srFade .2s both;overflow:hidden;">
+      <div style="position:absolute;left:0;right:0;top:0;height:50px;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 20px;font-size:15px;color:#24354A;">Route Overview<span style="margin-left:auto;font-size:16px;color:#8A97A8;">✕</span></div>
+      <div style="position:absolute;left:20px;top:60px;display:flex;gap:24px;font-size:11.5px;font-weight:700;letter-spacing:.05em;">
+        <span style="{{ t1Tab }}">TRUCK #1</span><span style="{{ t3Tab }}">TRUCK #3</span>
+      </div>
+      <div style="position:absolute;left:20px;right:20px;top:96px;height:88px;">
+        <sc-for list="{{ roMetrics }}" as="m" hint-placeholder-count="14">
+          <div style="{{ m.box }}"><div style="font-size:9.5px;color:#9E7B4F;letter-spacing:.02em;">{{ m.k }}</div><div style="margin-top:3px;font-size:13px;font-weight:600;color:#24354A;">{{ m.v }}</div></div>
+        </sc-for>
+      </div>
+      <!-- MAP -->
+      <div style="position:absolute;left:20px;top:196px;width:470px;height:440px;background:#E6EDE7;border:1px solid #D6DEE6;overflow:hidden;">
+        <svg width="470" height="440" viewBox="0 0 470 440">
+          <rect x="0" y="0" width="470" height="440" fill="#F1F0EB"></rect>
+          <rect x="252" y="34" width="132" height="88" rx="3" fill="#D8E8CE"></rect>
+          <rect x="34" y="248" width="86" height="60" rx="3" fill="#D8E8CE"></rect>
+          <rect x="300" y="212" width="120" height="74" rx="2" fill="#E9E6E0"></rect>
+          <g stroke="#E2E0D9" stroke-width="2.2" fill="none"><path d="M0 26 H470"/><path d="M0 60 H470"/><path d="M0 94 H470"/><path d="M0 128 H470"/><path d="M0 162 H470"/><path d="M0 196 H470"/><path d="M0 230 H470"/><path d="M0 264 H470"/><path d="M0 298 H470"/><path d="M0 332 H470"/><path d="M0 366 H470"/><path d="M0 400 H470"/><path d="M0 434 H470"/><path d="M22 0 V440"/><path d="M60 0 V440"/><path d="M98 0 V440"/><path d="M136 0 V440"/><path d="M174 0 V440"/><path d="M212 0 V440"/><path d="M250 0 V440"/><path d="M288 0 V440"/><path d="M326 0 V440"/><path d="M364 0 V440"/><path d="M402 0 V440"/><path d="M440 0 V440"/></g>
+          <g stroke="#FFFFFF" stroke-width="1.1" fill="none"><path d="M0 26 H470"/><path d="M0 60 H470"/><path d="M0 94 H470"/><path d="M0 128 H470"/><path d="M0 162 H470"/><path d="M0 196 H470"/><path d="M0 230 H470"/><path d="M0 264 H470"/><path d="M0 298 H470"/><path d="M0 332 H470"/><path d="M0 366 H470"/><path d="M0 400 H470"/><path d="M0 434 H470"/><path d="M22 0 V440"/><path d="M60 0 V440"/><path d="M98 0 V440"/><path d="M136 0 V440"/><path d="M174 0 V440"/><path d="M212 0 V440"/><path d="M250 0 V440"/><path d="M288 0 V440"/><path d="M326 0 V440"/><path d="M364 0 V440"/><path d="M402 0 V440"/><path d="M440 0 V440"/></g>
+          <rect x="28" y="352" width="96" height="64" rx="3" fill="#D8E8CE"></rect>
+          <g fill="none">
+            <path d="M0 132 L470 100" stroke="#DCD8CE" stroke-width="9"></path>
+            <path d="M0 132 L470 100" stroke="#FFFFFF" stroke-width="6"></path>
+            <path d="M0 304 L470 332" stroke="#DCD8CE" stroke-width="9"></path>
+            <path d="M0 304 L470 332" stroke="#FFFFFF" stroke-width="6"></path>
+            <path d="M112 0 L142 440" stroke="#DCD8CE" stroke-width="8"></path>
+            <path d="M112 0 L142 440" stroke="#FFFFFF" stroke-width="5"></path>
+            <path d="M302 0 L282 440" stroke="#E9C25C" stroke-width="9"></path>
+            <path d="M302 0 L282 440" stroke="#F9D97E" stroke-width="6"></path>
+          </g>
+          <path d="{{ mapPath }}" stroke="#12406F" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".25" style="transition:all .5s;"></path>
+          <path d="{{ mapPath }}" stroke="#2C6FBD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" style="transition:all .5s;"></path>
+          <g font-size="9.5" font-weight="700" font-family="Segoe UI,Arial,sans-serif">
+            <circle cx="118" cy="86" r="9" fill="#2C6FBD"></circle><text x="118" y="90" fill="#fff" text-anchor="middle">2</text>
+            <circle cx="176" cy="300" r="9" fill="#2C6FBD"></circle><text x="176" y="304" fill="#fff" text-anchor="middle">3</text>
+            <circle cx="262" cy="352" r="9" fill="#2C6FBD"></circle><text x="262" y="356" fill="#fff" text-anchor="middle">4</text>
+            <circle cx="236" cy="378" r="9" fill="#2C6FBD"></circle><text x="236" y="382" fill="#fff" text-anchor="middle">5</text>
+            <circle cx="330" cy="330" r="9" fill="#2C6FBD"></circle><text x="330" y="334" fill="#fff" text-anchor="middle">6</text>
+            <circle cx="196" cy="398" r="9" fill="#2C6FBD"></circle><text x="196" y="402" fill="#fff" text-anchor="middle">7</text>
+            <circle cx="356" cy="352" r="10" fill="#12406F"></circle><text x="356" y="356" fill="#fff" text-anchor="middle">1</text>
+          </g>
+          <g font-size="9" fill="#5A6470" font-family="Segoe UI,Arial,sans-serif">
+            <text x="132" y="82">266 York St</text><text x="190" y="296">Cedar Street</text><text x="372" y="356">FreightPOP Demo</text><text x="208" y="414">Port of Long Beach</text>
+          </g>
+        </svg>
+        <span style="position:absolute;left:8px;top:8px;width:22px;height:22px;background:#fff;border:1px solid #C6D0DC;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#5E7186;">⋮</span>
+      </div>
+      <!-- STOP LIST -->
+      <div style="position:absolute;left:504px;top:196px;right:20px;height:440px;border:1px solid #E4E9EF;overflow:hidden;">
+        <div style="height:44px;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;padding:0 14px;">
+          <svg width="19" height="19" viewBox="0 0 24 24"><path d="M2 7 H13 V16 H2 Z M13 10 H17.6 L20.6 13.2 V16 H13 Z" fill="#2C6FBD"></path><circle cx="6" cy="18.4" r="1.9" fill="#2C6FBD"></circle><circle cx="17" cy="18.4" r="1.9" fill="#2C6FBD"></circle></svg>
+          <div><div style="font-size:11.5px;font-weight:700;color:#24354A;">Stop 1 (Origin)</div><div style="font-size:11px;color:#5E7186;margin-top:2px;">FreightPOP Demo 1 Rancho Cir Lake Forest CA 92630</div></div>
+        </div>
+        <sc-for list="{{ stops }}" as="s" hint-placeholder-count="6">
+          <div style="{{ s.wrap }}">
+            <div style="{{ s.row }}">
+              <span style="display:flex;flex-direction:column;gap:2px;flex-shrink:0;"><span style="{{ dotsRow }}"><span style="{{ dot }}"></span><span style="{{ dot }}"></span></span><span style="{{ dotsRow }}"><span style="{{ dot }}"></span><span style="{{ dot }}"></span></span><span style="{{ dotsRow }}"><span style="{{ dot }}"></span><span style="{{ dot }}"></span></span></span>
+              <span style="flex-shrink:0;width:52px;font-size:11.5px;font-weight:700;color:#24354A;">{{ s.label }}</span>
+              <div style="min-width:0;"><div style="font-size:11px;color:#24354A;white-space:normal;line-height:1.35;">{{ s.addr }}</div><div style="font-size:10px;color:#7A8CA0;margin-top:2px;">{{ s.meta }}</div></div>
+              <span style="margin-left:auto;flex-shrink:0;font-size:11px;color:#8A97A8;">⌄</span>
+            </div>
+            <sc-if value="{{ s.open }}" hint-placeholder-val="{{ false }}">
+              <div style="border-top:1px solid #EDF1F6;background:#FBFCFD;padding:8px 14px 10px 46px;animation:srFade .2s both;">
+                <div style="display:grid;grid-template-columns:150px 150px 1fr 20px;font-size:10.5px;font-weight:700;color:#3A4B60;"><span>Company Name</span><span>Order Number</span><span>Open/Close Time</span><span style="text-align:right;color:#8A97A8;">···</span></div>
+                <div style="margin-top:5px;display:grid;grid-template-columns:150px 150px 1fr 20px;font-size:11px;color:#3A4B60;"><span>{{ s.co }}</span><span>{{ s.ord }}</span><span>{{ s.win }}</span><span></span></div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ ghost }}">
+            <span style="flex-shrink:0;width:52px;font-size:11.5px;font-weight:700;color:#24354A;">{{ ghostLabel }}</span>
+            <div style="min-width:0;font-size:11px;color:#24354A;white-space:normal;line-height:1.35;">{{ ghostAddr }}</div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:44px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 20px;">
+        <span style="{{ ghostBtn }}">SAVE</span><span style="{{ dispatchBtn }}">VIEW SHIPMENTS</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ CHROME BAND ══════════ -->
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#0A2540;z-index:44;"></div>
+  <div style="position:absolute;left:16px;bottom:22px;z-index:45;color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;pointer-events:none;">{{ cap }}</div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:4px;z-index:45;pointer-events:none;color:#8FE8D4;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;">PAUSED</div>
+  </sc-if>
+  <div style="position:absolute;right:22px;bottom:14px;z-index:46;display:flex;align-items:center;gap:10px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:10px;z-index:47;background:rgba(255,255,255,.10);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:10px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .7s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:740},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  setBarEll = (el) => { this._barEll = el; };
+  A0 = { playing: true, cap: "01 · Order Management — the orders you want routed",
+    curX: 700, curY: 700, ripple: false, ripX: 0, ripY: 0,
+    scene: "orders", ordChecks: 0, ordBar: false, ellHot: false, ellMenu: false, locked: false, lockToast: false,
+    planOpen: false, locMenu: false, shipFromSet: false,
+    equipModal: false, equipChecks: 0, equipAdded: false,
+    roAll: false, roBar: false, tab: "un", moveHot: false,
+    optHot: false, optimizing: false, optimized: false,
+    roModal: false, truck: 3, stopOrder: [0, 1, 2, 3, 4, 5], openStop: -1,
+    dragging: false, gx: 0, gy: 0 };
+  DUR = 50;
+  KF = [
+    { t: 1.6, s: { curX: 71, curY: 305, cap: "02 · Select the orders intended for optimization" } },
+    { t: 2.4, s: { ripple: true, ripX: 71, ripY: 305, ordChecks: 1, ordBar: true } },
+    { t: 2.9, s: { ripple: false, curX: 71, curY: 339 } },
+    { t: 3.5, s: { ripple: true, ripX: 71, ripY: 339, ordChecks: 2 } },
+    { t: 4.0, s: { ripple: false, curX: 71, curY: 373 } },
+    { t: 4.6, s: { ripple: true, ripX: 71, ripY: 373, ordChecks: 3 } },
+    { t: 5.1, s: { ripple: false, curX: 1070, curY: 227, cap: "03 · Open the ··· in the selection bar" } },
+    { t: 6.0, s: { ripple: true, ripX: 1070, ripY: 227, ellHot: true } },
+    { t: 6.4, s: { ripple: false, ellMenu: true, curX: 1150, curY: 400 } },
+    { t: 7.6, s: { cap: "04 · Lock for Route Optimization", curX: 1180, curY: 590 } },
+    { t: 8.6, s: { ripple: true, ripX: 1180, ripY: 590 } },
+    { t: 9.0, s: { ripple: false, ellMenu: false, ellHot: false, locked: true, lockToast: true, ordChecks: 0, ordBar: false } },
+    { t: 11.4, s: { lockToast: false, curX: 1035, curY: 26, cap: "05 · Over to Route Optimization" } },
+    { t: 12.4, s: { ripple: true, ripX: 1035, ripY: 26 } },
+    { t: 12.8, s: { ripple: false, scene: "plan", curX: 1240, curY: 200, cap: "06 · Plan a route" } },
+    { t: 14.0, s: { curX: 1401, curY: 137 } },
+    { t: 14.8, s: { ripple: true, ripX: 1401, ripY: 137 } },
+    { t: 15.2, s: { ripple: false, planOpen: true, curX: 700, curY: 300, cap: "07 · Pick the warehouse you are routing out of" } },
+    { t: 16.4, s: { curX: 600, curY: 264 } },
+    { t: 17.2, s: { ripple: true, ripX: 600, ripY: 264, locMenu: true } },
+    { t: 17.7, s: { ripple: false, curX: 560, curY: 300 } },
+    { t: 18.6, s: { ripple: true, ripX: 560, ripY: 300 } },
+    { t: 19.0, s: { ripple: false, locMenu: false, shipFromSet: true, cap: "08 · The locked orders load in under Unassigned", curX: 700, curY: 620 } },
+    { t: 21.4, s: { curX: 873, curY: 270, cap: "09 · Add the trucks available for this run" } },
+    { t: 22.2, s: { ripple: true, ripX: 873, ripY: 270 } },
+    { t: 22.6, s: { ripple: false, equipModal: true, curX: 320, curY: 340 } },
+    { t: 23.8, s: { curX: 320, curY: 336 } },
+    { t: 24.4, s: { ripple: true, ripX: 320, ripY: 336, equipChecks: 1 } },
+    { t: 24.9, s: { ripple: false, curX: 320, curY: 376 } },
+    { t: 25.5, s: { ripple: true, ripX: 320, ripY: 376, equipChecks: 2 } },
+    { t: 26.0, s: { ripple: false, curX: 400, curY: 686 } },
+    { t: 26.8, s: { ripple: true, ripX: 400, ripY: 686 } },
+    { t: 27.2, s: { ripple: false, equipModal: false, equipAdded: true, cap: "10 · Select the orders and move them to Ready for Optimization", curX: 340, curY: 592 } },
+    { t: 28.8, s: { curX: 332, curY: 634 } },
+    { t: 29.5, s: { ripple: true, ripX: 332, ripY: 634, roAll: true, roBar: true } },
+    { t: 30.0, s: { ripple: false, curX: 700, curY: 620 } },
+    { t: 31.2, s: { ripple: true, ripX: 700, ripY: 620, moveHot: true } },
+    { t: 31.6, s: { ripple: false, moveHot: false, roBar: false, roAll: false, tab: "rfo", cap: "11 · They land on the Ready for Optimization tab" } },
+    { t: 33.4, s: { curX: 1240, curY: 784, cap: "12 · Optimize" } },
+    { t: 34.2, s: { ripple: true, ripX: 1240, ripY: 784, optHot: true } },
+    { t: 34.6, s: { ripple: false, optHot: false, optimizing: true } },
+    { t: 37.0, s: { optimizing: false, optimized: true, cap: "13 · Stops, distance and trip time come back" } },
+    { t: 38.6, s: { curX: 700, curY: 370, cap: "14 · View/Edit Route opens the map" } },
+    { t: 39.4, s: { ripple: true, ripX: 700, ripY: 370 } },
+    { t: 39.8, s: { ripple: false, roModal: true, truck: 1, curX: 600, curY: 400 } },
+    { t: 41.0, s: { curX: 279, curY: 145, cap: "15 · Toggle between the trucks on the run" } },
+    { t: 41.8, s: { ripple: true, ripX: 279, ripY: 145, truck: 3 } },
+    { t: 42.4, s: { ripple: false, cap: "16 · Drag and drop to resequence stops", curX: 528, curY: 320 } },
+    { t: 43.4, s: { dragging: true, gx: 528, gy: 320 } },
+    { t: 44.2, s: { gx: 534, gy: 262 } },
+    { t: 44.9, s: { dragging: false, stopOrder: [1, 0, 2, 3, 4, 5], ripple: true, ripX: 534, ripY: 262 } },
+    { t: 45.3, s: { ripple: false, cap: "17 · Each stop carries its orders and open/close times", curX: 1200, curY: 300 } },
+    { t: 46.2, s: { ripple: true, ripX: 1200, ripY: 300, openStop: 0 } },
+    { t: 46.6, s: { ripple: false, curX: 700, curY: 420 } },
+    { t: 48.0, s: { cap: "18 · Save and dispatch straight from here" } },
+  ];
+  ORDERS = [
+    ["ROTest6", "Smith-Dunn, Isabella Dura…", "Smith-Dunn", "1,240 LB"],
+    ["ROTest7", "Hood-Hart, Jasmine Hatfi…", "Hood-Hart", "980 LB"],
+    ["ROTest8", "Hudson-Larsen, Jennifer B…", "Hudson-Larsen", "1,150 LB"],
+    ["ROTest9", "Knox-Fox, Kevin Clark, 235…", "Knox-Fox", "760 LB"],
+    ["ROTest10", "Peters-Lambert, Renee Re…", "Peters-Lambert", "2,400 LB"],
+    ["ROTest11", "Smith, Hill and Harrison, S…", "Smith, Hill and Harrison", "1,020 LB"],
+    ["ROTest12", "Mullen PLC, Lisa Nguyen, …", "Mullen PLC", "640 LB"],
+    ["ROTest13", "Simmons Ltd, Jim Turner, 7…", "Simmons Ltd", "1,860 LB"],
+    ["ROTest14", "Ramirez, Harrington and …", "Ramirez, Harrington and …", "1,300 LB"],
+  ];
+  STOPS3 = [
+    { label: "Stop 2", addr: "266 York St 266 York St Delano CA 93215 US", meta: "5 HU | 2800 lbs | 105.19 Cubic Ft", co: "266 York St", ord: "RouteTest10", win: "08:00 AM – 04:00 PM" },
+    { label: "Stop 3", addr: "Cedar Street 6210 Cedar St Huntington Park CA 90255 US", meta: "7 HU | 2800 lbs | 440 Cubic Ft", co: "Cedar Street", ord: "RouteTest12", win: "07:00 AM – 03:00 PM" },
+    { label: "Stop 4", addr: "66 66 Lucy Drive Anaheim CA 92804 US", meta: "6 HU | 2994 lbs | 384 Cubic Ft", co: "66 Lucy Drive", ord: "RouteTest14", win: "09:00 AM – 05:00 PM" },
+    { label: "Stop 5", addr: "Cherry Lane 8700-8799 Cherry Ct Garden Grove CA 92844 US", meta: "5 HU | 2500 lbs | 104.16 Cubic Ft", co: "Cherry Lane", ord: "RouteTest15", win: "08:00 AM – 02:00 PM" },
+    { label: "Stop 6", addr: "FreightPOP 20 Goodyear Irvine CA 92618 US", meta: "25 HU | 1250 lbs | 28.93 Cubic Ft", co: "FreightPOP", ord: "RouteTest18", win: "06:00 AM – 06:00 PM" },
+    { label: "Stop 7", addr: "Port of Long Beach 123 Maine Ave Long Beach CA 90802 US", meta: "3 HU | 5200 lbs | 111.11 Cubic Ft", co: "Port of Long Beach", ord: "RouteTest20", win: "10:00 AM – 04:00 PM" },
+  ];
+  M1 = [["Equipment Name", "Truck #1"], ["Total Stops", "4"], ["Total Orders", "4"], ["Total Trip Time", "6h 20m"], ["Estimated Operating Cost", "--"], ["Total Distance", "212.0 mi"], ["Total Customer Cost", "--"],
+    ["Equipment Type", "TRUCKLOAD"], ["Max Volume Allowed", "100 Cubic Ft"], ["Packed Volume", "894 Cubic Ft"], ["Percent to Capacity", "23%"], ["Total Handling Units", "34"], ["Max Weight Allowed", "45000 lbs"], ["Packed Weight", "8420 lbs"]];
+  M3 = [["Equipment Name", "Truck #3"], ["Total Stops", "6"], ["Total Orders", "6"], ["Total Trip Time", "11h 45m"], ["Estimated Operating Cost", "--"], ["Total Distance", "440.0 mi"], ["Total Customer Cost", "--"],
+    ["Equipment Type", "TRUCKLOAD"], ["Max Volume Allowed", "100 Cubic Ft"], ["Packed Volume", "1261 Cubic Ft"], ["Percent to Capacity", "32%"], ["Total Handling Units", "51"], ["Max Weight Allowed", "45000 lbs"], ["Packed Weight", "12744 lbs"]];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    if (this._wrap) this._ro = new ResizeObserver(() => this._measure());
+    if (this._ro && this._wrap) this._ro.observe(this._wrap);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); if (this._ro) this._ro.disconnect(); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; if (this._ro && el) this._ro.observe(el); this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.clientWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  _cb(on, left, top) {
+    return "position:absolute;left:" + left + "px;top:" + top + "px;width:13px;height:13px;border-radius:2px;box-sizing:border-box;display:block;" +
+      (on ? "background:#4088CF;border:1.5px solid #4088CF;" : "background:#fff;border:1.5px solid #B9C3CF;");
+  }
+  renderVals() {
+    const a = this.anim;
+    const orders = this.ORDERS.map((o, i) => {
+      const on = i < a.ordChecks;
+      const lockedRow = a.locked && i < 3;
+      return { num: o[0], to: o[1], co: o[2], wt: o[3], on,
+        row: "position:absolute;left:0;right:0;top:" + (i * 34) + "px;height:34px;border-bottom:1px solid #EDF1F6;background:" + (on ? "#EAF3FF" : "#fff") + ";transition:background .2s;",
+        cb: this._cb(on, 24, 10),
+        lockText: lockedRow ? "Yes" : "No", lockColor: lockedRow ? "#2E7D46" : "#8A97A8" };
+    });
+    const roRows = (a.shipFromSet ? this.ORDERS.slice(0, 3) : []).map((o, i) => ({
+      num: o[0], to: o[1], co: o[2], on: a.roAll,
+      row: "position:absolute;left:0;right:0;top:" + (i * 32) + "px;height:32px;border-bottom:1px solid #EDF1F6;background:" + (a.roAll ? "#EAF3FF" : "#fff") + ";transition:background .2s;",
+      cb: this._cb(a.roAll, 24, 9) }));
+    const equipRows = [["Truck #1"], ["Truck #3"]].map((e, i) => ({
+      name: e[0], on: i < a.equipChecks,
+      row: "position:absolute;left:0;right:0;top:" + (34 + i * 36) + "px;height:36px;border-bottom:1px solid #EDF1F6;background:" + (i === 1 ? "#F4F9FE" : "#fff") + ";",
+      cb: this._cb(i < a.equipChecks, 22, 11) }));
+    const mRows = a.truck === 1 ? this.M1 : this.M3;
+    const roMetrics = mRows.map((m, i) => ({ k: m[0], v: m[1],
+      box: "position:absolute;left:" + ((i % 7) * 146) + "px;top:" + (Math.floor(i / 7) * 46) + "px;width:140px;" }));
+    const stops = a.stopOrder.map((si, i) => {
+      const s = this.STOPS3[si];
+      return { ...s, label: "Stop " + (i + 2), open: a.openStop === i,
+        wrap: "border-bottom:1px solid #EDF1F6;background:" + (a.dragging && si === 1 ? "#F4F6F9" : "#fff") + ";opacity:" + (a.dragging && si === 1 ? ".35" : "1") + ";",
+        row: "display:flex;align-items:center;gap:10px;padding:9px 14px;" };
+    });
+    const btn = (bg, color, border) => "height:36px;box-sizing:border-box;display:flex;align-items:center;padding:0 20px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.05em;background:" + bg + ";color:" + color + ";border:" + border + ";";
+    return { ...a,
+      scale: this.scaleVal, wrapH: Math.round(870 * this.scaleVal) + "px",
+      sOrders: a.scene === "orders", sPlan: a.scene === "plan", planEmpty: a.scene === "plan" && !a.planOpen,
+      navOrders: a.scene === "orders" ? "color:#fff;font-weight:600;" : "",
+      navRO: a.scene === "plan" ? "color:#fff;font-weight:600;" : "",
+      orders, roRows, equipRows, roMetrics, stops,
+      ordSel: a.ordChecks, ordHeadTop: (a.ordBar ? 100 : 56) + "px", ordRowsTop: (a.ordBar ? 130 : 86) + "px",
+      roSel: a.roAll ? 3 : 0, roHeadTop: (a.roBar ? 164 : 120) + "px", roRowsTop: (a.roBar ? 192 : 148) + "px",
+      roEmpty: !a.shipFromSet,
+      shipFrom: a.shipFromSet ? "FreightPOP Demo, 1 Rancho Cir, Lake Forest CA 92630" : "",
+      ellBtn: "position:absolute;left:1330px;top:12px;width:46px;height:32px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid " + (a.ellHot ? "#4088CF" : "#C6D0DC") + ";border-radius:3px;color:" + (a.ellHot ? "#4088CF" : "#5E7186") + ";font-size:14px;letter-spacing:.06em;",
+      menuItem: "padding:8px 16px;font-size:12px;color:#3A4B60;",
+      barEllBtn: "background:" + (a.ellHot ? "#DCEBFB" : "#fff") + ";border-radius:3px;padding:8px 14px;font-size:12px;font-weight:700;color:#2A5FA0;line-height:1;",
+      setBarEll: this.setBarEll,
+      menuItemHot: "padding:8px 16px;font-size:12px;color:#24354A;background:#EAF3FF;font-weight:600;",
+      barBtn: "background:#fff;border-radius:3px;padding:8px 12px;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#2A5FA0;",
+      moveBtn: "background:" + (a.moveHot ? "#DCEBFB" : "#fff") + ";border-radius:3px;padding:8px 12px;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#2A5FA0;",
+      togOff: "width:30px;height:16px;border-radius:8px;background:#C6D0DC;display:flex;align-items:center;padding:0 2px;flex-shrink:0;",
+      knobOff: "width:12px;height:12px;border-radius:50%;background:#fff;display:block;",
+      addEquipBtn: "position:absolute;left:14px;top:" + (a.equipAdded ? 142 : 48) + "px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 18px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;",
+      viewEditBtn: "margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:" + (a.optimized ? "#4088CF" : "#B4BEC9") + ";",
+      mFld: "box-sizing:border-box;background:#F7F9FB;border-bottom:1px solid #D6DEE6;padding:16px 8px 6px;height:40px;",
+      mLbl: "position:absolute;left:8px;top:4px;font-size:9.5px;color:#9E7B4F;",
+      mVal: "font-size:12px;color:#24354A;",
+      mId: a.optimized ? "RO_196941" : "", mTrip: a.optimized ? "11h 45m" : "--", mDist: a.optimized ? "440.0 mi" : "--",
+      mStops: a.optimized ? "10" : "", mOrders: a.optimized ? "6" : "",
+      tabUn: a.tab === "un" ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;" : "color:#5E7186;",
+      tabRfo: a.tab === "rfo" ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;" : "color:#5E7186;",
+      tabRfd: "color:#5E7186;",
+      roAllCb: this._cb(a.roAll, 24, 7),
+      ghostBtn: btn("#fff", "#24354A", "1px solid #C6D0DC"),
+      optimizeBtn: btn(a.optHot ? "#1557B0" : "#4088CF", "#fff", "1px solid transparent"),
+      dispatchBtn: btn(a.optimized ? "#4088CF" : "#EDF1F6", a.optimized ? "#fff" : "#A9B4C0", "1px solid " + (a.optimized ? "#4088CF" : "#E4E9EF")),
+      addSelBtn: "position:absolute;left:22px;bottom:22px;height:36px;box-sizing:border-box;display:flex;align-items:center;padding:0 20px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.05em;background:" + (a.equipChecks > 0 ? "#3A86D8" : "#EDF1F6") + ";color:" + (a.equipChecks > 0 ? "#fff" : "#A9B4C0") + ";",
+      t1Tab: a.truck === 1 ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;" : "color:#5E7186;",
+      t3Tab: a.truck === 3 ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;" : "color:#5E7186;",
+      mapPath: a.stopOrder[0] === 1 ? "M356 352 L176 300 L118 86 L262 352 L236 378 L330 330 L196 398" : "M356 352 L118 86 L176 300 L262 352 L236 378 L330 330 L196 398",
+      dotsRow: "display:flex;gap:2px;", dot: "width:2.5px;height:2.5px;border-radius:50%;background:#9AA7B8;display:block;",
+      ghost: "position:absolute;left:0;top:0;width:400px;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:8px 14px;background:#fff;border:1px solid #B9C3CF;border-radius:4px;box-shadow:0 14px 28px rgba(5,20,40,.28);z-index:9;pointer-events:none;transform:translate(" + (a.gx - 520) + "px, " + (a.gy - 210) + "px) rotate(-1.5deg);transition:transform .7s cubic-bezier(.3,.7,.3,1);",
+      ghostLabel: "Stop 3", ghostAddr: "Cedar Street 6210 Cedar St Huntington Park CA 90255 US",
+      paused: !a.playing, playing: a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

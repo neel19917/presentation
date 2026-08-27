@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span style="color:#fff;font-weight:600;">Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:30px;top:70px;font-size:19px;font-weight:700;color:#1A1A1A;">Track</div>
+  <div style="position:absolute;left:30px;top:104px;display:flex;gap:32px;font-size:11.5px;font-weight:700;letter-spacing:.045em;color:#5E7186;">
+    <span>IN TRANSIT</span><span>CONTAINER OCEAN</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">FLEET</span><span>TRACK A SHIPMENT</span>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:131px;height:1px;background:#E4E9EF;"></div>
+  <div style="position:absolute;right:34px;top:112px;width:34px;height:34px;border-radius:50%;background:#1F8AE0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:300;line-height:1;">+</div>
+
+  <div style="position:absolute;box-sizing:border-box;left:20px;top:148px;width:1400px;height:530px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;">
+
+    <!-- CHART PANEL -->
+    <sc-if value="{{ listView }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;top:0;height:186px;">
+      <span style="position:absolute;right:16px;top:14px;color:#5E7186;font-size:13px;">⌃</span>
+      <div style="position:absolute;left:36px;top:20px;font-size:15px;color:#24354A;">Total Shipments</div>
+      <div style="position:absolute;left:36px;top:52px;display:flex;flex-direction:column;gap:7px;">
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#4088CF;display:block;"></span>Transfers: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#8A97A8;display:block;"></span>Outbound: 4</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#6E9BE8;display:block;"></span>Inbound: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#111;display:block;"></span>3rd Party: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#DCE6F0;display:block;"></span>Total: 4</span>
+      </div>
+      <div style="position:absolute;left:400px;top:26px;width:132px;height:132px;border-radius:50%;background:#8A97A8;"><span style="position:absolute;left:65px;top:2px;width:1.5px;height:64px;background:#fff;display:block;"></span></div>
+      <div style="position:absolute;left:740px;top:20px;font-size:15px;color:#24354A;">Shipments with Delays/Issues</div>
+      <div style="position:absolute;left:740px;top:52px;display:flex;flex-direction:column;gap:7px;">
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#4088CF;display:block;"></span>Transfers Delays/Issues: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#8A97A8;display:block;"></span>Outbound Delays/Issues: 4</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#6E9BE8;display:block;"></span>Inbound Delays/Issues: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#111;display:block;"></span>3rd Party Delays/Issues: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#DCE6F0;display:block;"></span>Total: 4</span>
+      </div>
+      <div style="position:absolute;left:1150px;top:26px;width:132px;height:132px;border-radius:50%;background:#8A97A8;"><span style="position:absolute;left:65px;top:2px;width:1.5px;height:64px;background:#fff;display:block;"></span></div>
+    </div>
+    </sc-if>
+
+    <!-- TOOLBAR -->
+    <div style="{{ toolbarStyle }}">
+      <div style="position:absolute;left:20px;top:14px;width:230px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
+      <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:272px;top:24px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+      <sc-for list="{{ pills }}" as="p" hint-placeholder-count="5"><span style="{{ p.style }}">{{ p.label }}</span></sc-for>
+      <div style="position:absolute;left:1004px;top:14px;width:238px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Locations</span><span style="position:absolute;left:12px;top:11px;font-size:12.5px;color:#3A4B60;">16 selected</span><span style="position:absolute;right:30px;top:12px;font-size:9px;color:#8A97A8;">▾</span><span style="position:absolute;right:10px;top:9px;font-size:12px;color:#8A97A8;">ⓘ</span></div>
+      <div style="position:absolute;left:1256px;top:14px;display:flex;height:38px;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;">
+        <span style="{{ listTab }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 5 H21 M3 10 H21 M3 15 H21 M3 20 H21" stroke="#4088CF" stroke-width="2.2"></path></svg></span>
+        <span style="{{ calTab }}"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#4088CF" stroke-width="1.8"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#4088CF" stroke-width="1.8"></path></svg></span>
+      </div>
+      <span style="position:absolute;left:1346px;top:14px;width:54px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#5E7186;font-size:14px;letter-spacing:.06em;">···</span>
+    </div>
+
+    <!-- LIST VIEW -->
+    <sc-if value="{{ listView }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;left:0;right:0;top:252px;height:34px;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;background:#fff;font-size:11px;font-weight:700;color:#3A4B60;">
+        <span style="position:absolute;left:24px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:inline-block;"></span>
+        <span style="position:absolute;left:70px;top:11px;">Notes</span>
+        <span style="position:absolute;left:190px;top:11px;">Tracking Status</span>
+        <span style="position:absolute;left:360px;top:11px;">Late/On-Time</span>
+        <span style="position:absolute;left:480px;top:11px;">Tracking Comment</span>
+        <span style="position:absolute;left:690px;top:11px;">Current Status</span>
+        <span style="position:absolute;left:820px;top:11px;">Process Date</span>
+        <span style="position:absolute;left:940px;top:11px;">Tracking Number</span>
+        <span style="position:absolute;left:1080px;top:11px;">Carrier Connection a…</span>
+        <span style="position:absolute;left:1230px;top:11px;">Carrier N…</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:286px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
+          <div style="{{ r.rowStyle }}">
+            <span style="position:absolute;left:24px;top:14px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:inline-block;"></span>
+            <svg width="15" height="15" viewBox="0 0 24 24" style="position:absolute;left:70px;top:13px;"><rect x="4" y="3" width="16" height="18" rx="1.5" fill="#3A4B60"></rect><path d="M7 8 H17 M7 12 H17 M7 16 H13" stroke="#fff" stroke-width="1.5"></path></svg>
+            <span style="position:absolute;left:190px;top:10px;display:flex;align-items:center;gap:0;">
+              <span style="{{ r.st1 }}"><sc-if value="{{ r.issueIcon }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="none" stroke="#fff" stroke-width="2"></circle><path d="M12 6.6 V13.2" stroke="#fff" stroke-width="2.2" stroke-linecap="round"></path><circle cx="12" cy="16.9" r="1.35" fill="#fff"></circle></svg></sc-if><sc-if value="{{ r.clipIcon }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4.6" y="4.4" width="14.8" height="16.4" rx="2" fill="#fff"></rect><rect x="9" y="2.6" width="6" height="3.6" rx="1" fill="#fff" stroke="#fff"></rect><path d="M9 3.6 H15" stroke="#fff" stroke-width="1.6"></path></svg></sc-if></span>
+              <span style="{{ r.s2 }}"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="7.6" cy="4.4" r="2.1" fill="{{ r.c2 }}"></circle><path d="M7.4 6.8 L5.6 11.6 L4.2 18 M6.4 11.4 L10.4 13.4 L11.4 18.6" fill="none" stroke="{{ r.c2 }}" stroke-width="1.9" stroke-linecap="round"></path><path d="M9 9.2 L13.6 11.6" stroke="{{ r.c2 }}" stroke-width="1.8" stroke-linecap="round"></path><path d="M13.4 9.6 H20.4 V16 H13.4 Z" fill="{{ r.c2 }}"></path><path d="M12.6 16.4 H21.4" stroke="{{ r.c2 }}" stroke-width="1.8" stroke-linecap="round"></path><circle cx="15.2" cy="19.2" r="1.5" fill="{{ r.c2 }}"></circle><circle cx="19.6" cy="19.2" r="1.5" fill="{{ r.c2 }}"></circle></svg></span>
+              <span style="{{ r.s3 }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.6 2.6 L13 2.6 L12.6 9 L21.4 12.4 V14.2 L12.4 12.8 L11.8 16.4 L14.4 18 V19.2 L10.6 18.4 L7 19.2 V18 L9.6 16.4 L9 12.8 L1.6 14.2 V12.4 L9.4 9 Z" fill="{{ r.c3 }}"></path><path d="M4.4 21.4 H10 M11.6 21.4 A2 2 0 0 1 15.6 21.4 M17.2 21.4 H20.6" fill="none" stroke="{{ r.c3 }}" stroke-width="1.5" stroke-linecap="round"></path></svg></span>
+              <span style="{{ r.s4 }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M7 7.4 H14.6 V16.6 H7 Z M14.6 10.4 H18.4 L21 13.2 V16.6 H14.6 Z" fill="none" stroke="{{ r.c4 }}" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="18.4" r="1.7" fill="{{ r.c4 }}"></circle><circle cx="18.2" cy="18.4" r="1.7" fill="{{ r.c4 }}"></circle><path d="M1.6 9.6 H5.2 M0.8 12.6 H5.2 M2.4 15.6 H5.2" stroke="{{ r.c4 }}" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+              <span style="{{ r.s5 }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2.6 8.4 L9.4 4.4 V20.4 H2.6 Z" fill="none" stroke="{{ r.c5 }}" stroke-width="1.7" stroke-linejoin="round"></path><path d="M9.4 9.6 H21.4 V20.4 H9.4" fill="none" stroke="{{ r.c5 }}" stroke-width="1.7" stroke-linejoin="round"></path><path d="M13 20.4 V14.4 H17.6 V20.4" fill="none" stroke="{{ r.c5 }}" stroke-width="1.6"></path><path d="M13 11.8 H17.6" stroke="{{ r.c5 }}" stroke-width="1.5"></path></svg></span>
+            </span>
+            <span style="{{ r.lateStyle }}">{{ r.late }}</span>
+            <span style="position:absolute;left:480px;top:14px;font-size:11.5px;color:#3A4B60;">{{ r.comment }}</span>
+            <span style="position:absolute;left:690px;top:14px;font-size:11.5px;color:#3A4B60;">{{ r.status }}</span>
+            <span style="position:absolute;left:820px;top:14px;font-size:11.5px;color:{{ r.dateColor }};font-weight:{{ r.dateWeight }};">{{ r.date }}</span>
+            <span style="position:absolute;left:940px;top:14px;font-size:11.5px;color:#4088CF;">{{ r.tn }}</span>
+            <span style="position:absolute;left:1080px;top:14px;font-size:11.5px;color:#3A4B60;">No Connection / Manual …</span>
+            <span style="position:absolute;left:1230px;top:14px;font-size:11.5px;color:#3A4B60;">My Fleet</span>
+            <span style="position:absolute;right:16px;top:12px;display:flex;align-items:center;gap:18px;">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M1 7 H13 V16 H1 Z M14 10 H18.6 L21.6 13.2 V16 H14 Z" fill="#4088CF"></path><circle cx="6" cy="18" r="2.2" fill="#4088CF"></circle><circle cx="17.5" cy="18" r="2.2" fill="#4088CF"></circle></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24"><path d="M3 21 L3.9 16.6 L15.6 4.9 L19.1 8.4 L7.4 20.1 Z M17 3 L21 7 L19.6 8.4 L16.1 4.9 Z" fill="#4088CF"></path></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24"><path d="M5 7 H19 L17.5 21 H6.5 Z M9 7 V4 H15 V7" fill="#D4483B"></path></svg>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:44px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11.5px;color:#4A5B70;">
+        <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span><span>1–4 of 4</span><span style="display:flex;align-items:center;gap:12px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> ›</span>
+      </div>
+    </sc-if>
+
+    <!-- CALENDAR VIEW -->
+    <sc-if value="{{ calView }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:66px;height:56px;border-top:1px solid #E4E9EF;">
+        <span style="position:absolute;left:20px;top:10px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 16px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">TODAY</span>
+        <span style="position:absolute;left:560px;top:16px;color:#5E7186;font-size:14px;">‹</span>
+        <span style="position:absolute;left:600px;top:13px;font-size:17px;font-weight:700;color:#1A2634;">August 2026</span>
+        <span style="position:absolute;left:760px;top:16px;color:#5E7186;font-size:14px;">›</span>
+        <span style="position:absolute;right:246px;top:10px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 18px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</span>
+        <div style="position:absolute;right:20px;top:8px;width:210px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Display By</span><span style="position:absolute;left:12px;top:11px;font-size:12.5px;color:#3A4B60;">Detailed View</span><span style="position:absolute;right:12px;top:12px;font-size:9px;color:#8A97A8;">▾</span></div>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:122px;bottom:42px;border-top:1px solid #E4E9EF;overflow:hidden;">
+        <sc-for list="{{ dayCols }}" as="d" hint-placeholder-count="7">
+          <div style="{{ d.col }}">
+            <div style="height:32px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#24354A;border-bottom:1px solid #EFF2F6;">{{ d.name }}</div>
+            <div style="height:26px;display:flex;align-items:center;gap:8px;padding:0 8px;">
+              <span style="flex:1;height:5px;border-radius:2px;background:#E4E9EF;display:block;position:relative;overflow:hidden;"><span style="{{ d.fill }}"></span></span>
+              <span style="font-size:10.5px;color:#5E7186;">{{ d.count }}</span>
+              <span style="font-size:12px;font-weight:700;color:#1A2634;">{{ d.num }}</span>
+            </div>
+            <div style="position:absolute;left:6px;right:6px;top:60px;display:flex;flex-direction:column;gap:5px;">
+              <sc-for list="{{ d.items }}" as="c" hint-placeholder-count="1">
+                <div style="{{ c.wrap }}">
+                  <sc-if value="{{ c.isHdr }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:10.5px;font-weight:700;color:#1A2634;">{{ c.label }}</span>
+                  </sc-if>
+                  <sc-if value="{{ c.isChip }}" hint-placeholder-val="{{ true }}">
+                    <div style="{{ c.style }}">
+                      <svg width="9" height="13" viewBox="0 0 9 13" style="flex-shrink:0;margin-top:3px;"><circle cx="2" cy="2" r="1.4" fill="#9AA7B8"></circle><circle cx="7" cy="2" r="1.4" fill="#9AA7B8"></circle><circle cx="2" cy="6.5" r="1.4" fill="#9AA7B8"></circle><circle cx="7" cy="6.5" r="1.4" fill="#9AA7B8"></circle><circle cx="2" cy="11" r="1.4" fill="#9AA7B8"></circle><circle cx="7" cy="11" r="1.4" fill="#9AA7B8"></circle></svg>
+                      <span style="{{ c.icon }}">{{ c.iconSvg }}</span>
+                      <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;">
+                        <span style="{{ c.l1s }}">{{ c.l1 }}</span>
+                        <span style="{{ c.l2s }}">{{ c.l2 }}</span>
+                      </span>
+                      <span style="flex-shrink:0;display:flex;align-items:center;gap:7px;margin-top:2px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24"><path d="M3 7 H21 V19 H3 Z" fill="#2E7CC4"></path><path d="M2 4.6 H22 V7.6 H2 Z" fill="#4088CF"></path><path d="M9.5 11 H14.5" stroke="#fff" stroke-width="1.8"></path></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.4" fill="none" stroke="#8A97A8" stroke-width="1.6"></circle><path d="M12 10.6 V17" stroke="#8A97A8" stroke-width="1.7"></path><circle cx="12" cy="7.6" r="1.1" fill="#8A97A8"></circle></svg>
+                      </span>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ ghostStyle }}">
+            <span style="flex-shrink:0;width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;background:#9E2A22;">{{ ghostIcon }}</span>
+            <span style="font-size:10px;line-height:1.35;white-space:normal;color:#B3261E;">Truck #3 - FRTPOP-1088374274 - Lake Forest, CA - 33%</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:56px;bottom:6px;left:71.43%;width:14.28%;box-sizing:border-box;border:2px dashed #4088CF;border-radius:4px;background:rgba(64,136,207,.07);z-index:6;"></div>
+        </sc-if>
+        <sc-if value="{{ capOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:800px;top:64px;width:236px;max-height:470px;overflow:hidden;background:#fff;border-radius:4px;box-shadow:0 10px 26px rgba(10,30,55,.26);padding:12px 0 10px;z-index:8;animation:rsFadeUp .2s both;">
+            <div style="text-align:center;font-size:13px;font-weight:700;color:#1A2634;">Load Capacity</div>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;padding:0 16px;">
+              <sc-for list="{{ capRows }}" as="r" hint-placeholder-count="12">
+                <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;color:#24354A;white-space:nowrap;"><span style="{{ r.dot }}"></span>{{ r.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ infoOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:900px;top:96px;width:260px;background:#58595B;border-radius:3px;padding:12px 16px 14px;z-index:9;animation:rsFadeUp .18s both;box-shadow:0 10px 24px rgba(10,30,55,.3);">
+            <div style="text-align:center;font-size:13px;font-weight:700;color:#fff;">Shipment Info</div>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:#fff;white-space:nowrap;">
+              <span>Company: SUPERIOR CAPITAL LLC</span>
+              <span>Order Number: FPD45795433</span>
+              <span>SO Number: 539824</span>
+              <span>PO Number: 915 ALDER DR</span>
+            </div>
+            <span style="position:absolute;left:120px;bottom:-7px;width:14px;height:14px;background:#58595B;transform:rotate(45deg);display:block;"></span>
+          </div>
+        </sc-if>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:42px;border-top:1px solid #E4E9EF;display:flex;align-items:center;gap:14px;padding:0 16px;">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="9">
+          <span style="display:flex;align-items:center;gap:6px;font-size:10.5px;color:#3A4B60;"><span style="{{ l.chip }}">{{ l.icon }}</span>{{ l.label }}</span>
+        </sc-for>
+        <span style="margin-left:auto;text-align:right;font-size:9px;color:#8A97A8;line-height:1.4;">All items are displayed for the ETA date<br>*ETA not available. Placed on day booked</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position:absolute;left:16px;bottom:60px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:60px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:102px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:{{ curTrans }};"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Fleet shipments live on the Track page", curX: 700, curY: 700,
+    ripple: false, ripX: 0, ripY: 0, view: "list", moved: false, dragging: false, notified: false, capOpen: false, infoOpen: false };
+  DUR = 24;
+  KF = [
+    { t: 2.0, s: { curX: 300, curY: 305, cap: "02 · The exception is right on the grid — not picked up, late" } },
+    { t: 4.4, s: { curX: 1344, curY: 369 } },
+    { t: 5.2, s: { ripple: true, ripX: 1344, ripY: 369 } },
+    { t: 5.6, s: { ripple: false, view: "cal", cap: "03 · Same page, calendar view — the week as the dispatch board", curX: 900, curY: 500 } },
+    { t: 7.4, s: { curX: 900, curY: 315, cap: "04 · Every day shows how full it is" } },
+    { t: 8.4, s: { capOpen: true, cap: "05 · Load capacity per truck, on the day itself" } },
+    { t: 11.2, s: { capOpen: false, curX: 1018, curY: 336, cap: "06 · Shipment info without leaving the board" } },
+    { t: 11.8, s: { infoOpen: true } },
+    { t: 14.2, s: { infoOpen: false, curX: 918, curY: 452, cap: "07 · Move the load to a day with room" } },
+    { t: 15.0, s: { dragging: true, curX: 924, curY: 458 } },
+    { t: 15.3, s: { curX: 1110, curY: 360 } },
+    { t: 16.1, s: { ripple: true, ripX: 1110, ripY: 360, dragging: false, moved: true } },
+    { t: 16.5, s: { ripple: false, cap: "08 · The driver and the customer both get the new date", notified: true } },
+    { t: 18.8, s: { curX: 1300, curY: 369 } },
+    { t: 19.6, s: { ripple: true, ripX: 1300, ripY: 369 } },
+    { t: 20.0, s: { ripple: false, view: "list", cap: "09 · Back on the grid — new process date, comment updated", curX: 700, curY: 700 } },
+  ];
+  ROWS = [
+    { tn: "FRTPOP-22004355", comment: "Not picked up after 1 day …", status: "Issue", date: "08/12/2026", late: "LATE", issue: true },
+    { tn: "FRTPOP-22003678", comment: "Booked-Booked-08/12/20…", status: "Booked", date: "08/12/2026", late: "LATE" },
+    { tn: "FRTPOP-22003003", comment: "InTransit", status: "InTransit", date: "08/11/2026", late: "LATE" },
+    { tn: "FRTPOP-22002734", comment: "Picked up - Booked", status: "OutForDelivery", date: "08/10/2026", late: "LATE" },
+  ];
+  PILLS = ["Transfers", "Outbound", "Inbound", "Return Shipments", "Show Recently Delivered"];
+  DAYS = [["SUNDAY", "0/7", "9", 0, "#E4E9EF"], ["MONDAY", "0/239", "10", 0, "#E4E9EF"], ["TUESDAY", "1/239", "11", 4, "#D9A227"], ["WEDNESDAY", "193/239", "12", 81, "#C0392B"], ["THURSDAY", "151/239", "13", 63, "#C97B1E"], ["FRIDAY", "79/239", "14", 33, "#8CBF3F"], ["SATURDAY", "0/7", "15", 0, "#E4E9EF"]];
+  STATUS = {
+    booked:   ["#4EA8E0", "Booked", "#4088CF"],
+    unknown:  ["#1A2634", "Unknown", "#3A4B60"],
+    transit:  ["#1A3E6E", "In Transit", "#4088CF"],
+    issue:    ["#9E2A22", "Issue", "#B3261E"],
+    pickup:   ["#4088CF", "Pickup", "#4088CF"]
+  };
+  CHIPS = {
+    2: [{ g: "501590", rows: [{ st: "unknown", l1: "501590 - Patrick Drennan - 39551 - Cookeville, TN", l2: "0.00% (0/12 Pallets)" }] }],
+    3: [
+      { g: "ACB-7653", rows: [
+        { st: "unknown", l1: "ACB-7653 - Roger Rollings - 39964 - Winchester, TN", l2: "4.17% (2000/48000 Lbs)" },
+        { st: "unknown", l1: "ACB-7653 - Roger Rollings - 39851 - Winchester, TN", l2: "4.17% (2000/48000 Lbs)" }] },
+      { g: "ACB-5674", rows: [
+        { st: "booked", l1: "ACB-5674 - Roderick Jones - 39708 - Nashville, TN", l2: "50.00% (6/12 Pallets)" },
+        { st: "booked", l1: "ACB-5674 - Roderick Jones - 39709 - Nashville, TN", l2: "33.33% (4/12 Pallets)" }] }
+    ],
+    4: [
+      { g: "501581", rows: [
+        { st: "booked", l1: "501581 - Christopher Ramey - 39184 - Cookeville, TN", l2: "120.00% (12/10 Pallets)" },
+        { st: "booked", l1: "501581 - Christopher Ramey - 39973 - Cookeville, TN", l2: "130.00% (13/10 Pallets)" }] },
+      { g: "ACB-6862", rows: [
+        { st: "transit", l1: "ACB-6862 - Reginald Calloway - 39902 - Morrow, GA", l2: "110.00% (11/10 Pallets)" },
+        { st: "issue", l1: "ACB-6862 - Reginald Calloway - 39972 - Morrow, GA", l2: "60.00% (6/10 Pallets)", move: true }] },
+      { g: "Steve Nash 1", rows: [
+        { st: "booked", l1: "Steve Nash 1 - Katie Karl - 38730 - Lebanon, TN", l2: "2.08% (1000/48000 Lbs)" }] }
+    ],
+    5: [
+      { g: "501580", rows: [
+        { st: "booked", l1: "501580 - Donald Day - 39986 - Cookeville, TN", l2: "20.83% (10000/48000 Lbs)" },
+        { st: "booked", l1: "501580 - Donald Day - 39813 - Cookeville, TN", l2: "40.00% (4/10 Pallets)" }] },
+      { g: "501578", rows: [
+        { st: "pickup", l1: "501578 - \"Bill\" William Whalen - 39514 - Lebanon, TN", l2: "0.00% (0/12 Pallets)" },
+        { st: "pickup", l1: "501578 - \"Bill\" William Whalen - 39975 - Lebanon, TN", l2: "50.00% (6/12 Pallets)" }] },
+      { g: "ACB-3902", rows: [
+        { st: "booked", l1: "ACB-3902 - Michael Bass (2) - 39961 - Nashville, TN", l2: "50.00% (5/10 Pallets)" }] }
+    ]
+  };
+  CAPROWS = [["ACB-E0177", "2/3", "#D9A227"], ["ACB-6141", "2/3", "#D9A227"], ["ACB-6139", "1/3", "#8CBF3F"], ["ACB-5874", "3/3", "#C0392B"], ["ACB-1485", "3/3", "#C0392B"], ["ACB-4086", "3/2", "#C0392B"], ["ACB-2993", "3/3", "#C0392B"], ["ACB-6863", "3/3", "#C0392B"], ["ACB-9832", "4/3", "#C0392B"], ["501580", "2/3", "#D9A227"], ["501581", "4/3", "#C0392B"], ["501750", "4/3", "#C0392B"], ["501930", "3/3", "#C0392B"], ["ACB-1588", "5/3", "#C0392B"], ["ACB-E0178", "4/3", "#C0392B"], ["501573", "2/3", "#D9A227"], ["501591", "4/3", "#C0392B"], ["501630", "2", "#E4E9EF"], ["501690", "3/3", "#C0392B"], ["FMS-3354", "4/3", "#C0392B"], ["ACB-1161", "7/3", "#C0392B"], ["ACB-1587", "4/3", "#C0392B"], ["ACB-2995", "4/3", "#C0392B"], ["ACB-3784", "5/3", "#C0392B"], ["ACB-4085", "4/3", "#C0392B"]];
+  LEGEND = [["Booked", "#4EA8E0"], ["Pickup", "#4088CF"], ["In Transit", "#1A3E6E"], ["Out for Delivery", "#1A3E6E"], ["Delivered", "#9AA7B8"], ["No Tracking", "#E8912A"], ["Delayed", "#B3261E"], ["Issue", "#9E2A22"], ["Unknown", "#1A2634"]];
+  _legIcon(name) {
+    const E = React.createElement;
+    const S = (kids, size) => E("svg", { width: size || 12, height: size || 12, viewBox: "0 0 24 24" }, kids);
+    const w = { fill: "none", stroke: "#fff", strokeWidth: 1.9, strokeLinejoin: "round", strokeLinecap: "round" };
+    switch (name) {
+      case "Pickup": return S([
+        E("circle", { key: "h", cx: 12.6, cy: 4.4, r: 2.2, fill: "#fff" }),
+        E("path", { key: "b", d: "M12.4 7 L9.6 12.4 L6.6 17.8 M10.6 11.6 L14.6 14.4 L16.4 20 M8.4 9.6 L16.6 8.4", ...w })]);
+      case "In Transit": return S(E("path", { d: "M20.4 4.2 L3.8 11.2 L9.4 13.2 L11.2 19.4 L13.8 12.6 Z", ...w }));
+      case "Out for Delivery": return S([
+        E("path", { key: "t", d: "M2 7 H12.6 V16 H2 Z M12.6 10.2 H17.2 L20.4 13.4 V16 H12.6 Z", ...w }),
+        E("circle", { key: "a", cx: 6, cy: 18.2, r: 1.7, fill: "#fff" }),
+        E("circle", { key: "b", cx: 16.8, cy: 18.2, r: 1.7, fill: "#fff" })]);
+      case "Delivered": return S([
+        E("path", { key: "h", d: "M3.4 10.4 L12 4.6 L20.6 10.4 V20 H3.4 Z", ...w }),
+        E("path", { key: "d", d: "M8.4 20 V13.6 H15.6 V20", ...w })]);
+      case "Delayed": return S([
+        E("path", { key: "t", d: "M12 3.6 L21.4 20 H2.6 Z", ...w }),
+        E("path", { key: "b", d: "M12 9.4 V14.4", ...w }),
+        E("circle", { key: "d", cx: 12, cy: 17.2, r: 1.2, fill: "#fff" })]);
+      case "No Tracking": case "Issue": case "Unknown": return S([
+        E("circle", { key: "c", cx: 12, cy: 12, r: 8.6, ...w }),
+        E("path", { key: "q", d: "M9.4 9.4 A2.8 2.8 0 1 1 12 12.8 V14.2", ...w }),
+        E("circle", { key: "d", cx: 12, cy: 17, r: 1.2, fill: "#fff" })]);
+      default: return S([
+        E("rect", { key: "c", x: 5.6, y: 4, width: 12.8, height: 16.4, rx: 1.6, ...w }),
+        E("path", { key: "t", d: "M9.4 6.6 H14.6 V3.6 H9.4 Z", ...w })]);
+    }
+  }
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    if (window.ResizeObserver && this._wrap) { this._ro = new ResizeObserver(this._onResize); this._ro.observe(this._wrap); }
+    requestAnimationFrame(this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const w = this._wrap.getBoundingClientRect().width - 2; const s = w / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const stBox = "width:26px;height:24px;box-sizing:border-box;border:1px solid #C6D0DC;border-left-width:0;display:flex;align-items:center;justify-content:center;background:#fff;";
+    const rows = this.ROWS.map((r, i) => {
+      const isMoved = i === 0 && a.moved;
+      const st = isMoved ? "Booked" : r.status;
+      const fill = { Issue: 1, Booked: 1, Pickup: 2, InTransit: 3, OutForDelivery: 4, Delivered: 5 }[st] || 1;
+      return { tn: r.tn, status: isMoved ? "Booked" : r.status,
+        comment: isMoved ? "Rescheduled 08/13 — driver notified" : r.comment,
+        date: isMoved ? "08/13/2026" : r.date,
+        dateColor: isMoved ? "#1F5FBF" : "#3A4B60", dateWeight: isMoved ? "700" : "400",
+        late: isMoved ? "ON TIME" : r.late,
+        lateStyle: "position:absolute;left:360px;top:11px;border-radius:3px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.04em;color:" + (isMoved ? "#3D5A0F" : "#fff") + ";background:" + (isMoved ? "#C7DE6A" : "#D4483B") + ";",
+        rowStyle: "position:relative;height:42px;border-bottom:1px solid #EFF2F6;background:" + (i % 2 ? "#FCFDFE" : "#fff") + ";",
+        st1: "width:26px;height:24px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:4px 0 0 4px;display:flex;align-items:center;justify-content:center;background:" + (r.issue && !isMoved ? "#C7362B" : "#4A90D9") + ";",
+        issueIcon: !!(r.issue && !isMoved), clipIcon: !(r.issue && !isMoved),
+        s2: stBox + (fill >= 2 ? "background:#4A90D9;" : ""), c2: fill >= 2 ? "#fff" : "#8A97A8",
+        s3: stBox + (fill >= 3 ? "background:#4A90D9;" : ""), c3: fill >= 3 ? "#fff" : "#8A97A8",
+        s4: stBox + (fill >= 4 ? "background:#4A90D9;" : ""), c4: fill >= 4 ? "#fff" : "#8A97A8",
+        s5: stBox + "border-radius:0 4px 4px 0;" + (fill >= 5 ? "background:#4A90D9;" : ""), c5: fill >= 5 ? "#fff" : "#8A97A8" };
+    });
+    const pills = (a.view === "cal" ? this.PILLS.slice(0, 4) : this.PILLS).map((label, i) => ({ label,
+      style: "position:absolute;left:" + (306 + [0, 100, 208, 302, 452][i]) + "px;top:19px;height:28px;box-sizing:border-box;display:flex;align-items:center;padding:0 16px;border:1px solid #C6D0DC;border-radius:14px;font-size:12px;color:#3A4B60;background:#fff;" }));
+    const dayCols = this.DAYS.map((d, i) => {
+      let groups = (this.CHIPS[i] || []).map((g) => ({ g: g.g, rows: g.rows.slice() }));
+      if (a.moved) {
+        if (i === 4) groups = groups.map((g) => ({ g: g.g, rows: g.rows.filter((r) => !r.move) })).filter((g) => g.rows.length);
+        if (i === 5) {
+          const mv = [];
+          this.CHIPS[4].forEach((g) => g.rows.forEach((r) => { if (r.move) mv.push({ g: g.g, rows: [{ st: "booked", l1: r.l1, l2: r.l2 }] }); }));
+          groups = mv.concat(groups);
+        }
+      }
+      let count = d[1], pct = d[3], barC = d[4];
+      if (a.moved && i === 4) { count = "145/239"; pct = 60; }
+      if (a.moved && i === 5) { count = "85/239"; pct = 36; }
+      const items = [];
+      groups.forEach((g) => {
+        items.push({ isHdr: true, isChip: false, label: g.g, wrap: "padding:3px 2px 0;" });
+        g.rows.forEach((r) => {
+          const st = this.STATUS[r.st], drag = r.move && a.dragging;
+          items.push({ isHdr: false, isChip: true, l1: r.l1, l2: r.l2,
+            wrap: "",
+            iconSvg: this._legIcon(st[1]),
+            icon: "flex-shrink:0;width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;background:" + st[0] + ";",
+            l1s: "font-size:8.5px;line-height:1.3;white-space:normal;color:" + st[2] + ";",
+            l2s: "font-size:8.5px;line-height:1.3;color:#C2751C;",
+            style: "display:flex;align-items:flex-start;gap:5px;box-sizing:border-box;padding:5px 6px;background:#fff;border:1px solid " + (drag ? "#9AA7B8" : "#D8DEE6") + ";border-radius:4px;" + (drag ? "opacity:.3;filter:grayscale(1);border-style:dashed;" : "") });
+        });
+      });
+      return { name: d[0], count, num: d[2], items,
+        col: "position:absolute;box-sizing:border-box;left:" + (i * 200) + "px;top:0;width:200px;bottom:0;border-right:1px solid #EFF2F6;background:" + (i === 4 ? "#FDF8E3" : "#fff") + ";",
+        fill: "position:absolute;left:0;top:0;bottom:0;width:" + pct + "%;background:" + barC + ";display:block;transition:width .5s;" };
+    });
+    const capRows = this.CAPROWS.map((c) => ({ label: c[0] + " - " + c[1] + " Trips",
+      dot: "width:7px;height:7px;border-radius:50%;flex-shrink:0;display:block;background:" + c[2] + ";" }));
+    const legend = this.LEGEND.map((l) => ({ label: l[0], icon: this._legIcon(l[0]),
+      chip: "width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#fff;background:" + l[1] + ";" }));
+    return { ...a, rows, pills, dayCols, legend, capRows,
+      ghostIcon: this._legIcon("Issue"),
+      curTrans: a.dragging ? "transform .75s cubic-bezier(.3,.7,.3,1)" : "transform .7s cubic-bezier(.45,.05,.25,1)",
+      ghostStyle: "position:absolute;left:-114px;top:-285px;transform:translate(" + a.curX + "px, " + a.curY + "px) rotate(-2.5deg);transition:transform .75s cubic-bezier(.3,.7,.3,1);width:186px;box-sizing:border-box;display:flex;align-items:flex-start;gap:7px;padding:4px 6px;background:#fff;border:1px solid #B9C3CF;border-radius:4px;box-shadow:0 14px 28px rgba(5,20,40,.3);z-index:9;pointer-events:none;",
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      listView: a.view === "list", calView: a.view === "cal",
+      toolbarStyle: "position:absolute;left:0;right:0;top:" + (a.view === "list" ? 186 : 0) + "px;height:66px;",
+      listTab: "width:44px;height:38px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:" + (a.view === "list" ? "#EAF1FB" : "#fff") + ";border-right:1px solid #C6D0DC;",
+      calTab: "width:44px;height:38px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;background:" + (a.view === "cal" ? "#EAF1FB" : "#fff") + ";",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

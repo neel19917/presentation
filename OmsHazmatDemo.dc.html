@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span style="color:#fff;font-weight:600;">Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">Order SO-118461 — Great Basin Hardware</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>GENERAL</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS ({{ docCount }})</span></div>
+  </div>
+
+  <div style="position:absolute;left:30px;top:132px;width:1380px;height:300px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
+      <span style="font-size:14px;font-weight:600;color:#24354A;">Line Items</span>
+      <span style="display:flex;gap:9px;align-items:center;"><span style="font-size:11px;color:#8A97A8;">Pulled from the product catalog — dims, weight, class, NMFC</span><span style="border:1.5px solid {{ addBorder }};border-radius:4px;padding:7px 11px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:{{ addBg }};transition:all .2s;">+ ADD ITEM</span></span>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:36px;height:30px;background:#F7F9FB;border-bottom:1px solid #EDF1F6;font-size:11px;font-weight:700;color:#4A5B70;">
+      <span style="position:absolute;left:16px;top:8px;">SKU</span><span style="position:absolute;left:170px;top:8px;">DESCRIPTION</span><span style="position:absolute;left:560px;top:8px;">QTY</span><span style="position:absolute;left:640px;top:8px;">PACKAGE</span><span style="position:absolute;left:800px;top:8px;">DIMS (IN)</span><span style="position:absolute;left:940px;top:8px;">WEIGHT</span><span style="position:absolute;left:1050px;top:8px;">CLASS</span><span style="position:absolute;left:1130px;top:8px;">NMFC</span><span style="position:absolute;left:1270px;top:8px;">FLAGS</span>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:66px;">
+      <sc-for list="{{ items }}" as="i" hint-placeholder-count="4">
+        <div style="{{ i.rowStyle }}">
+          <span style="position:absolute;left:16px;top:14px;font-family:'DM Mono',monospace;font-size:11.5px;color:#4088CF;">{{ i.sku }}</span>
+          <span style="position:absolute;left:170px;top:14px;font-size:12.5px;color:#24354A;">{{ i.desc }}</span>
+          <span style="position:absolute;left:560px;top:14px;font-size:12px;color:#4A5B70;">{{ i.qty }}</span>
+          <span style="position:absolute;left:640px;top:14px;font-size:12px;color:#4A5B70;">{{ i.pkg }}</span>
+          <span style="position:absolute;left:800px;top:14px;font-size:12px;color:#4A5B70;">{{ i.dims }}</span>
+          <span style="position:absolute;left:940px;top:14px;font-size:12px;color:#4A5B70;">{{ i.wt }}</span>
+          <span style="position:absolute;left:1050px;top:14px;font-size:12px;font-weight:600;color:#24354A;">{{ i.cls }}</span>
+          <span style="position:absolute;left:1130px;top:14px;font-family:'DM Mono',monospace;font-size:11px;color:#4A5B70;">{{ i.nmfc }}</span>
+          <span style="{{ i.flagStyle }}">{{ i.flag }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{ searchOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:16px;top:{{ searchTop }};width:660px;background:#fff;border:1px solid #B9CDE8;border-radius:6px;box-shadow:0 12px 30px rgba(5,20,40,.2);z-index:8;animation:rsFadeUp .2s both;">
+        <div style="height:42px;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:9px;padding:0 14px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="font-size:12.5px;color:#24354A;">{{ query }}<span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></span></div>
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+          <div style="{{ r.style }}"><span style="font-family:'DM Mono',monospace;font-size:11.5px;color:#4088CF;width:120px;display:inline-block;">{{ r.sku }}</span><span style="font-size:12.5px;color:#24354A;">{{ r.desc }}</span><span style="{{ r.tagStyle }}">{{ r.tag }}</span></div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- DG PANEL -->
+  <div style="position:absolute;left:30px;top:448px;width:840px;height:284px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Dangerous Goods</span><span style="display:flex;align-items:center;gap:9px;font-size:12px;color:#2A3B50;"><span style="{{ hazToggle }}"><span style="{{ hazKnob }}"></span></span>Hazmat</span></div>
+    <sc-if value="{{ dgOff }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;left:0;right:0;top:110px;text-align:center;font-size:12.5px;color:#9AA7B8;">No hazardous line items on this order.</div>
+    </sc-if>
+    <sc-if value="{{ dgOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:16px;top:52px;width:808px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;animation:rsFadeUp .35s both;">
+        <sc-for list="{{ dgFields }}" as="f" hint-placeholder-count="8">
+          <div style="border:1px solid #E1E7EF;border-radius:6px;background:#FAFBFD;padding:9px 11px;"><div style="font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">{{ f.k }}</div><div style="font-size:12.5px;font-weight:600;color:#24354A;margin-top:5px;white-space:normal;line-height:1.35;">{{ f.v }}</div></div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:16px;bottom:16px;width:808px;height:56px;border:1px solid #E8C88A;background:#FFF9EE;border-radius:6px;display:flex;align-items:center;gap:14px;padding:0 16px;animation:rsFadeUp .35s .1s both;">
+        <svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 2 L23 21 L1 21 Z" fill="#E8A33D"></path><rect x="11" y="9" width="2" height="6" fill="#fff"></rect><rect x="11" y="17" width="2" height="2" fill="#fff"></rect></svg>
+        <span style="font-size:12px;color:#6B4A12;white-space:normal;line-height:1.6;">Pulled from the catalog record — nobody retypes a UN number. Carriers that can't accept class 3 are removed from rating before you see a rate.</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position:absolute;left:890px;top:448px;width:520px;height:284px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Documents Queued</div>
+    <div style="position:absolute;left:0;right:0;top:44px;">
+      <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+        <div style="{{ d.rowStyle }}">
+          <span style="{{ d.iconStyle }}">{{ d.ext }}</span>
+          <span style="display:flex;flex-direction:column;gap:3px;"><span style="font-size:12.5px;font-weight:600;color:#24354A;">{{ d.name }}</span><span style="font-size:11px;color:#8A97A8;">{{ d.meta }}</span></span>
+          <span style="{{ d.chipStyle }}">{{ d.chip }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:16px;right:16px;bottom:16px;height:44px;border-radius:6px;background:#F7FAFF;border:1px solid #DCE6F2;display:flex;align-items:center;padding:0 14px;font-size:11.5px;color:#5E7186;white-space:normal;line-height:1.5;">{{ docNote }}</div>
+  </div>
+
+  <div style="position:absolute;left:16px;bottom:24px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Order lines come from the catalog, not from typing", curX: 700, curY: 700,
+    ripple: false, ripX: 0, ripY: 0, addBorder: "#B9CDE8", addBg: "#fff",
+    searchOn: false, query: "", resSel: -1, added: false, haz: false, dgReady: false, dgDoc: false };
+  DUR = 22;
+  KF = [
+    { t: 2.0, s: { cap: "02 · Add a line from the product catalog", curX: 1330, curY: 162, addBorder: "#4088CF", addBg: "#EAF3FF" } },
+    { t: 2.7, s: { ripple: true, ripX: 1330, ripY: 162 } },
+    { t: 3.1, s: { ripple: false, addBorder: "#B9CDE8", addBg: "#fff", searchOn: true, curX: 300, curY: 330 } },
+    { t: 5.4, s: { resSel: 0, cap: "03 · The catalog already knows it's hazardous" } },
+    { t: 6.0, s: { curX: 300, curY: 400 } },
+    { t: 6.6, s: { ripple: true, ripX: 300, ripY: 400 } },
+    { t: 7.0, s: { ripple: false, searchOn: false, added: true, haz: true } },
+    { t: 8.2, s: { dgReady: true, cap: "04 · Class, NMFC and DG data land with the item" } },
+    { t: 12.4, s: { dgDoc: true, cap: "05 · DG paperwork queues itself", curX: 1100, curY: 560 } },
+    { t: 16.0, s: { cap: "06 · Carriers that can't take class 3 never get rated" } },
+  ];
+  TYPERS = [ { t0: 3.3, dur: 1.6, field: "query", text: "acetone cleaner", until: 7.0 } ];
+  BASE = [
+    { sku: "NS-4410", desc: "Cabinet hardware kit — brushed nickel", qty: "24", pkg: "BOX", dims: "18 × 14 × 12", wt: "23 lb", cls: "70", nmfc: "149600-03", flag: "" },
+    { sku: "NS-5120", desc: "Countertop bracket, steel, 18\"", qty: "40", pkg: "CRATE", dims: "24 × 20 × 8", wt: "250 lb", cls: "85", nmfc: "133300", flag: "" },
+    { sku: "NS-2207", desc: "Drawer slide set, soft-close", qty: "60", pkg: "BOX", dims: "22 × 6 × 5", wt: "14 lb", cls: "92.5", nmfc: "149600-05", flag: "" }
+  ];
+  NEW = { sku: "NS-8802", desc: "Acetone surface cleaner, 1 gal (4-pack)", qty: "8", pkg: "FIBERBOARD BOX", dims: "13 × 13 × 12", wt: "34 lb", cls: "70", nmfc: "045300", flag: "HAZMAT" };
+  RESULTS = [
+    { sku: "NS-8802", desc: "Acetone surface cleaner, 1 gal (4-pack)", tag: "HAZMAT · UN1263" },
+    { sku: "NS-8804", desc: "Citrus degreaser, 1 gal (4-pack)", tag: "" },
+    { sku: "NS-8811", desc: "Acetone-free adhesive remover, 32 oz", tag: "" }
+  ];
+  DG = [
+    { k: "UN NUMBER", v: "UN1263" },
+    { k: "PROPER SHIPPING NAME", v: "Paint related material" },
+    { k: "HAZARD CLASS", v: "3 — Flammable liquid" },
+    { k: "PACKING GROUP", v: "II" },
+    { k: "PACKAGING", v: "4G fiberboard box, 1 gal inner" },
+    { k: "QTY PER PACKAGE", v: "4 × 1 gal (15.1 L total)" },
+    { k: "EMERGENCY CONTACT", v: "CHEMTREC 800-424-9300" },
+    { k: "24-HR CONTRACT #", v: "CCN 4419028" }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } for (const ty of this.TYPERS) { if (this.t >= ty.t0 && this.t < ty.until) { const f = Math.min(1, (this.t - ty.t0) / ty.dur); this.anim[ty.field] = ty.text.slice(0, Math.round(f * ty.text.length)); } } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    let list = this.BASE.slice();
+    if (a.added) list = list.concat([this.NEW]);
+    const items = list.map((i) => ({ ...i,
+      rowStyle: "position:relative;height:44px;border-bottom:1px solid #F2F5F9;background:" + (i.flag ? "#FFFBF3" : "#fff") + ";" + (i.flag ? "animation:rsFadeUp .4s both;" : ""),
+      flagStyle: i.flag ? "position:absolute;left:1270px;top:13px;background:#FFF1DC;color:#9A5B0A;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:9px;" : "display:none;",
+    }));
+    const results = this.RESULTS.map((r, i) => ({ ...r,
+      style: "display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #F2F5F9;background:" + (a.resSel === i ? "#EAF3FF" : "#fff") + ";",
+      tagStyle: r.tag ? "margin-left:auto;background:#FFF1DC;color:#9A5B0A;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:9px;" : "display:none;",
+    }));
+    const DOCS = [
+      { ext: "PDF", name: "Bill of Lading", meta: "Hazmat BOL format — emergency contact block", chip: a.dgDoc ? "QUEUED" : "" },
+      { ext: "PDF", name: "Shipper's Declaration for DG", meta: "UN1263 · class 3 · PG II", chip: a.dgDoc ? "QUEUED" : "" },
+      { ext: "ZPL", name: "Class 3 Hazard Labels (8)", meta: "Zebra ZT410 · Dock 2", chip: a.dgDoc ? "QUEUED" : "" },
+      { ext: "PDF", name: "Packing List", meta: "Standard", chip: "READY" }
+    ];
+    const docs = DOCS.map((d, i) => ({ ...d,
+      rowStyle: "display:flex;align-items:center;gap:12px;height:52px;border-bottom:1px solid #EDF1F6;padding:0 16px;background:" + (d.chip === "QUEUED" ? "#FFFBF3" : "#fff") + ";" + (d.chip === "QUEUED" ? "animation:rsFadeUp .35s " + (i * 0.06) + "s both;" : ""),
+      iconStyle: "width:28px;height:34px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:700;color:#fff;background:" + (d.ext === "PDF" ? "#C0392B" : "#2E6B8A") + ";",
+      chipStyle: d.chip ? ("margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:9px;" + (d.chip === "QUEUED" ? "background:#FFF1DC;color:#9A5B0A;" : "background:#DCF5EE;color:#0F8A6D;")) : "display:none;",
+    }));
+    return { ...a, items, results, docs, dgFields: this.DG,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      searchTop: (66 + this.BASE.length * 44 + 4) + "px",
+      docCount: a.dgDoc ? "4" : "2",
+      dgOn: a.dgReady, dgOff: !a.dgReady,
+      hazToggle: "width:30px;height:16px;border-radius:8px;position:relative;display:inline-block;transition:background .25s;background:" + (a.haz ? "#D97B36" : "#C6D0DC") + ";",
+      hazKnob: "position:absolute;top:1.5px;width:13px;height:13px;border-radius:50%;background:#fff;transition:left .25s;left:" + (a.haz ? "15px" : "1.5px") + ";",
+      docNote: a.dgDoc ? "DG paperwork is generated from the catalog record, not retyped — and it prints with the BOL." : "Documents build themselves from the order lines.",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+@keyframes rsPick { 0%,100%{box-shadow:0 0 0 0 rgba(64,136,207,.35);} 50%{box-shadow:0 0 0 6px rgba(64,136,207,0);} }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsDot { 0%,100%{opacity:.3;transform:translateY(0);} 50%{opacity:1;transform:translateY(-3px);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+      <span style="color:#3DD6B5;font-size:9.5px;font-weight:700;letter-spacing:.05em;">✦ AI BETA</span>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span style="color:#fff;font-weight:600;">Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:30px;top:70px;font-size:19px;font-weight:700;color:#1A1A1A;">Order Management</div>
+  <div style="position:absolute;left:30px;top:104px;display:flex;gap:32px;font-size:11.5px;font-weight:700;letter-spacing:.045em;color:#5E7186;">
+    <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">OPEN SALES ORDERS</span><span>OPEN OUTBOUND TRANSACTIONS</span><span>OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:131px;height:1px;background:#E4E9EF;"></div>
+  <div style="position:absolute;right:34px;top:118px;width:34px;height:34px;border-radius:50%;background:#1F8AE0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:300;line-height:1;">+</div>
+
+  <!-- ORDERS GRID -->
+  <div style="position:absolute;left:20px;top:148px;width:1400px;height:530px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;box-shadow:0 1px 2px rgba(16,42,67,.06);">
+    <div style="position:absolute;left:0;right:0;top:0;height:56px;">
+      <div style="position:absolute;left:20px;top:10px;width:250px;height:36px;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;box-sizing:border-box;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
+      <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:292px;top:20px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+      <span style="{{ aiChip }}">{{ aiChipLabel }}</span>
+      <div style="position:absolute;left:790px;top:12px;display:flex;height:32px;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;"><span style="display:flex;align-items:center;padding:0 12px;background:#EDF1F6;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#24354A;">ORDERS</span><span style="display:flex;align-items:center;padding:0 12px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">ITEMS</span></div>
+      <span style="position:absolute;left:906px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">AUTO DISPATCH</span>
+      <span style="position:absolute;left:1046px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">BATCHES <span style="opacity:.6;">ⓘ</span></span>
+      <span style="position:absolute;left:1190px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M3 6 L21 6 M6 12 L18 12 M10 18 L14 18" stroke="#4088CF" stroke-width="2.2"></path></svg> FILTERS</span>
+      <span style="position:absolute;left:1330px;top:12px;width:46px;height:32px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid #C6D0DC;border-radius:3px;color:#5E7186;font-size:14px;letter-spacing:.06em;">···</span>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;top:56px;height:30px;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;font-size:11px;font-weight:700;color:#3A4B60;">
+      <span style="position:absolute;left:24px;top:8px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:inline-block;"></span>
+      <span style="position:absolute;left:58px;top:9px;">Order Number</span>
+      <span style="position:absolute;left:175px;top:9px;">Consolidation Number</span>
+      <span style="position:absolute;left:322px;top:9px;">Shipment Details</span>
+      <span style="position:absolute;left:428px;top:9px;">Order Type</span>
+      <span style="position:absolute;left:516px;top:9px;">Ship To Company</span>
+      <span style="position:absolute;left:672px;top:9px;">Ship To</span>
+      <span style="position:absolute;left:880px;top:9px;">Ship To City</span>
+      <span style="position:absolute;left:978px;top:9px;">State</span>
+      <span style="position:absolute;left:1030px;top:9px;">Zip Code</span>
+      <span style="position:absolute;left:1104px;top:9px;">Req. Ship Date</span>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;top:86px;">
+      <sc-for list="{{ orders }}" as="o" hint-placeholder-count="9">
+        <div style="{{ o.row }}">
+          <span style="{{ o.cb }}"><sc-if value="{{ o.picked }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+          <span style="position:absolute;left:58px;top:10px;font-size:11.5px;color:#4088CF;text-decoration:underline;">{{ o.num }}</span>
+          <span style="position:absolute;left:175px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.consolNum }}</span>
+          <span style="position:absolute;left:322px;top:10px;font-size:11.5px;color:#3A4B60;">Yes</span>
+          <span style="position:absolute;left:428px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.otype }}</span>
+          <span style="position:absolute;left:516px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.cust }}</span>
+          <span style="position:absolute;left:672px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.to }}</span>
+          <span style="position:absolute;left:880px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.city }}</span>
+          <span style="position:absolute;left:978px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.state }}</span>
+          <span style="position:absolute;left:1030px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.zip }}</span>
+          <span style="position:absolute;left:1104px;top:10px;font-size:11.5px;color:#3A4B60;">{{ o.date }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;height:44px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11.5px;color:#4A5B70;">
+      <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span><span>1–9 of 19</span><span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> ›</span>
+    </div>
+  </div>
+
+  <!-- FREIGHTPOP AI CHAT -->
+  <div style="position:absolute;left:938px;top:150px;width:472px;height:550px;background:#fff;border-radius:8px;box-shadow:0 12px 44px rgba(10,30,55,.28);border:1px solid #DDE4EC;overflow:hidden;z-index:20;">
+    <div style="height:52px;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;padding:0 16px;">
+      <span style="font-size:15px;font-weight:600;color:#14263C;">FreightPOP AI</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;background:#EAF1FB;color:#4088CF;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:5px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 6h11M4 12h8M4 18h13" stroke="#4088CF" stroke-width="2.4" stroke-linecap="round"></path></svg>New chat</span>
+      <span style="margin-left:auto;display:flex;align-items:center;gap:14px;color:#5E7186;">
+        <svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="2"></circle><path d="M12 7v5.5l3.5 2" fill="none" stroke="#5E7186" stroke-width="2" stroke-linecap="round"></path></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#5E7186" stroke-width="2.2" stroke-linecap="round"></path></svg>
+      </span>
+    </div>
+
+    <div style="position:absolute;left:16px;right:16px;top:64px;bottom:100px;overflow:hidden;">
+      <div style="position:absolute;left:0;right:0;bottom:0;">
+        <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;">Hi! Try: "Which orders can be consolidated today?", "Find all shipments going to the same city"…</div>
+
+        <sc-if value="{{ showQ }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:flex-end;margin-top:16px;animation:rsFadeUp .3s both;"><span style="max-width:330px;background:#2E7CE4;color:#fff;font-size:13.5px;line-height:1.55;padding:11px 15px;border-radius:8px;white-space:normal;display:block;">{{ promptText }}</span></div>
+        </sc-if>
+
+        <sc-if value="{{ thinking }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:5px;margin-top:16px;"><span style="width:6px;height:6px;border-radius:50%;background:#8A97A8;animation:rsDot 1.1s infinite;"></span><span style="width:6px;height:6px;border-radius:50%;background:#8A97A8;animation:rsDot 1.1s .18s infinite;"></span><span style="width:6px;height:6px;border-radius:50%;background:#8A97A8;animation:rsDot 1.1s .36s infinite;"></span></div>
+        </sc-if>
+
+        <sc-if value="{{ showA1 }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:16px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">Read all 9 open sales orders and grouped them by ship-to company and delivery ZIP inside the same required ship date.</div>
+        </sc-if>
+
+        <sc-if value="{{ showA2 }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:12px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">
+            Four orders share the same ship-to company and metro on 07/22:
+            <div style="margin-top:10px;background:#fff;border:1px solid #E1E7EF;border-radius:5px;padding:10px 12px;">
+              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99120</b> · Denver DC</span><span style="flex-shrink:0;">840 lb</span></div>
+              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99126</b> · Stapleton</span><span style="flex-shrink:0;">410 lb</span></div>
+              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99131</b> · Aurora</span><span style="flex-shrink:0;">900 lb</span></div>
+              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99138</b> · Cmrc City</span><span style="flex-shrink:0;">385 lb</span></div>
+            </div>
+            <div style="margin-top:10px;">Four LTL minimums at <b>$1,872</b> become one 2,535 lb load at <b>$743</b> — <b style="color:#2E5E33;">$1,129 lower</b>.</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showChip }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;margin-top:14px;animation:rsFadeUp .3s both;">
+            <span style="{{ chipStyle }}">Consolidate these 4 orders</span>
+            <span style="border:1px solid #D5DEE9;border-radius:6px;padding:9px 13px;font-size:12.5px;color:#3A4B60;">Show me another group</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:16px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">Done — Consolidation Number <b>46266716</b> created from the 4 orders. Each one stays linked to the consolidated shipment and keeps its own tracking and ERP writeback.</div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:16px;right:16px;bottom:16px;height:72px;border:1px solid {{ inputBorder }};border-radius:6px;background:#fff;transition:border-color .2s;">
+      <div style="position:absolute;left:14px;top:13px;right:96px;font-size:13.5px;line-height:1.45;color:{{ typedColor }};white-space:normal;">{{ typedShown }}<sc-if value="{{ caret }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:14px;background:#2E7CE4;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></sc-if></div>
+      <span style="position:absolute;right:52px;bottom:12px;width:30px;height:30px;border-radius:5px;border:1px solid #C3D8F3;display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3" fill="#4088CF"></rect><path d="M5 12a7 7 0 0 0 14 0M12 19v3" fill="none" stroke="#4088CF" stroke-width="2"></path></svg></span>
+      <span style="position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-radius:5px;background:{{ sendBg }};display:flex;align-items:center;justify-content:center;transition:background .2s;"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M12 20V5M12 5 L6 11M12 5 L18 11" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path></svg></span>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  PROMPT = "find all shipments with the same ship-to address as Summit Foods Group";
+  A0 = { playing: true, cap: "01 · Nine open orders, each headed out on its own",
+    curX: 700, curY: 640, ripple: false, ripX: 0, ripY: 0,
+    typeStart: null, focus: false, sent: false, thinking: false,
+    showA1: false, showA2: false, showChip: false, showDone: false, chipHot: false,
+    group: 0, consolidated: false };
+  DUR = 26;
+  KF = [
+    { t: 1.4, s: { curX: 1150, curY: 648 } },
+    { t: 2.2, s: { ripple: true, ripX: 1150, ripY: 648, focus: true } },
+    { t: 2.6, s: { ripple: false, typeStart: 2.6, cap: "02 · Just ask, in plain language" } },
+    { t: 7.6, s: { curX: 1383, curY: 673 } },
+    { t: 8.4, s: { ripple: true, ripX: 1383, ripY: 673 } },
+    { t: 8.8, s: { ripple: false, sent: true, thinking: true, cap: "03 · The assistant reads the whole grid" } },
+    { t: 10.6, s: { thinking: false, showA1: true, group: 2 } },
+    { t: 12.2, s: { group: 4, cap: "04 · Four orders share a customer and a metro" } },
+    { t: 13.2, s: { showA2: true } },
+    { t: 16.4, s: { showChip: true, cap: "05 · One click to consolidate" } },
+    { t: 17.8, s: { curX: 1060, curY: 566, chipHot: true } },
+    { t: 18.8, s: { ripple: true, ripX: 1060, ripY: 566 } },
+    { t: 19.2, s: { ripple: false, chipHot: false, showChip: false, showDone: true, consolidated: true, cap: "06 · One consolidated shipment — orders locked and linked", curX: 700, curY: 620 } },
+  ];
+  ORDERS = [
+    { num: "SO-99120", otype: "FP", cust: "Summit Foods Group", to: "Denver DC, 4100 Havana St", city: "Denver", state: "CO", zip: "80216", date: "07/22/2026", g: 1 },
+    { num: "SO-99126", otype: "FP", cust: "Summit Foods Group", to: "Stapleton, 7550 E 40th Ave", city: "Denver", state: "CO", zip: "80239", date: "07/22/2026", g: 2 },
+    { num: "SO-99131", otype: "FP", cust: "Summit Foods Group", to: "Aurora DC, 1420 Chambers Rd", city: "Aurora", state: "CO", zip: "80011", date: "07/22/2026", g: 3 },
+    { num: "SO-99138", otype: "FP", cust: "Summit Foods Group", to: "Commerce City, 6001 E 64th", city: "Commerce City", state: "CO", zip: "80022", date: "07/22/2026", g: 4 },
+    { num: "SO-99142", otype: "FP", cust: "Baird Electric", to: "Baird Electric, 900 Kalamath", city: "Denver", state: "CO", zip: "80204", date: "07/22/2026" },
+    { num: "SO-99147", otype: "Export", cust: "Summit Foods Group", to: "Phoenix DC, 3300 S 35th Ave", city: "Phoenix", state: "AZ", zip: "85009", date: "07/22/2026" },
+    { num: "SO-99151", otype: "FP", cust: "Cascade Outfitters", to: "Cascade, 8200 NE Alderwood", city: "Portland", state: "OR", zip: "97218", date: "07/22/2026" },
+    { num: "SO-99155", otype: "FP", cust: "Kessler Industrial", to: "Kessler, 1155 Trademark Dr", city: "Reno", state: "NV", zip: "89502", date: "07/24/2026" },
+    { num: "SO-99160", otype: "IAA", cust: "Hollis Supply", to: "Hollis, 4805 Fox St", city: "Denver", state: "CO", zip: "80216", date: "07/25/2026" }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); if (window.ResizeObserver && this._wrap) { this._ro = new ResizeObserver(this._onResize); this._ro.observe(this._wrap); } requestAnimationFrame(this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const w = this._wrap.getBoundingClientRect().width - 2; const s = w / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    let chars = 0;
+    if (a.typeStart !== null) chars = Math.min(this.PROMPT.length, Math.floor((this.t - a.typeStart) / 0.058));
+    const typed = a.sent ? "" : this.PROMPT.slice(0, chars);
+    const orders = this.ORDERS.map((o) => {
+      const picked = !!o.g && a.group >= o.g;
+      return { num: o.num, otype: o.otype, cust: o.cust, to: o.to, city: o.city, state: o.state, zip: o.zip, date: o.date, picked,
+        consolNum: picked && a.consolidated ? "46266716" : "",
+        row: "position:relative;height:33px;border-bottom:1px solid #EFF2F6;background:" + (picked ? "#EAF3FF" : "#fff") + ";transition:background .35s;" + (picked ? "box-shadow:inset 3px 0 0 #4088CF;" : ""),
+        cb: "position:absolute;left:24px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (picked ? "#4088CF" : "#B9C3CF") + ";background:" + (picked ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .25s;" + (picked ? "animation:rsPick 1.6s ease-out 2;" : "") };
+    });
+    return { ...a, orders, promptText: this.PROMPT,
+      showQ: a.sent,
+      typedShown: typed || (a.sent ? "" : a.focus ? "" : "Ask FreightPOP AI…"),
+      typedColor: typed ? "#2A3B50" : "#9AA7B8",
+      caret: a.focus && !a.sent,
+      inputBorder: a.focus && !a.sent ? "#2E7CE4" : "#D5DEE9",
+      sendBg: typed ? "#4088CF" : "#9CB6D8",
+      chipStyle: "border:1px solid " + (a.chipHot ? "#4088CF" : "#B9CDE8") + ";background:" + (a.chipHot ? "#EAF1FB" : "#F7FAFE") + ";border-radius:6px;padding:9px 13px;font-size:12.5px;font-weight:600;color:#4088CF;transition:all .2s;",
+      aiChipLabel: a.consolidated ? "1 CONSOLIDATION CREATED" : a.showA2 ? "1 GROUP FOUND" : a.thinking ? "AI WORKING…" : "AI ASSISTANT ON",
+      aiChip: "position:absolute;left:330px;top:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;padding:4px 10px;border-radius:9px;background:" + (a.showA2 || a.consolidated ? "#EAF3FF" : "#EEF2F7") + ";color:" + (a.showA2 || a.consolidated ? "#1F5FBF" : "#5E7186") + ";",
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px", paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#EEF2F8;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+      <span style="color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;">✦ AI BETA</span>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span>Orders</span><span style="color:#fff;font-weight:600;">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:78px;background:#fff;border-bottom:1px solid #E1E7EF;padding:10px 30px 0;z-index:4;">
+    <div style="font-size:19px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
+    <div style="display:flex;align-items:flex-end;gap:14px;margin-top:8px;">
+      <div style="display:flex;gap:26px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+      <div style="margin-left:38px;position:relative;display:flex;align-items:center;gap:8px;width:240px;height:38px;border:1.5px solid #4088CF;border-radius:3px;padding:0 10px;box-sizing:border-box;">
+        <span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 4px;font-size:10px;color:#4088CF;">Order Import</span>
+        <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="#5E7186" stroke-width="1.8"></circle><circle cx="12" cy="12" r="8" fill="none" stroke="#5E7186" stroke-width="1.8" stroke-dasharray="3 2.4"></circle></svg>
+        <span style="flex:1;font-size:12px;color:#9AA7B8;">Use a comma to separate</span>
+        <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg>
+      </div>
+      <span style="{{ hdrBtn }}">START CONSOLIDATION</span>
+      <span style="{{ hdrBtn }}">RECENT QUOTES</span>
+      <span style="{{ hdrBtn }}">TEMPLATES</span>
+      <div style="position:relative;display:flex;align-items:center;gap:10px;height:38px;border:1px solid #C6D0DC;border-radius:3px;padding:0 12px;box-sizing:border-box;">
+        <span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Process Date</span>
+        <span style="font-size:12.5px;color:#2A3B50;">08/12/2026</span>
+        <svg width="15" height="15" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUOTE/SHIP FORM -->
+  <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;top:130px;bottom:52px;overflow:hidden;">
+
+      <!-- LOCATIONS -->
+      <div style="position:absolute;box-sizing:border-box;left:30px;top:8px;width:670px;height:250px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}"><span>Locations</span><span style="margin-left:auto;display:flex;align-items:center;gap:10px;"><span style="width:34px;height:18px;border-radius:9px;background:#C6D0DC;position:relative;display:inline-block;"><span style="position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;display:block;"></span></span><span style="font-size:12.5px;color:#3A4B60;font-weight:400;">Search by Zip</span></span></div>
+        <div style="{{ fFrom }}"><span style="{{ lbl }}">Ship From</span><div style="{{ fv }}">FreightPOP, 1 Rancho Circle, Lake Forest, CA, 9263…</div><span style="position:absolute;right:12px;top:12px;display:flex;gap:12px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg><svg width="15" height="15" viewBox="0 0 24 24"><path d="M9 3 L3 6 V21 L9 18 L15 21 L21 18 V3 L15 6 Z M9 3 V18 M15 6 V21" fill="none" stroke="#4088CF" stroke-width="1.6"></path></svg></span></div>
+        <span style="{{ formBtn1 }}"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 20 L4 16 L16 4 L20 8 L8 20 Z" fill="none" stroke="#4088CF" stroke-width="1.9"></path></svg>FORM</span>
+        <span style="{{ bookBtn1 }}">ADDRESS BOOK</span>
+        <div style="position:absolute;left:20px;top:118px;color:#4088CF;font-size:12.5px;font-weight:700;letter-spacing:.04em;">↕ SWAP FROM &amp; TO</div>
+        <div style="{{ fTo }}"><span style="{{ lbl }}">Ship To</span><div style="{{ fv }}">{{ shipTo }}<sc-if value="{{ toCaret }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></sc-if></div><span style="position:absolute;right:12px;top:12px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg></span></div>
+        <span style="{{ formBtn2 }}"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 20 L4 16 L16 4 L20 8 L8 20 Z" fill="none" stroke="#4088CF" stroke-width="1.9"></path></svg>FORM</span>
+        <span style="{{ bookBtn2 }}">ADDRESS BOOK</span>
+        <div style="{{ verifyStyle }}"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 12 L10 18 L20 6" fill="none" stroke="{{ verifyStroke }}" stroke-width="3"></path></svg>VERIFY ADDRESSES</div>
+      </div>
+
+      <!-- SHIPMENT DETAILS -->
+      <div style="position:absolute;box-sizing:border-box;left:30px;top:270px;width:670px;height:326px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}"><span>Shipment Details</span><span style="margin-left:auto;display:flex;align-items:center;gap:12px;"><span style="border:1px solid #B9CDE8;border-radius:3px;padding:8px 12px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">+ ADD OUTER HANDLING UNIT</span><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4" fill="#5E7186"></circle><path d="M12 2 v3 M12 19 v3 M2 12 h3 M19 12 h3 M5 5 l2 2 M17 17 l2 2 M19 5 l-2 2 M7 17 l-2 2" stroke="#5E7186" stroke-width="2"></path></svg></span></div>
+        <div style="position:absolute;left:16px;top:52px;right:16px;display:flex;align-items:center;gap:12px;">
+          <span style="color:#5E7186;font-size:12px;">⌃</span>
+          <span style="color:#8A97A8;font-size:13px;">⣿</span>
+          <span style="font-size:13.5px;color:#24354A;">1 &nbsp;|&nbsp; 48x40x52 @ 640 lb</span>
+          <span style="margin-left:auto;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">CUBISCAN</span>
+          <span style="color:#5E7186;font-size:13px;">···</span>
+        </div>
+        <div style="position:absolute;left:16px;top:70px;font-size:11px;color:#8A97A8;">Cabinet hardware</div>
+
+        <div style="position:absolute;left:16px;top:88px;right:16px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Quantity</span><div style="{{ fv }}">1</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.6"></rect><path d="M3 9 H21 M9 9 V20" stroke="#5E7186" stroke-width="1.6"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Type</span><div style="{{ fv }}">PALLET</div></div>
+          <div style="position:relative;{{ fldGrey }}"><span style="{{ lbl }}">Container Type</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><span style="font-size:9px;color:#8A97A8;">▾</span><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+          <span style="{{ innerBtn }}">INNER PIECES</span>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Length</span><div style="{{ fv }}">48</div><span style="{{ unit }}">in</span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Width</span><div style="{{ fv }}">40</div><span style="{{ unit }}">in</span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Height</span><div style="{{ fv }}">52</div><span style="{{ unit }}">in</span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Weight (per piece)</span><div style="{{ fv }}">640</div><span style="{{ unit }}">lb</span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Freight Class</span><div style="{{ fv }}">70</div><span style="{{ icoR }}"><span style="font-size:9px;color:#8A97A8;">▾</span><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">NMFC</span><div style="{{ fv }}">100240</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="#4088CF" stroke-width="1.6"></rect><path d="M3 9 H21 M9 9 V20" stroke="#4088CF" stroke-width="1.6"></path></svg></span></div>
+          <div style="position:relative;{{ fldGrey }}"><span style="{{ lbl }}">Density</span><div style="{{ fvMuted }}">7.4</div></div>
+          <div style="position:relative;{{ fldGrey }}"><span style="{{ lbl }}">Cubic Ft</span><div style="{{ fvMuted }}">57.8</div></div>
+        </div>
+
+        <div style="position:absolute;left:16px;top:232px;right:16px;{{ fld }}"><span style="{{ lbl }}">Description</span><div style="{{ fv }}">Cabinet hardware, boxed on pallet</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg></span></div>
+
+        <div style="position:absolute;left:16px;top:274px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;"><span style="{{ togOn }}"><span style="{{ knobOn }}"></span></span><span style="font-size:12.5px;color:#3A4B60;">Non Stackable</span></div>
+          <div style="display:flex;align-items:center;gap:12px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:12.5px;color:#3A4B60;">Hazmat</span></div>
+        </div>
+        <span style="position:absolute;right:16px;top:278px;border:1px solid #B9CDE8;border-radius:3px;padding:11px 22px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">REFERENCES</span>
+        <span style="position:absolute;right:154px;top:278px;border:1px solid #B9CDE8;border-radius:3px;padding:11px 16px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">+ ADD PACKAGE</span>
+      </div>
+
+      <!-- ADDITIONAL INFORMATION -->
+      <div style="position:absolute;box-sizing:border-box;left:30px;top:636px;width:670px;height:300px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}"><span>Additional Information</span></div>
+        <div style="position:absolute;left:16px;top:52px;right:16px;{{ fld }}"><span style="{{ lbl }}">Shipping Notes</span><div style="{{ fv }}"></div></div>
+        <div style="position:absolute;left:16px;top:106px;right:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">COD Amount</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+          <div style="position:relative;{{ fldGrey }}"><span style="{{ lbl }}">Carrier Insurance Amount</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Pickup Special Instructions</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Delivery Special Instructions</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg></span></div>
+        </div>
+        <div style="position:absolute;left:16px;top:222px;right:16px;{{ fld }}"><span style="{{ lbl }}">Incoterms</span><div style="{{ fv }}"></div></div>
+      </div>
+
+      <!-- SCHEDULE PICKUP -->
+      <div style="position:absolute;box-sizing:border-box;left:730px;top:8px;width:670px;height:286px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}"><span>Schedule Pickup</span><span style="margin-left:auto;display:flex;gap:14px;color:#5E7186;font-size:13px;font-weight:400;">⌃ ⓘ</span></div>
+        <div style="position:absolute;left:16px;top:50px;right:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Pickup Date</span><div style="{{ fvMuted }}">MM/DD/YYYY</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Delivery Date</span><div style="{{ fvMuted }}">MM/DD/YYYY</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Ready Time</span><div style="{{ fvMuted }}">hh:mm aa</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7 v6 l4 2" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Open Time</span><div style="{{ fvMuted }}">hh:mm aa</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7 v6 l4 2" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Cutoff Time</span><div style="{{ fvMuted }}">hh:mm aa</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7 v6 l4 2" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+          <div style="position:relative;{{ fld }}"><span style="{{ lbl }}">Close Time</span><div style="{{ fvMuted }}">hh:mm aa</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7 v6 l4 2" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+        </div>
+        <div style="position:absolute;left:16px;top:192px;width:142px;{{ fldGrey }}"><span style="{{ lbl }}">Transit Days</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+        <div style="position:absolute;left:170px;top:192px;right:16px;{{ fld }}"><span style="{{ lbl }}">Pickup Request Email</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+        <div style="position:absolute;left:16px;top:238px;width:306px;{{ fldOn }}"><span style="{{ lbl }}">Dock</span><div style="{{ fv }}">{{ dockValue }}</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+        <div style="position:absolute;left:334px;top:238px;right:16px;{{ fldGrey }}"><span style="{{ lbl }}">Equipment</span><div style="{{ fv }}">0 selected</div><span style="{{ icoR }}"><span style="font-size:9px;color:#8A97A8;">▾</span><span style="font-size:12px;color:#8A97A8;">ⓘ</span></span></div>
+      </div>
+
+      <!-- CARRIER -->
+      <div style="position:absolute;box-sizing:border-box;left:730px;top:306px;width:670px;height:292px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}"><span>Carrier</span></div>
+        <div style="position:absolute;left:16px;top:46px;right:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="position:relative;{{ fldS }}"><span style="{{ lbl }}">Carrier</span><div style="{{ fv }}">Rate Shop</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg></span></div>
+          <div style="position:relative;{{ fldGreyS }}"><span style="{{ lbl }}">Service</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#8A97A8" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#8A97A8" stroke-width="2"></path></svg></span></div>
+          <div style="position:relative;{{ fldGreyS }}"><span style="{{ lbl }}">Payee</span><div style="{{ fv }}">Sender</div><span style="{{ icoR }}"><span style="font-size:9px;color:#8A97A8;">▾</span></span></div>
+          <div style="position:relative;{{ fldGreyS }}"><span style="{{ lbl }}">Payment Type</span><div style="{{ fv }}">Prepaid (Carrier Account Selected Will Be Cha</div></div>
+        </div>
+        <div style="position:absolute;left:16px;top:130px;width:452px;{{ fldGreyS }}"><span style="{{ lbl }}">Account Details</span><div style="{{ fv }}"></div><span style="{{ icoR }}"><span style="font-size:12px;color:#8A97A8;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#8A97A8" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#8A97A8" stroke-width="2"></path></svg></span></div>
+        <span style="position:absolute;left:482px;top:130px;right:16px;height:36px;box-sizing:border-box;border:1px solid #B9CDE8;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:7px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 20 L4 16 L16 4 L20 8 L8 20 Z" fill="none" stroke="#4088CF" stroke-width="1.9"></path></svg>DETAILS</span>
+        <div style="position:absolute;left:16px;top:170px;width:452px;{{ fldS }}"><span style="{{ lbl }}">Confirmation Email</span><div style="{{ fv }}"></div></div>
+        <div style="position:absolute;left:482px;top:170px;right:16px;{{ fldS }}"><span style="{{ lbl }}">Send Notification</span><div style="{{ fv }}">08/12/2026</div><span style="{{ icoR }}"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg></span></div>
+        <div style="position:absolute;left:16px;top:212px;width:452px;display:flex;align-items:center;gap:12px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:11.5px;color:#3A4B60;white-space:nowrap;">Do Not Use Carrier API When Shipping</span><span style="margin-left:auto;font-size:12px;color:#8A97A8;">ⓘ</span></div>
+        <div style="position:absolute;left:16px;top:238px;width:452px;display:flex;align-items:center;gap:12px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:11.5px;color:#3A4B60;white-space:nowrap;">Notify Upon Delivery</span><span style="margin-left:auto;font-size:12px;color:#8A97A8;">ⓘ</span></div>
+        <div style="position:absolute;left:16px;top:264px;width:452px;display:flex;align-items:center;gap:12px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:11.5px;color:#3A4B60;white-space:nowrap;">Only Send Notification Once the Carrier Provides Tracking</span><span style="margin-left:auto;font-size:12px;color:#8A97A8;">ⓘ</span></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:14px;padding:0 22px;z-index:6;">
+      <div style="flex:1;min-width:0;overflow:hidden;display:flex;align-items:center;gap:20px;">
+        <span style="font-size:12.5px;color:#3A4B60;">Total Outer Handling Units: 1</span>
+        <span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: 1</span>
+        <span style="font-size:12.5px;color:#3A4B60;">Total Weight: 640 LB</span>
+        <span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 4.0</span>
+      </div>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 12px;color:#5E7186;font-size:11px;font-weight:700;flex-shrink:0;">⋯</span>
+      <span style="{{ barBtn }}">CLEAR SHIPMENT</span>
+      <span style="{{ barBtn }}">PREVIEW BOL</span>
+      <span style="{{ barBtn }}">SAVE SHIPMENT</span>
+      <span style="{{ barBtn }}">SPOT QUOTE</span>
+      <span style="background:{{ rateBg }};border-radius:4px;padding:10px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0;transition:background .2s;">RATE SHOP</span>
+      
+    </div>
+  </sc-if>
+
+  <!-- ADDRESS VALIDATOR -->
+  <sc-if value="{{ modal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(120,160,205,.28);z-index:20;"></div>
+    <div style="position:absolute;box-sizing:border-box;left:270px;top:120px;width:900px;height:560px;background:#fff;border-radius:4px;box-shadow:0 18px 50px rgba(5,20,40,.35);z-index:21;animation:rsFadeUp .28s ease both;">
+      <div style="position:absolute;left:0;right:0;top:0;height:56px;background:#F7F9FB;border-bottom:1px solid #EDF1F6;border-radius:4px 4px 0 0;"><span style="position:absolute;left:28px;top:16px;font-size:18px;font-weight:600;color:#1A2634;">Address Validator</span><span style="position:absolute;right:26px;top:17px;font-size:18px;color:#3A4B60;">✕</span></div>
+
+      <div style="position:absolute;left:28px;top:84px;width:400px;">
+        <div style="display:flex;align-items:center;gap:9px;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12.5 L9.5 18 L20 6" fill="none" stroke="#3B9E4E" stroke-width="2.6"></path></svg><span style="font-size:14.5px;color:#24354A;">Ship From Address</span></div>
+        <div style="margin-top:14px;font-size:12px;color:#5E7186;">Current Address</div>
+        <div style="margin-top:8px;font-size:13.5px;color:#24354A;">1 Rancho Circle, Lake Forest, CA, 92630, US</div>
+        <img src="assets/av-map-from.png" alt="" style="display:block;margin-top:14px;width:400px;height:190px;object-fit:cover;border-radius:2px;">
+      </div>
+
+      <div style="position:absolute;left:470px;top:84px;width:400px;">
+        <div style="display:flex;align-items:center;gap:9px;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 3 L22 20 L2 20 Z" fill="none" stroke="#E8A33D" stroke-width="2"></path><rect x="11" y="9" width="2" height="5" fill="#E8A33D"></rect><rect x="11" y="16" width="2" height="2" fill="#E8A33D"></rect></svg><span style="font-size:14.5px;color:#24354A;">Ship To Address</span></div>
+        <div style="margin-top:12px;font-size:12.5px;color:#9A5B0A;line-height:1.55;white-space:normal;">This address is classified Residential and has no dock on file. Review the suggested accessorials before rating.</div>
+        <div style="margin-top:12px;font-size:13.5px;color:#24354A;">418 Sycamore Ln, Marietta, GA, 30060</div>
+        <img src="assets/av-map-to.png" alt="" style="display:block;margin-top:12px;width:400px;height:130px;object-fit:cover;border-radius:2px;">
+        <div style="margin-top:14px;font-size:12.5px;color:#3A4B60;">Based on satellite imagery, this destination needs:</div>
+        <sc-for list="{{ picks }}" as="p" hint-placeholder-count="2">
+          <div style="{{ p.card }}">
+            <span style="{{ p.box }}"><sc-if value="{{ p.on }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+            <span><span style="display:block;font-size:12.5px;color:#24354A;">{{ p.label }}</span><span style="display:block;margin-top:2px;font-size:11px;color:#8A97A8;">{{ p.sub }}</span></span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="position:absolute;left:28px;bottom:24px;display:flex;gap:12px;">
+        <span style="{{ updateBtn }}">UPDATE</span>
+        <span style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 20px;color:#3A4B60;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- RATES -->
+  <sc-if value="{{ showRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:30px;top:150px;width:1380px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;animation:rsFadeUp .3s both;">
+      <div style="{{ cardHead }}"><span>Rates</span><span style="margin-left:auto;display:flex;align-items:center;gap:18px;">
+        <span style="font-size:11px;color:#0F8A6D;background:#DCF5EE;padding:5px 11px;border-radius:9px;font-weight:700;letter-spacing:.05em;">RESIDENTIAL + LIFT GATE PRICED IN</span>
+        <svg width="17" height="17" viewBox="0 0 24 24"><path d="M20 12 A8 8 0 1 1 17.6 6.4 M17.6 6.4 L18.2 2.2 M17.6 6.4 L13.2 6.2" fill="none" stroke="#4088CF" stroke-width="1.8"></path></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24"><path d="M2.5 5 H21.5 A1 1 0 0 1 22.5 6 V18 A1 1 0 0 1 21.5 19 H2.5 A1 1 0 0 1 1.5 18 V6 A1 1 0 0 1 2.5 5 Z M2 6 L12 13.5 L22 6" fill="#4088CF"></path></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24"><path d="M7 3 H17 V8 H7 Z M4 9 H20 A1 1 0 0 1 21 10 V16 H17 V21 H7 V16 H3 V10 A1 1 0 0 1 4 9 Z" fill="#4088CF"></path></svg>
+      </span></div>
+      <div style="position:relative;height:34px;border-bottom:1px solid #E1E7EF;background:#F8FAFD;font-size:11.5px;font-weight:700;color:#4A5B70;">
+        <span style="position:absolute;left:20px;top:10px;">Carrier</span><span style="position:absolute;left:330px;top:10px;">Service</span><span style="position:absolute;left:560px;top:10px;">Days</span><span style="position:absolute;left:660px;top:10px;">Base</span><span style="position:absolute;left:820px;top:10px;">Residential</span><span style="position:absolute;left:980px;top:10px;">Lift Gate</span><span style="position:absolute;left:1120px;top:10px;">Quoted Total</span>
+      </div>
+      <sc-for list="{{ rateRows }}" as="r" hint-placeholder-count="4">
+        <div style="{{ r.rowStyle }}">
+          <span style="position:absolute;left:20px;top:16px;font-size:12.5px;font-weight:600;color:#24354A;">{{ r.carrier }}</span>
+          <sc-if value="{{ r.best }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:210px;top:16px;background:#DCF5EE;color:#0F8A6D;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:2.5px 7px;border-radius:9px;">LOWEST</span></sc-if>
+          <span style="position:absolute;left:330px;top:16px;font-size:12.5px;color:#24354A;">{{ r.svc }}</span>
+          <span style="position:absolute;left:560px;top:16px;font-size:12.5px;color:#24354A;">{{ r.days }}</span>
+          <span style="position:absolute;left:660px;top:16px;font-size:12.5px;color:#4A5B70;">{{ r.base }}</span>
+          <span style="position:absolute;left:820px;top:16px;font-size:12.5px;color:#4A5B70;">{{ r.res }}</span>
+          <span style="position:absolute;left:980px;top:16px;font-size:12.5px;color:#4A5B70;">{{ r.lg }}</span>
+          <span style="position:absolute;left:1120px;top:15px;font-size:13px;font-weight:700;color:#24354A;">{{ r.tot }}</span>
+          <span style="position:absolute;right:20px;top:15px;display:flex;align-items:center;gap:18px;">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 4 H21 A1 1 0 0 1 22 5 V19 A1 1 0 0 1 21 20 H3 A1 1 0 0 1 2 19 V5 A1 1 0 0 1 3 4 Z" fill="#4088CF"></path><path d="M5 8 H10 M5 11 H10 M5 14 H10 M13 8 H19 M13 11 H19 M13 14 H19" stroke="#fff" stroke-width="1.4"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 21 L3.9 16.6 L15.6 4.9 L19.1 8.4 L7.4 20.1 Z M17 3 L21 7 L19.6 8.4 L16.1 4.9 Z" fill="#4088CF"></path></svg>
+            <svg width="17" height="17" viewBox="0 0 24 24"><path d="M1 7 H13 V16 H1 Z M14 10 H18.6 L21.6 13.2 V16 H14 Z" fill="#4088CF"></path><circle cx="6" cy="18" r="2.2" fill="#4088CF"></circle><circle cx="17.5" cy="18" r="2.2" fill="#4088CF"></circle></svg>
+          </span>
+        </div>
+      </sc-for>
+      <div style="margin:16px 20px;height:66px;border-radius:4px;background:#F7FAFF;border:1px solid #DCE6F2;display:flex;align-items:center;gap:30px;padding:0 18px;">
+        <span style="font-size:12px;color:#5E7186;">Invoice-vs-quote variance</span>
+        <span style="font-size:22px;font-weight:700;color:#0F8A6D;">$0.00</span>
+        <span style="font-size:12px;color:#5E7186;white-space:normal;">The residential fee ($38.50) and the lift gate ($95.00) that would have arrived as a surprise are already in the number the customer was quoted.</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- OVERLAYS -->
+  <div style="position:absolute;left:16px;bottom:44px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:44px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:86px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { scene: "form", playing: true, cap: "01 · Enter the ship-to address", curX: 700, curY: 640,
+    ripple: false, ripX: 0, ripY: 0, shipTo: "", toFocus: false, toCaret: false,
+    verified: false, modal: false, picks: [false, false], applied: false,
+    updateBg: "#4088CF", rateBg: "#1565C0" };
+  DUR = 21;
+  KF = [
+    { t: 0.6, s: { curX: 230, curY: 309, toFocus: true, toCaret: true } },
+    { t: 3.5, s: { toCaret: false, toFocus: false } },
+    { t: 4.0, s: { curX: 130, curY: 356, cap: "02 · Verify the addresses before rating" } },
+    { t: 4.8, s: { ripple: true, ripX: 130, ripY: 356, verified: true } },
+    { t: 5.2, s: { ripple: false, modal: true, curX: 700, curY: 420, cap: "03 · The validator returns the carrier's own classification" } },
+    { t: 7.4, s: { curX: 760, curY: 522 } },
+    { t: 8.2, s: { ripple: true, ripX: 760, ripY: 522, picks: [true, false] } },
+    { t: 9.0, s: { ripple: false, curX: 760, curY: 584 } },
+    { t: 9.7, s: { ripple: true, ripX: 760, ripY: 584, picks: [true, true], cap: "04 · Only the accessorials this freight actually needs" } },
+    { t: 10.9, s: { ripple: false, curX: 338, curY: 651 } },
+    { t: 11.7, s: { ripple: true, ripX: 338, ripY: 651, updateBg: "#1557B0" } },
+    { t: 12.1, s: { ripple: false, modal: false, updateBg: "#4088CF", applied: true, cap: "05 · Applied to the shipment before a rate is pulled", curX: 1050, curY: 420 } },
+    { t: 14.6, s: { curX: 1372, curY: 785, cap: "06 · Rate with the surcharges in the number" } },
+    { t: 15.4, s: { ripple: true, ripX: 1372, ripY: 785, rateBg: "#0F4C92" } },
+    { t: 15.8, s: { ripple: false, scene: "rates", rateBg: "#1565C0", cap: "07 · The quote already says what the invoice will say", curX: 800, curY: 620 } },
+  ];
+  TYPERS = [{ t0: 0.9, dur: 2.4, field: "shipTo", text: "418 Sycamore Ln, Marietta, GA, 30060", until: Infinity }];
+  PICKS = [
+    ["Residential delivery", "Classified Residential · no dock on file"],
+    ["Destination lift gate", "640 lb pallet · no hand unload"],
+  ];
+  ROWS = [
+    { carrier: "Estes Express", svc: "LTL Standard", days: "4", base: "412.60", res: "38.50", lg: "95.00", tot: "546.10", best: true },
+    { carrier: "R+L Carriers", svc: "LTL Standard", days: "4", base: "438.20", res: "42.00", lg: "95.00", tot: "575.20" },
+    { carrier: "Old Dominion", svc: "LTL Standard", days: "3", base: "471.90", res: "44.75", lg: "110.00", tot: "626.65" },
+    { carrier: "XPO Logistics", svc: "LTL Standard", days: "5", base: "498.40", res: "40.00", lg: "105.00", tot: "643.40" },
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    if (window.ResizeObserver && this._wrap) { this._ro = new ResizeObserver(this._onResize); this._ro.observe(this._wrap); }
+    requestAnimationFrame(this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const w = this._wrap.getBoundingClientRect().width - 2; const s = w / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() {
+    while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; }
+    for (const ty of this.TYPERS) { if (this.t >= ty.t0 && this.t < ty.until) { const f = Math.min(1, (this.t - ty.t0) / ty.dur); this.anim[ty.field] = ty.text.slice(0, Math.round(f * ty.text.length)); } }
+  }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  _fieldBase(border, bg) { return "height:40px;box-sizing:border-box;border:" + border + ";border-radius:3px;background:" + bg + ";transition:border-color .2s;"; }
+  renderVals() {
+    const a = this.anim;
+    const picks = this.PICKS.map((p, i) => ({ label: p[0], sub: p[1], on: a.picks[i],
+      card: "position:relative;margin-top:12px;width:400px;height:50px;box-sizing:border-box;display:flex;align-items:center;gap:13px;padding:0 14px;border:1px solid " + (a.picks[i] ? "#B9CDE8" : "#E4E9EF") + ";border-radius:3px;background:" + (a.picks[i] ? "#F6FAFF" : "#fff") + ";transition:all .2s;",
+      box: "width:14px;height:14px;border-radius:2px;flex-shrink:0;border:1.5px solid " + (a.picks[i] ? "#4088CF" : "#B9C3CF") + ";background:" + (a.picks[i] ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;" }));
+    const rateRows = this.ROWS.map((r, i) => ({ ...r,
+      rowStyle: "position:relative;height:48px;border-bottom:1px solid #EDF1F6;background:" + (r.best ? "#F6FBF9" : "#fff") + ";animation:rsFadeUp .35s " + (i * 0.08) + "s both;" }));
+    return { ...a, picks, rateRows,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      pageTitle: a.scene === "rates" ? "Quote/Ship (Quote Id: 46431802)" : "Quote/Ship",
+      showForm: a.scene === "form", showRates: a.scene === "rates",
+      cardHead: "height:46px;box-sizing:border-box;background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:4px 4px 0 0;display:flex;align-items:center;padding:0 18px;font-size:15px;font-weight:600;color:#24354A;",
+      lbl: "position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;",
+      fv: "padding:12px 0 0 12px;font-size:12.5px;color:#2A3B50;overflow:hidden;",
+      fvMuted: "padding:12px 0 0 12px;font-size:12.5px;color:#9AA7B8;",
+      icoR: "position:absolute;right:10px;top:12px;display:flex;align-items:center;gap:8px;",
+      unit: "position:absolute;right:12px;top:13px;font-size:11.5px;color:#8A97A8;",
+      fld: this._fieldBase("1px solid #C6D0DC", "#fff"),
+      fldS: this._fieldBase("1px solid #C6D0DC", "#fff").replace("height:40px", "height:36px"),
+      fldGreyS: this._fieldBase("1px solid #E4E9EF", "#F4F6F9").replace("height:40px", "height:36px"),
+      fldGrey: this._fieldBase("1px solid #E4E9EF", "#F4F6F9"),
+      fldOn: this._fieldBase("1.5px solid " + (a.applied ? "#4088CF" : "#C6D0DC"), a.applied ? "#F4F9FF" : "#fff"),
+      innerBtn: "height:40px;box-sizing:border-box;border:1px solid #4088CF;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;",
+      togOn: "width:34px;height:18px;border-radius:9px;background:#4E9BE8;position:relative;display:inline-block;flex-shrink:0;",
+      knobOn: "position:absolute;top:2px;left:18px;width:14px;height:14px;border-radius:50%;background:#fff;display:block;",
+      togOff: "width:34px;height:18px;border-radius:9px;background:#D5DDE7;position:relative;display:inline-block;flex-shrink:0;",
+      knobOff: "position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;display:block;",
+      fFrom: "position:absolute;left:20px;top:58px;width:400px;height:40px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;background:#fff;",
+      fTo: "position:absolute;left:20px;top:142px;width:400px;height:40px;box-sizing:border-box;border:" + (a.toFocus ? "1.5px solid #4088CF" : "1px solid #C6D0DC") + ";border-radius:3px;background:#fff;transition:border-color .2s;",
+      formBtn1: "position:absolute;left:430px;top:58px;width:96px;height:40px;box-sizing:border-box;border:1px solid #B9CDE8;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:6px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;",
+      bookBtn1: "position:absolute;left:534px;top:58px;width:136px;height:40px;box-sizing:border-box;border:1px solid #B9CDE8;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;",
+      formBtn2: "position:absolute;left:430px;top:142px;width:96px;height:40px;box-sizing:border-box;border:1px solid #B9CDE8;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:6px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;",
+      bookBtn2: "position:absolute;left:534px;top:142px;width:136px;height:40px;box-sizing:border-box;border:1px solid #B9CDE8;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;",
+      verifyStyle: "position:absolute;left:20px;top:200px;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;letter-spacing:.04em;color:" + (a.verified ? "#0F8A6D" : "#4088CF") + ";transition:color .2s;",
+      verifyStroke: a.verified ? "#0F8A6D" : "#4088CF",
+      dockValue: a.applied ? "No dock — residential" : "",
+      barBtn: "border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0;white-space:nowrap;",
+      updateBtn: "background:" + a.updateBg + ";border-radius:3px;padding:11px 24px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;",
+      hdrBtn: "display:flex;align-items:center;height:38px;padding:0 14px;border:1px solid #4088CF;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.03em;",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

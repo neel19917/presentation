@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Track</span><span style="color:#fff;font-weight:600;">WMS</span><span>History</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:#14263C;">WMS — Inventory · All Locations</div>
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>RECEIPTS</span><span>PICKING</span><span>BIN TRANSFERS</span><span>TRANSACTIONS</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">INVENTORY</span><span>CYCLE COUNTS</span></div>
+    </div>
+    <span style="border:1px solid #B9CDE8;border-radius:4px;padding:11px 18px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;margin-top:8px;">EXPORT TO EXCEL ⤓</span>
+  </div>
+
+  <!-- ═══ INVENTORY GRID ═══ -->
+  <div style="position:absolute;left:30px;top:134px;width:860px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;gap:12px;padding:0 16px;">
+      <div style="flex:1;height:32px;border:1.5px solid {{ searchBorder }};border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 12px;transition:all .3s;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="font-size:12px;color:{{ searchColor }};font-weight:600;">{{ searchText }}</span></div>
+      <span style="font-size:11px;color:#5E7186;">Sites: <b style="color:#24354A;">All (9)</b></span>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr .7fr;padding:9px 16px;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#8A97A8;border-bottom:1px solid #EDF1F6;">
+      <span>SITE / BIN</span><span>LOT</span><span>EXPIRATION</span><span>LICENSE PLATE</span><span style="text-align:right;">QTY</span>
+    </div>
+    <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+      <div style="{{ r.style }}">
+        <span style="font-weight:700;color:#24354A;">{{ r.site }} <span style="font-weight:400;color:#5E7186;">· {{ r.bin }}</span></span>
+        <span style="color:#5E7186;">{{ r.lot }}</span>
+        <span style="color:{{ r.expColor }};">{{ r.exp }}</span>
+        <span style="color:#5E7186;font-family:'DM Mono',monospace;font-size:10.5px;">{{ r.lp }}</span>
+        <span style="text-align:right;font-weight:700;color:{{ r.qtyColor }};">{{ r.qty }}</span>
+      </div>
+    </sc-for>
+    <div style="position:absolute;left:16px;bottom:14px;right:16px;display:flex;justify-content:space-between;font-size:11.5px;color:#8A97A8;">
+      <span>One item, every site — live, not last night's sync.</span>
+      <span>Total on hand: <b style="color:#24354A;">{{ totalQty }}</b></span>
+    </div>
+  </div>
+
+  <!-- ═══ ADJUSTMENT PANEL ═══ -->
+  <div style="position:absolute;left:914px;top:134px;width:496px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:40px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:13px;font-weight:700;color:#24354A;">Adjustment — from the scanner<span style="font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:999px;background:{{ adjStatBg }};color:{{ adjStatColor }};transition:all .3s;">{{ adjStat }}</span></div>
+    <sc-if value="{{ adjOn }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:11px;font-size:11.5px;animation:srFadeUp .35s both;">
+        <div style="display:flex;gap:10px;">
+          <span style="border:1.5px solid #E5484D;background:#FFF5F5;border-radius:6px;padding:8px 14px;font-weight:700;color:#B3261E;">Adjustment Out</span>
+          <span style="border:1px solid #E1E7EF;border-radius:6px;padding:8px 14px;color:#8A97A8;">Adjustment In</span>
+        </div>
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><b style="color:#24354A;">ITEM-0009 (RENO · ZONE-C-201) — Qty: 88</b><div style="color:#5E7186;margin-top:2px;">LOT-4471 · exp 11/2026 · scanned at the bin</div></div>
+        <div style="display:flex;gap:12px;align-items:center;"><span style="color:#8A97A8;font-weight:700;font-size:10.5px;">QTY OUT</span><span style="border:1px solid #CBD6E2;border-radius:5px;padding:7px 14px;font-weight:700;color:#B3261E;">6</span><span style="color:#8A97A8;">max available: 88</span></div>
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;color:#5E7186;white-space:normal;">Notes: <b style="color:#24354A;">Water damage — roof leak over ZONE-C. Write off 6 units.</b></div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="width:74px;height:56px;border-radius:5px;background:linear-gradient(135deg,#8FA6BC,#5E7891);position:relative;overflow:hidden;"><div style="position:absolute;inset:auto 0 0 0;height:20px;background:rgba(11,26,46,.55);color:#fff;font-size:8.5px;display:flex;align-items:center;justify-content:center;">IMG_2214.jpg</div></div>
+          <sc-if value="{{ photoOn }}" hint-placeholder-val="{{ false }}"><div style="width:74px;height:56px;border-radius:5px;background:linear-gradient(135deg,#7C93A9,#4A6076);position:relative;overflow:hidden;animation:srFadeUp .3s both;"><div style="position:absolute;inset:auto 0 0 0;height:20px;background:rgba(11,26,46,.55);color:#fff;font-size:8.5px;display:flex;align-items:center;justify-content:center;">IMG_2215.jpg</div></div></sc-if>
+          <div style="white-space:normal;color:#8A97A8;flex:1;">📷 Photo capture — QA proof and vendor RMA documentation, attached to the transaction.</div>
+        </div>
+      </div>
+      <div style="position:absolute;right:16px;bottom:52px;display:flex;gap:10px;">
+        <span style="border:1px solid #CBD6E2;border-radius:4px;padding:10px 20px;color:#4A5B70;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</span>
+        <span style="background:{{ adjPostBg }};border-radius:4px;padding:10px 20px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:all .3s;">POST</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{ adjOff }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:40px 24px;text-align:center;color:#8A97A8;font-size:12px;white-space:normal;">A picker in Reno just found water-damaged stock.<br>Watch what happens next — no back-office ticket.</div>
+    </sc-if>
+    <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:11.5px;color:#8A97A8;white-space:normal;">Every adjustment is a recorded transaction that posts to your ERP.</div>
+  </div>
+
+  <!-- ═══ ERP TOAST ═══ -->
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:34px;top:80px;width:440px;background:#fff;border:1px solid #E1E7EF;border-left:4px solid #3B9E4E;border-radius:8px;box-shadow:0 10px 30px rgba(5,20,40,.18);padding:14px 16px;z-index:9;animation:srFadeUp .35s both;">
+      <div style="font-size:12.5px;font-weight:700;color:#24354A;">Adjustment posted — ERP updated</div>
+      <div style="font-size:11.5px;color:#5E7186;margin-top:4px;white-space:normal;">TRX-90218 · ITEM-0009 −6 at RENO. Photos attached for the vendor RMA. The live view already shows 82.</div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ OVERLAYS ═══ -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ROWBASE = "display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr .7fr;padding:11px 16px;font-size:11.5px;border-bottom:1px solid #EDF1F6;transition:all .3s;";
+  A0 = { playing: true, cap: "01 · One item, searched across nine sites",
+    curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    searchText: "ITEM-0009", searchBorder: "#4088CF", searchColor: "#24354A",
+    renoQty: 88, renoHi: false, totalQty: "1,236",
+    adjOn: false, adjOff: true, adjStat: "—", adjStatBg: "#F3F6FA", adjStatColor: "#8A97A8",
+    adjPostBg: "#9FB3C8", photoOn: false, toastOn: false };
+  DUR = 24;
+  KF = [
+    { t: 2.2, s: { curX: 420, curY: 350, renoHi: true, cap: "02 · Reno: a picker finds water-damaged stock" } },
+    { t: 4.6, s: { adjOn: true, adjOff: false, adjStat: "OPEN", adjStatBg: "#EAF3FF", adjStatColor: "#1F5FBF", curX: 1050, curY: 260, cap: "03 · Write it off on the spot — from the scanner" } },
+    { t: 7.2, s: { photoOn: true, curX: 1060, curY: 500, cap: "04 · Photos attach — QA proof, vendor RMA" } },
+    { t: 9.6, s: { adjPostBg: "#4088CF", curX: 1330, curY: 622 } },
+    { t: 10.6, s: { ripple: true, ripX: 1330, ripY: 622 } },
+    { t: 11.0, s: { ripple: false, adjStat: "POSTED", adjStatBg: "#E7F4E4", adjStatColor: "#2E5E33", toastOn: true, renoQty: 82, totalQty: "1,230", cap: "05 · Posted — the live view is already right" } },
+    { t: 14.0, s: { curX: 700, curY: 400, cap: "06 · Nine sites, one truth — lots, plates, expiry" } },
+    { t: 22.5, s: {} },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); if (!this.anim.playing) { this.anim.playing = true; } this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const rows = [
+      { site: "LAKE FOREST", bin: "ZONE-A-114", lot: "LOT-123", exp: "06/2027", expColor: "#5E7186", lp: "LP-PO10482-001", qty: "600", qtyColor: "#24354A", hi: false },
+      { site: "LAKE FOREST", bin: "TRUCK-04", lot: "LOT-123", exp: "06/2027", expColor: "#5E7186", lp: "—", qty: "250", qtyColor: "#24354A", hi: false },
+      { site: "RENO", bin: "ZONE-C-201", lot: "LOT-4471", exp: "11/2026", expColor: "#9A6B12", lp: "LP-J1189-014", qty: String(a.renoQty), qtyColor: a.renoQty < 88 ? "#B3261E" : "#24354A", hi: a.renoHi },
+      { site: "DALLAS", bin: "OVERFLOW-12", lot: "LOT-3302", exp: "02/2027", expColor: "#5E7186", lp: "LP-PO10311-006", qty: "184", qtyColor: "#24354A", hi: false },
+      { site: "ATLANTA", bin: "ZONE-B-090", lot: "LOT-2917", exp: "09/2026", expColor: "#9A6B12", lp: "—", qty: "76", qtyColor: "#24354A", hi: false },
+      { site: "6 MORE SITES", bin: "14 bins", lot: "…", exp: "…", expColor: "#8A97A8", lp: "…", qty: "126", qtyColor: "#24354A", hi: false },
+    ].map((r) => ({ ...r, style: this.ROWBASE + (r.hi ? "background:#FFF5F5;border-left:3px solid #E5484D;" : "background:#fff;") }));
+    return { ...a, rows,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

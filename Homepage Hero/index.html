@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What customers say — FreightPOP Validation Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="vl" class="vl-root">
+
+  <div id="vl-zoom"></div>
+
+  <div class="vl-bg" aria-hidden="true">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(to right,rgba(143,169,192,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(143,169,192,.07) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(115% 90% at 50% 0%,#000 0%,rgba(0,0,0,.35) 55%,transparent 100%);-webkit-mask-image:radial-gradient(115% 90% at 50% 0%,#000 0%,rgba(0,0,0,.35) 55%,transparent 100%);"></div>
+    <div style="position:absolute;top:-22vh;left:-12vw;width:58vw;height:58vw;border-radius:50%;background:radial-gradient(circle,rgba(61,214,181,.20),rgba(61,214,181,0) 66%);filter:blur(28px);animation:vlDriftA 26s ease-in-out infinite;"></div>
+    <div style="position:absolute;top:8vh;right:-18vw;width:52vw;height:52vw;border-radius:50%;background:radial-gradient(circle,rgba(64,136,207,.22),rgba(64,136,207,0) 68%);filter:blur(34px);animation:vlDriftB 34s ease-in-out infinite;"></div>
+    <div style="position:absolute;bottom:-28vh;left:26vw;width:46vw;height:46vw;border-radius:50%;background:radial-gradient(circle,rgba(61,214,181,.13),rgba(61,214,181,0) 70%);filter:blur(40px);animation:vlPulse 18s ease-in-out infinite;"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,transparent 30%,rgba(4,18,31,.72) 100%);"></div>
+  </div>
+
+  <div class="vl-top">
+    <a class="vl-back" data-act="backToDeck" href="FreightPOP%20TMS%20Sales%20Deck%20v17.dc.html"><span style="font-size:13px;line-height:1;">‹</span> Back to deck</a>
+    <div class="vl-kicker">What customers<br>say</div>
+    <div id="vl-tabs" class="vl-tabs"></div>
+    <div class="vl-scores">
+      <div class="vl-score"><b>4.8</b><span>average rating</span></div>
+      <div class="vl-score"><b>95%</b><span>user satisfaction</span></div>
+    </div>
+    <div class="vl-search"><span>⌕</span><input id="vl-q" type="text" placeholder="Search" autocomplete="off"></div>
+  </div>
+
+  <div id="vl-main" class="vl-main">
+    <div id="vl-rail"></div>
+    <div id="vl-stage" class="vl-stage"></div>
+  </div>
+
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

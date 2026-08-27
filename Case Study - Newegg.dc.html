@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    doc-page:not(:defined) { visibility: hidden; }
+    a { color: #0F7B6C; text-decoration: none; }
+    a:hover { color: #0A5C51; }
+  </style>
+  <script src="./doc-page.js"></script>
+  <script src="./image-slot.js"></script>
+</helmet>
+<doc-page margin="0">
+
+  <section class="page" data-screen-label="01 Cover" style="display: flex; flex-direction: column; height: 11in; max-height: 11in; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #FFFFFF; background: radial-gradient(70% 90% at 0% 0%, rgba(61,214,181,0.16) 0%, rgba(61,214,181,0) 60%), linear-gradient(to right, rgba(181,205,224,0.07) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(to bottom, rgba(181,205,224,0.07) 1px, transparent 1px) 0 0 / 48px 48px, #051729;">
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 54px 56px 34px;">
+      <header style="display: flex; align-items: center; justify-content: space-between;">
+        <img src="assets/wwy/freightpop-logo.png" alt="FreightPOP" style="height: 28px; width: auto; display: block;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #3DD6B5;">Case Study</div>
+      </header>
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #B5CDE0;">Consumer Electronics E-commerce &nbsp;·&nbsp; Parcel &amp; Freight</div>
+          <h1 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 62px; line-height: 1.0; letter-spacing: -0.03em; max-width: 640px; text-wrap: pretty;">Newegg <span style="color: #3DD6B5;">Commerce</span></h1>
+        </div>
+        <div style="width: 64px; height: 2px; background: #3DD6B5;"></div>
+        <p style="margin: 0; font-size: 16px; line-height: 1.62; color: #C8DAE9; max-width: 600px; text-wrap: pretty;">Newegg, a leading retailer in computing hardware and consumer electronics, faced considerable challenges related to time-consuming manual processes and inconsistent freight rates. To address these issues, Newegg turned to FreightPOP, an advanced Transportation Management System (TMS) aimed at streamlining logistics operations. This case study illustrates how FreightPOP transformed Newegg’s shipping processes, boosting efficiency and visibility while significantly enhancing time management. As a result, Newegg was able to provide superior service to its customers and lower operational costs.</p>
+      </div>
+    </div>
+    <div style="flex-shrink: 0; height: 330px; position: relative;">
+      <image-slot id="newegg-cover" shape="rect" fit="cover" placeholder="Drop the cover photo (gaming keyboard / controller close-up)" src="assets/cs/newegg-hero.jpg"></image-slot>
+      <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, #051729 0%, rgba(5,23,41,0.55) 22%, rgba(5,23,41,0.05) 60%, rgba(5,23,41,0.35) 100%);"></div>
+    </div>
+  </section>
+
+  <section class="page" data-screen-label="02 About" style="display: flex; flex-direction: column; height: 11in; max-height: 11in; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #051729; background: linear-gradient(to right, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(to bottom, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, #FFFFFF;">
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 34px 56px 0;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3D5670;">Newegg &nbsp;×&nbsp; FreightPOP</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #7A93AC;">02 / 06</div>
+    </div>
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 36px; padding: 46px 56px 40px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #0F7B6C;">About</div>
+        <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 42px; line-height: 1.05; letter-spacing: -0.025em; max-width: 620px; text-wrap: pretty;">About Newegg</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 34px;">
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #3D5670; text-wrap: pretty;">Newegg, established in 2001, has grown into a comprehensive online retailer offering a vast range of electronics and tech products. Known initially for computer hardware, it has expanded its catalog to include everything from gaming consoles, laptops, and TVs to home essentials like vacuums, kitchen appliances, and even camping gear.</p>
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #3D5670; text-wrap: pretty;">This extensive selection caters to both casual shoppers and tech enthusiasts, making Newegg a go-to destination for diverse product needs. With detailed product information, user reviews, and frequent deals and promotions, Newegg remains a valuable resource for anyone keeping up with the latest in technology and beyond.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7A93AC;">The shipping footprint</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+          <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">2001</span>
+            <div style="font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.01em;">Online retailer since</div>
+          </div>
+          <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">N. America</span>
+            <div style="font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.01em;">Fulfillment center network</div>
+          </div>
+          <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">Next</span>
+            <div style="font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.01em;">Overseas shipment expansion</div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #0F7B6C;">Logistics</div>
+        <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 42px; line-height: 1.05; letter-spacing: -0.025em;">Newegg logistics</h3>
+        <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #3D5670; max-width: 680px; text-wrap: pretty;">Newegg’s strategic placement of fulfillment centers across North America plays a critical role in optimizing shipping times and costs. But as the company grew and expanded its operations, it faced challenges that highlighted the need for a more sophisticated logistics solution — prompting the implementation of a Transportation Management System.</p>
+      </div>
+    </div>
+    <div style="flex-shrink: 0; height: 8px; background: linear-gradient(to right, #3DD6B5 0%, rgba(61,214,181,0) 42%);"></div>
+  </section>
+
+  <section class="page" data-screen-label="03 Challenges &amp; Solutions" style="display: flex; flex-direction: column; height: 11in; max-height: 11in; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #051729; background: linear-gradient(to right, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(to bottom, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, #FFFFFF;">
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 34px 56px 0;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3D5670;">Newegg &nbsp;×&nbsp; FreightPOP</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #7A93AC;">03 / 06</div>
+    </div>
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 20px; padding: 38px 56px 36px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #0F7B6C;">Challenges &amp; Solutions</div>
+        <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 42px; line-height: 1.05; letter-spacing: -0.025em; max-width: 620px; text-wrap: pretty;">The challenges &amp; FreightPOP solutions</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #D32F2F;">Before</div>
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #0F7B6C; padding-left: 40px;">With FreightPOP</div>
+      </div>
+      <div style="flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(4, 1fr); gap: 0; border-bottom: 1px solid #D0DCE8; margin-top: -14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; border-top: 1px solid #D0DCE8;">
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 36px 12px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #D32F2F;">01</span>
+              <span style="flex: 1; height: 1px; background: #F0BFC4;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #16324C;">Manual and Time-Consuming Processes</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #7A93AC; text-wrap: pretty;">Shipping management ran on emails and Excel spreadsheets for tracking and carrier negotiation, making it hard to streamline workflows or keep data accurate.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 0 12px 36px; border-left: 1px solid #D0DCE8;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #0F7B6C;">01</span>
+              <span style="flex: 1; height: 1px; background: #9FE0CE;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #051729;">Streamlined Carrier Management</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #3D5670; text-wrap: pretty;">FreightPOP consolidated every carrier relationship, shipment, and rate into one platform — cutting manual work and putting carrier data within reach.</p>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; border-top: 1px solid #D0DCE8;">
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 36px 12px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #D32F2F;">02</span>
+              <span style="flex: 1; height: 1px; background: #F0BFC4;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #16324C;">Inconsistent and Non-Optimal Freight Rates</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #7A93AC; text-wrap: pretty;">Manual tracking and separate negotiations meant Newegg couldn’t guarantee optimal freight rates for customers, hurting cost efficiency and competitiveness.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 0 12px 36px; border-left: 1px solid #D0DCE8;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #0F7B6C;">02</span>
+              <span style="flex: 1; height: 1px; background: #9FE0CE;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #051729;">Automated Freight Rate Comparison</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #3D5670; text-wrap: pretty;">Automated rate calculation secures the best rate on every shipment, optimizing cost and making pricing consistent for customers.</p>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; border-top: 1px solid #D0DCE8;">
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 36px 12px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #D32F2F;">03</span>
+              <span style="flex: 1; height: 1px; background: #F0BFC4;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #16324C;">Lack of Centralized Tracking and Visibility</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #7A93AC; text-wrap: pretty;">Shipment information sat scattered across spreadsheets, making it hard to access complete data, verify deliveries, or assess shipping costs.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 0 12px 36px; border-left: 1px solid #D0DCE8;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #0F7B6C;">03</span>
+              <span style="flex: 1; height: 1px; background: #9FE0CE;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #051729;">Integrated System for Enhanced Visibility</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #3D5670; text-wrap: pretty;">FreightPOP integrated with Newegg’s warehouse management and in-house systems, centralizing data and improving tracking, delivery verification, and transparency.</p>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; align-items: stretch; border-top: 1px solid #D0DCE8;">
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 36px 12px 0;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #D32F2F;">04</span>
+              <span style="flex: 1; height: 1px; background: #F0BFC4;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #16324C;">Risk of Data Inaccuracy</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #7A93AC; text-wrap: pretty;">Manual entry in Excel invited errors, with no way to track unauthorized changes — complicating shipment tracking and planning.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center; padding: 11px 0 12px 36px; border-left: 1px solid #D0DCE8;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #0F7B6C;">04</span>
+              <span style="flex: 1; height: 1px; background: #9FE0CE;"></span>
+            </div>
+            <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; line-height: 1.22; letter-spacing: -0.015em; color: #051729;">Customized, Scalable Solution for Growth</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #3D5670; text-wrap: pretty;">One system of record replaced spreadsheet entry, and the platform flexes as Newegg scales — including plans to manage overseas shipments.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-screen-label="04 Business Impact" style="display: flex; flex-direction: column; height: 11in; max-height: 11in; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #051729; background: linear-gradient(to right, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(to bottom, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, #FFFFFF;">
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 34px 56px 0;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3D5670;">Newegg &nbsp;×&nbsp; FreightPOP</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #7A93AC;">04 / 06</div>
+    </div>
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 32px; padding: 46px 56px 40px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #0F7B6C;">In their words</div>
+        <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 42px; line-height: 1.05; letter-spacing: -0.025em; max-width: 640px; text-wrap: pretty;">One employee, three times the shipments</h2>
+      </div>
+      <div style="border-radius: 20px; background: radial-gradient(70% 160% at 100% 0%, rgba(61,214,181,0.16) 0%, rgba(61,214,181,0) 62%), #051729; padding: 38px 40px 34px; display: flex; flex-direction: column; gap: 20px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3DD6B5;">Throughput per person</div>
+        <p style="margin: 0; font-family: Manrope, sans-serif; font-weight: 300; font-size: 23px; line-height: 1.46; letter-spacing: -0.015em; color: #FFFFFF; text-wrap: pretty;">“We have one employee who used to arrange about 20 shipments. Now, that same employee can complete 60 or more shipments in the same amount of time.”</p>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <div style="font-size: 14px; color: #FFFFFF;">Kai Chang</div>
+          <div style="font-size: 13px; color: #B5CDE0;">Senior Logistics Analyst &amp; Project Manager, Newegg</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+        <div style="border: 1px solid #E2EAF3; border-radius: 18px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7A93AC;">Before</div>
+          <div style="font-family: Manrope, sans-serif; font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: #16324C;">~20 <span style="font-size: 17px; color: #7A93AC;">shipments arranged</span></div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #3D5670; text-wrap: pretty;">Emails, spreadsheets, and one-off carrier negotiations capped how much one person could move in a shift.</p>
+        </div>
+        <div style="border: 2px solid #0F7B6C; border-radius: 18px; background: linear-gradient(135deg, #F0F8F6 0%, #FFFFFF 55%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 8px 24px rgba(5,23,41,0.07); padding: 25px 25px 27px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #0F7B6C;">With FreightPOP</div>
+          <div style="font-family: Manrope, sans-serif; font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: #051729;">60<span style="color: #0F7B6C;">+</span> <span style="font-size: 17px; color: #7A93AC;">in the same time</span></div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #3D5670; text-wrap: pretty;">Automated rating and booking removed the manual steps — the same team absorbs high-volume demand without added headcount.</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch;">
+        <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 24px 26px 26px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-family: Manrope, sans-serif; font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: #051729;">50–70<span style="color: #0F7B6C;">%</span></div>
+          <div style="font-family: Manrope, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: -0.01em;">Less time on shipment tasks</div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #3D5670; text-wrap: pretty;">Users report cutting 50–70% of the time previously required for shipment tasks.</p>
+        </div>
+        <p style="margin: 0; align-self: center; font-size: 15px; line-height: 1.7; color: #3D5670; text-wrap: pretty;">Partnering with FreightPOP secured the best rate on every shipment while cutting manual labor sharply. With shipping processes streamlined and automated, efficiency improved across the board — freeing employees to manage more shipments with less effort and supporting Newegg’s high-volume demands.</p>
+      </div>
+    </div>
+    <div style="flex-shrink: 0; height: 8px; background: linear-gradient(to right, #3DD6B5 0%, rgba(61,214,181,0) 42%);"></div>
+  </section>
+
+  <section class="page" data-screen-label="05 Results" style="display: flex; flex-direction: column; height: 11in; max-height: 11in; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #051729; background: linear-gradient(to right, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(to bottom, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, #FFFFFF;">
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 34px 56px 0;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3D5670;">Newegg &nbsp;×&nbsp; FreightPOP</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #7A93AC;">05 / 06</div>
+    </div>
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 26px; padding: 42px 56px 36px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #0F7B6C;">Results</div>
+        <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 42px; line-height: 1.05; letter-spacing: -0.025em;">Results</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">01</span>
+          <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.2; letter-spacing: -0.015em;">Time Savings at Scale</h3>
+          <p style="margin: 0; font-size: 14px; line-height: 1.62; color: #3D5670; text-wrap: pretty;">Users report saving 50–70% of the time previously required for shipment tasks, tripling the shipments one person can arrange.</p>
+        </div>
+        <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">02</span>
+          <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.2; letter-spacing: -0.015em;">Best Rate on Every Shipment</h3>
+          <p style="margin: 0; font-size: 14px; line-height: 1.62; color: #3D5670; text-wrap: pretty;">Automated rate comparison lowered transportation cost and made pricing consistent for Newegg’s customers.</p>
+        </div>
+        <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">03</span>
+          <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.2; letter-spacing: -0.015em;">Centralized Visibility</h3>
+          <p style="margin: 0; font-size: 14px; line-height: 1.62; color: #3D5670; text-wrap: pretty;">Shipment data lives in one place instead of scattered spreadsheets — deliveries verify faster and costs are easy to assess.</p>
+        </div>
+        <div style="border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">04</span>
+          <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.2; letter-spacing: -0.015em;">Systems Integration</h3>
+          <p style="margin: 0; font-size: 14px; line-height: 1.62; color: #3D5670; text-wrap: pretty;">Integration with warehouse management and in-house systems created a one-stop solution and removed duplicate data entry.</p>
+        </div>
+        <div style="grid-column: 1 / -1; border: 1px solid #E2EAF3; border-radius: 16px; background: linear-gradient(135deg, #F1F6FB 0%, #FFFFFF 42%, #FFFFFF 68%, #F0F8F6 100%); box-shadow: 0 1px 2px rgba(5,23,41,0.04), 0 4px 14px rgba(5,23,41,0.05); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 8px;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: #0F7B6C;">05</span>
+          <h3 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.2; letter-spacing: -0.015em;">Room to Scale</h3>
+          <p style="margin: 0; font-size: 14px; line-height: 1.62; color: #3D5670; max-width: 700px; text-wrap: pretty;">A customizable platform grows with the operation, with capacity to add capabilities — including managing overseas shipments in the future.</p>
+        </div>
+      </div>
+    </div>
+    <div style="flex-shrink: 0; background: radial-gradient(60% 150% at 0% 0%, rgba(61,214,181,0.14) 0%, rgba(61,214,181,0) 60%), #051729; padding: 34px 56px 36px; display: flex; flex-direction: column; gap: 16px;">
+      <p style="margin: 0; font-family: Manrope, sans-serif; font-weight: 300; font-size: 20px; line-height: 1.5; letter-spacing: -0.01em; color: #FFFFFF; text-wrap: pretty;">“Users report saving 50–70% of the time previously required for shipment tasks — enabling employees to manage more shipments with less effort.”</p>
+      <div style="display: flex; align-items: baseline; gap: 10px;">
+        <div style="font-size: 13px; color: #FFFFFF;">Newegg logistics team</div>
+        <div style="font-size: 13px; color: #B5CDE0;">On FreightPOP adoption</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" data-screen-label="06 Key Insights" style="display: flex; flex-direction: column; height: 11in; max-height: 11in; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #051729; background: linear-gradient(to right, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, linear-gradient(to bottom, rgba(5,23,41,0.04) 1px, transparent 1px) 0 0 / 48px 48px, #FFFFFF;">
+    <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 34px 56px 0;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3D5670;">Newegg &nbsp;×&nbsp; FreightPOP</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: #7A93AC;">06 / 06</div>
+    </div>
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 26px; padding: 46px 56px 40px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: #0F7B6C;">Key Insights</div>
+      <p style="margin: 0; font-family: Manrope, sans-serif; font-weight: 300; font-size: 26px; line-height: 1.42; letter-spacing: -0.015em; color: #16324C; text-wrap: pretty;">Newegg’s partnership with FreightPOP transformed its shipping and logistics operations — delivering automation, efficiency, and cost savings across a growing North American fulfillment network.</p>
+      <div style="width: 64px; height: 2px; background: #3DD6B5;"></div>
+      <p style="margin: 0; font-size: 15.5px; line-height: 1.72; color: #3D5670; max-width: 660px; text-wrap: pretty;">With FreightPOP’s advanced TMS, Newegg now manages carrier relationships seamlessly, optimizes freight rates, and achieves substantial time savings — letting the team handle a higher volume of shipments without additional resources. That added capacity helps Newegg better serve its customers, keep up with growing demand, and scale for future growth, including plans for international expansion.</p>
+    </div>
+    <footer style="flex-shrink: 0; background: radial-gradient(60% 140% at 100% 0%, rgba(61,214,181,0.14) 0%, rgba(61,214,181,0) 60%), #051729; padding: 40px 56px 44px; display: flex; align-items: flex-end; justify-content: space-between; gap: 28px;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <img src="assets/wwy/freightpop-logo.png" alt="FreightPOP" style="height: 24px; width: auto; align-self: flex-start; display: block;">
+        <h2 style="margin: 0; font-family: Manrope, sans-serif; font-weight: 400; font-size: 30px; line-height: 1.12; letter-spacing: -0.02em; color: #FFFFFF;">Have questions?<br>Contact us.</h2>
+      </div>
+      <div style="text-align: right; display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-family: Manrope, sans-serif; font-size: 22px; letter-spacing: -0.01em; color: #3DD6B5;">(949) 454-4602</div>
+        <div style="font-size: 13px; color: #B5CDE0;">sales@freightpop.com</div>
+        <div style="font-size: 13px; color: #B5CDE0;">www.freightpop.com</div>
+      </div>
+    </footer>
+  </section>
+
+</doc-page>
+</x-dc>
+<script data-dc-script type="text/plain"></script>
+</body>
+</html>

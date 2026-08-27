@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div ref="{{ setCanvas }}" onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#16324E;display:flex;align-items:center;padding:0 18px;z-index:6;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:20px;width:auto;display:block;">
+    <span style="color:#fff;font-size:20px;font-weight:700;letter-spacing:.02em;margin-left:14px;">WMS</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:22px;font-size:12.5px;color:#DCE6F1;">
+      <svg width="16" height="16" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" fill="#DCE6F1"></rect><rect x="3" y="9" width="18" height="8" rx="1.5" fill="#DCE6F1"></rect><rect x="6" y="14" width="12" height="7" fill="#fff"></rect></svg>
+      <span>Picking</span><span>Receipts</span><span>History</span><span>Bin Transfers</span><span>Transactions</span><span>Inventory</span><span>Cycle Counts</span><span>Manufacturing</span><span>Analytics</span><span>Settings</span>
+      <span style="width:30px;height:30px;border-radius:50%;background:#42586F;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#DCE6F1"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#DCE6F1"></path></svg></span>
+    </div>
+  </div>
+
+  <!-- ══════ RECEIPTS TRANSACTIONS GRID ══════ -->
+  <sc-if value="{{ gridOn }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;">
+    <div style="position:absolute;left:14px;top:32px;font-size:24px;font-weight:700;color:#1B2B3D;">Receipts Transactions</div>
+    <div style="position:absolute;right:26px;top:22px;width:44px;height:44px;border-radius:50%;background:#4088CF;box-shadow:0 2px 8px rgba(64,136,207,.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:300;line-height:1;">+</div>
+
+    <div style="position:absolute;left:10px;right:10px;top:88px;bottom:20px;border:1px solid #E3E9F0;border-radius:4px;">
+      <div style="height:78px;display:flex;align-items:center;padding:0 20px;gap:16px;">
+        <div style="width:290px;height:44px;border:1px solid #CBD5E1;border-radius:4px;display:flex;align-items:center;padding:0 14px;gap:10px;">
+          <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg>
+          <span style="color:#9AA7B8;font-size:13px;flex:1;">Search</span>
+          <span style="color:#5E7186;font-size:12px;font-weight:700;letter-spacing:.06em;">GO</span>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.6"></path></svg>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+          <div style="position:relative;width:200px;height:44px;border:1px solid #CBD5E1;border-radius:4px;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#3C4B5C;">
+            <span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Warehouses</span>
+            0 selected <span style="margin-left:auto;color:#5E7186;">▾</span>
+          </div>
+          <div style="width:44px;height:44px;border:1px solid #B9CDE8;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#4088CF;font-size:16px;letter-spacing:.1em;">···</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;height:38px;background:#F5F7FA;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:12.5px;font-weight:700;color:#33465C;padding:0 14px;">
+        <span style="width:34px;"><span style="display:inline-block;width:14px;height:14px;border:1.5px solid #93A2B4;border-radius:2px;"></span></span>
+        <span style="width:150px;">Transaction ID</span><span style="width:150px;">PO Number</span><span style="width:145px;">Created Date</span><span style="width:150px;">Submitted Date</span><span style="width:140px;">Vendor ID</span><span style="width:145px;">Vendor Name</span><span style="width:155px;">Warehouse Name</span><span style="width:150px;">Created By</span><span style="width:120px;">Status</span>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;height:33px;border-bottom:1px solid #EDF1F6;font-size:12.5px;color:#3C4B5C;padding:0 14px;background:{{ r.bg }};">
+          <span style="width:34px;"><span style="display:inline-block;width:14px;height:14px;border:1.5px solid #93A2B4;border-radius:2px;"></span></span>
+          <span style="width:150px;">{{ r.id }}</span><span style="width:150px;">{{ r.po }}</span><span style="width:145px;">{{ r.created }}</span><span style="width:150px;">{{ r.submitted }}</span><span style="width:140px;">{{ r.vendorId }}</span><span style="width:145px;">{{ r.vendor }}</span><span style="width:155px;">FreightPOP Demo</span><span style="width:150px;">{{ r.by }}</span><span style="width:120px;">{{ r.status }}</span>
+          <span style="margin-left:auto;display:flex;gap:26px;padding-right:16px;">
+            <svg width="15" height="15" viewBox="0 0 24 24"><path d="M4 20 L4 16 L16 4 L20 8 L8 20 Z" fill="#4088CF"></path></svg>
+            <svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="#D3372C"></path></svg>
+          </span>
+        </div>
+      </sc-for>
+
+      <div style="position:absolute;left:0;right:0;bottom:12px;display:flex;align-items:center;justify-content:center;gap:26px;font-size:12.5px;color:#3C4B5C;">
+        <span>Results Per Page: <b style="font-weight:600;">50 ▾</b></span><span>1–{{ rowCount }} of {{ rowCount }}</span>
+        <span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <b style="color:#4088CF;border-bottom:1px solid #4088CF;font-weight:600;">1</b> ›</span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════ IMPORT PO MODAL ══════ -->
+  <sc-if value="{{ modalOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(120,150,185,.42);z-index:20;"></div>
+    <div style="position:absolute;left:415px;top:200px;width:610px;background:#fff;border-radius:6px;box-shadow:0 12px 44px rgba(11,26,46,.28);z-index:21;animation:srFadeUp .28s both;">
+      <div style="height:56px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 22px;font-size:17px;font-weight:600;color:#1B2B3D;">Import Purchase Order<span style="margin-left:auto;font-size:19px;color:#5E7186;">✕</span></div>
+      <div style="padding:26px 22px 20px;">
+        <div style="font-size:13.5px;color:#3C4B5C;">Enter a Purchase Order Number to import vendor and item details for receiving.</div>
+        <div style="position:relative;margin-top:24px;height:48px;border:1.5px solid {{ poFieldBorder }};border-radius:4px;display:flex;align-items:center;padding:0 14px;font-size:14px;color:{{ poTextColor }};transition:border-color .3s;">
+          <span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">PO Number *</span>{{ poText }}
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;padding:0 22px 22px;">
+        <span style="background:{{ importBg }};color:{{ importColor }};border-radius:4px;padding:12px 22px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">IMPORT PO</span>
+        <span style="border:1px solid #CBD5E1;color:#33465C;border-radius:4px;padding:12px 22px;font-size:12.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════ NEW RECEIPT TRANSACTION FORM ══════ -->
+  <sc-if value="{{ formOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;padding:20px 26px 70px;">
+    <div style="font-size:20px;font-weight:700;color:#1B2B3D;">New Receipt Transaction</div>
+    <div style="font-size:12.5px;color:#5E7186;margin-top:5px;">PO Number: PO-45131</div>
+    <div style="display:flex;gap:26px;margin-top:16px;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+      <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">GENERAL</span><span>DOCUMENTS</span>
+    </div>
+
+    <div style="margin-top:16px;border:1px solid #E3E9F0;border-radius:4px;background:#FAFBFD;padding:14px 18px 18px;">
+      <div style="font-size:14.5px;color:#33465C;">Vendor Information</div>
+      <div style="display:flex;gap:18px;align-items:flex-start;margin-top:12px;">
+        <div style="width:520px;display:flex;flex-direction:column;gap:12px;">
+          <div style="position:relative;height:42px;background:#F1F3F6;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">PO Number</span>PO-45131</div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor ID</span>19024690</div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor Name</span>Avnet</div>
+        </div>
+        <span style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:4px;padding:11px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;">VIEW ADDRESS</span>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;border:1px solid #E3E9F0;border-radius:4px;background:#FAFBFD;padding:14px 18px 18px;">
+      <div style="font-size:14.5px;color:#33465C;">Transaction Details</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px 22px;margin-top:12px;">
+        <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Location *</span>WMS1, ABC Corp, 1 Rancho Circle, Lake Forest, CA<span style="margin-left:auto;color:#8A97A8;">✕ ⌕</span></div>
+        <div style="position:relative;height:42px;background:#fff;border:1.5px solid {{ carrierBorder }};border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;transition:border-color .3s;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Carrier Name</span>{{ carrierText }}</div>
+        <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Estimated Freight Cost</span></div>
+        <div style="position:relative;height:42px;background:#fff;border:1.5px solid {{ trackBorder }};border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;transition:border-color .3s;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Tracking Numbers</span>{{ trackText }}</div>
+        <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Dock Number</span></div>
+        <div style="position:relative;height:42px;background:#fff;border:1.5px solid {{ arrivalBorder }};border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:{{ arrivalColor }};transition:border-color .3s;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Arrival Date</span>{{ arrivalText }}<span style="margin-left:auto;color:#5E7186;">▤</span></div>
+        <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#9AA7B8;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Arrival Time</span>hh:mm aa<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+      </div>
+      <div style="position:relative;height:46px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;margin-top:12px;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Notes</span></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════ EDIT RECEIPT TRANSACTION (one page, scrolls) ══════ -->
+  <sc-if value="{{ editOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;overflow:hidden;">
+    <div ref="{{ setCol }}" style="position:absolute;left:0;right:0;top:0;padding:14px 22px 40px;transform:translateY({{ scrollY }});transition:transform .7s cubic-bezier(.45,.05,.25,1);">
+      <div style="font-size:12.5px;color:#5E7186;"><span style="color:#4088CF;border-bottom:1px solid #4088CF;">Receipts</span> / Edit Receipt Transaction</div>
+      <div style="font-size:20px;font-weight:700;color:#1B2B3D;margin-top:10px;">Edit Receipt Transaction</div>
+
+      <div style="margin-top:14px;font-size:12.5px;font-weight:700;color:#33465C;">Approval Status</div>
+      <div style="position:relative;height:74px;margin-top:6px;">
+        <div style="position:absolute;left:380px;right:380px;top:24px;height:2px;background:#C9D4E0;"></div>
+        <div style="position:absolute;left:356px;top:0;width:48px;height:48px;border-radius:50%;background:{{ ap1Bg }};display:flex;align-items:center;justify-content:center;transition:background .3s;"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"></circle><path d="M12 7 L12 12 L16 14" stroke="#fff" stroke-width="2" fill="none"></path></svg></div>
+        <div style="position:absolute;left:326px;top:54px;width:110px;text-align:center;font-size:10.5px;color:#5E7186;">Approval Requested</div>
+        <div style="position:absolute;right:356px;top:0;width:48px;height:48px;border-radius:50%;background:{{ ap2Bg }};display:flex;align-items:center;justify-content:center;transition:background .3s;"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"></circle><path d="M12 7 L12 12 L16 14" stroke="#fff" stroke-width="2" fill="none"></path></svg></div>
+        <div style="position:absolute;right:326px;top:54px;width:110px;text-align:center;font-size:10.5px;color:#5E7186;">Approved / Rejected</div>
+      </div>
+
+      <div style="display:flex;gap:26px;margin-top:6px;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+        <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">GENERAL</span><span>DOCUMENTS</span>
+      </div>
+
+      <div style="margin-top:14px;border:1px solid #E3E9F0;border-radius:4px;background:#FAFBFD;padding:14px 18px 18px;">
+        <div style="font-size:14.5px;color:#33465C;">Vendor Information</div>
+        <div style="display:flex;gap:18px;align-items:flex-start;margin-top:12px;">
+          <div style="width:640px;display:flex;flex-direction:column;gap:12px;">
+            <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">PO Number</span>PO-45131</div>
+            <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor ID</span>19024690</div>
+            <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor Name</span>Avnet</div>
+          </div>
+          <span style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:4px;padding:11px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;">VIEW ADDRESS</span>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;border:1px solid #E3E9F0;border-radius:4px;background:#FAFBFD;padding:14px 18px 18px;">
+        <div style="font-size:14.5px;color:#33465C;">Transaction Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px 22px;margin-top:12px;">
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Location *</span>WMS1, ABC Corp, 1 Rancho Circle, Lake Forest, CA</div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Carrier Name</span>Old Dominion</div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Estimated Freight Cost</span></div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Tracking Numbers</span>456522</div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Dock Number</span></div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Arrival Date</span>06/09/2026</div>
+          <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#9AA7B8;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Arrival Time</span>hh:mm aa</div>
+        </div>
+        <div style="position:relative;height:64px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;margin-top:12px;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Notes</span></div>
+      </div>
+
+      <div style="margin-top:14px;border:1px solid #E3E9F0;border-radius:4px;background:#FAFBFD;padding:14px 18px 18px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="font-size:14.5px;color:#33465C;">Product Details &amp; Bin Allocation</div>
+          <span style="font-size:12px;font-weight:700;letter-spacing:.05em;padding:5px 13px;border-radius:999px;background:{{ statusBg }};color:{{ statusColor }};transition:all .3s;">{{ statusLabel }}</span>
+        </div>
+        <div style="position:relative;margin-top:12px;height:48px;background:#fff;border:1px solid {{ scanBorder }};border-radius:4px;display:flex;align-items:center;padding:0 14px;font-size:13.5px;color:#9AA7B8;transition:border-color .3s;" data-t="scan"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Scan Item</span>Scan or type item number<span style="margin-left:auto;color:#4088CF;font-size:14px;letter-spacing:.3em;">⌕ ▣</span></div>
+
+        <div style="margin-top:12px;border:1px solid #E3E9F0;border-radius:4px;background:#fff;">
+          <div style="display:flex;align-items:center;height:40px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#33465C;padding:0 20px;">
+            <span style="width:230px;">ITEM NUMBER</span><span style="width:310px;">DESCRIPTION</span><span style="width:180px;text-align:right;">QTY ORDERED</span><span style="width:200px;text-align:right;">TOTAL RECEIVED</span><span style="width:220px;text-align:right;">BIN ALLOCATIONS</span><span style="margin-left:auto;">ACTIONS</span>
+          </div>
+          <div style="display:flex;align-items:center;height:44px;font-size:13px;color:#3C4B5C;padding:0 20px;">
+            <span style="width:230px;font-weight:600;color:#1B2B3D;">MFLD-2200 Manifold</span><span style="width:310px;color:#4088CF;">Hydraulic manifold, 2 in</span><span style="width:180px;text-align:right;">998</span><span style="width:200px;text-align:right;font-weight:700;color:#E38A00;">{{ r1Received }}</span><span style="width:220px;text-align:right;color:{{ r1AllocColor }};font-style:{{ r1AllocStyle }};">{{ r1AllocLabel }}</span>
+            <span data-t="r1Add" style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:8px 13px;font-size:11.5px;font-weight:700;letter-spacing:.05em;">+ ADD BIN</span>
+          </div>
+          <sc-if value="{{ a1On }}" hint-placeholder-val="{{ false }}">
+            <div style="margin:0 20px 14px;border:1px solid #E3E9F0;border-radius:4px;animation:srFadeUp .3s both;">
+              <div style="height:42px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;display:flex;align-items:center;padding:0 16px;font-size:14px;color:#1B2B3D;">Allocation 1 - Bin: {{ a1BinLabel }}, Quantity: {{ a1QtyLabel }}<span style="margin-left:auto;display:flex;gap:20px;"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" fill="#4088CF"></rect><rect x="3" y="9" width="18" height="8" rx="1.5" fill="#4088CF"></rect></svg><svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="#D3372C"></path></svg></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 20px;padding:18px 16px;">
+            <div data-t="a1Lp" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">License Plate</span>{{ a1Lp }}<span style="margin-left:auto;color:#4088CF;font-size:12px;letter-spacing:.24em;">⌕ ⟳ ⎙ ⛶</span></div>
+            <div data-t="a1Bin" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Bin</span>{{ a1Bin }}<span style="margin-left:auto;color:#8A97A8;font-size:12px;letter-spacing:.2em;">✕ ⌕</span></div>
+            <div data-t="a1Qty" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Quantity Received</span>{{ a1Qty }}</div>
+            <div data-t="a1Lot" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Lot ID</span>{{ a1Lot }}</div>
+            <div data-t="a1Exp" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Lot Expiration</span>{{ a1Exp }}<span style="margin-left:auto;color:#5E7186;">▤</span></div>
+          </div>
+            </div>
+          </sc-if>
+          <div style="display:flex;align-items:center;height:44px;font-size:13px;color:#3C4B5C;padding:0 20px;border-top:1px solid #EDF1F6;">
+            <span style="width:230px;font-weight:600;color:#1B2B3D;">SEAL-118 Seal Kit</span><span style="width:310px;color:#4088CF;">Seal kit, viton</span><span style="width:180px;text-align:right;">998</span><span style="width:200px;text-align:right;font-weight:700;color:#E38A00;">{{ r2Received }}</span><span style="width:220px;text-align:right;color:{{ r2AllocColor }};font-style:{{ r2AllocStyle }};">{{ r2AllocLabel }}</span>
+            <span data-t="r2Add" style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:8px 13px;font-size:11.5px;font-weight:700;letter-spacing:.05em;">+ ADD BIN</span>
+          </div>
+          <sc-if value="{{ a2On }}" hint-placeholder-val="{{ false }}">
+            <div style="margin:0 20px 14px;border:1px solid #E3E9F0;border-radius:4px;animation:srFadeUp .3s both;">
+              <div style="height:42px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;display:flex;align-items:center;padding:0 16px;font-size:14px;color:#1B2B3D;">Allocation 1 - Bin: {{ a2BinLabel }}, Quantity: {{ a2QtyLabel }}<span style="margin-left:auto;display:flex;gap:20px;"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" fill="#4088CF"></rect><rect x="3" y="9" width="18" height="8" rx="1.5" fill="#4088CF"></rect></svg><svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="#D3372C"></path></svg></span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 20px;padding:18px 16px;">
+            <div data-t="a2Lp" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">License Plate</span>{{ a2Lp }}<span style="margin-left:auto;color:#4088CF;font-size:12px;letter-spacing:.24em;">⌕ ⟳ ⎙ ⛶</span></div>
+            <div data-t="a2Bin" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Bin</span>{{ a2Bin }}<span style="margin-left:auto;color:#8A97A8;font-size:12px;letter-spacing:.2em;">✕ ⌕</span></div>
+            <div data-t="a2Qty" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Quantity Received</span>{{ a2Qty }}</div>
+            <div data-t="a2Lot" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Lot ID</span>{{ a2Lot }}</div>
+            <div data-t="a2Exp" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Lot Expiration</span>{{ a2Exp }}<span style="margin-left:auto;color:#5E7186;">▤</span></div>
+          </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════ FOOTER ACTION BAR ══════ -->
+  <sc-if value="{{ footerOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:#F5F7FA;border-top:1px solid #E3E9F0;display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 300px 0 26px;z-index:12;">
+      <span style="background:{{ postBg }};color:{{ postColor }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">POST</span>
+      <span style="background:{{ submitBg }};color:{{ submitColor }};border:1px solid {{ submitBorder }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">SUBMIT</span>
+      <span style="background:{{ saveBg }};color:{{ saveColor }};border:1px solid {{ saveBorder }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">SAVE</span>
+      <span style="border:1px solid #33465C;color:#1B2B3D;border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+    </div>
+  </sc-if>
+
+  <!-- ══════ NARRATIVE TOAST ══════ -->
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:26px;top:{{ toastTop }};width:392px;background:#fff;border:1px solid #E3E9F0;border-left:4px solid {{ toastAccent }};border-radius:5px;box-shadow:0 8px 26px rgba(11,26,46,.16);padding:14px 16px;z-index:30;animation:srFadeUp .3s both;white-space:normal;">
+      <div style="font-size:13px;font-weight:700;color:#1B2B3D;">{{ toastTitle }}</div>
+      <div style="font-size:12.5px;color:#5E7186;margin-top:5px;line-height:1.45;">{{ toastBody }}</div>
+    </div>
+  </sc-if>
+
+  <!-- ══════ OVERLAYS ══════ -->
+  <div style="position:absolute;left:16px;bottom:78px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:112px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  BASE_ROWS = [
+    { id: "RCT00003501", po: "PO-45102", created: "05/21/2026 15:32", submitted: "05/21/2026 15:33", vendorId: "IAA", vendor: "Chicago Pool Hub", by: "M. Alvarez", status: "Submitted", bg: "#fff" },
+    { id: "RCT00003601", po: "PO-45109", created: "05/26/2026 17:38", submitted: "05/26/2026 17:38", vendorId: "31959478", vendor: "Ramsey Corp", by: "D. Henriquez", status: "Submitted", bg: "#fff" },
+    { id: "RCT00004101", po: "PO-45114", created: "06/05/2026 19:42", submitted: "06/05/2026 19:42", vendorId: "31959478", vendor: "Ramsey Corp", by: "D. Henriquez", status: "Submitted", bg: "#fff" }
+  ];
+  A0 = { playing: true, cap: "01 · Receipts Transactions — every inbound receipt in one queue",
+    curX: 700, curY: 560, ripple: false, ripX: 0, ripY: 0,
+    gridOn: true, modalOn: false, formOn: false, editOn: false, footerOn: false, focus: null, scrollTo: null, ap1Bg: "#B7C3CF", ap2Bg: "#B7C3CF",
+    poText: "Enter PO number (e.g., PO-5001)", poTextColor: "#9AA7B8", poFieldBorder: "#CBD5E1",
+    importBg: "#E3E7EC", importColor: "#9AA7B8",
+    carrierText: "", carrierBorder: "#DDE4EC", trackText: "", trackBorder: "#DDE4EC",
+    arrivalText: "MM/DD/YYYY", arrivalColor: "#9AA7B8", arrivalBorder: "#DDE4EC",
+    postBg: "#E3E7EC", postColor: "#9AA7B8",
+    submitBg: "#fff", submitColor: "#9AA7B8", submitBorder: "#E3E7EC",
+    saveBg: "#fff", saveColor: "#4088CF", saveBorder: "#B9CDE8",
+    statusLabel: "Open", statusBg: "#F1F3F6", statusColor: "#5E7186", rowStatus: "Open",
+    r1Received: "0", r1RecColor: "#E38A00", r1AllocLabel: "No allocations", r1AllocColor: "#7A8798", r1AllocStyle: "italic",
+    r2Received: "0", r2RecColor: "#E38A00", r2AllocLabel: "No allocations", r2AllocColor: "#7A8798", r2AllocStyle: "italic",
+    scanBorder: "#DDE4EC",
+    a1On: false, a1Lp: "", a1Bin: "", a1Qty: "", a1Lot: "", a1Exp: "", a1BinLabel: "—", a1QtyLabel: "0",
+    a2On: false, a2Lp: "", a2Bin: "", a2Qty: "", a2Lot: "", a2Exp: "", a2BinLabel: "—", a2QtyLabel: "0",
+    toastOn: false, toastTitle: "", toastBody: "", toastAccent: "#4088CF", toastTop: "60px", extraRow: false };
+  DUR = 48;
+  KF = [
+    { t: 2.0, s: { curX: 1392, curY: 100, ripple: true, ripX: 1392, ripY: 100, cap: "02 · Add a new receipt" } },
+    { t: 2.5, s: { ripple: false, modalOn: true } },
+    { t: 4.0, s: { curX: 720, curY: 358, ripple: true, ripX: 720, ripY: 358, poFieldBorder: "#4088CF" } },
+    { t: 4.5, s: { ripple: false, poText: "PO-45131", poTextColor: "#3C4B5C", importBg: "#4088CF", importColor: "#fff", cap: "03 · Import the purchase order" } },
+    { t: 6.4, s: { curX: 496, curY: 425, ripple: true, ripX: 496, ripY: 425 } },
+    { t: 6.9, s: { ripple: false, modalOn: false, gridOn: false, formOn: true, footerOn: true, poFieldBorder: "#CBD5E1",
+      cap: "04 · Vendor and PO detail pull in — no re-keying" } },
+    { t: 9.6, s: { curX: 1063, curY: 492, carrierBorder: "#4088CF", carrierText: "Old Dominion", cap: "05 · Carrier, tracking and arrival recorded at the door" } },
+    { t: 11.2, s: { curX: 1063, curY: 550, carrierBorder: "#DDE4EC", trackBorder: "#4088CF", trackText: "456522" } },
+    { t: 12.8, s: { curX: 1063, curY: 608, trackBorder: "#DDE4EC", arrivalBorder: "#4088CF", arrivalText: "06/09/2026", arrivalColor: "#3C4B5C" } },
+    { t: 14.4, s: { curX: 983, curY: 778, ripple: true, ripX: 983, ripY: 778, arrivalBorder: "#DDE4EC" } },
+    { t: 14.9, s: { ripple: false, formOn: false, footerOn: false, gridOn: true, extraRow: true,
+      cap: "06 · Saved — the receipt is in the queue, status Open" } },
+    { t: 16.8, s: { curX: 1351, curY: 382, ripple: true, ripX: 1351, ripY: 382, cap: "07 · Open the receipt to start receiving" } },
+    { t: 17.3, s: { ripple: false, gridOn: false, editOn: true, footerOn: true, ap1Bg: "#B7C3CF", ap2Bg: "#B7C3CF" } },
+    { t: 19.0, s: { focus: "scan", cap: "08 · Product details sit on the same receipt — scroll down" } },
+    { t: 20.6, s: { scanBorder: "#4088CF", cap: "09 · Scan the item — expected quantities already known" } },
+    { t: 22.2, s: { focus: "r1Add", ripple: true, scanBorder: "#DDE4EC", cap: "10 · Receive to a bin" } },
+    { t: 22.7, s: { ripple: false, a1On: true } },
+    { t: 23.9, s: { focus: "a1Lp", a1Lp: "FRTPOP84", cap: "11 · Scan the license plate — the pallet, not the pieces" } },
+    { t: 25.1, s: { focus: "a1Bin", a1Bin: "A-1-1", a1BinLabel: "A-1-1" } },
+    { t: 26.1, s: { focus: "a1Qty", a1Qty: "998", a1QtyLabel: "998", r1Received: "998", r1AllocLabel: "1 allocation", r1AllocColor: "#4088CF", r1AllocStyle: "normal" } },
+    { t: 27.3, s: { focus: "a1Lot", a1Lot: "123", a1Exp: "05/21/2026", cap: "12 · Lot and expiration captured at receipt" } },
+    { t: 29.0, s: { focus: "r2Add", ripple: true } },
+    { t: 29.5, s: { ripple: false, a2On: true, cap: "13 · Second line, its own license plate" } },
+    { t: 30.6, s: { focus: "a2Lp", a2Lp: "FRTPOP85" } },
+    { t: 31.6, s: { focus: "a2Bin", a2Bin: "A-1-1", a2BinLabel: "A-1-1" } },
+    { t: 32.5, s: { focus: "a2Qty", a2Qty: "500", a2QtyLabel: "500", r2Received: "500", r2AllocLabel: "1 allocation", r2AllocColor: "#4088CF", r2AllocStyle: "normal", cap: "13 · Partial receipt — 500 of 998 on this line" } },
+    { t: 33.4, s: { focus: "a2Lot", a2Lot: "123", a2Exp: "05/21/2026", submitBg: "#4088CF", submitColor: "#fff", submitBorder: "#4088CF" } },
+    { t: 34.8, s: { focus: null, curX: 878, curY: 778, ripple: true, ripX: 878, ripY: 778, cap: "14 · Submit for approval" } },
+    { t: 35.3, s: { ripple: false, statusLabel: "Submitted", statusBg: "#FDF3E3", statusColor: "#9A6B12", ap1Bg: "#4088CF", scrollTo: 0, rowStatus: "Submitted",
+      submitBg: "#fff", submitColor: "#9AA7B8", submitBorder: "#E3E7EC",
+      toastOn: true, toastAccent: "#E38A00", toastTitle: "Sent to the receiving manager",
+      toastBody: "The receipt is locked for approval. The manager gets the email and approves without opening the floor app." } },
+    { t: 37.4, s: { editOn: false, gridOn: true, footerOn: false, toastOn: false, curX: 700, curY: 500,
+      cap: "15 · Submitting returns to the receipts queue" } },
+    { t: 39.4, s: { toastOn: true, toastTop: "430px", toastAccent: "#3B9E4E", toastTitle: "Approved by the receiving manager",
+      toastBody: "Nothing hits inventory until someone with authority says so.", cap: "16 · Approved while the receipt sits in the queue" } },
+    { t: 41.0, s: { curX: 1351, curY: 382, ripple: true, ripX: 1351, ripY: 382, cap: "17 · Reopen the receipt to post it" } },
+    { t: 41.5, s: { ripple: false, gridOn: false, editOn: true, footerOn: true, toastOn: false,
+      statusLabel: "Approved", statusBg: "#E7F4E4", statusColor: "#2E5E33", ap2Bg: "#3B9E4E", toastTop: "60px",
+      postBg: "#4088CF", postColor: "#fff", cap: "18 · Approved — POST is now available" } },
+    { t: 43.4, s: { curX: 772, curY: 778, ripple: true, ripX: 772, ripY: 778 } },
+    { t: 43.9, s: { ripple: false, statusLabel: "Posted", toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Posted to the ERP",
+      toastBody: "1,498 units land in bin A-1-1 under lot 123 — line 2 stays open for the balance. The receipt, the inventory and the ERP agree.",
+      cap: "19 · Posted — inventory and ERP in step" } },
+    { t: 47.5, s: {} }
+  ];
+  anim = { ...this.A0 };
+  _renderedScroll = 0; _renderedCur = [0, 0];
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  _settle() {
+    (this._settleTimers || []).forEach(clearTimeout);
+    this._settleTimers = [0, 30, 90, 240, 760].map((d) => setTimeout(() => this.forceUpdate(), d));
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); cancelAnimationFrame(this._settleRaf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  setCanvas = (el) => { this._canvas = el; };
+  setCol = (el) => { this._col = el; };
+  _focusEl() { return this._col && this.anim.focus ? this._col.querySelector('[data-t="' + this.anim.focus + '"]') : null; }
+  _layoutTop(el) { let y = 0, n = el; while (n && n !== this._col) { y += n.offsetTop; n = n.offsetParent; } return y; }
+  _scrollPx() {
+    const a = this.anim;
+    if (!this._col) return 0;
+    const VH = 689;
+    const min = -Math.max(0, this._col.scrollHeight - VH);
+    if (a.scrollTo === 0) return 0;
+    const el = this._focusEl();
+    if (!el) return this._lastScroll || 0;
+    const want = -(this._layoutTop(el) + el.offsetHeight / 2 - 330);
+    return Math.max(min, Math.min(0, want));
+  }
+  _layoutLeft(el) { let x = 0, n = el; while (n && n !== this._col) { x += n.offsetLeft; n = n.offsetParent; } return x; }
+  _cursor(sc) {
+    const a = this.anim;
+    const el = this._focusEl();
+    if (!el) return [a.curX, a.curY];
+    return [Math.round(this._layoutLeft(el) + Math.min(el.offsetWidth / 2, 120)),
+            Math.round(56 + this._layoutTop(el) + el.offsetHeight / 2 + (sc || 0))];
+  }
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); this._settle(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); this._settle(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); this._settle(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const rows = a.extraRow ? this.BASE_ROWS.concat([{ id: "RCT00004201", po: "PO-45131", created: "06/09/2026 09:12", submitted: "—", vendorId: "19024690", vendor: "Avnet", by: "D. Henriquez", status: a.rowStatus, bg: "#F4F8FE" }]) : this.BASE_ROWS;
+    const sc = this._scrollPx(); this._lastScroll = sc;
+    const [cx, cy] = this._cursor(sc);
+    this._renderedScroll = sc; this._renderedCur = [cx, cy];
+    const rx = a.focus ? cx : a.ripX, ry = a.focus ? cy : a.ripY;
+    return { ...a, rows, rowCount: rows.length, scrollY: sc + "px",
+      scale: this.scaleVal, paused: !a.playing, playing: a.playing,
+      curT: "translate(" + cx + "px, " + cy + "px)",
+      ripT: "translate(" + rx + "px, " + ry + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap, setCanvas: this.setCanvas, setCol: this.setCol
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#EAEFF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#16324E;display:flex;align-items:center;padding:0 18px;z-index:6;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:20px;width:auto;display:block;">
+    <span style="color:#fff;font-size:20px;font-weight:700;letter-spacing:.02em;margin-left:14px;">WMS</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:24px;font-size:12.5px;color:#DCE6F1;">
+      <span>Picking</span><span>Receipts</span><span style="color:#fff;font-weight:700;">Bin Transfers</span><span>Transactions</span><span>Inventory</span><span>Generate</span><span>Settings</span>
+      <span style="width:30px;height:30px;border-radius:50%;background:#42586F;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#DCE6F1"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#DCE6F1"></path></svg></span>
+    </div>
+  </div>
+
+  <div ref="{{ setCol }}" style="position:absolute;top:56px;left:0;right:0;bottom:0;">
+    <div style="padding:16px 24px 0;font-size:11.5px;color:#7A8798;">WMS / Bin Transfers</div>
+    <div style="padding:8px 24px 0;font-size:24px;font-weight:700;color:#1B2B3D;">Bin Transfers</div>
+
+    <div style="margin:16px 14px 0;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(20,38,60,.09);padding:14px 16px 18px;">
+      <div style="font-size:12px;font-weight:700;color:#1B2B3D;">Transfer Mode</div>
+      <div style="display:flex;gap:12px;margin-top:12px;">
+        <div data-t="modeSingle" style="flex:1;border:2px solid {{ m1Border }};background:{{ m1Bg }};border-radius:5px;padding:11px 14px;">
+          <div style="font-size:14px;font-weight:700;color:{{ m1Color }};">Single Item to Multiple Bins</div>
+          <div style="font-size:11.5px;color:#6B7A8C;margin-top:4px;">Transfer one item from a bin to multiple destination bins</div>
+        </div>
+        <div data-t="modeMulti" style="flex:1;border:2px solid {{ m2Border }};background:{{ m2Bg }};border-radius:5px;padding:11px 14px;">
+          <div style="font-size:14px;font-weight:700;color:{{ m2Color }};">Multiple Items to Single Bin</div>
+          <div style="font-size:11.5px;color:#6B7A8C;margin-top:4px;">Transfer multiple items from a bin to a single destination bin</div>
+        </div>
+      </div>
+
+      <div data-t="wh" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;margin-top:24px;">
+        <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Warehouse</span>{{ whVal }}
+        <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="color:#8A97A8;font-size:13px;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></span>
+      </div>
+
+      <sc-if value="{{ lpOn }}" hint-placeholder-val="{{ false }}">
+      <div data-t="pageLp" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:{{ lpColor }};margin-top:22px;animation:srFadeUp .3s both;">
+        <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">License Plate</span>{{ lpVal }}
+        <span style="margin-left:auto;display:flex;align-items:center;gap:13px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg><svg width="15" height="15" viewBox="0 0 24 24"><path d="M20 12 A8 8 0 1 1 12 4 L12 1 L17 5 L12 9 L12 6.4 A5.6 5.6 0 1 0 17.6 12 Z" fill="#4088CF"></path></svg><svg width="15" height="15" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="5.5" fill="#4088CF"></rect><rect x="2.5" y="8.5" width="19" height="8" rx="1.5" fill="#4088CF"></rect><rect x="6" y="15" width="12" height="6.5" fill="#fff" stroke="#4088CF" stroke-width="1.4"></rect></svg><svg width="16" height="15" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2.5" fill="none" stroke="#4088CF" stroke-width="2"></rect><circle cx="12" cy="13" r="3.6" fill="none" stroke="#4088CF" stroke-width="2"></circle><rect x="8.5" y="3" width="7" height="3" fill="#4088CF"></rect></svg></span>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ modeSingleOn }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:16px;margin-top:22px;align-items:flex-start;">
+        <div style="width:640px;border:1px solid #E3E9F0;border-radius:4px;padding:14px 16px 18px;">
+          <div style="font-size:13px;font-weight:700;color:#1B2B3D;">From</div>
+          <div style="position:relative;margin-top:20px;">
+          <sc-if value="{{ fbOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;bottom:47px;background:#fff;border:1px solid #DDE4EC;box-shadow:0 -6px 20px rgba(11,26,46,.16);z-index:9;animation:srFadeUp .18s both;">
+              <sc-for list="{{ bins }}" as="b" hint-placeholder-count="6">
+                <div style="height:30px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#1B2B3D;background:{{ b.bg }};">{{ b.name }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div data-t="fromBin" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+            <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">From Bin</span>{{ fromBin }}
+            <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="color:#8A97A8;font-size:13px;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></span>
+          </div>
+          </div>
+          <div data-t="itemNum" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:{{ itemColor }};margin-top:20px;">
+            <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Item Number</span>{{ itemNum }}
+            <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg><svg width="16" height="15" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2.5" fill="none" stroke="#4088CF" stroke-width="2"></rect><circle cx="12" cy="13" r="3.6" fill="none" stroke="#4088CF" stroke-width="2"></circle><rect x="8.5" y="3" width="7" height="3" fill="#4088CF"></rect></svg></span>
+          </div>
+          <div data-t="fromQty" style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;margin-top:20px;">
+            <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">From Qty</span>{{ fromQty }}
+          </div>
+        </div>
+
+        <div style="flex:1;border:1px solid #E3E9F0;border-radius:4px;padding:14px 16px 18px;">
+          <div style="display:flex;align-items:center;">
+            <div style="font-size:13px;font-weight:700;color:#1B2B3D;">To</div>
+            <div data-t="splitBtn" style="margin-left:auto;font-size:11.5px;font-weight:700;letter-spacing:.06em;color:{{ splitColor }};">+ SPLIT</div>
+          </div>
+          <div style="border:1px solid #E3E9F0;border-radius:4px;padding:14px 14px 8px;margin-top:14px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <sc-if value="{{ lpOn }}" hint-placeholder-val="{{ false }}">
+                <div data-t="tlp1" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:{{ tlp1Color }};">
+                  <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">License Plate 1 *</span>{{ tlp1 }}
+                  <span style="margin-left:auto;display:flex;align-items:center;gap:13px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg><svg width="15" height="15" viewBox="0 0 24 24"><path d="M20 12 A8 8 0 1 1 12 4 L12 1 L17 5 L12 9 L12 6.4 A5.6 5.6 0 1 0 17.6 12 Z" fill="#4088CF"></path></svg><svg width="15" height="15" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="5.5" fill="#4088CF"></rect><rect x="2.5" y="8.5" width="19" height="8" rx="1.5" fill="#4088CF"></rect><rect x="6" y="15" width="12" height="6.5" fill="#fff" stroke="#4088CF" stroke-width="1.4"></rect></svg><svg width="16" height="15" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2.5" fill="none" stroke="#4088CF" stroke-width="2"></rect><circle cx="12" cy="13" r="3.6" fill="none" stroke="#4088CF" stroke-width="2"></circle><rect x="8.5" y="3" width="7" height="3" fill="#4088CF"></rect></svg></span>
+                </div>
+              </sc-if>
+              <div data-t="tb1" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+                <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">To Bin 1</span>{{ tb1 }}
+                <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="color:#8A97A8;font-size:13px;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></span>
+              </div>
+              <div data-t="q1" style="position:relative;width:100px;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+                <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Qty</span>{{ q1 }}
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:10px;"><svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="{{ del1Color }}"></path></svg></div>
+          </div>
+          <sc-if value="{{ split2On }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #E3E9F0;border-radius:4px;padding:14px 14px 8px;margin-top:12px;animation:srFadeUp .3s both;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div data-t="tb2" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+                <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">To Bin 2</span>{{ tb2 }}
+                <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="color:#8A97A8;font-size:13px;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></span>
+              </div>
+              <div data-t="q2" style="position:relative;width:100px;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+                <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Qty</span>{{ q2 }}
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:10px;"><svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="#D3372C"></path></svg></div>
+          </div>
+          </sc-if>
+          <div style="margin-top:14px;font-size:12.5px;color:#5E7186;line-height:1.7;">
+            <div>Total From: {{ totalFrom }}</div>
+            <div>Total To: {{ totalTo }}</div>
+            <div style="color:{{ remColor }};font-weight:700;">Remaining: {{ remaining }}</div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ modeMultiOn }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:24px;">
+        <div style="display:flex;gap:16px;">
+          <div data-t="mFromBin" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+            <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">From Bin</span>{{ mFromBin }}
+            <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="color:#8A97A8;font-size:13px;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></span>
+          </div>
+          <div data-t="mToBin" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+            <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">To Bin</span>{{ mToBin }}
+            <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="color:#8A97A8;font-size:13px;">✕</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></span>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;margin-top:24px;">
+          <div style="font-size:13px;font-weight:700;color:#1B2B3D;">Items to Transfer</div>
+          <div data-t="addItem" style="margin-left:auto;border:1px solid #B9CDE8;border-radius:4px;padding:7px 14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;color:#4088CF;">+ ADD ITEM</div>
+        </div>
+
+        <div style="border:1px solid #E3E9F0;border-radius:4px;padding:12px 14px 14px;margin-top:12px;">
+          <div style="font-size:12.5px;font-weight:700;color:#1B2B3D;">Item 1</div>
+          <div style="display:flex;gap:16px;align-items:center;margin-top:16px;">
+            <div data-t="mItem1" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:{{ mi1Color }};">
+              <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Select Item</span>{{ mi1 }}
+              <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg><svg width="16" height="15" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2.5" fill="none" stroke="#4088CF" stroke-width="2"></rect><circle cx="12" cy="13" r="3.6" fill="none" stroke="#4088CF" stroke-width="2"></circle><rect x="8.5" y="3" width="7" height="3" fill="#4088CF"></rect></svg></span>
+            </div>
+            <div data-t="mQty1" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+              <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Quantity</span>{{ mq1 }}
+            </div>
+            <svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="{{ mDel1Color }}"></path></svg>
+          </div>
+        </div>
+
+        <sc-if value="{{ mItem2On }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid #E3E9F0;border-radius:4px;padding:12px 14px 14px;margin-top:12px;animation:srFadeUp .3s both;">
+          <div style="font-size:12.5px;font-weight:700;color:#1B2B3D;">Item 2</div>
+          <div style="display:flex;gap:16px;align-items:center;margin-top:16px;">
+            <div data-t="mItem2" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:{{ mi2Color }};">
+              <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Select Item</span>{{ mi2 }}
+              <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg><svg width="16" height="15" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2.5" fill="none" stroke="#4088CF" stroke-width="2"></rect><circle cx="12" cy="13" r="3.6" fill="none" stroke="#4088CF" stroke-width="2"></circle><rect x="8.5" y="3" width="7" height="3" fill="#4088CF"></rect></svg></span>
+            </div>
+            <div data-t="mQty2" style="position:relative;flex:1;height:44px;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#3C4B5C;">
+              <span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Quantity</span>{{ mq2 }}
+            </div>
+            <svg width="14" height="15" viewBox="0 0 24 24"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="#D3372C"></path></svg>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+
+
+      <sc-if value="{{ mobileOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:-56px;bottom:0;background:#0A1B2E;z-index:15;">
+        <div style="position:absolute;left:530px;top:26px;width:380px;height:752px;background:#1B1F24;border-radius:42px;padding:13px;box-sizing:border-box;box-shadow:0 24px 60px rgba(0,0,0,.45);">
+          <div style="position:absolute;left:143px;top:22px;width:94px;height:7px;border-radius:4px;background:#C2453B;"></div>
+          <div style="position:absolute;left:186px;top:36px;width:6px;height:6px;border-radius:50%;background:#2FA37A;"></div>
+          <div style="position:absolute;left:13px;top:46px;right:13px;bottom:13px;background:#EEF2F7;border-radius:8px 8px 30px 30px;overflow:hidden;">
+            <div style="height:46px;background:#16324E;display:flex;align-items:center;padding:0 12px;">
+              <span style="display:flex;flex-direction:column;gap:3px;"><span style="width:16px;height:2px;background:#fff;display:block;"></span><span style="width:16px;height:2px;background:#fff;display:block;"></span><span style="width:16px;height:2px;background:#fff;display:block;"></span></span>
+              <span style="margin-left:auto;margin-right:auto;display:flex;align-items:center;gap:8px;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:13px;width:auto;display:block;"><span style="color:#fff;font-size:16px;font-weight:700;">WMS</span></span>
+              <span style="width:26px;height:26px;border-radius:50%;background:#42586F;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#DCE6F1"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#DCE6F1"></path></svg></span>
+            </div>
+            <div style="padding:16px 14px 0;">
+              <div style="height:38px;border:1px solid #C3CDD9;border-radius:3px;display:flex;align-items:center;padding:0 10px;font-size:13px;color:#8A6A22;background:#fff;">Single Item<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+            <div data-t="pWh" style="position:relative;height:38px;background:#F1F4F8;border-bottom:1px solid #DDE4EC;border-radius:3px 3px 0 0;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:{{ pWhColor }};margin-top:20px;">
+              <span style="position:absolute;top:-14px;left:2px;font-size:10px;color:#7A8798;">Warehouse</span>{{ pWh }}
+              <span style="margin-left:auto;display:flex;align-items:center;gap:11px;"><span style="color:#8A97A8;font-size:12px;">✕</span><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.6"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.6"></path></svg></span>
+            </div>
+              <div style="background:#fff;border:1px solid #E3E9F0;border-radius:4px;padding:12px 12px 16px;margin-top:20px;">
+                <div style="font-size:13px;font-weight:700;color:#1B2B3D;">From</div>
+            <div data-t="pFromBin" style="position:relative;height:38px;background:#F1F4F8;border-bottom:1px solid #DDE4EC;border-radius:3px 3px 0 0;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:#3C4B5C;margin-top:20px;">
+              <span style="position:absolute;top:-14px;left:2px;font-size:10px;color:#7A8798;">From Bin</span>{{ pFromBin }}
+              <span style="margin-left:auto;display:flex;align-items:center;gap:11px;"><span style="color:#8A97A8;font-size:12px;">✕</span><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.6"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.6"></path></svg></span>
+            </div>
+            <div data-t="pItem" style="position:relative;height:38px;background:#F1F4F8;border-bottom:1px solid #DDE4EC;border-radius:3px 3px 0 0;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:{{ pItemColor }};margin-top:20px;">
+              <span style="position:absolute;top:-14px;left:2px;font-size:10px;color:#7A8798;">Item Number</span>{{ pItem }}
+              <span style="margin-left:auto;display:flex;align-items:center;gap:11px;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.6"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.6"></path></svg><svg width="14" height="13" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2.5" fill="none" stroke="#4088CF" stroke-width="2"></rect><circle cx="12" cy="13" r="3.6" fill="none" stroke="#4088CF" stroke-width="2"></circle><rect x="8.5" y="3" width="7" height="3" fill="#4088CF"></rect></svg></span>
+            </div>
+            <div data-t="pQty" style="position:relative;height:38px;background:#F1F4F8;border-bottom:1px solid #DDE4EC;border-radius:3px 3px 0 0;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:#3C4B5C;margin-top:20px;">
+              <span style="position:absolute;top:-14px;left:2px;font-size:10px;color:#7A8798;">From Qty</span>{{ pQty }}
+            </div>
+              </div>
+              <div style="background:#fff;border:1px solid #E3E9F0;border-radius:4px;padding:12px 12px 16px;margin-top:16px;">
+                <div style="display:flex;align-items:center;"><span style="font-size:13px;font-weight:700;color:#1B2B3D;">To</span><span style="margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:{{ pSplitColor }};">+ SPLIT</span></div>
+            <div data-t="pToBin" style="position:relative;height:38px;background:#F1F4F8;border-bottom:1px solid #DDE4EC;border-radius:3px 3px 0 0;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:#3C4B5C;margin-top:20px;">
+              <span style="position:absolute;top:-14px;left:2px;font-size:10px;color:#7A8798;">To Bin 1</span>{{ pToBin }}
+              <span style="margin-left:auto;display:flex;align-items:center;gap:11px;"><span style="color:#8A97A8;font-size:12px;">✕</span><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.6"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.6"></path></svg></span>
+            </div>
+            <div data-t="pToQty" style="position:relative;height:38px;background:#F1F4F8;border-bottom:1px solid #DDE4EC;border-radius:3px 3px 0 0;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:#3C4B5C;margin-top:20px;">
+              <span style="position:absolute;top:-14px;left:2px;font-size:10px;color:#7A8798;">Qty</span>{{ pToQty }}
+            </div>
+              </div>
+            </div>
+            <div data-t="pProcess" style="position:absolute;left:14px;right:14px;bottom:16px;background:{{ pProcBg }};color:{{ pProcColor }};border-radius:4px;height:38px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;letter-spacing:.06em;">PROCESS TRANSFER</div>
+            <div style="position:absolute;right:14px;bottom:66px;width:34px;height:34px;border-radius:50%;background:#4088CF;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 5 H21 V16 H9 L3 20 Z" fill="#fff"></path></svg></div>
+            <sc-if value="{{ drawerOn }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:#BBD3EE;">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:206px;background:#fff;padding:14px 0;">
+                  <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="9">
+                    <div style="height:34px;display:flex;align-items:center;padding:0 16px;font-size:12.5px;color:#1B2B3D;background:{{ n.bg }};">{{ n.name }}</div>
+                  </sc-for>
+                </div>
+                <div data-t="pNavBin" style="position:absolute;left:16px;top:116px;width:110px;height:24px;"></div>
+                <div style="position:absolute;left:206px;top:0;right:0;height:46px;background:#16324E;display:flex;align-items:center;justify-content:flex-end;padding:0 12px;"><span style="width:26px;height:26px;border-radius:50%;background:#C6D4E4;"></span></div>
+                <div style="position:absolute;right:14px;bottom:24px;width:34px;height:34px;border-radius:50%;background:#4088CF;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 5 H21 V16 H9 L3 20 Z" fill="#fff"></path></svg></div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+  <div style="position:absolute;right:24px;bottom:88px;width:44px;height:44px;border-radius:50%;background:#4088CF;box-shadow:0 2px 8px rgba(64,136,207,.35);display:flex;align-items:center;justify-content:center;z-index:7;"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 5 H21 V16 H9 L3 20 Z" fill="#fff"></path></svg></div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;border-top:1px solid #E3E9F0;display:flex;align-items:center;justify-content:flex-end;padding:0 262px 0 26px;z-index:8;">
+    <div data-t="processBtn" style="background:{{ procBg }};color:{{ procColor }};border-radius:4px;padding:11px 22px;font-size:12.5px;font-weight:700;letter-spacing:.06em;">PROCESS TRANSFER</div>
+  </div>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:22px;top:74px;width:360px;z-index:44;background:#fff;border-left:4px solid {{ toastAccent }};border-radius:6px;box-shadow:0 12px 32px rgba(11,26,46,.22);padding:14px 16px;animation:srFadeUp .35s both;white-space:normal;">
+      <div style="font-size:13px;font-weight:700;color:#1B2B3D;">{{ toastTitle }}</div>
+      <div style="font-size:12.5px;color:#5E7186;margin-top:5px;line-height:1.45;">{{ toastBody }}</div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:78px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:112px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ringOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:0;z-index:38;pointer-events:none;transform:{{ ringT }};width:{{ ringW }};height:{{ ringH }};border:2px solid #4088CF;border-radius:5px;box-shadow:0 0 0 4px rgba(64,136,207,.14);"></div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  NAV = ["Picking", "Receipts", "History", "Bin Transfers", "Transactions", "Inventory", "Cycle Counts", "Manufacturing", "Settings"];
+  BINS = ["A-1-1-0", "A-1-1", "A-1-2", "A-1-3", "A-1-4", "A-1-5", "A-1-6", "A-1-7", "A-1-8", "A-1-9"];
+  SEL = { m1Border: "#4088CF", m1Bg: "#F7FAFE", m1Color: "#4088CF", m2Border: "#E3E9F0", m2Bg: "#fff", m2Color: "#1B2B3D" };
+  SEL2 = { m1Border: "#E3E9F0", m1Bg: "#fff", m1Color: "#1B2B3D", m2Border: "#4088CF", m2Bg: "#F7FAFE", m2Color: "#4088CF" };
+  A0 = { playing: true, cap: "01 · Bin Transfers — putaway and moves inside the warehouse",
+    curX: 700, curY: 520, ripple: false, ripX: 0, ripY: 0, focus: null,
+    modeSingleOn: true, modeMultiOn: false,
+    m1Border: "#4088CF", m1Bg: "#F7FAFE", m1Color: "#4088CF", m2Border: "#E3E9F0", m2Bg: "#fff", m2Color: "#1B2B3D",
+    whVal: "", fromBin: "", itemNum: "Search for items...", itemColor: "#9AA7B8", fromQty: "",
+    fbOpen: false, fbHot: "",
+    lpOn: false, lpVal: "Search for license plate to auto-populate items", lpColor: "#9AA7B8",
+    tlp1: "Enter or scan licen...", tlp1Color: "#9AA7B8",
+    mobileOn: false, drawerOn: false, navHot: "",
+    pWh: "", pWhColor: "#3C4B5C", pFromBin: "", pItem: "Search for items...", pItemColor: "#9AA7B8",
+    pQty: "", pToBin: "", pToQty: "", pSplitColor: "#9AA7B8",
+    pProcBg: "#9CB8D8", pProcColor: "#EAF1F8",
+    tb1: "", q1: "", split2On: false, tb2: "", q2: "",
+    totalFrom: "0", totalTo: "0", remaining: "0", remColor: "#3B9E4E",
+    splitColor: "#9AA7B8", del1Color: "#C7D1DC",
+    mFromBin: "", mToBin: "", mi1: "Search for items...", mi1Color: "#9AA7B8", mq1: "",
+    mItem2On: false, mi2: "Search for items...", mi2Color: "#9AA7B8", mq2: "", mDel1Color: "#C7D1DC",
+    procBg: "#E3E7EC", procColor: "#9AA7B8",
+    toastOn: false, toastTitle: "", toastBody: "", toastAccent: "#4088CF" };
+  DUR = 80;
+  KF = [
+    { t: 1.8, s: { focus: "wh", ripple: true, cap: "02 · Pick the warehouse — one at a time, nothing else opens until you do" } },
+    { t: 2.4, s: { ripple: false, whVal: "19056841, ABC, 1 Maple, Closter, NJ" } },
+    { t: 4.0, s: { focus: "modeSingle", ripple: true, cap: "03 · Single item to multiple bins — the putaway split" } },
+    { t: 4.6, s: { ripple: false } },
+    { t: 5.6, s: { focus: "fromBin", ripple: true, cap: "04 · From Bin lists every bin in that warehouse" } },
+    { t: 6.1, s: { ripple: false, fbOpen: true } },
+    { t: 6.6, s: { fbHot: "A-1-1-0" } },
+    { t: 7.0, s: { ripple: true } },
+    { t: 7.4, s: { ripple: false, fbOpen: false, fbHot: "", fromBin: "A-1-1-0" } },
+    { t: 7.8, s: { focus: "itemNum", ripple: true, cap: "05 · Item list is filtered to that bin — quantity and lot come with it" } },
+    { t: 8.4, s: { ripple: false, itemNum: "123 (A-1-1-0) - Qty: 100", itemColor: "#3C4B5C" } },
+    { t: 10.0, s: { focus: "fromQty", fromQty: "100", totalFrom: "100", remaining: "100", remColor: "#E38A00", splitColor: "#4088CF", cap: "06 · Quantity defaults to everything available" } },
+    { t: 11.6, s: { focus: "tb1", ripple: true, cap: "07 · First destination — primary pick face" } },
+    { t: 12.2, s: { ripple: false, tb1: "A-1-2" } },
+    { t: 13.4, s: { focus: "q1", q1: "50", totalTo: "50", remaining: "50", remColor: "#E38A00", procBg: "#4088CF", procColor: "#fff", cap: "08 · Remaining stays orange while the split is short" } },
+    { t: 15.4, s: { focus: "splitBtn", ripple: true, cap: "09 · Split the balance to a second bin — up to ten" } },
+    { t: 16.0, s: { ripple: false, split2On: true, del1Color: "#D3372C" } },
+    { t: 17.2, s: { focus: "tb2", ripple: true } },
+    { t: 17.8, s: { ripple: false, tb2: "A-1-10", cap: "10 · Overstock takes the rest — bins already used are off the list" } },
+    { t: 19.2, s: { focus: "q2", q2: "50", totalTo: "100", remaining: "0", remColor: "#3B9E4E", cap: "11 · Balanced — remaining reads zero in green" } },
+    { t: 21.2, s: { focus: "processBtn", ripple: true, cap: "12 · Process the transfer" } },
+    { t: 21.8, s: { ripple: false, toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Putaway posted",
+      toastBody: "50 units to A-1-2, 50 to A-1-10. Two bin balances change on one scan-driven transaction, and the ERP hears about it once." } },
+    { t: 25.0, s: { focus: "modeMulti", ripple: true, toastOn: false, cap: "13 · The same page handles consolidation" } },
+    { t: 25.6, s: { ripple: false, modeSingleOn: false, modeMultiOn: true, ...this.SEL2,
+      procBg: "#E3E7EC", procColor: "#9AA7B8" } },
+    { t: 27.0, s: { focus: "mFromBin", ripple: true, cap: "14 · Multiple items to a single bin" } },
+    { t: 27.6, s: { ripple: false, mFromBin: "A-1-1" } },
+    { t: 28.8, s: { focus: "mToBin", ripple: true } },
+    { t: 29.4, s: { ripple: false, mToBin: "A-1-5", cap: "15 · From and To bins have to differ — the system enforces it" } },
+    { t: 30.8, s: { focus: "mItem1", ripple: true } },
+    { t: 31.4, s: { ripple: false, mi1: "Item1 (A-1-1) - Qty: 9900", mi1Color: "#3C4B5C" } },
+    { t: 32.4, s: { focus: "mQty1", mq1: "500", procBg: "#4088CF", procColor: "#fff", cap: "16 · Take part of the line, not all of it" } },
+    { t: 33.8, s: { focus: "addItem", ripple: true, cap: "17 · Add lines until the move is complete" } },
+    { t: 34.4, s: { ripple: false, mItem2On: true, mDel1Color: "#D3372C" } },
+    { t: 35.4, s: { focus: "mItem2", ripple: true } },
+    { t: 36.0, s: { ripple: false, mi2: "Item17 (A-1-1) - Qty: 100", mi2Color: "#3C4B5C" } },
+    { t: 36.8, s: { focus: "mQty2", mq2: "100" } },
+    { t: 37.8, s: { focus: "processBtn", ripple: true, cap: "18 · One transaction back to the ERP, not one per line" } },
+    { t: 38.4, s: { ripple: false, toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Consolidation posted",
+      toastBody: "Two items land in A-1-5 together. Every move is attributed to the user who scanned it, so inventory reconciles without a spreadsheet." } },
+    { t: 42.0, s: { toastOn: false, focus: "modeSingle", ripple: true, cap: "19 · A warehouse that runs license plates looks like this" } },
+    { t: 42.6, s: { ripple: false, modeSingleOn: true, modeMultiOn: false, ...this.SEL,
+      whVal: "", fromBin: "", itemNum: "Search for items...", itemColor: "#9AA7B8", fromQty: "0",
+      tb1: "", q1: "", split2On: false, tb2: "", q2: "",
+      totalFrom: "0", totalTo: "0", remaining: "0", remColor: "#3B9E4E", splitColor: "#9AA7B8", del1Color: "#C7D1DC",
+      procBg: "#E3E7EC", procColor: "#9AA7B8" } },
+    { t: 43.8, s: { focus: "wh", ripple: true } },
+    { t: 44.4, s: { ripple: false, whVal: "Export, FreightPOP Demo, 5308 Beck Dr, Elkhart, IN", lpOn: true,
+      cap: "20 · The License Plate field appears once the warehouse uses them" } },
+    { t: 46.4, s: { focus: "pageLp", ripple: true, cap: "21 · Scan the plate and the items populate themselves" } },
+    { t: 47.0, s: { ripple: false, lpVal: "FRTPOP95", lpColor: "#3C4B5C" } },
+    { t: 48.0, s: { fromBin: "A-1-21", itemNum: "000003 (A-1-21) - Qty: 499", itemColor: "#3C4B5C", fromQty: "499",
+      totalFrom: "499", remaining: "499", remColor: "#E38A00", splitColor: "#4088CF" } },
+    { t: 50.0, s: { focus: "tlp1", ripple: true, cap: "22 · The destination gets its own plate, then its bin" } },
+    { t: 50.6, s: { ripple: false, tlp1: "FRTPOP96", tlp1Color: "#3C4B5C" } },
+    { t: 51.8, s: { focus: "tb1", ripple: true } },
+    { t: 52.4, s: { ripple: false, tb1: "A-2-4" } },
+    { t: 53.4, s: { focus: "q1", q1: "499", totalTo: "499", remaining: "0", remColor: "#3B9E4E",
+      procBg: "#4088CF", procColor: "#fff", cap: "23 · A whole pallet moves on one plate, not 499 scans" } },
+    { t: 55.4, s: { focus: "processBtn", ripple: true } },
+    { t: 56.0, s: { ripple: false, toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Transfer posted",
+      toastBody: "Plate FRTPOP95 moved to bin A-2-4 as FRTPOP96. The items, their lots and their serials came along without being handled." } },
+    { t: 60.4, s: { toastOn: false, mobileOn: true, drawerOn: true, focus: null, curX: 700, curY: 400,
+      cap: "24 · The same page on a scanner in the aisle" } },
+    { t: 62.0, s: { navHot: "Bin Transfers", focus: "pNavBin", ripple: true, cap: "25 · Bin Transfers" } },
+    { t: 62.6, s: { ripple: false, drawerOn: false, navHot: "", focus: null, curX: 700, curY: 400 } },
+    { t: 64.0, s: { focus: "pWh", ripple: true, cap: "26 · Warehouse first, same as the desktop" } },
+    { t: 64.6, s: { ripple: false, pWh: "19056841, ABC, 1 Maple..." } },
+    { t: 66.0, s: { focus: "pFromBin", ripple: true } },
+    { t: 66.6, s: { ripple: false, pFromBin: "A-1-1-0", cap: "27 · From the receiving bin" } },
+    { t: 68.0, s: { focus: "pItem", ripple: true } },
+    { t: 68.6, s: { ripple: false, pItem: "123 (A-1-1-0) - Qty: 100", pItemColor: "#3C4B5C" } },
+    { t: 69.8, s: { focus: "pQty", pQty: "100", pSplitColor: "#4088CF", cap: "28 · Quantity defaults to what is there" } },
+    { t: 71.2, s: { focus: "pToBin", ripple: true } },
+    { t: 71.8, s: { ripple: false, pToBin: "A-1-2" } },
+    { t: 73.0, s: { focus: "pToQty", pToQty: "100", pProcBg: "#4088CF", pProcColor: "#fff",
+      cap: "29 · Split across bins here too, with the same remaining check" } },
+    { t: 74.8, s: { focus: "pProcess", ripple: true, cap: "30 · Process it from the aisle" } },
+    { t: 75.4, s: { ripple: false, toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Transfer posted",
+      toastBody: "Same transaction, same guardrails, done with one thumb next to the rack instead of a walk back to a desk." } },
+    { t: 79.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); (this._settleTimers || []).forEach(clearTimeout); }
+  _settle() {
+    (this._settleTimers || []).forEach(clearTimeout);
+    this._settleTimers = [0, 30, 90, 240, 760].map((d) => setTimeout(() => this.forceUpdate(), d));
+  }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  setCol = (el) => { this._col = el; };
+  _focusEl() { return this._col && this.anim.focus ? this._col.querySelector('[data-t="' + this.anim.focus + '"]') : null; }
+  _off(el) { let x = 0, y = 0, n = el; while (n && n !== this._col) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return [x, y]; }
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); this._settle(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); this._settle(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); this._settle(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const el = this._focusEl();
+    let cx = a.curX, cy = a.curY, ring = null;
+    if (el) {
+      const [x, y] = this._off(el);
+      cx = Math.round(x + Math.min(el.offsetWidth / 2, 130));
+      cy = Math.round(56 + y + el.offsetHeight / 2);
+      ring = { t: "translate(" + x + "px, " + (56 + y) + "px)", w: el.offsetWidth + "px", h: el.offsetHeight + "px" };
+    }
+    const rx = el ? cx : a.ripX, ry = el ? cy : a.ripY;
+    const bins = this.BINS.map((n) => ({ name: n, bg: n === a.fbHot ? "#EDF3FA" : "#fff" }));
+    const navItems = this.NAV.map((n) => ({ name: n, bg: n === a.navHot ? "#EDF3FA" : "#fff" }));
+    return { ...a, bins, navItems,
+      scale: this.scaleVal, paused: !a.playing, playing: a.playing,
+      ringOn: !!ring, ringT: ring ? ring.t : "translate(0,0)", ringW: ring ? ring.w : "0px", ringH: ring ? ring.h : "0px",
+      curT: "translate(" + cx + "px, " + cy + "px)",
+      ripT: "translate(" + rx + "px, " + ry + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap, setCol: this.setCol
+    };
+  }
+}
+</script>
+</body>
+</html>

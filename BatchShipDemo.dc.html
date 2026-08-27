@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srSpin { to{transform:rotate(360deg);} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+@keyframes srFade { from{opacity:0;} to{opacity:1;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <!-- TOP NAV -->
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
+      <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+      <span style="color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;">✦ AI BETA</span>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span style="color:#fff;font-weight:600;">Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:30px;top:70px;font-size:19px;font-weight:700;color:#1A1A1A;">Order Management</div>
+  <div style="position:absolute;left:30px;top:104px;display:flex;gap:32px;font-size:11.5px;font-weight:700;letter-spacing:.045em;color:#5E7186;">
+    <span>OPEN SALES ORDERS</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">OPEN OUTBOUND TRANSACTIONS</span><span>OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:131px;height:1px;background:#E4E9EF;"></div>
+  <div style="position:absolute;right:34px;top:118px;width:34px;height:34px;border-radius:50%;background:#1F8AE0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-weight:300;line-height:1;">+</div>
+
+  <!-- GRID CARD -->
+  <div style="position:absolute;left:20px;top:148px;width:1400px;height:530px;background:#fff;border:1px solid #E4E9EF;border-radius:3px;box-shadow:0 1px 2px rgba(16,42,67,.06);">
+    <div style="position:absolute;left:0;right:0;top:0;height:56px;">
+      <div style="position:absolute;left:20px;top:10px;width:210px;height:36px;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;box-sizing:border-box;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
+      <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:250px;top:20px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
+      <span style="position:absolute;left:284px;top:15px;height:26px;box-sizing:border-box;display:flex;align-items:center;padding:0 14px;border:1px solid #C6D0DC;border-radius:13px;font-size:12px;color:#3A4B60;">Past Shipments</span>
+      <span style="position:absolute;left:408px;top:20px;font-size:12px;color:#4A5B70;">Total Handling Units: 12</span>
+      <span style="position:absolute;left:566px;top:20px;font-size:12px;color:#4A5B70;">Total Weight: 1,240 LB</span>
+      <div style="position:absolute;left:718px;top:12px;display:flex;height:32px;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;"><span style="display:flex;align-items:center;padding:0 12px;background:#EDF1F6;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#24354A;">ORDERS</span><span style="display:flex;align-items:center;padding:0 12px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">ITEMS</span></div>
+      <span style="position:absolute;left:836px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">METRICS</span>
+      <span style="position:absolute;left:926px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">AUTO DISPATCH</span>
+      <span style="{{ batchesBtn }}">BATCHES <span style="opacity:.6;">ⓘ</span></span>
+      <span style="position:absolute;left:1190px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M3 6 L21 6 M6 12 L18 12 M10 18 L14 18" stroke="#4088CF" stroke-width="2.2"></path></svg> FILTERS</span>
+      <span style="position:absolute;left:1330px;top:12px;width:46px;height:32px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid #C6D0DC;border-radius:3px;color:#5E7186;font-size:14px;letter-spacing:.06em;">···</span>
+    </div>
+
+    <!-- SELECTION ACTION BAR -->
+    <sc-if value="{{ bar }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:56px;height:48px;background:#3A86D8;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFade .2s both;">
+        <span style="color:#fff;font-size:12.5px;font-weight:600;margin-right:6px;">{{ selCount }} Selected</span>
+        <span style="{{ quoteBtn }}">QUOTE SELECTED</span>
+        <span style="{{ barBtn }}">SPOT QUOTE SELECTED</span>
+        <span style="{{ shipBtn }}">SHIP SELECTED</span>
+        <span style="{{ barBtn }}">CONSOLIDATE SELECTED</span>
+        <span style="{{ barBtn }}">CREATE SAVED SHIPMENT FOR SELECTED</span>
+        <span style="{{ barBtn }}">···</span>
+        <span style="margin-left:auto;display:flex;gap:10px;"><span style="{{ barBtn }}">SHOW SELECTED</span><span style="{{ barBtn }}">CLEAR SELECTED</span></span>
+      </div>
+    </sc-if>
+
+    <!-- COLUMN HEADERS -->
+    <div style="position:absolute;left:0;right:0;top:{{ headTop }};height:30px;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;font-size:11px;font-weight:700;color:#3A4B60;transition:top .2s;">
+      <span style="{{ allCb }}"><sc-if value="{{ selAll }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+      <span style="position:absolute;left:58px;top:9px;">Order Number</span>
+      <span style="position:absolute;left:178px;top:9px;">Consolidation Number</span>
+      <span style="position:absolute;left:326px;top:9px;">Quote Id</span>
+      <span style="position:absolute;left:428px;top:9px;">Shipment Id</span>
+      <span style="position:absolute;left:534px;top:9px;">Shipment Details</span>
+      <span style="position:absolute;left:652px;top:9px;">Customer Job</span>
+      <span style="position:absolute;left:762px;top:9px;">Order Type</span>
+      <span style="position:absolute;left:856px;top:9px;">Ship From Company Id</span>
+      <span style="position:absolute;left:1020px;top:9px;">Ship To</span>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;top:{{ rowsTop }};transition:top .2s;">
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="9">
+        <div style="{{ r.rowStyle }}">
+          <span style="{{ r.cb }}"><sc-if value="{{ r.checked }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" style="display:block;margin:1px;"><path d="M4 12.5 L9.5 18 L20 6.5" fill="none" stroke="#fff" stroke-width="4.5"></path></svg></sc-if></span>
+          <span style="{{ r.numStyle }}">{{ r.num }}</span>
+          <span style="position:absolute;left:326px;top:10px;font-size:11.5px;color:{{ r.txt }};">{{ r.quoteId }}</span>
+          <span style="position:absolute;left:428px;top:10px;font-size:11.5px;color:{{ r.txt }};">{{ r.shipId }}</span>
+          <span style="position:absolute;left:534px;top:10px;font-size:11.5px;color:{{ r.txt }};">{{ r.details }}</span>
+          <span style="position:absolute;left:762px;top:10px;font-size:11.5px;color:{{ r.txt }};">{{ r.otype }}</span>
+          <span style="position:absolute;left:856px;top:10px;font-size:11.5px;color:{{ r.txt }};">{{ r.from }}</span>
+          <span style="position:absolute;left:1020px;top:10px;font-size:11.5px;color:{{ r.txt }};">{{ r.to }}</span>
+          <sc-if value="{{ r.spinner }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:40px;top:10px;width:13px;height:13px;border-radius:50%;border:2.5px solid #C9D6E4;border-top-color:#4088CF;animation:srSpin .8s linear infinite;display:inline-block;"></span></sc-if>
+          <span style="position:absolute;right:16px;top:9px;display:flex;align-items:center;gap:18px;opacity:{{ r.iconOpacity }};">
+            <svg width="14" height="14" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2" fill="none" stroke="#8A97A8" stroke-width="1.8"></rect><path d="M9 7 H15" stroke="#8A97A8" stroke-width="1.8"></path></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24"><path d="M2 7 H14 V16 H2 Z M14 10 H19 L22 13 V16 H14 Z" fill="none" stroke="#8A97A8" stroke-width="1.8"></path><circle cx="6" cy="18" r="2" fill="#8A97A8"></circle><circle cx="17" cy="18" r="2" fill="#8A97A8"></circle></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24"><path d="M4 20 L4 16 L16 4 L20 8 L8 20 Z" fill="none" stroke="#4088CF" stroke-width="1.8"></path></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24"><path d="M5 7 H19 L17.5 21 H6.5 Z M9 7 V4 H15 V7" fill="none" stroke="#D4483B" stroke-width="1.9"></path></svg>
+          </span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;height:44px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11.5px;color:#4A5B70;background:#fff;">
+      <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span><span>1–9 of 1752</span><span style="display:flex;align-items:center;gap:12px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> 2 3 4 5 … 36 ›</span>
+    </div>
+  </div>
+
+  <!-- SUCCESS TOAST -->
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:520px;top:700px;width:430px;box-sizing:border-box;background:#EFF7E9;border:1px solid #CFE3BE;border-radius:4px;padding:12px 16px;display:flex;gap:11px;z-index:18;animation:srFadeUp .3s both;">
+      <svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#4E9A3D" stroke-width="2"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#4E9A3D" stroke-width="2.2"></path></svg>
+      <div><div style="font-size:13px;font-weight:700;color:#24354A;">Success</div><div style="font-size:12px;color:#3A4B60;margin-top:3px;white-space:normal;">A batch for selected orders has successfully been created in Batch # {{ batchNo }}</div></div>
+      <span style="margin-left:auto;color:#5E7186;font-size:13px;">✕</span>
+    </div>
+  </sc-if>
+
+  <!-- QUOTE ORDERS MODAL -->
+  <sc-if value="{{ quoteModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(120,160,205,.30);z-index:20;"></div>
+    <div style="position:absolute;left:520px;top:250px;width:420px;height:190px;background:#fff;border-radius:4px;box-shadow:0 18px 50px rgba(5,20,40,.35);z-index:21;animation:srFadeUp .25s both;">
+      <div style="position:absolute;left:26px;top:24px;font-size:17px;font-weight:600;color:#1A2634;">Quote Orders</div>
+      <span style="position:absolute;right:22px;top:24px;font-size:16px;color:#5E7186;">✕</span>
+      <div style="position:absolute;left:26px;top:76px;font-size:13.5px;color:#3A4B60;">Are you sure you want to quote the {{ selCount }} selected orders?</div>
+      <div style="position:absolute;left:24px;bottom:24px;display:flex;gap:12px;">
+        <span style="{{ confirmQ }}">CONFIRM</span>
+        <span style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 18px;color:#3A4B60;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- SHIP ORDERS MODAL -->
+  <sc-if value="{{ shipModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(120,160,205,.30);z-index:20;"></div>
+    <div style="position:absolute;left:450px;top:100px;width:540px;height:664px;background:#fff;border-radius:4px;box-shadow:0 18px 50px rgba(5,20,40,.35);z-index:21;animation:srFadeUp .25s both;">
+      <div style="position:absolute;left:0;right:0;top:0;height:48px;background:#F7F9FB;border-bottom:1px solid #EDF1F6;border-radius:4px 4px 0 0;"><span style="position:absolute;left:26px;top:14px;font-size:17px;font-weight:600;color:#1A2634;">Ship Orders</span><span style="position:absolute;right:22px;top:15px;font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="position:absolute;left:26px;top:66px;font-size:13px;color:#3A4B60;">Are you sure you want to ship the {{ selCount }} selected orders?</div>
+      <div style="position:absolute;left:24px;top:96px;width:492px;box-sizing:border-box;background:#EAF1FA;border-radius:3px;padding:11px 14px;display:flex;gap:10px;"><span style="color:#4088CF;font-size:13px;">ⓘ</span><span style="font-size:12px;color:#3A4B60;white-space:normal;">Orders that do not have carrier details will ship Prepaid with the lowest cost carrier and service.</span></div>
+      <div style="position:absolute;left:26px;top:158px;font-size:13.5px;color:#24354A;">Printing Type</div>
+      <div style="position:absolute;left:26px;top:186px;display:flex;align-items:center;gap:11px;"><span style="width:15px;height:15px;border-radius:50%;border:2px solid #4088CF;display:flex;align-items:center;justify-content:center;"><span style="width:7px;height:7px;border-radius:50%;background:#4088CF;display:block;"></span></span><span style="font-size:13px;color:#3A4B60;">Bundled Per Order</span></div>
+      <div style="position:absolute;left:26px;top:216px;display:flex;align-items:center;gap:11px;"><span style="width:15px;height:15px;border-radius:50%;border:2px solid #B9C3CF;display:block;"></span><span style="font-size:13px;color:#3A4B60;">Bundled by Package Reference</span></div>
+      <div style="position:absolute;left:46px;top:248px;width:230px;height:44px;box-sizing:border-box;background:#F4F6F9;border:1px solid #E4E9EF;border-radius:3px;"><span style="position:absolute;top:6px;left:12px;font-size:10px;color:#8A97A8;">Reference Field to Sort Labels</span><span style="position:absolute;top:22px;left:12px;font-size:12.5px;color:#3A4B60;">Reference1</span><span style="position:absolute;right:12px;top:16px;font-size:10px;color:#8A97A8;">✕ ▾</span></div>
+      <div style="position:absolute;left:24px;top:306px;width:492px;box-sizing:border-box;background:#EAF1FA;border-radius:3px;padding:11px 14px;display:flex;gap:10px;"><span style="color:#4088CF;font-size:13px;">ⓘ</span><span style="font-size:12px;color:#3A4B60;white-space:normal;line-height:1.5;">For carriers that are sent pickup requests via email, the system will use the Pickup Contact specified for that carrier in Carrier Management.</span></div>
+      <div style="position:absolute;left:26px;top:386px;font-size:14px;font-weight:600;color:#24354A;">Pickup Scheduling</div>
+      <sc-for list="{{ pickupFields }}" as="p" hint-placeholder-count="6">
+        <div style="{{ p.box }}"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">{{ p.label }}</span><span style="{{ p.val }}">{{ p.value }}</span></div>
+      </sc-for>
+      <div style="position:absolute;left:24px;bottom:22px;display:flex;gap:12px;">
+        <span style="{{ confirmS }}">CONFIRM</span>
+        <span style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 18px;color:#3A4B60;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- BATCHES MODAL -->
+  <sc-if value="{{ batchesOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(120,160,205,.30);z-index:22;"></div>
+    <div style="position:absolute;left:170px;top:110px;width:1100px;height:640px;background:#fff;border-radius:3px;box-shadow:0 18px 50px rgba(5,20,40,.35);z-index:23;animation:srFadeUp .25s both;">
+      <div style="position:absolute;left:0;right:0;top:0;height:56px;background:#F7F9FB;border-bottom:1px solid #EDF1F6;"><span style="position:absolute;left:28px;top:16px;font-size:19px;font-weight:600;color:#1A2634;">Batches</span><span style="position:absolute;right:26px;top:17px;font-size:19px;color:#3A4B60;">✕</span></div>
+
+      <div style="position:absolute;left:26px;top:76px;width:1048px;border:1px solid #E4E9EF;border-radius:2px;">
+        <div style="position:relative;height:34px;border-bottom:1px solid #E4E9EF;font-size:11.5px;font-weight:600;color:#24354A;">
+          <span style="position:absolute;left:16px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:inline-block;"></span>
+          <span style="position:absolute;left:52px;top:10px;">Batc…</span><span style="position:absolute;left:142px;top:10px;">Type</span><span style="position:absolute;left:228px;top:10px;">Total R… ☰</span><span style="position:absolute;left:330px;top:10px;">Status</span><span style="position:absolute;left:430px;top:10px;">Create…</span><span style="position:absolute;left:545px;top:10px;">Create…</span><span style="position:absolute;left:650px;top:10px;">Updat…</span><span style="position:absolute;left:760px;top:10px;">Last Pr…</span><span style="position:absolute;left:850px;top:10px;">Proces…</span><span style="position:absolute;left:955px;top:10px;">ETA (…</span>
+        </div>
+        <sc-for list="{{ batchList }}" as="b" hint-placeholder-count="10">
+          <div style="{{ b.row }}">
+            <span style="position:absolute;left:16px;top:14px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:inline-block;"></span>
+            <span style="position:absolute;left:52px;top:13px;font-size:12px;color:#24354A;">{{ b.no }}</span>
+            <span style="position:absolute;left:142px;top:13px;font-size:12px;color:#3A4B60;">Orders</span>
+            <span style="position:absolute;left:228px;top:13px;font-size:12px;color:#3A4B60;">{{ b.orders }}</span>
+            <span style="position:absolute;left:330px;top:13px;font-size:12px;color:#3A4B60;">{{ b.status }}</span>
+            <span style="position:absolute;left:430px;top:13px;font-size:12px;color:#3A4B60;">{{ b.by }}</span>
+            <span style="position:absolute;left:545px;top:13px;font-size:12px;color:#3A4B60;">{{ b.date }}</span>
+            <span style="position:absolute;left:650px;top:13px;font-size:12px;color:#3A4B60;">{{ b.date }}</span>
+            <span style="position:absolute;left:850px;top:13px;font-size:12px;color:#3A4B60;">{{ b.process }}</span>
+            <span style="position:absolute;right:16px;top:11px;display:flex;align-items:center;gap:22px;">
+              <svg style="{{ b.detailIcon }}" width="16" height="16" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="#4088CF" stroke-width="1.8"></rect><path d="M3 9 H21 M9 9 V20" stroke="#4088CF" stroke-width="1.8"></path></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M7 9 V3 H17 V9 M5 9 H19 V17 H17 V21 H7 V17 H5 Z" fill="none" stroke="#A9B4C0" stroke-width="1.8"></path></svg>
+            </span>
+          </div>
+        </sc-for>
+        <div style="position:relative;height:44px;display:flex;align-items:center;justify-content:center;gap:26px;font-size:12px;color:#4A5B70;"><span>Results Per Page: <b style="color:#24354A;">10</b> ▾</span><span>1–10 of 148</span><span style="display:flex;align-items:center;gap:11px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> 2 3 4 5 … 15 ›</span></div>
+      </div>
+
+
+      <span style="position:absolute;left:26px;bottom:22px;border:1px solid #C6D0DC;border-radius:3px;padding:12px 22px;font-size:12px;font-weight:700;letter-spacing:.05em;color:#24354A;">CLOSE</span>
+    </div>
+  </sc-if>
+
+  <!-- OVERLAYS -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Nine open outbound transactions",
+    curX: 700, curY: 640, ripple: false, ripX: 0, ripY: 0,
+    checks: 0, selAll: false, bar: false, quoteModal: false, shipModal: false,
+    running: false, quoted: false, shipped: false, greyed: false,
+    toastOn: false, batchNo: "100527", batchesOpen: false, detailOn: false, phase: 1,
+    pickupDate: false, readyTime: false,
+    qBg: "#fff", sBg: "#fff", bBg: "#fff", cQ: "#4088CF", cS: "#4088CF" };
+  DUR = 38;
+  KF = [
+    { t: 1.2, s: { curX: 44, curY: 250 } },
+    { t: 1.9, s: { ripple: true, ripX: 44, ripY: 250, checks: 1, bar: true, cap: "02 · Pick the orders for the batch" } },
+    { t: 2.5, s: { ripple: true, ripX: 44, ripY: 331, checks: 2, curY: 331 } },
+    { t: 3.0, s: { ripple: true, ripX: 44, ripY: 364, checks: 3, curY: 364 } },
+    { t: 3.5, s: { ripple: true, ripX: 44, ripY: 397, checks: 4, curY: 397 } },
+    { t: 4.0, s: { ripple: false } },
+    { t: 4.4, s: { curX: 195, curY: 228 } },
+    { t: 5.3, s: { ripple: true, ripX: 195, ripY: 228, qBg: "#EAF1FB" } },
+    { t: 5.7, s: { ripple: false, quoteModal: true, qBg: "#fff", cap: "03 · Quote Selected — one confirm for the set" } },
+    { t: 7.2, s: { curX: 585, curY: 396 } },
+    { t: 8.1, s: { ripple: true, ripX: 585, ripY: 396, cQ: "#1557B0" } },
+    { t: 8.5, s: { ripple: false, quoteModal: false, cQ: "#4088CF", running: true, greyed: true, toastOn: true, batchNo: "100527", cap: "04 · Orders grey out and lock while the batch runs" } },
+    { t: 11.2, s: { running: false, quoted: true, cap: "05 · Rates come back across the whole set" } },
+    { t: 13.2, s: { curX: 1120, curY: 176, toastOn: false } },
+    { t: 14.1, s: { ripple: true, ripX: 1120, ripY: 176, bBg: "#EAF1FB" } },
+    { t: 14.5, s: { ripple: false, batchesOpen: true, bBg: "#fff", cap: "06 · Every batch, with its status" } },
+    { t: 18.0, s: { curX: 236, curY: 709 } },
+    { t: 18.8, s: { ripple: true, ripX: 236, ripY: 709 } },
+    { t: 19.2, s: { ripple: false, batchesOpen: false } },
+    { t: 20.6, s: { phase: 2, checks: 0, selAll: false, bar: false, greyed: false, quoted: false, cap: "07 · Same start: select the orders" } },
+    { t: 21.6, s: { curX: 44, curY: 250 } },
+    { t: 22.3, s: { ripple: true, ripX: 44, ripY: 250, checks: 1, bar: true } },
+    { t: 22.9, s: { ripple: true, ripX: 44, ripY: 331, checks: 2, curY: 331 } },
+    { t: 23.4, s: { ripple: true, ripX: 44, ripY: 364, checks: 3, curY: 364 } },
+    { t: 23.9, s: { ripple: true, ripX: 44, ripY: 397, checks: 4, curY: 397 } },
+    { t: 24.4, s: { ripple: false, curX: 550, curY: 228 } },
+    { t: 24.7, s: { ripple: true, ripX: 550, ripY: 228, sBg: "#EAF1FB" } },
+    { t: 25.1, s: { ripple: false, shipModal: true, sBg: "#fff", cap: "08 · Ship Selected — printing type and pickup settings" } },
+    { t: 26.8, s: { curX: 594, curY: 500 } },
+    { t: 27.4, s: { ripple: true, ripX: 594, ripY: 500, pickupDate: true } },
+    { t: 27.9, s: { ripple: false, curX: 594, curY: 556 } },
+    { t: 28.4, s: { ripple: true, ripX: 594, ripY: 556, readyTime: true } },
+    { t: 29.2, s: { ripple: false, curX: 534, curY: 719 } },
+    { t: 30.0, s: { ripple: true, ripX: 534, ripY: 719, cS: "#1557B0" } },
+    { t: 30.4, s: { ripple: false, shipModal: false, cS: "#4088CF", running: true, greyed: true, toastOn: true, batchNo: "61788", cap: "09 · Confirmed — the batch creates and the orders lock" } },
+    { t: 32.9, s: { running: false, shipped: true, cap: "10 · Labels and documents generated across the batch" } },
+    { t: 34.7, s: { toastOn: false, curX: 1120, curY: 176 } },
+    { t: 35.6, s: { ripple: true, ripX: 1120, ripY: 176, bBg: "#EAF1FB" } },
+    { t: 36.0, s: { ripple: false, batchesOpen: true, bBg: "#fff", cap: "11 · Both batches, in one place" } },
+  ];
+  OTHER_BATCHES = [
+    { no: "100525", orders: "2", status: "Partially Q…", by: "hollydemo…", date: "08/12/2026" },
+    { no: "99490", orders: "1", status: "Completed", by: "nichelleh@…", date: "08/10/2026" },
+    { no: "96693", orders: "3", status: "Partially Q…", by: "doug@frei…", date: "08/04/2026" },
+    { no: "96687", orders: "3", status: "Partially Q…", by: "doug@frei…", date: "08/04/2026" },
+    { no: "89574", orders: "2", status: "Completed", by: "hollydemo…", date: "07/20/2026" },
+    { no: "89572", orders: "2", status: "Completed", by: "hollydemo…", date: "07/20/2026" },
+    { no: "80434", orders: "1", status: "Completed", by: "tannerh@f…", date: "06/29/2026" },
+    { no: "79562", orders: "1", status: "Completed", by: "tannerh@f…", date: "06/26/2026" },
+    { no: "62018", orders: "3", status: "Completed", by: "edwardc@…", date: "05/21/2026" },
+  ];
+  ROWS = [
+    { num: "FPD45601342", quoteId: "46387265", shipId: "14755116", details: "Yes", otype: "FP", from: "31959478", to: "Bright Peak Outfitters, Boise, ID…", carrier: "UPS · Ground", days: "3", rate: "18.42 USD" },
+    { num: "FPD44993981", quoteId: "46291155", shipId: "14721604", details: "Yes", otype: "FP", from: "31959478", to: "Cedar & Pine Home, Salt Lake City, UT", carrier: "FedEx · Home Delivery", days: "2", rate: "14.85 USD" },
+    { num: "FPD44672145", quoteId: "46261699", shipId: "14710598", details: "Yes", otype: "Export", from: "31959478", to: "Summit Cycle Works, Reno, NV", carrier: "UPS · Ground", days: "2", rate: "31.06 USD" },
+    { num: "FPD44659753", quoteId: "46225893", shipId: "14694301", details: "Yes", otype: "FP", from: "WMS1", to: "Blue Mesa Gallery, Santa Fe, NM" },
+    { num: "FPD44659751", quoteId: "46225891", shipId: "14694299", details: "Yes", otype: "FP", from: "WMS1", to: "Harbor Lane Goods, San Diego, CA" },
+    { num: "FPD44659750", quoteId: "46397037", shipId: "14757291", details: "Yes", otype: "FP", from: "31959478", to: "North Fork Provisions, Bend, OR" },
+    { num: "FPD43829241", quoteId: "46431653", shipId: "", details: "Missing", otype: "FP", from: "19056841", to: "Ridge Line Depot, Spokane, WA" },
+    { num: "894561", quoteId: "46431623", shipId: "", details: "Missing", otype: "FP", from: "31959478", to: "Alder Creek Co, Missoula, MT" },
+    { num: "984156", quoteId: "46431622", shipId: "", details: "Missing", otype: "FP", from: "31959478", to: "Basin Hardware, Ogden, UT" },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    if (window.ResizeObserver && this._wrap) { this._ro = new ResizeObserver(this._onResize); this._ro.observe(this._wrap); }
+    requestAnimationFrame(this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const w = this._wrap.getBoundingClientRect().width - 2; const s = w / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const barBtn = "display:flex;align-items:center;height:32px;box-sizing:border-box;padding:0 13px;border:1px solid rgba(255,255,255,.75);border-radius:3px;background:rgba(255,255,255,.10);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;";
+    const hot = (bg) => "display:flex;align-items:center;height:32px;box-sizing:border-box;padding:0 13px;border:1px solid #fff;border-radius:3px;background:" + (bg === "#fff" ? "rgba(255,255,255,.10)" : "rgba(255,255,255,.34)") + ";color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;";
+    const rows = this.ROWS.map((r, i) => {
+      const sel = a.selAll || i < a.checks;
+      const dim = sel && a.greyed;
+      return { num: r.num, quoteId: r.quoteId, shipId: r.shipId, details: r.details, otype: r.otype, from: r.from, to: r.to,
+        checked: sel, spinner: sel && a.running,
+        txt: dim ? "#A9B4C0" : "#3A4B60",
+        iconOpacity: dim ? "0.35" : "1",
+        numStyle: "position:absolute;left:58px;top:10px;font-size:11.5px;text-decoration:underline;color:" + (dim ? "#9FB0C2" : "#4088CF") + ";",
+        rowStyle: "position:relative;height:33px;border-bottom:1px solid #EFF2F6;background:" + (dim ? "#F4F6F9" : sel ? "#EAF3FF" : "#fff") + ";transition:background .3s;",
+        cb: "position:absolute;left:24px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (sel ? (dim ? "#A9B4C0" : "#4088CF") : "#B9C3CF") + ";background:" + (sel ? (dim ? "#A9B4C0" : "#4088CF") : "#fff") + ";display:inline-block;transition:all .2s;" };
+    });
+    const pickupFields = [
+      ["Pickup Date", a.pickupDate ? "07/23/2026" : "MM/DD/YYYY", a.pickupDate, 24, 418],
+      ["Delivery Date", "MM/DD/YYYY", false, 276, 418],
+      ["Ready Time", a.readyTime ? "09:00 AM" : "hh:mm aa", a.readyTime, 24, 474],
+      ["Open Time", "hh:mm aa", false, 276, 474],
+      ["Cutoff Time", "hh:mm aa", false, 24, 530],
+      ["Close Time", "hh:mm aa", false, 276, 530],
+    ].map((p) => ({ label: p[0], value: p[1],
+      box: "position:absolute;left:" + p[3] + "px;top:" + p[4] + "px;width:240px;height:44px;box-sizing:border-box;border:1px solid " + (p[2] ? "#B9CDE8" : "#C6D0DC") + ";border-radius:3px;background:" + (p[2] ? "#F4F9FF" : "#fff") + ";transition:all .2s;",
+      val: "position:absolute;left:12px;top:14px;font-size:12.5px;color:" + (p[2] ? "#1F5FBF" : "#9AA7B8") + ";font-weight:" + (p[2] ? "600" : "400") + ";" }));
+    const OTHERS = this.OTHER_BATCHES;
+    const mine = a.phase === 2
+      ? [{ no: "61788", orders: "4", status: "Completed", by: "hollydemo…", date: "08/12/2026" },
+         { no: "100527", orders: "4", status: "Completed", by: "hollydemo…", date: "08/12/2026" }]
+      : [{ no: "100527", orders: "4", status: "Completed", by: "hollydemo…", date: "08/12/2026" }];
+    const batchList = mine.concat(OTHERS).slice(0, 10).map((b, i) => ({ ...b,
+      process: b.status === "Completed" ? "Complete" : "Processing…",
+      row: "position:relative;height:42px;border-bottom:1px solid #EFF2F6;background:" + (i === 0 ? "#F1F7FF" : "#fff") + ";",
+      detailIcon: "cursor:pointer;" }));
+    const detailRows = this.ROWS.slice(0, 3).map((r) => ({ num: r.num, carrier: r.carrier, days: r.days, rate: r.rate,
+      extra: a.phase === 2 ? "Label ready" : "Lowest" }));
+    return { ...a,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      rows, pickupFields, batchList, detailRows,
+      selCount: a.checks,
+      allCb: "position:absolute;left:24px;top:8px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (a.selAll ? "#4088CF" : "#B9C3CF") + ";background:" + (a.selAll ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;",
+      bar: a.bar, headTop: a.bar ? "104px" : "56px", rowsTop: a.bar ? "134px" : "86px",
+      barBtn, quoteBtn: hot(a.qBg), shipBtn: hot(a.sBg),
+      batchesBtn: "position:absolute;left:1046px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;background:" + a.bBg + ";color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;",
+      confirmQ: "background:" + a.cQ + ";border-radius:3px;padding:11px 20px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;",
+      confirmS: "background:" + a.cS + ";border-radius:3px;padding:11px 20px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

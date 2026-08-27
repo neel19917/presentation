@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span style="color:#fff;font-weight:600;">Orders</span><span>Quote/Ship</span><span>Track</span><span>WMS</span><span>History</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:#14263C;">Order SO-99207 — Add Line Item</div>
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">ITEMS</span><span>ADDRESSES</span><span>DOCUMENTS</span><span>ADDITIONAL DETAILS</span></div>
+    </div>
+    <span style="border:1px solid #B9CDE8;border-radius:4px;padding:11px 18px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;margin-top:8px;">PRODUCT CATALOG</span>
+  </div>
+
+  <!-- ═══ LINE ITEM ═══ -->
+  <div style="position:absolute;left:30px;top:134px;width:900px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;gap:12px;padding:0 16px;">
+      <div style="flex:1;height:32px;border:1.5px solid {{ searchBorder }};border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 12px;transition:all .3s;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="font-size:12px;color:{{ searchColor }};font-weight:600;">{{ searchText }}</span></div>
+      <span style="font-size:11px;color:#5E7186;">Catalog synced from <b style="color:#24354A;">NetSuite Item Master</b></span>
+    </div>
+    <sc-if value="{{ itemOn }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:14px 16px 0;border:1.5px solid {{ itemBorder }};border-radius:8px;padding:14px 16px;animation:srFadeUp .3s both;transition:all .3s;background:{{ itemBg }};">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div><b style="font-size:13.5px;color:#24354A;">ITEM-0044 · Solvent-based adhesive, 5 gal</b><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">ERP serial: NS-88231 · Qty 12</div></div>
+          <span style="font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:999px;background:#FFF3F2;color:#B3261E;border:1px solid #F3C2BE;">HAZMAT</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;font-size:11.5px;">
+          <div style="border:1px solid {{ fBorder }};border-radius:6px;padding:9px 11px;transition:all .3s;background:{{ fBg }};"><div style="font-size:10px;font-weight:700;color:#8A97A8;letter-spacing:.04em;">FREIGHT CLASS</div><b style="color:#24354A;">{{ fClass }}</b></div>
+          <div style="border:1px solid {{ fBorder }};border-radius:6px;padding:9px 11px;transition:all .3s;background:{{ fBg }};"><div style="font-size:10px;font-weight:700;color:#8A97A8;letter-spacing:.04em;">NMFC</div><b style="color:#24354A;">{{ fNmfc }}</b></div>
+          <div style="border:1px solid {{ fBorder }};border-radius:6px;padding:9px 11px;transition:all .3s;background:{{ fBg }};"><div style="font-size:10px;font-weight:700;color:#8A97A8;letter-spacing:.04em;">PACKAGE TYPE</div><b style="color:#24354A;">{{ fPkg }}</b></div>
+          <div style="border:1px solid {{ fBorder }};border-radius:6px;padding:9px 11px;transition:all .3s;background:{{ fBg }};"><div style="font-size:10px;font-weight:700;color:#8A97A8;letter-spacing:.04em;">WEIGHT / UNIT</div><b style="color:#24354A;">{{ fWt }}</b></div>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ hazOn }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:12px 16px 0;border:1.5px solid #F3C2BE;border-radius:8px;padding:13px 16px;background:#FFFAF9;animation:srFadeUp .3s both;">
+        <div style="display:flex;justify-content:space-between;align-items:center;"><b style="font-size:12.5px;color:#B3261E;">Dangerous goods — from the UN/NA catalog</b><span style="font-size:10.5px;color:#8A97A8;">auto-applied</span></div>
+        <div style="display:flex;gap:18px;margin-top:9px;font-size:11.5px;color:#5E7186;"><span>UN <b style="color:#24354A;">UN1993</b></span><span>Class <b style="color:#24354A;">3 · Flammable liquid</b></span><span>PG <b style="color:#24354A;">III</b></span><span>Emergency <b style="color:#24354A;">CHEMTREC</b></span></div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <span style="border:1px solid #E1E7EF;border-radius:5px;padding:6px 12px;font-size:11px;color:#24354A;background:#fff;">📄 Hazmat BOL</span>
+          <span style="border:1px solid #E1E7EF;border-radius:5px;padding:6px 12px;font-size:11px;color:#24354A;background:#fff;">📄 DG declaration</span>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ oceanOn }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:12px 16px 0;border:1px solid #E1E7EF;border-radius:8px;padding:12px 16px;animation:srFadeUp .3s both;display:flex;gap:20px;font-size:11.5px;color:#5E7186;">
+        <b style="color:#24354A;">Ocean details on the order</b><span>Container <b style="color:#24354A;">40' HC</b></span><span>Seal <b style="color:#24354A;">SL-77219</b></span><span>HS code <b style="color:#24354A;">3506.91</b></span>
+      </div>
+    </sc-if>
+    <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:11.5px;color:#8A97A8;white-space:normal;">Class, NMFC and compliance detail come from the catalog — right at entry, not guessed at the dock.</div>
+  </div>
+
+  <!-- ═══ QUOTE READINESS RAIL ═══ -->
+  <div style="position:absolute;left:954px;top:134px;width:456px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);padding:16px;">
+    <div style="font-size:13px;font-weight:700;color:#24354A;">Quote readiness</div>
+    <div style="margin-top:12px;display:flex;flex-direction:column;gap:9px;font-size:11.5px;">
+      <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><span style="color:#5E7186;">Freight class on every line</span><b style="color:{{ r1 }};transition:all .3s;">{{ r1T }}</b></div>
+      <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><span style="color:#5E7186;">NMFC codes</span><b style="color:{{ r1 }};transition:all .3s;">{{ r1T }}</b></div>
+      <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><span style="color:#5E7186;">Saved package types</span><b style="color:{{ r1 }};transition:all .3s;">{{ r1T }}</b></div>
+      <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><span style="color:#5E7186;">Hazmat docs (UN/NA, DG, BOL)</span><b style="color:{{ r2 }};transition:all .3s;">{{ r2T }}</b></div>
+      <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><span style="color:#5E7186;">Ocean container detail</span><b style="color:{{ r3 }};transition:all .3s;">{{ r3T }}</b></div>
+    </div>
+    <sc-if value="{{ bannerOn }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:16px;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">Quote-ready. Rates come back right the first time.</span></div>
+    </sc-if>
+    <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:11.5px;color:#8A97A8;white-space:normal;">No bounced LTL quotes, no reclass surprises on the invoice.</div>
+  </div>
+
+  <!-- ═══ OVERLAYS ═══ -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Add a line — start typing the item",
+    curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    searchText: "ITEM-00…", searchBorder: "#4088CF", searchColor: "#24354A",
+    itemOn: false, itemBorder: "#E1E7EF", itemBg: "#fff",
+    fBorder: "#E1E7EF", fBg: "#fff", fClass: "—", fNmfc: "—", fPkg: "—", fWt: "—",
+    hazOn: false, oceanOn: false, bannerOn: false,
+    r1: "#9A6B12", r1T: "…", r2: "#9A6B12", r2T: "…", r3: "#9A6B12", r3T: "…" };
+  DUR = 22;
+  KF = [
+    { t: 1.6, s: { searchText: "ITEM-0044", itemOn: true, curX: 300, curY: 180, cap: "02 · The catalog match pulls in — ERP serial and all" } },
+    { t: 3.6, s: { fClass: "Class 60", fNmfc: "046030-02", fPkg: "Drum, 5 gal ×12", fWt: "44 lb", fBorder: "#3B9E4E", fBg: "#F4FBF3", itemBorder: "#4088CF", itemBg: "#F4F8FE", r1: "#2E5E33", r1T: "✓", curX: 340, curY: 330, cap: "03 · Class, NMFC and packaging auto-fill" } },
+    { t: 6.0, s: { hazOn: true, r2: "#2E5E33", r2T: "✓", curX: 350, curY: 470, cap: "04 · Hazmat detail applies from the UN/NA catalog" } },
+    { t: 8.6, s: { oceanOn: true, r3: "#2E5E33", r3T: "✓", curX: 380, curY: 610, cap: "05 · Ocean detail lives on the order itself" } },
+    { t: 10.6, s: { bannerOn: true, curX: 1160, curY: 540, cap: "06 · Quote-ready — right the first time" } },
+    { t: 20.5, s: {} },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); if (!this.anim.playing) { this.anim.playing = true; } this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    return { ...a,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsSpin { to{transform:rotate(360deg);} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span style="color:#fff;font-weight:600;">Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">OPEN</span><span>COMPLETED (HISTORY)</span></div>
+  </div>
+
+  <!-- GRID -->
+  <sc-if value="{{ showGrid }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:30px;top:132px;width:1380px;height:600px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:40px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
+        <span style="font-size:14px;font-weight:600;color:#24354A;">Pooling Transactions</span>
+        <span style="display:flex;gap:9px;align-items:center;"><span style="border:1px solid #C6D0DC;border-radius:4px;padding:8px 11px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.04em;">PRINT LABELS</span><span style="background:{{ addBg }};border-radius:4px;padding:9px 14px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:background .2s;">ADD NEW</span></span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:40px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+        <span style="position:absolute;left:16px;top:8px;">Pool ID</span><span style="position:absolute;left:120px;top:8px;">Pool Reference</span><span style="position:absolute;left:280px;top:8px;">Pooling Date</span><span style="position:absolute;left:410px;top:8px;">Ship From</span><span style="position:absolute;left:600px;top:8px;">Pooling Point</span><span style="position:absolute;left:880px;top:8px;">Linehaul</span><span style="position:absolute;left:1050px;top:8px;">Shipments</span><span style="position:absolute;left:1160px;top:8px;">Status</span><span style="position:absolute;left:1290px;top:8px;">Total</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:72px;">
+        <sc-for list="{{ pools }}" as="p" hint-placeholder-count="4">
+          <div style="{{ p.rowStyle }}">
+            <span style="position:absolute;left:16px;top:15px;font-size:12.5px;color:#4088CF;font-weight:600;">{{ p.id }}</span>
+            <span style="position:absolute;left:120px;top:15px;font-size:12.5px;color:#24354A;">{{ p.ref }}</span>
+            <span style="position:absolute;left:280px;top:15px;font-size:12.5px;color:#4A5B70;">{{ p.date }}</span>
+            <span style="position:absolute;left:410px;top:15px;font-size:12.5px;color:#4A5B70;">{{ p.from }}</span>
+            <span style="position:absolute;left:600px;top:15px;font-size:12.5px;color:#4A5B70;">{{ p.point }}</span>
+            <span style="position:absolute;left:880px;top:15px;font-size:12.5px;color:#24354A;">{{ p.line }}</span>
+            <span style="position:absolute;left:1050px;top:15px;font-size:12.5px;color:#24354A;">{{ p.n }}</span>
+            <span style="{{ p.statStyle }}">{{ p.status }}</span>
+            <span style="position:absolute;left:1290px;top:15px;font-size:12.5px;font-weight:600;color:#24354A;">{{ p.tot }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- FORM -->
+  <sc-if value="{{ showForm }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;top:132px;width:1380px;height:250px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);animation:rsFadeUp .3s both;">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">New Pooling Transaction</span><span style="font-size:11px;color:#8A97A8;">Pool ID assigned automatically</span></div>
+      <div style="position:absolute;left:20px;top:52px;width:180px;height:42px;border:1px solid #E1E7EF;border-radius:4px;background:#F7F9FB;"><span style="position:absolute;top:-7px;left:10px;background:#F7F9FB;padding:0 4px;font-size:10px;color:#8A97A8;">Pool ID</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">10442</div></div>
+      <div style="position:absolute;left:212px;top:52px;width:250px;height:42px;border:1.5px solid {{ refBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Pool Reference</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ ref }}<sc-if value="{{ refCaret }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></sc-if></div></div>
+      <div style="position:absolute;left:474px;top:52px;width:200px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Pooling Date</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">07/29/2026</div></div>
+      <div style="position:absolute;left:686px;top:52px;width:330px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship From Address</span><div style="padding:12px 0 0 12px;font-size:12.5px;color:#2A3B50;">Lake Forest, CA 92630 (WH-01)</div></div>
+      <div style="position:absolute;left:1028px;top:52px;width:332px;height:42px;border:1.5px solid {{ ptBorder }};border-radius:4px;background:#fff;z-index:6;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Pooling Point</span><div style="padding:12px 0 0 12px;font-size:12.5px;color:#2A3B50;">{{ point }}</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:10px;top:17px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+      <sc-if value="{{ ptOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:1028px;top:96px;width:332px;background:#fff;border:1px solid #E1E7EF;border-radius:0 0 6px 6px;box-shadow:0 12px 26px rgba(5,20,40,.18);z-index:7;animation:rsFadeUp .2s both;">
+          <sc-for list="{{ ptOpts }}" as="o" hint-placeholder-count="3"><div style="{{ o.style }}">{{ o.label }}<span style="display:block;font-size:10.5px;color:#8A97A8;">{{ o.note }}</span></div></sc-for>
+        </div>
+      </sc-if>
+      <div style="position:absolute;left:20px;top:120px;width:300px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Truckload / Intermodal Carrier</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Rate Shop</div></div>
+      <div style="position:absolute;left:332px;top:120px;width:250px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Equipment Type</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">53' Dry Van</div></div>
+      <div style="position:absolute;left:594px;top:120px;width:250px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">From Main Location</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Rate Shop</div></div>
+      <div style="position:absolute;left:856px;top:120px;width:250px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">From Pooling Point</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Rate Shop</div></div>
+      <div style="position:absolute;left:1118px;top:120px;width:242px;height:42px;border:1px solid #E1E7EF;border-radius:4px;background:#F7F9FB;"><span style="position:absolute;top:-7px;left:10px;background:#F7F9FB;padding:0 4px;font-size:10px;color:#8A97A8;">Cross-Dock Fee</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">$1,450.00</div></div>
+      <div style="position:absolute;left:20px;top:186px;font-size:11.5px;color:#5E7186;">Linehaul rates come from your truckload or intermodal carriers; final-mile rates from carriers serving the pooling point.</div>
+    </div>
+
+    <div style="position:absolute;left:30px;top:398px;width:820px;height:334px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);animation:rsFadeUp .3s .06s both;">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Shipments to Pool <span style="color:#8A97A8;font-weight:400;font-size:12px;">{{ shipCountLabel }}</span></span><span style="border:1.5px solid {{ addShipBorder }};border-radius:4px;padding:7px 11px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:{{ addShipBg }};transition:all .2s;">ADD SHIPMENTS</span></div>
+      <sc-if value="{{ noShips }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;left:0;right:0;top:130px;text-align:center;font-size:12.5px;color:#9AA7B8;">No shipments added. Only shipments from this Ship From location appear.</div>
+      </sc-if>
+      <sc-if value="{{ hasShips }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:0;right:0;top:36px;height:28px;background:#F7F9FB;border-bottom:1px solid #EDF1F6;font-size:11px;font-weight:700;color:#4A5B70;"><span style="position:absolute;left:16px;top:7px;">Shipment ID</span><span style="position:absolute;left:140px;top:7px;">Destination</span><span style="position:absolute;left:400px;top:7px;">Pieces</span><span style="position:absolute;left:490px;top:7px;">Weight</span><span style="position:absolute;left:600px;top:7px;">Final-Mile Carrier</span></div>
+        <div style="position:absolute;left:0;right:0;top:64px;">
+          <sc-for list="{{ shipRows }}" as="s" hint-placeholder-count="6">
+            <div style="{{ s.rowStyle }}">
+              <span style="position:absolute;left:16px;top:11px;font-size:12px;color:#4088CF;">{{ s.id }}</span>
+              <span style="position:absolute;left:140px;top:11px;font-size:12px;color:#24354A;">{{ s.dest }}</span>
+              <span style="position:absolute;left:400px;top:11px;font-size:12px;color:#4A5B70;">{{ s.pcs }}</span>
+              <span style="position:absolute;left:490px;top:11px;font-size:12px;color:#4A5B70;">{{ s.wt }}</span>
+              <span style="position:absolute;left:600px;top:11px;font-size:12px;color:#4A5B70;">{{ s.carrier }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:absolute;left:16px;bottom:12px;font-size:11.5px;color:#8A97A8;">+ 14 more Northeast shipments in this pool</div>
+      </sc-if>
+    </div>
+
+    <!-- COMPARISON -->
+    <div style="position:absolute;left:870px;top:398px;width:540px;height:334px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);animation:rsFadeUp .3s .12s both;">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Quote Comparison</div>
+      <sc-if value="{{ quoting }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:0;right:0;top:120px;display:flex;flex-direction:column;align-items:center;gap:14px;"><div style="width:34px;height:34px;border-radius:50%;border:4px solid #DCE6F2;border-top-color:#4088CF;animation:rsSpin .9s linear infinite;"></div><span style="font-size:12px;color:#5E7186;">Rating 20 shipments individually, then the linehaul + final mile…</span></div>
+      </sc-if>
+      <sc-if value="{{ quoted }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:16px;top:52px;width:246px;height:104px;border:1px solid #E1E7EF;border-radius:6px;background:#FAFBFD;padding:12px 14px;animation:rsFadeUp .3s both;">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">INDIVIDUAL SHIPMENTS</div>
+          <div style="margin-top:9px;font-size:24px;font-weight:700;color:#24354A;">$18,940.60</div>
+          <div style="margin-top:7px;font-size:11.5px;color:#5E7186;">20 LTL loads · max 6 transit days</div>
+        </div>
+        <div style="position:absolute;left:278px;top:52px;width:246px;height:104px;border:1.5px solid #3B9E4E;border-radius:6px;background:#F2FBF5;padding:12px 14px;animation:rsFadeUp .3s .1s both;">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#0F8A6D;">POOLING TOTAL</div>
+          <div style="margin-top:9px;font-size:24px;font-weight:700;color:#146B3A;">$13,215.40</div>
+          <div style="margin-top:7px;font-size:11.5px;color:#2E5E33;">1 linehaul + 20 final mile · max 4 days</div>
+        </div>
+        <div style="position:absolute;left:16px;top:172px;width:508px;animation:rsFadeUp .3s .18s both;">
+          <sc-for list="{{ lines }}" as="l" hint-placeholder-count="4">
+            <div style="{{ l.rowStyle }}"><span style="font-size:12px;color:#4A5B70;">{{ l.k }}</span><span style="margin-left:auto;font-size:12px;font-weight:600;color:#24354A;">{{ l.v }}</span></div>
+          </sc-for>
+        </div>
+        <div style="position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:12px;width:508px;">
+          <span style="font-size:11.5px;color:#0F8A6D;font-weight:700;">Saves $5,725.20 and 2 days</span>
+          <span style="margin-left:auto;background:{{ procBg }};border-radius:4px;padding:11px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:background .2s;">PROCESS POOLING</span>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- ADD SHIPMENTS MODAL -->
+  <sc-if value="{{ modal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+    <div style="position:absolute;left:310px;top:150px;width:820px;height:500px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .3s ease both;">
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:600;color:#14263C;">Add Shipments to Pool 10442</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="position:absolute;left:0;right:0;top:48px;height:30px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11px;font-weight:700;color:#4A5B70;"><span style="position:absolute;left:52px;top:8px;">Shipment ID</span><span style="position:absolute;left:180px;top:8px;">Destination</span><span style="position:absolute;left:440px;top:8px;">Pieces</span><span style="position:absolute;left:530px;top:8px;">Weight</span><span style="position:absolute;left:650px;top:8px;">Ready</span></div>
+      <div style="position:absolute;left:0;right:0;top:78px;">
+        <sc-for list="{{ pickRows }}" as="s" hint-placeholder-count="8">
+          <div style="{{ s.rowStyle }}">
+            <span style="{{ s.boxStyle }}"><sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24"><path d="M4 12 L10 18 L20 6" fill="none" stroke="#fff" stroke-width="3.5"></path></svg></sc-if></span>
+            <span style="position:absolute;left:52px;top:12px;font-size:12px;color:#4088CF;">{{ s.id }}</span>
+            <span style="position:absolute;left:180px;top:12px;font-size:12px;color:#24354A;">{{ s.dest }}</span>
+            <span style="position:absolute;left:440px;top:12px;font-size:12px;color:#4A5B70;">{{ s.pcs }}</span>
+            <span style="position:absolute;left:530px;top:12px;font-size:12px;color:#4A5B70;">{{ s.wt }}</span>
+            <span style="position:absolute;left:650px;top:12px;font-size:12px;color:#4A5B70;">07/29</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:24px;bottom:18px;font-size:12px;color:#5E7186;"><b style="color:#24354A;">{{ pickCount }}</b> of 26 selected — all from Lake Forest, CA</div>
+      <div style="position:absolute;right:150px;bottom:14px;width:104px;height:40px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</div>
+      <div style="position:absolute;right:24px;bottom:14px;width:116px;height:40px;background:{{ addSelBg }};border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;">ADD (20)</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;top:132px;width:1380px;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;z-index:9;animation:rsFadeUp .3s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">Pool 10442 processed — 1 linehaul BOL to Bethlehem, plus 20 final-mile BOLs dated the day after arrival. Every shipment carries Pooling ID 10442.</span></div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:24px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { scene: "grid", playing: true, cap: "01 · Pooling sits beside Ship in the nav", curX: 700, curY: 620,
+    ripple: false, ripX: 0, ripY: 0, addBg: "#4088CF",
+    ref: "", refBorder: "#C6D0DC", refCaret: false, point: "Select a pooling point", ptBorder: "#C6D0DC", ptOpen: false, ptSel: -1,
+    addShipBorder: "#B9CDE8", addShipBg: "#fff", modal: false, picked: 0, addSelBg: "#4088CF",
+    ships: 0, quoting: false, quoted: false, procBg: "#4088CF", toast: false, done: false };
+  DUR = 26;
+  KF = [
+    { t: 0.9, s: { curX: 1330, curY: 160 } },
+    { t: 1.6, s: { ripple: true, ripX: 1330, ripY: 160, addBg: "#1557B0" } },
+    { t: 2.0, s: { ripple: false, scene: "form", addBg: "#4088CF", cap: "02 · Pool ID is automatic — you give it a reference", refBorder: "#4088CF", refCaret: true, curX: 300, curY: 200 } },
+    { t: 4.2, s: { refCaret: false, refBorder: "#C6D0DC", cap: "03 · Pick the cross-dock — an address flagged as a pooling point", curX: 1180, curY: 200, ptBorder: "#4088CF" } },
+    { t: 5.0, s: { ripple: true, ripX: 1180, ripY: 200, ptOpen: true } },
+    { t: 5.4, s: { ripple: false } },
+    { t: 6.1, s: { curX: 1120, curY: 280, ptSel: 1 } },
+    { t: 6.7, s: { ripple: true, ripX: 1120, ripY: 280 } },
+    { t: 7.1, s: { ripple: false, ptOpen: false, ptBorder: "#C6D0DC", point: "Keystone Cross-Dock — Bethlehem, PA" } },
+    { t: 7.9, s: { cap: "04 · Linehaul and final mile both default to Rate Shop", curX: 300, curY: 300 } },
+    { t: 9.4, s: { curX: 760, curY: 425, addShipBorder: "#4088CF", addShipBg: "#EAF3FF", cap: "05 · Add the Northeast shipments" } },
+    { t: 10.1, s: { ripple: true, ripX: 760, ripY: 425 } },
+    { t: 10.5, s: { ripple: false, modal: true, addShipBorder: "#B9CDE8", addShipBg: "#fff", curX: 400, curY: 300 } },
+    { t: 11.3, s: { picked: 3 } },
+    { t: 11.9, s: { picked: 8 } },
+    { t: 12.5, s: { picked: 20, cap: "06 · Twenty LTL loads, one origin" } },
+    { t: 13.5, s: { curX: 1080, curY: 620 } },
+    { t: 14.1, s: { ripple: true, ripX: 1080, ripY: 620, addSelBg: "#1557B0" } },
+    { t: 14.5, s: { ripple: false, modal: false, addSelBg: "#4088CF", ships: 6, quoting: true, cap: "07 · Quote both ways at once", curX: 1100, curY: 520 } },
+    { t: 16.6, s: { quoting: false, quoted: true, cap: "08 · Individual vs pooled — with the cross-dock fee inside" } },
+    { t: 20.0, s: { curX: 1330, curY: 715, cap: "09 · Process the pool" } },
+    { t: 20.7, s: { ripple: true, ripX: 1330, ripY: 715, procBg: "#1557B0" } },
+    { t: 21.1, s: { ripple: false, scene: "grid", done: true, toast: true, procBg: "#4088CF", curX: 700, curY: 620, cap: "10 · One linehaul BOL, twenty final-mile BOLs" } },
+  ];
+  TYPERS = [ { t0: 2.2, dur: 1.4, field: "ref", text: "NE-POOL-WK31", until: Infinity } ];
+  POOLS = [
+    { id: "10438", ref: "NE-POOL-WK30", date: "07/22/2026", from: "Lake Forest, CA", point: "Keystone Cross-Dock — Bethlehem, PA", line: "Schneider", n: "18", status: "Completed", tot: "$12,880.15" },
+    { id: "10436", ref: "SE-POOL-WK30", date: "07/21/2026", from: "Lake Forest, CA", point: "Dixie Freight Hub — Atlanta, GA", line: "Rate Shop", n: "11", status: "Open", tot: "—" },
+    { id: "10431", ref: "MW-POOL-WK29", date: "07/15/2026", from: "Columbus, OH", point: "Great Lakes DC — Chicago, IL", line: "J.B. Hunt Intermodal", n: "22", status: "Completed", tot: "$9,412.70" },
+    { id: "10429", ref: "NE-POOL-WK29", date: "07/14/2026", from: "Lake Forest, CA", point: "Keystone Cross-Dock — Bethlehem, PA", line: "Werner", n: "16", status: "Error", tot: "—" }
+  ];
+  PT = [ { label: "Dixie Freight Hub — Atlanta, GA", note: "3PL warehouse · cross-dock fee $1,100" }, { label: "Keystone Cross-Dock — Bethlehem, PA", note: "3PL warehouse · cross-dock fee $1,450" }, { label: "Great Lakes DC — Chicago, IL", note: "Carrier hub · cross-dock fee $980" } ];
+  SHIPS = [
+    { id: "S-4471203", dest: "Providence, RI 02903", pcs: "3 PALLET", wt: "1,240 lb", carrier: "Rate Shop" },
+    { id: "S-4471207", dest: "Hartford, CT 06103", pcs: "2 PALLET", wt: "860 lb", carrier: "Rate Shop" },
+    { id: "S-4471211", dest: "Newark, NJ 07102", pcs: "4 PALLET", wt: "2,010 lb", carrier: "Rate Shop" },
+    { id: "S-4471216", dest: "Albany, NY 12207", pcs: "1 PALLET", wt: "515 lb", carrier: "Rate Shop" },
+    { id: "S-4471220", dest: "Worcester, MA 01608", pcs: "3 PALLET", wt: "1,455 lb", carrier: "Rate Shop" },
+    { id: "S-4471225", dest: "Wilmington, DE 19801", pcs: "2 PALLET", wt: "930 lb", carrier: "Rate Shop" }
+  ];
+  PICK = [
+    { id: "S-4471203", dest: "Providence, RI 02903", pcs: "3 PALLET", wt: "1,240 lb" },
+    { id: "S-4471207", dest: "Hartford, CT 06103", pcs: "2 PALLET", wt: "860 lb" },
+    { id: "S-4471211", dest: "Newark, NJ 07102", pcs: "4 PALLET", wt: "2,010 lb" },
+    { id: "S-4471216", dest: "Albany, NY 12207", pcs: "1 PALLET", wt: "515 lb" },
+    { id: "S-4471220", dest: "Worcester, MA 01608", pcs: "3 PALLET", wt: "1,455 lb" },
+    { id: "S-4471225", dest: "Wilmington, DE 19801", pcs: "2 PALLET", wt: "930 lb" },
+    { id: "S-4471229", dest: "Portland, ME 04101", pcs: "2 PALLET", wt: "1,080 lb" },
+    { id: "S-4471234", dest: "Syracuse, NY 13202", pcs: "3 PALLET", wt: "1,390 lb" }
+  ];
+  LINES = [["Linehaul — Lake Forest → Bethlehem (53' van)", "$4,980.00"], ["Final mile — 20 LTL from pooling point", "$6,785.40"], ["Cross-dock fee (included above)", "$1,450.00"], ["Max transit — individual vs pooled", "6 days → 4 days"]];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } for (const ty of this.TYPERS) { if (this.t >= ty.t0 && this.t < ty.until) { const f = Math.min(1, (this.t - ty.t0) / ty.dur); this.anim[ty.field] = ty.text.slice(0, Math.round(f * ty.text.length)); } } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    let plist = this.POOLS.slice();
+    if (a.done) plist = [{ id: "10442", ref: "NE-POOL-WK31", date: "07/29/2026", from: "Lake Forest, CA", point: "Keystone Cross-Dock — Bethlehem, PA", line: "Schneider", n: "20", status: "Completed", tot: "$13,215.40", isNew: true }].concat(plist);
+    const pools = plist.map((p) => ({ ...p,
+      rowStyle: "position:relative;height:46px;border-bottom:1px solid #EDF1F6;background:" + (p.isNew ? "#F2FBF7" : "#fff") + ";" + (p.isNew ? "animation:rsFadeUp .4s both;" : ""),
+      statStyle: "position:absolute;left:1160px;top:14px;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:9px;" + (p.status === "Completed" ? "background:#DCF5EE;color:#0F8A6D;" : p.status === "Error" ? "background:#FBE4E2;color:#B03A2E;" : "background:#EAF3FF;color:#4088CF;"),
+    }));
+    const ptOpts = this.PT.map((o, i) => ({ ...o, style: "padding:9px 14px;font-size:12.5px;color:#24354A;background:" + (a.ptSel === i ? "#EAF3FF" : "#fff") + ";" }));
+    const shipRows = this.SHIPS.slice(0, a.ships).map((s, i) => ({ ...s,
+      rowStyle: "position:relative;height:38px;border-bottom:1px solid #F2F5F9;animation:rsFadeUp .3s " + (i * 0.05) + "s both;",
+    }));
+    const pickRows = this.PICK.map((s, i) => {
+      const on = i < Math.min(a.picked, this.PICK.length);
+      return { ...s, on,
+        rowStyle: "position:relative;height:42px;border-bottom:1px solid #F2F5F9;background:" + (on ? "#F7FAFF" : "#fff") + ";",
+        boxStyle: "position:absolute;left:22px;top:13px;width:16px;height:16px;border-radius:3px;display:flex;align-items:center;justify-content:center;background:" + (on ? "#4088CF" : "#fff") + ";border:1.5px solid " + (on ? "#4088CF" : "#C6D0DC") + ";",
+      };
+    });
+    const lines = this.LINES.map((l, i) => ({ k: l[0], v: l[1],
+      rowStyle: "display:flex;align-items:center;height:30px;border-bottom:1px solid #F2F5F9;",
+    }));
+    return { ...a, pools, ptOpts, shipRows, pickRows, lines,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      pageTitle: a.scene === "form" ? "Pooling › Pool 10442" : "Pooling",
+      showGrid: a.scene === "grid", showForm: a.scene === "form",
+      noShips: a.ships === 0, hasShips: a.ships > 0,
+      shipCountLabel: a.ships > 0 ? "— 20 shipments" : "",
+      pickCount: String(Math.min(a.picked, 20)),
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>
