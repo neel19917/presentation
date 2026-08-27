@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes apClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes apFade { from{opacity:0;} to{opacity:1;} }
+@keyframes apUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+@keyframes apIn { from{opacity:0;transform:translateX(24px);} to{opacity:1;transform:translateX(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#F1F4F8;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:44px;background:#0B2039;display:flex;align-items:center;gap:14px;padding:0 16px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:170px;width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <span style="width:1px;height:26px;background:#2C4460;flex-shrink:0;"></span>
+    <div style="display:flex;align-items:center;gap:14px;font-size:11px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span style="color:{{ navQs }};">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <!-- ═══ PAGE HEADER ═══ -->
+  <sc-if value="{{ headerStd }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:44px;left:0;right:0;height:76px;background:#fff;padding:14px 20px 0;z-index:4;">
+      <div style="font-size:17px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
+      <div style="display:flex;gap:26px;margin-top:14px;font-size:10.5px;font-weight:700;letter-spacing:.05em;">
+        <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="5"><span style="color:{{ tb.color }};border-bottom:{{ tb.bb }};padding-bottom:8px;">{{ tb.label }}</span></sc-for>
+      </div>
+    </div>
+    <div style="position:absolute;top:106px;right:22px;width:38px;height:38px;border-radius:50%;background:#4088CF;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:8;box-shadow:0 2px 6px rgba(16,42,67,.28);">+</div>
+    <sc-if value="{{ fabMenu }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:152px;right:34px;width:190px;background:#fff;border-radius:4px;box-shadow:0 8px 26px rgba(5,20,40,.22);z-index:9;animation:apFade .16s both;">
+        <div style="height:40px;display:flex;align-items:center;padding:0 16px;font-size:13.5px;color:#24354A;background:{{ addProdBg }};transition:background .2s;">Add Product</div>
+        <div style="height:40px;display:flex;align-items:center;padding:0 16px;font-size:13.5px;color:#24354A;">Import Products</div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ═══ GRID (catalog · packages · routing guide) ═══ -->
+  <sc-if value="{{ showGrid }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:20px;right:20px;top:132px;bottom:60px;background:#fff;border:1px solid #E3E9F0;border-radius:2px;z-index:3;overflow:hidden;">
+      <div style="height:54px;display:flex;align-items:center;padding:0 14px;gap:14px;">
+        <div style="width:270px;height:32px;border:1px solid #C9D4E0;border-radius:3px;display:flex;align-items:center;padding:0 12px;gap:9px;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11.5px;">Search</span><span style="margin-left:auto;color:#33465C;font-size:11px;font-weight:700;letter-spacing:.05em;">GO</span></div>
+        <svg width="17" height="17" viewBox="0 0 24 24"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.8"></path></svg>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:11px;">
+          <sc-if value="{{ showSave }}" hint-placeholder-val="{{ false }}"><span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:9px 16px;">SAVE</span></sc-if>
+          <span style="border:1px solid #C9D4E0;border-radius:3px;color:#33465C;font-size:13px;font-weight:700;padding:6px 14px 10px;line-height:1;">···</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;height:36px;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;background:#F7F9FC;font-size:11.5px;font-weight:700;color:#33465C;padding:0 14px;">
+        <sc-for list="{{ cols }}" as="c" hint-placeholder-count="7"><span style="width:{{ c.w }}px;flex-shrink:0;overflow:hidden;">{{ c.t }}</span></sc-for>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+        <div style="display:flex;align-items:center;height:34px;border-bottom:1px solid #EDF1F6;font-size:11.5px;color:#3C4B5C;padding:0 14px;background:{{ r.bg }};">
+          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="7"><span style="width:{{ c.w }}px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;color:{{ c.color }};">{{ c.t }}</span></sc-for>
+          <span style="margin-left:auto;display:flex;gap:22px;padding-left:18px;padding-right:10px;align-items:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24"><path d="M4 20 L4.6 15.6 L16.4 3.9 L20.1 7.6 L8.4 19.4 Z" fill="none" stroke="#2C6DB5" stroke-width="1.9"></path></svg>
+            <svg width="14" height="15" viewBox="0 0 22 24"><path d="M3 6 L19 6 M9 3 L13 3 M6 6 L7.4 21 L14.6 21 L16 6" fill="none" stroke="#D93A2B" stroke-width="1.8"></path></svg>
+          </span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:14px;height:36px;display:flex;align-items:center;justify-content:center;gap:16px;font-size:11.5px;color:#33465C;z-index:3;">
+      <span>Results Per Page:</span><span style="font-weight:600;">{{ perPage }} ▾</span><span style="margin-left:14px;">{{ pagerText }}</span>
+      <span style="margin-left:14px;display:flex;align-items:center;gap:14px;color:#93A2B4;">‹<span style="color:#33465C;border-bottom:1px solid #33465C;">1</span><span>{{ pagerRest }}</span>›</span>
+    </div>
+  </sc-if>
+
+  <!-- ═══ CREATE PRODUCT ═══ -->
+  <sc-if value="{{ sCreate }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;bottom:0;background:#fff;z-index:6;animation:apFade .2s both;">
+      <div style="padding:14px 30px 0;">
+        <div style="font-size:11.5px;font-weight:700;color:#5E7186;">Product Catalog &nbsp;/&nbsp; <span style="color:#33465C;">Create Product</span></div>
+        <div style="font-size:22px;font-weight:700;color:#14263C;margin-top:10px;">Create Product</div>
+        <div style="display:flex;gap:30px;margin-top:18px;font-size:10.5px;font-weight:700;letter-spacing:.05em;">
+          <span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:8px;">GENERAL</span>
+          <span style="color:#5E7186;padding-bottom:8px;">SPECS AND PACKAGING</span>
+          <span style="color:#5E7186;padding-bottom:8px;">BILL OF MATERIALS</span>
+          <span style="color:#5E7186;padding-bottom:8px;">CUSTOM FIELD GROUPS</span>
+        </div>
+      </div>
+      <div style="position:absolute;left:420px;top:130px;width:620px;border:1px solid #E1E7EF;border-radius:3px;">
+        <div style="height:44px;background:#F0F3F7;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;padding:0 18px;font-size:15px;color:#33465C;">General</div>
+        <div style="padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div style="grid-column:1 / span 2;position:relative;height:44px;border:1px solid {{ itemBorder }};border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Item Number *</span>{{ fItem }}</div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Manufacturer</span>{{ fMfr }}</div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Description</span>{{ fDesc }}</div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">UPC</span><span style="margin-left:auto;color:#93A2B4;">ⓘ</span></div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">SKU</span>{{ fSku }}</div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Size</span></div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">U/M *</span>Each<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#9AA7B8;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#3B7A4B;">Manufactured Date</span>MM/DD/YYYY<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+          <div style="position:relative;height:44px;border:1px solid {{ catBorder }};border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Category</span>{{ fCat }}</div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Price</span>{{ fPrice }}</div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Currency</span>United States Dollar (USD)<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Country of Origin</span>{{ fCoo }}</div>
+          <div style="position:relative;height:44px;border:1px solid {{ classBorder }};border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Freight Class</span>{{ fClass }}<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">NMFC</span>{{ fNmfc }}<span style="margin-left:auto;color:#93A2B4;">ⓘ</span></div>
+          <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">HTS Code</span><span style="margin-left:auto;color:#93A2B4;">ⓘ</span></div>
+        </div>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:62px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 30px;">
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:12px;font-weight:700;letter-spacing:.05em;padding:12px 26px;">CANCEL</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:{{ saveColor }};background:{{ saveBg }};font-size:12px;font-weight:700;letter-spacing:.05em;padding:12px 30px;transition:all .3s;">SAVE</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ ADD PACKAGE DRAWER ═══ -->
+  <sc-if value="{{ pkgDrawer }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(64,136,207,.18);z-index:20;"></div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:400px;background:#fff;box-shadow:-14px 0 40px rgba(5,20,40,.24);z-index:21;display:flex;flex-direction:column;animation:apIn .28s both;">
+      <div style="height:60px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:19px;color:#1A2634;">Add Package<span style="color:#5E7186;font-size:16px;">✕</span></div>
+      <div style="flex:1 1 auto;padding:0 22px;display:flex;flex-direction:column;gap:13px;">
+        <div style="position:relative;height:44px;border:1px solid {{ pnBorder }};border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Package Name*</span>{{ pkgName }}</div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Package Type*</span>{{ pkgType }}<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Length</span>{{ pkgL }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">in</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Width</span>{{ pkgW }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">in</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Height</span>{{ pkgH }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">in</span></div>
+        <div style="position:relative;height:44px;border:1px solid #E1E7EF;background:#F7F9FB;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#F7F9FB;padding:0 5px;font-size:10.5px;color:#7A8798;">Cubic Feet</span>{{ pkgCf }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">ft</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Additional Weight to Add</span>{{ pkgAdd }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">lbs</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Max Weight Allowed</span>{{ pkgMax }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">lbs</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Minimum Weight Allowed</span>0<span style="margin-left:auto;color:#8A97A8;font-size:11px;">lbs</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Minimum % Volume Allowed</span>{{ pkgMinVol }}<span style="margin-left:auto;color:#8A97A8;font-size:11px;">%</span></div>
+        <div style="position:relative;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13.5px;color:#24354A;"><span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Maximum % Volume Allowed</span><span style="margin-left:auto;color:#8A97A8;font-size:11px;">%</span></div>
+      </div>
+      <div style="flex:none;height:70px;display:flex;align-items:center;gap:14px;padding:0 22px;">
+        <span style="background:{{ pkgSaveBg }};color:{{ pkgSaveColor }};border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.05em;padding:12px 26px;transition:all .3s;">SAVE</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:12px;font-weight:700;letter-spacing:.05em;padding:12px 24px;">CANCEL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ QUOTE / SHIP ═══ -->
+  <sc-if value="{{ sQs }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;height:96px;background:#fff;z-index:5;">
+      <div style="position:absolute;left:20px;top:14px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship</div>
+      <div style="position:absolute;left:20px;top:56px;display:flex;gap:30px;font-size:10.5px;font-weight:700;letter-spacing:.05em;">
+        <span style="color:#5E7186;padding-bottom:8px;">GENERAL</span>
+        <span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:8px;">PRODUCT DETAILS</span>
+        <span style="color:#5E7186;padding-bottom:8px;">ADDITIONAL DETAILS</span>
+        <span style="color:#5E7186;padding-bottom:8px;">DOCUMENTS</span>
+      </div>
+      <div style="position:absolute;right:20px;top:26px;display:flex;align-items:center;gap:12px;">
+        <div style="position:relative;width:230px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;gap:8px;font-size:12.5px;color:#9AA7B8;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Order Import</span><span style="color:#8A97A8;">⚙</span>{{ orderImport }}<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">START CONSOLIDATION</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">RECENT QUOTES</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">TEMPLATES</span>
+        <div style="position:relative;width:150px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Process Date</span>08/16/2026<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;top:140px;bottom:0;background:#EDF2F9;z-index:2;"></div>
+
+    <div style="position:absolute;left:180px;right:180px;top:168px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:46px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:15px;color:#33465C;">Products<span style="color:#93A2B4;">ⓘ</span></div>
+      <div style="padding:16px 18px 20px;">
+        <div style="display:flex;align-items:center;gap:26px;">
+          <div style="width:250px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;font-size:12.5px;color:#9AA7B8;">⌕ Search</div>
+          <span style="font-size:13px;color:#33465C;">Total Quantity: <b>{{ totQty }}</b></span>
+          <span style="font-size:13px;color:#33465C;">Total Price: <b>{{ totPrice }}</b></span>
+        </div>
+        <div style="margin-top:18px;padding-top:16px;border-top:1px solid #EDF1F6;display:grid;grid-template-columns:repeat(7,1fr);gap:12px;">
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Order Number</span><span style="margin-top:14px;">{{ pdOrder }}</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">SO Number</span><span style="margin-top:14px;">{{ pdSo }}</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">PO Number</span><span style="margin-top:14px;">{{ pdPo }}</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Quantity</span><span style="margin-top:14px;">{{ pdQty }}</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">U/M</span><span style="margin-top:14px;">Each</span><span style="margin-left:auto;margin-top:14px;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Item Number</span><span style="margin-top:14px;">{{ pdItem }}</span><span style="margin-left:auto;margin-top:14px;color:#4088CF;">⌕</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Description</span><span style="margin-top:14px;">{{ pdDesc }}</span></div>
+        </div>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(7,1fr);gap:12px;">
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Price Per Piece</span><span style="margin-top:14px;">{{ pdPpp }}</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Total Price</span><span style="margin-top:14px;">{{ pdTotal }}</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Currency</span><span style="margin-top:14px;">United St…</span><span style="margin-left:auto;margin-top:14px;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">SCH B/HTS</span><span style="margin-top:14px;"></span><span style="margin-left:auto;margin-top:14px;color:#93A2B4;">ⓘ</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Country of Origin</span><span style="margin-top:14px;">United St…</span><span style="margin-left:auto;margin-top:14px;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Package Id (Optional)</span><span style="margin-top:14px;"></span><span style="margin-left:auto;margin-top:14px;color:#4088CF;">⌕</span></div>
+          <div style="position:relative;height:52px;border:1px solid #DDE4EC;border-radius:3px;background:#FCFDFE;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:8px;left:12px;font-size:10.5px;color:#B57A13;">Serial Numbers</span><span style="margin-top:14px;"></span><span style="margin-left:auto;margin-top:14px;color:#4088CF;">⌕</span></div>
+        </div>
+        <div style="margin-top:18px;">
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:12px;font-weight:700;letter-spacing:.04em;padding:12px 18px;background:{{ addProductBg }};transition:background .3s;">+ ADD PRODUCT</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:54px;height:56px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:6;">
+      <div style="display:flex;gap:22px;font-size:12.5px;color:#3A4B60;white-space:nowrap;"><span>Total Outer Handling Units: {{ tOuter }}</span><span>Total Handling Units: {{ tHU }}</span><span>Total Weight: {{ tWt }}</span><span>Total Linear Feet: {{ tLF }}</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:11px;">
+        <span style="border:1px solid #C9D4E0;border-radius:3px;color:#33465C;font-size:13px;font-weight:700;padding:9px 14px 13px;line-height:1;">···</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:13px 16px;">CLEAR SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:13px 16px;">PREVIEW BOL</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:13px 16px;">SAVE SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:13px 16px;">SPOT QUOTE</span>
+        <span style="background:{{ rateShopBg }};color:#fff;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 18px;transition:background .3s;">RATE SHOP</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ RATES ═══ -->
+  <sc-if value="{{ sRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;height:70px;background:#fff;z-index:5;">
+      <div style="position:absolute;left:20px;top:14px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship (Quote Id: 46277318)</div>
+      <div style="position:absolute;right:20px;top:22px;display:flex;align-items:center;gap:22px;font-size:12.5px;color:#3A4B60;"><span>Total Handling Units: <b>3</b></span><span>Total Weight: <b>343 LB</b></span><span>Total Linear Feet: <b>4</b></span></div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:114px;bottom:0;background:#EDF2F9;z-index:2;"></div>
+    <div style="position:absolute;left:20px;right:20px;top:134px;background:#fff;border:1px solid #E3E9F0;border-radius:3px;z-index:3;animation:apUp .3s both;">
+      <div style="height:44px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:14.5px;color:#33465C;">Rates<span style="font-size:12px;color:#5E7186;">Packed by Auto Pack · routing guide rule PALLET LTL applied</span></div>
+      <div style="display:flex;align-items:center;height:34px;background:#F7F9FC;border-bottom:1px solid #EDF1F6;font-size:11px;font-weight:700;color:#33465C;padding:0 18px;"><span style="width:60px;"></span><span style="width:300px;">Carrier</span><span style="width:190px;">Service</span><span style="width:140px;">Transit</span><span style="width:170px;">Est. Delivery</span><span style="width:130px;text-align:right;">Total</span></div>
+      <sc-for list="{{ rates }}" as="r" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;height:44px;border-bottom:1px solid #EDF1F6;font-size:12.5px;color:#3C4B5C;padding:0 18px;background:{{ r.bg }};">
+          <span style="width:60px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid {{ r.radio }};background:{{ r.radioFill }};"></span></span>
+          <span style="width:300px;font-weight:600;color:#1B2B3D;">{{ r.carrier }}</span><span style="width:190px;">{{ r.service }}</span><span style="width:140px;">{{ r.transit }}</span><span style="width:170px;">{{ r.eta }}</span><span style="width:130px;text-align:right;font-weight:700;color:#1B2B3D;">{{ r.total }}</span>
+          <span style="margin-left:auto;border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10px;font-weight:700;letter-spacing:.05em;padding:8px 14px;">SHIP</span>
+        </div>
+      </sc-for>
+      <div style="padding:14px 18px;font-size:12.5px;color:#5E7186;white-space:normal;line-height:1.55;">Rated off the calculated pack, before anyone touched the order. Auto Pack decided the packaging first; the routing guide then picked carrier and service from pallet count, package type and weight.</div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:apClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  PNP_TABS = ["PRODUCT CATALOG", "PREDEFINED PACKAGE TYPES", "FULFILLMENT KITS", "HTS CATALOG", "NMFC"];
+  RULE_TABS = ["GENERAL", "LIMITATIONS", "ADDRESS VALIDATION", "DISPATCHING", "ORDER TYPES", "DATE CHANGE ALERTS", "NOTES", "ROUTING GUIDE", "MARKUPS", "CURRENCY"];
+
+  CAT_COLS = [["Item Number",150],["Description",210],["Category",120],["Length(in)",100],["Width(in)",100],["Height(in)",100],["Weight(lbs)",110],["Freight Class",110]];
+  CAT_ROWS = [
+    ["MFLD-2200","Hydraulic manifold, 2 in","Manifolds","9","8","6","18.4","70"],
+    ["SEAL-118","Seal kit, viton","Seals","6","4","2","1.2","85"],
+    ["GSKT-090","Gasket, 90 mm","Seals","5","5","1","0.4","85"],
+    ["SRVO-450","Servo drive, 450 W","Drives","14","10","8","22.0","92.5"],
+    ["VLVE-310","Control valve, 3 in","Valves","11","7","7","14.8","70"]
+  ];
+  CAT_ROWS_NEW = [
+    ["PUMP-780","Gear pump, 780 series","Pumps","16","12","10","31.5","70"],
+    ["MFLD-2200","Hydraulic manifold, 2 in","Manifolds","9","8","6","18.4","70"],
+    ["SEAL-118","Seal kit, viton","Seals","6","4","2","1.2","85"],
+    ["GSKT-090","Gasket, 90 mm","Seals","5","5","1","0.4","85"],
+    ["SRVO-450","Servo drive, 450 W","Drives","14","10","8","22.0","92.5"],
+    ["VLVE-310","Control valve, 3 in","Valves","11","7","7","14.8","70"]
+  ];
+
+  PKG_COLS = [["Package Name",170],["Package Type",170],["Length(in)",115],["Width(in)",115],["Height(in)",115],["Max Weight(lbs)",140],["Minimum Weight In …",150],["Minimum % Volume …",150]];
+  PKG_ROWS = [
+    ["Standard Pallet","PALLET","52","44","40","","0",""],
+    ["26 FT AC","TRUCKLOAD_26FT","","","","","0",""],
+    ["Box10","BOX","10.2","6.2","5.8","50","0",""],
+    ["Box404","BOX","11.3","6.3","15","50","0",""],
+    ["Box408","BOX","12.8","11.5","15.1","50","0",""],
+    ["Box412","BOX","17.7","12.7","15.1","100","0",""],
+    ["Box414","BOX","24.9","10.8","12.9","50","0",""],
+    ["Box418","BOX","25.7","13.6","14.9","50","0",""],
+    ["Box421","BOX","21.8","18.8","15.4","50","0",""],
+    ["48.5\" Tube Box","BOX","48.5","4","4","50","0","0"]
+  ];
+  PKG_ROWS_NEW = [
+    ["Case 24x18x14","BOX","24","18","14","65","0","55"],
+    ["Standard Pallet","PALLET","52","44","40","","0",""],
+    ["26 FT AC","TRUCKLOAD_26FT","","","","","0",""],
+    ["Box10","BOX","10.2","6.2","5.8","50","0",""],
+    ["Box404","BOX","11.3","6.3","15","50","0",""],
+    ["Box408","BOX","12.8","11.5","15.1","50","0",""],
+    ["Box412","BOX","17.7","12.7","15.1","100","0",""],
+    ["Box414","BOX","24.9","10.8","12.9","50","0",""],
+    ["Box418","BOX","25.7","13.6","14.9","50","0",""],
+    ["Box421","BOX","21.8","18.8","15.4","50","0",""]
+  ];
+
+  RG_COLS = [["Rule Name",180],["Priority",100],["Rule Summary",640],["Active",90],["Last Modified",170],["Last Modified By",160]];
+  RG_ROWS = [
+    ["piece","1","(Weight greater than 1) THEN (Carrier EQUALS RateShop AND Service EQUALS AND PaymentTerms EQUALS Pa…","NO","04/06/2026 11:35 pm","M. Alvarez"],
+    ["Amazon","2","(TotalHandlingUnits greater than 4 AND ShipToCompanyName equals to Amazon) THEN (Carrier EQUALS Rate…","NO","06/30/2026 12:19 am","M. Alvarez"],
+    ["Skip Multi Rate","3","(TotalHandlingUnits greater than or equal to 7 AND Weight greater than or equal to 200) THEN (Carrier EQUAL…","NO","06/30/2026 12:19 am","M. Alvarez"],
+    ["FEDEX GROUND","4","(ShipFromCity contains ORANGE AND PackageTypes equals to BOX AND Weight less than 50) THEN (Carrier E…","YES","07/13/2026 06:32 pm","N. Hernandez"]
+  ];
+  RG_ROWS_NEW = [
+    ["piece","1","(Weight greater than 1) THEN (Carrier EQUALS RateShop AND Service EQUALS AND PaymentTerms EQUALS Pa…","NO","04/06/2026 11:35 pm","M. Alvarez"],
+    ["Amazon","2","(TotalHandlingUnits greater than 4 AND ShipToCompanyName equals to Amazon) THEN (Carrier EQUALS Rate…","NO","06/30/2026 12:19 am","M. Alvarez"],
+    ["Skip Multi Rate","3","(TotalHandlingUnits greater than or equal to 7 AND Weight greater than or equal to 200) THEN (Carrier EQUAL…","NO","06/30/2026 12:19 am","M. Alvarez"],
+    ["FEDEX GROUND","4","(ShipFromCity contains ORANGE AND PackageTypes equals to BOX AND Weight less than 50) THEN (Carrier E…","YES","07/13/2026 06:32 pm","N. Hernandez"],
+    ["PALLET LTL","5","(PackageTypes equals to PALLET AND Weight greater than or equal to 200) THEN (Carrier EQUALS RateShop…","YES","08/16/2026 09:04 am","N. Hernandez"]
+  ];
+
+  LINES = [
+    { item: "PUMP-780", desc: "Gear pump, 780 series", cat: "Pumps", qty: "6", price: "$8,880.00" },
+    { item: "MFLD-2200", desc: "Hydraulic manifold, 2 in", cat: "Manifolds", qty: "10", price: "$11,200.00" },
+    { item: "GSKT-090", desc: "Gasket, 90 mm", cat: "Seals", qty: "48", price: "$1,930.00" },
+    { item: "SRVO-450", desc: "Servo drive, 450 W", cat: "Drives", qty: "4", price: "$2,400.00" }
+  ];
+  PACKS = [
+    { units: "2", type: "Case 24x18x14", dims: "24 × 18 × 14", wt: "20.4", inner: "24", cls: "85" },
+    { units: "1", type: "Standard Pallet", dims: "52 × 44 × 41", wt: "322.2", inner: "20", cls: "70" }
+  ];
+  RATES = [
+    { carrier: "FedEx Freight - Priority", service: "LTL", transit: "2 days", eta: "08/18/2026", total: "$418.62", bg: "#EAF2FB", radio: "#2C6DB5", radioFill: "#2C6DB5" },
+    { carrier: "Old Dominion Freight Line", service: "LTL Standard", transit: "2 days", eta: "08/18/2026", total: "$447.10", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" },
+    { carrier: "XPO Logistics", service: "LTL Standard", transit: "3 days", eta: "08/19/2026", total: "$462.85", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" },
+    { carrier: "A Duie Pyle", service: "LTL Standard", transit: "3 days", eta: "08/19/2026", total: "$488.40", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" }
+  ];
+
+  A0 = { playing: true, cap: "01 · Product Catalog — where the freight detail starts",
+    scene: "catalog", curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    fabMenu: false, addProdHot: false, catNew: false,
+    fItem: "", fMfr: "", fDesc: "", fSku: "", fCat: "", fPrice: "", fCoo: "", fClass: "", fNmfc: "",
+    itemBorder: "#DDE4EC", catBorder: "#DDE4EC", classBorder: "#DDE4EC", saved: false,
+    pkgDrawer: false, pkgNew: false, pnBorder: "#DDE4EC",
+    pkgName: "", pkgType: "", pkgL: "", pkgW: "", pkgH: "", pkgCf: "0", pkgAdd: "", pkgMax: "", pkgMinVol: "", pkgSaved: false,
+    rgNew: false,
+    orderImport: "Use a comma to separate", pdOrder: "", pdSo: "", pdPo: "", pdQty: "", pdItem: "", pdDesc: "", pdPpp: "", pdTotal: "0",
+    addProductHot: false, rateShopHot: false, totQty: "0", totPrice: "0",
+    packed: false };
+  DUR = 62;
+  KF = [
+    { t: 2.0, s: { curX: 1399, curY: 125, ripple: true, ripX: 1399, ripY: 125, cap: "02 · Add a product" } },
+    { t: 2.6, s: { ripple: false, fabMenu: true, curX: 1300, curY: 172 } },
+    { t: 3.8, s: { addProdHot: true } },
+    { t: 4.3, s: { ripple: true, ripX: 1300, ripY: 172 } },
+    { t: 4.8, s: { ripple: false, fabMenu: false, addProdHot: false, scene: "create", curX: 700, curY: 300, cap: "03 · Create Product — General" } },
+    { t: 6.2, s: { itemBorder: "#4088CF", fItem: "PUMP-780", cap: "04 · Item number, description, unit of measure" } },
+    { t: 7.6, s: { itemBorder: "#DDE4EC", fMfr: "Delta Hydraulics", fDesc: "Gear pump, 780 series" } },
+    { t: 9.0, s: { fSku: "780-STD", catBorder: "#4088CF", fCat: "Pumps", cap: "05 · Category and pallet-quantity thresholds live on the item" } },
+    { t: 10.6, s: { catBorder: "#DDE4EC", fPrice: "1,480.00", fCoo: "US" } },
+    { t: 11.8, s: { classBorder: "#4088CF", fClass: "70", fNmfc: "133300", cap: "06 · Freight class and NMFC live on the item" } },
+    { t: 13.4, s: { classBorder: "#DDE4EC", saved: true, curX: 1310, curY: 762 } },
+    { t: 14.2, s: { ripple: true, ripX: 1310, ripY: 762 } },
+    { t: 14.8, s: { ripple: false, scene: "catalog", catNew: true, curX: 700, curY: 300, cap: "07 · Saved — the item is quote-ready" } },
+    { t: 17.0, s: { scene: "packages", curX: 320, curY: 108, cap: "08 · Predefined Package Types — the boxes you actually own" } },
+    { t: 19.6, s: { curX: 1399, curY: 125, ripple: true, ripX: 1399, ripY: 125, cap: "09 · Add a package" } },
+    { t: 20.2, s: { ripple: false, pkgDrawer: true, curX: 1240, curY: 300 } },
+    { t: 21.6, s: { pnBorder: "#4088CF", pkgName: "Case 24x18x14", pkgType: "BOX", cap: "10 · Name it and pick the type" } },
+    { t: 23.0, s: { pnBorder: "#DDE4EC", pkgL: "24", pkgW: "18", pkgH: "14", pkgCf: "3.5" } },
+    { t: 24.4, s: { pkgAdd: "1.5", pkgMax: "65", pkgMinVol: "55", pkgSaved: true, cap: "11 · Dimensions, weight caps and fill limits per package" } },
+    { t: 26.0, s: { curX: 1105, curY: 776, ripple: true, ripX: 1105, ripY: 776 } },
+    { t: 26.6, s: { ripple: false, pkgDrawer: false, pkgNew: true, curX: 700, curY: 300, cap: "12 · The calculation only packs into these" } },
+    { t: 29.0, s: { scene: "rules", curX: 700, curY: 300, cap: "13 · Company Rules — Routing Guide" } },
+    { t: 31.4, s: { curX: 1399, curY: 125, ripple: true, ripX: 1399, ripY: 125, cap: "14 · Add a rule for palletized freight" } },
+    { t: 32.0, s: { ripple: false, rgNew: true, cap: "15 · Auto Pack runs first, the routing guide reads its result" } },
+    { t: 35.0, s: { cap: "16 · Pallet count, box count and weight are all rule conditions" } },
+    { t: 38.0, s: { scene: "qs", curX: 700, curY: 400, cap: "17 · Quote/Ship, Product Details — nothing packed yet" } },
+    { t: 39.6, s: { curX: 620, curY: 300, pdOrder: "SO-118402", pdSo: "SO-118402", pdPo: "PO-45118", cap: "18 · The order lines come in from the catalog" } },
+    { t: 41.0, s: { pdQty: "6", pdItem: "PUMP-780", pdDesc: "Gear pump, 780 series" } },
+    { t: 42.2, s: { pdPpp: "1,480.00", pdTotal: "8,880.00", totQty: "6", totPrice: "8,880.00" } },
+    { t: 43.4, s: { curX: 372, curY: 556, addProductHot: true, cap: "19 · Add the rest of the lines" } },
+    { t: 44.0, s: { ripple: true, ripX: 372, ripY: 556 } },
+    { t: 44.6, s: { ripple: false, addProductHot: false, packed: true, cap: "20 · Auto Pack calculates the units behind the scenes" } },
+    { t: 47.4, s: { curX: 1355, curY: 728, rateShopHot: true, cap: "21 · Rate shop the calculated pack" } },
+    { t: 48.0, s: { ripple: true, ripX: 1355, ripY: 728 } },
+    { t: 48.6, s: { ripple: false, rateShopHot: false, scene: "rates", curX: 700, curY: 400, cap: "22 · Rates, off a pack nobody built by hand" } },
+    { t: 52.4, s: { cap: "23 · The routing guide picked carrier and service from the pack" } },
+    { t: 56.0, s: { curX: 700, curY: 620, cap: "24 · Freight cost is known before anyone packs a box" } },
+    { t: 61.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  _mkTabs(list, activeIdx) {
+    return list.map((label, i) => ({ label,
+      color: i === activeIdx ? "#2C6DB5" : "#5E7186",
+      bb: i === activeIdx ? "2.5px solid #2C6DB5" : "2.5px solid transparent" }));
+  }
+  renderVals() {
+    const a = this.anim, sc = a.scene;
+    let colsSrc = this.CAT_COLS, rowsSrc = a.catNew ? this.CAT_ROWS_NEW : this.CAT_ROWS, tabs = this._mkTabs(this.PNP_TABS, 0);
+    let title = "Product & Packaging", perPage = "10", pagerText = "1–6 of 6", pagerRest = "", hi = -1;
+    if (sc === "packages") {
+      colsSrc = this.PKG_COLS; rowsSrc = a.pkgNew ? this.PKG_ROWS_NEW : this.PKG_ROWS;
+      tabs = this._mkTabs(this.PNP_TABS, 1); pagerText = "1–10 of 25"; pagerRest = "2 3";
+      if (a.pkgNew) hi = 0;
+    } else if (sc === "rules") {
+      colsSrc = this.RG_COLS; rowsSrc = a.rgNew ? this.RG_ROWS_NEW : this.RG_ROWS;
+      tabs = this._mkTabs(this.RULE_TABS, 7); title = "Rules"; perPage = "50";
+      pagerText = a.rgNew ? "1–5 of 5" : "1–4 of 4";
+      if (a.rgNew) hi = 4;
+    }
+    const cols = colsSrc.map((c) => ({ t: c[0], w: c[1] }));
+    const rows = rowsSrc.map((r, i) => ({
+      bg: i === hi ? "#EAF2FB" : "#fff",
+      cells: r.map((v, j) => ({ t: v, w: cols[j] ? cols[j].w : 110,
+        color: sc === "rules" && j === 2 ? "#B57A13" : (sc === "rules" && j === 0) || j === 0 ? "#1B2B3D" : "#3C4B5C" }))
+    }));
+    return { ...a,
+      pageTitle: sc === "qs" || sc === "rates" ? "Quote/Ship" : title,
+      navQs: sc === "qs" || sc === "rates" ? "#fff" : "#C7D3E0",
+      headerStd: sc === "catalog" || sc === "packages" || sc === "rules",
+      showGrid: sc === "catalog" || sc === "packages" || sc === "rules",
+      showSave: sc === "rules",
+      sCreate: sc === "create", sQs: sc === "qs", sRates: sc === "rates",
+      tabs, cols, rows, perPage, pagerText, pagerRest,
+      saveBg: a.saved ? "#4088CF" : "#fff", saveColor: a.saved ? "#fff" : "#2C6DB5",
+      pkgSaveBg: a.pkgSaved ? "#4088CF" : "#E3E7EC", pkgSaveColor: a.pkgSaved ? "#fff" : "#9AA7B8",
+      addProdBg: a.addProdHot ? "#EDF3FA" : "#fff",
+      lines: this.LINES, rates: this.RATES,
+      addProductBg: a.addProductHot ? "#EAF1FB" : "#fff",
+      rateShopBg: a.rateShopHot ? "#1F63A8" : "#4088CF",
+      tOuter: a.packed ? "1" : "0", tHU: a.packed ? "3" : "0", tWt: a.packed ? "343 LB" : "0 LB", tLF: a.packed ? "4" : "0",
+      scale: this.scaleVal,
+      paused: !a.playing, playing: a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap
+    };
+  }
+}
+</script>
+</body>
+</html>

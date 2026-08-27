@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes ibClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes ibFade { from{opacity:0;} to{opacity:1;} }
+@keyframes ibUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#F1F4F8;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:44px;background:#0B2039;display:flex;align-items:center;gap:14px;padding:0 16px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <div style="margin-left:170px;width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
+    <span style="color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <span style="width:1px;height:26px;background:#2C4460;flex-shrink:0;"></span>
+    <div style="display:flex;align-items:center;gap:14px;font-size:11px;color:#C7D3E0;white-space:nowrap;"><span style="color:{{ navOrders }};font-weight:600;">Orders</span><span style="color:{{ navQs }};">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span style="color:{{ navTrack }};">Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <!-- ═══ OPEN INBOUND TRANSACTIONS ═══ -->
+  <sc-if value="{{ sInbound }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:44px;left:0;right:0;height:82px;background:#fff;padding:12px 20px 0;z-index:4;">
+      <div style="font-size:17px;font-weight:700;color:#14263C;">Order Management</div>
+      <div style="display:flex;gap:24px;margin-top:12px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>OPEN SALES ORDERS</span><span>OPEN OUTBOUND TRANSACTIONS</span><span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:8px;">OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span></div>
+    </div>
+    <div style="position:absolute;top:110px;right:22px;width:38px;height:38px;border-radius:50%;background:#4088CF;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;z-index:6;box-shadow:0 2px 6px rgba(16,42,67,.28);">+</div>
+
+    <div style="position:absolute;left:20px;right:20px;top:140px;bottom:52px;background:#fff;border:1px solid #E3E9F0;border-radius:2px;z-index:3;overflow:hidden;">
+      <div style="height:56px;display:flex;align-items:center;padding:0 14px;gap:14px;">
+        <div style="width:270px;height:34px;border:1px solid #C9D4E0;border-radius:3px;display:flex;align-items:center;padding:0 12px;gap:9px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11.5px;">Search</span><span style="margin-left:auto;color:#33465C;font-size:11px;font-weight:700;letter-spacing:.05em;">GO</span></div>
+        <svg width="17" height="17" viewBox="0 0 24 24" style="flex-shrink:0;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.8"></path></svg>
+        <span style="border:1px solid #C9D4E0;border-radius:999px;color:#33465C;font-size:11.5px;padding:8px 15px;flex-shrink:0;">Past Shipments</span>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:11px;flex-shrink:0;">
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10px;font-weight:700;letter-spacing:.05em;padding:10px 14px;display:flex;align-items:center;gap:6px;">BATCHES <svg width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#2C6DB5" stroke-width="1.8"></circle><path d="M12 10.5 L12 17" stroke="#2C6DB5" stroke-width="2"></path><circle cx="12" cy="7.4" r="1.2" fill="#2C6DB5"></circle></svg></span>
+          <span style="border:1px solid #C9D4E0;border-radius:3px;color:#33465C;font-size:13px;font-weight:700;padding:7px 14px 11px;line-height:1;">···</span>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:0;right:0;top:56px;bottom:0;overflow:hidden;">
+        <div style="position:absolute;left:14px;top:0;transform:translateX({{ scrollX }});">
+          <div style="display:flex;align-items:center;height:36px;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:11.5px;font-weight:700;color:#33465C;background:#F2F7FC;">
+            <span style="width:34px;flex-shrink:0;"><span style="display:inline-block;width:13px;height:13px;border:1.5px solid #93A2B4;border-radius:2px;"></span></span>
+            <sc-for list="{{ cols }}" as="c" hint-placeholder-count="12"><span style="width:{{ c.w }}px;flex-shrink:0;overflow:hidden;color:{{ c.color }};background:{{ c.bg }};height:36px;line-height:36px;transition:background .25s,color .25s;">{{ c.t }}</span></sc-for>
+          </div>
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
+            <div style="display:flex;align-items:center;height:34px;border-bottom:1px solid #EDF1F6;font-size:11.5px;color:#3C4B5C;background:{{ r.bg }};transition:background .25s;">
+              <span style="width:34px;flex-shrink:0;"><span style="display:inline-block;width:13px;height:13px;border:1.5px solid #B4C0CE;border-radius:2px;background:#fff;"></span></span>
+              <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="12"><span style="width:{{ c.w }}px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;color:{{ c.color }};text-decoration:{{ c.deco }};">{{ c.t }}</span></sc-for>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:absolute;right:0;top:0;bottom:0;width:96px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff 62%);pointer-events:none;"></div>
+        <div style="position:absolute;right:14px;top:36px;display:flex;flex-direction:column;gap:0;">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="11">
+            <div style="height:34px;display:flex;align-items:center;gap:20px;justify-content:flex-end;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:3px;background:{{ r.pencilBg }};transition:background .25s;"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M4 20 L4.6 15.6 L16.4 3.9 L20.1 7.6 L8.4 19.4 Z" fill="none" stroke="#2C6DB5" stroke-width="1.9"></path></svg></span>
+              <svg width="14" height="15" viewBox="0 0 22 24"><path d="M3 6 L19 6 M9 3 L13 3 M6 6 L7.4 21 L14.6 21 L16 6" fill="none" stroke="#D93A2B" stroke-width="1.8"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position:absolute;left:14px;right:14px;bottom:8px;height:10px;border-radius:5px;background:#EDF1F6;">
+          <div style="position:absolute;top:0;left:{{ thumbLeft }};width:{{ thumbW }};height:10px;border-radius:5px;background:#C3D0DC;transition:left .9s cubic-bezier(.4,.05,.2,1);"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:12px;height:40px;display:flex;align-items:center;justify-content:center;gap:16px;font-size:11.5px;color:#33465C;z-index:3;">
+      <span>Results Per Page:</span><span style="font-weight:600;">50 ▾</span><span style="margin-left:14px;">1–50 of 51</span>
+      <span style="margin-left:14px;display:flex;align-items:center;gap:14px;color:#93A2B4;">‹<span style="color:#33465C;border-bottom:1px solid #33465C;">1</span><span>2</span>›</span>
+    </div>
+  </sc-if>
+
+  <!-- ═══ QUOTE / SHIP — INBOUND MOVE ═══ -->
+  <sc-if value="{{ sQs }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;height:96px;background:#fff;z-index:5;">
+      <div style="position:absolute;left:20px;top:14px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship</div>
+      <div style="position:absolute;left:20px;top:56px;display:flex;gap:30px;font-size:10.5px;font-weight:700;letter-spacing:.05em;">
+        <span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:8px;">GENERAL</span>
+        <span style="color:#5E7186;padding-bottom:8px;">PRODUCT DETAILS</span>
+        <span style="color:#5E7186;padding-bottom:8px;">ADDITIONAL DETAILS</span>
+        <span style="color:#5E7186;padding-bottom:8px;">DOCUMENTS</span>
+      </div>
+      <div style="position:absolute;right:20px;top:26px;display:flex;align-items:center;gap:12px;">
+        <div style="position:relative;width:220px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;gap:8px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Order Import</span><span style="color:#8A97A8;">⚙</span>PO-45118<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">START CONSOLIDATION</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">RECENT QUOTES</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:14px 16px;">TEMPLATES</span>
+        <div style="position:relative;width:150px;height:44px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#24354A;"><span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 5px;font-size:10.5px;color:#B57A13;">Process Date</span>08/16/2026<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+      </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:140px;bottom:0;background:#EDF2F9;z-index:2;"></div>
+
+    <div style="position:absolute;left:20px;top:156px;width:690px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:14.5px;color:#33465C;">Locations<span style="font-size:12px;color:#5E7186;">Inbound · PO-45118</span></div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="position:relative;height:46px;border:1.5px solid {{ fromBorder }};border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#4088CF;">Ship From · vendor on the PO</span>Ramsey Corp, 65 New Jersey 17, Ramsey, NJ, 07446<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#2C6DB5;">⇅ SWAP FROM &amp; TO</span>
+        <div style="position:relative;height:46px;border:1.5px solid {{ toBorder }};border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#4088CF;">Ship To · your warehouse</span>Lake Forest DC, 25601 Commercentre Dr, Lake Forest, CA<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#2C6DB5;">✓ VERIFY ADDRESSES</span>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:20px;top:404px;width:690px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:14.5px;color:#33465C;">Shipment Details<span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:8px 12px;">+ ADD OUTER HANDLING UNIT</span></div>
+      <div style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:12px;font-size:12.5px;color:#33465C;"><span style="color:#5E7186;">⌃ ⠿</span><b>8</b><span>48x40x52 @ 4,260 lb</span><span style="color:#5E7186;">From the PO lines</span><span style="margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#2C6DB5;">CUBISCAN ···</span></div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Quantity</span>8</div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Type</span>Pallet<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Freight Class</span>70<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+          <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.04em;padding:15px 10px;text-align:center;">INNER PIECES</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:730px;right:20px;top:156px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;padding:0 16px;font-size:14.5px;color:#33465C;">Schedule Pickup</div>
+      <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Pickup Date</span>08/18/2026<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+        <div style="position:relative;height:46px;border:1.5px solid {{ etaBorder }};border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;transition:border-color .3s;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Delivery Date</span>{{ etaValue }}<span style="margin-left:auto;color:#5E7186;">▦</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Ready Time</span>09:00 am<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Close Time</span>04:00 pm<span style="margin-left:auto;color:#5E7186;">◷</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Dock</span><span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Equipment</span>0 selected<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:730px;right:20px;top:352px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(16,42,67,.10);z-index:3;">
+      <div style="height:42px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;padding:0 16px;font-size:14.5px;color:#33465C;">Carrier</div>
+      <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Carrier</span>Rate Shop<span style="margin-left:auto;color:#4088CF;">⌕</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Service</span><span style="margin-left:auto;color:#5E7186;">▾</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Payee</span>Sender<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+        <div style="position:relative;height:46px;border:1px solid #DDE4EC;border-radius:3px;display:flex;align-items:center;padding:0 11px;font-size:12.5px;color:#24354A;"><span style="position:absolute;top:-8px;left:9px;background:#fff;padding:0 5px;font-size:10px;color:#B57A13;">Payment Type</span>Prepaid (Carrier Account Sel…<span style="margin-left:auto;color:#5E7186;">▾</span></div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:110px;height:52px;background:#fff;border:1px solid #E1E7EF;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:6;">
+      <div style="display:flex;gap:20px;font-size:12.5px;color:#3A4B60;white-space:nowrap;"><span>Total Outer Handling Units: 0</span><span>Total Handling Units: 8</span><span>Total Weight: 4,260 LB</span><span>Total Linear Feet: 7</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+        <span style="border:1px solid #C9D4E0;border-radius:3px;color:#33465C;font-size:13px;font-weight:700;padding:8px 13px 12px;line-height:1;">···</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">CLEAR SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">PREVIEW BOL</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">SAVE SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:11px;font-weight:700;letter-spacing:.05em;padding:12px 15px;">SPOT QUOTE</span>
+        <span style="background:{{ rateShopBg }};color:#fff;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.05em;padding:13px 17px;transition:background .3s;">RATE SHOP</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ RATES ═══ -->
+  <sc-if value="{{ sRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:44px;height:76px;background:#fff;z-index:5;">
+      <div style="position:absolute;left:20px;top:16px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship (Quote Id: 46277520)</div>
+      <div style="position:absolute;left:20px;top:48px;font-size:12px;color:#5E7186;">Inbound PO-45118 · Ramsey Corp, Ramsey NJ → Lake Forest DC, CA</div>
+      <div style="position:absolute;right:20px;top:28px;display:flex;align-items:center;gap:20px;font-size:12.5px;color:#3A4B60;"><span>Total Handling Units: <b>8</b></span><span>Total Weight: <b>4,260 LB</b></span><span>Total Linear Feet: <b>7</b></span></div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:120px;bottom:0;background:#EDF2F9;z-index:2;"></div>
+    <div style="position:absolute;left:20px;right:20px;top:140px;background:#fff;border:1px solid #E3E9F0;border-radius:3px;z-index:3;animation:ibUp .3s both;">
+      <div style="height:44px;background:#F0F3F7;border-bottom:1px solid #E5EAF0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:14.5px;color:#33465C;">Rates<span style="font-size:12px;color:#5E7186;">Your carriers, your accounts — on inbound freight</span></div>
+      <div style="display:flex;align-items:center;height:34px;background:#F7F9FC;border-bottom:1px solid #EDF1F6;font-size:11px;font-weight:700;color:#33465C;padding:0 18px;"><span style="width:56px;"></span><span style="width:320px;">Carrier</span><span style="width:180px;">Mode / Service</span><span style="width:140px;">Transit</span><span style="width:180px;">Est. Arrival</span><span style="width:140px;text-align:right;">Total</span></div>
+      <sc-for list="{{ rates }}" as="r" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;height:46px;border-bottom:1px solid #EDF1F6;font-size:12.5px;color:#3C4B5C;padding:0 18px;background:{{ r.bg }};">
+          <span style="width:56px;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid {{ r.radio }};background:{{ r.radioFill }};"></span></span>
+          <span style="width:320px;font-weight:600;color:#1B2B3D;">{{ r.carrier }}</span><span style="width:180px;">{{ r.service }}</span><span style="width:140px;">{{ r.transit }}</span><span style="width:180px;">{{ r.eta }}</span><span style="width:140px;text-align:right;font-weight:700;color:#1B2B3D;">{{ r.total }}</span>
+          <span style="margin-left:auto;border:1px solid #B9CDE8;border-radius:3px;color:#2C6DB5;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:9px 16px;background:{{ r.shipBg }};transition:background .3s;">SHIP</span>
+        </div>
+      </sc-for>
+      <div style="padding:14px 18px;font-size:12.5px;color:#5E7186;white-space:normal;line-height:1.5;">Inbound moves rate and book the same way outbound does — on your negotiated accounts, not the vendor's markup.</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:480px;top:640px;width:480px;box-sizing:border-box;background:#EFF7E9;border:1px solid #CFE3BE;border-radius:4px;padding:12px 16px;display:flex;gap:11px;z-index:14;animation:ibUp .3s both;">
+      <svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#4E9A3D" stroke-width="2"></circle><path d="M7 12.5 L10.5 16 L17 8" fill="none" stroke="#4E9A3D" stroke-width="2.4"></path></svg>
+      <div><div style="font-size:13px;font-weight:700;color:#24354A;">Inbound shipment booked</div><div style="font-size:12px;color:#3A4B60;margin-top:3px;white-space:normal;">{{ toastBody }}</div></div>
+      <span style="margin-left:auto;color:#5E7186;font-size:13px;">✕</span>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:ibClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  COLS = [
+    ["PO Number",120],["Order Type",100],["Ship From Company Id",145],["Ship From Company Name",180],["Ship From Attention To",160],["Ship From Address",170],["Ship From Address 2",140],["Ship From City",130],["Ship From State",110],
+    ["Ship From Zip",110],["Ship From Country",130],["Ship From Email",190],["Ship From Phone",150],
+    ["Ship To Company Id",140],["Ship To Company Name",180],["Ship To Attention To",160],["Ship To Address",190],["Ship To City",140],["Ship To State",110],["Ship To Zip",110],["Ship To Country",120],["Ship To Email",190],["Ship To Phone",140],
+    ["Can Ship",95],["Can Arrive",100],["Required Ship Date",150],["Required Arrival Date",160],
+    ["SO Number",120],["Carrier",130],["Service",130],["Freight Paid By",130],["Total Quantity Left",140],["Quantity to Ship",130],["Quantity Shipped",140],
+    ["Item Number",130],["Item Description",210],["HTS Code",120],["Country of Origin",140],["Price",100],["Total",110],
+    ["Product Line Status",150],["Picking Status",130],["Ship By Date",130],["Total Handling Units",150],["Total Cubic Ft",130],["Weight per Product",150],["Weight U/M",110],["Product Category",150],
+    ["ERP Carrier",130],["ERP Carrier Service",160],["ERP Transaction Date",160]
+  ];
+  BASE = [
+    { po: "PO-45118", sfcId: "68096084", vendor: "Ramsey Corp", attn: "John Delaney", addr: "65 New Jersey 17", city: "Ramsey", state: "NJ", zip: "07446", email: "jdelaney@ramseycorp.com", phone: "+1 201-934-8200",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "SO1231", reqShip: "08/18/2026", reqArr: "08/22/2026", qtyLeft: "8", item: "MFLD-2200", itemDesc: "Hydraulic manifold, 2 in", hts: "8481809000", price: "412.00", total: "3,296.00",
+      lineStatus: "Open", pick: "", hu: "8", cuft: "312", wpp: "532", cat: "Manifolds", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-45119", sfcId: "68096084", vendor: "Ramsey Corp", attn: "John Delaney", addr: "65 New Jersey 17", city: "Ramsey", state: "NJ", zip: "07446", email: "jdelaney@ramseycorp.com", phone: "+1 201-934-8200",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "SO1231", reqShip: "08/18/2026", reqArr: "08/22/2026", qtyLeft: "12", item: "SEAL-118", itemDesc: "Seal kit, viton", hts: "8484100000", price: "38.50", total: "462.00",
+      lineStatus: "Open", pick: "", hu: "2", cuft: "44", wpp: "14", cat: "Seals", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-45126", sfcId: "31959478", vendor: "Rapid Logistics BV", attn: "Jonathan Smith", addr: "Incheonweg 7", city: "Rozenburg", state: "", zip: "1437 EK", email: "jsmith@rapidlogistics.nl", phone: "+31 20-491-2200",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "", reqShip: "08/19/2026", reqArr: "09/02/2026", qtyLeft: "1000", item: "GSKT-090", itemDesc: "Gasket, 90 mm", hts: "8484100000", price: "9.40", total: "9,400.00",
+      lineStatus: "Open", pick: "", hu: "6", cuft: "188", wpp: "22", cat: "Seals", erpCarrier: "RateShop", erpService: "Ocean" },
+    { po: "PO-45131", sfcId: "31959478", vendor: "Rapid Logistics BV", attn: "Jonathan Smith", addr: "Incheonweg 7", city: "Rozenburg", state: "", zip: "1437 EK", email: "jsmith@rapidlogistics.nl", phone: "+31 20-491-2200",
+      toId: "44120871", to: "Rancho DC", toAttn: "Dock Team", toAddr: "1 Rancho Cir", toCity: "Rancho Santa Margarita", toState: "CA", toZip: "92688", toEmail: "dock@ranchodc.com", toPhone: "949-712-4180",
+      so: "", reqShip: "08/19/2026", reqArr: "09/02/2026", qtyLeft: "1000", item: "VLVE-310", itemDesc: "Control valve, 3 in", hts: "8481804000", price: "128.00", total: "128,000.00",
+      lineStatus: "Open", pick: "", hu: "10", cuft: "402", wpp: "36", cat: "Valves", erpCarrier: "RateShop", erpService: "Ocean" },
+    { po: "PO-1020", sfcId: "19056841", vendor: "Closter Supply Co", attn: "Kevin Johnson", addr: "1 Maplewood Rd", city: "Closter", state: "NJ", zip: "07624", email: "kjohnson@clostersupply.com", phone: "+1 800-503-9805",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "", reqShip: "08/20/2026", reqArr: "08/26/2026", qtyLeft: "100", item: "SRVO-450", itemDesc: "Servo drive, 450 W", hts: "8504408500", price: "600.00", total: "60,000.00",
+      lineStatus: "Open", pick: "", hu: "2", cuft: "58", wpp: "22", cat: "Drives", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-1019", sfcId: "19056841", vendor: "Closter Supply Co", attn: "Matthew Lynch", addr: "1 Maplewood Rd", city: "Closter", state: "NJ", zip: "07624", email: "mlynch@clostersupply.com", phone: "+1 800-503-9805",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "", reqShip: "08/20/2026", reqArr: "08/26/2026", qtyLeft: "100", item: "PUMP-780", itemDesc: "Gear pump, 780 series", hts: "8413602000", price: "1,480.00", total: "148,000.00",
+      lineStatus: "Open", pick: "", hu: "2", cuft: "66", wpp: "32", cat: "Pumps", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-1018", sfcId: "19056841", vendor: "Closter Supply Co", attn: "Maria Miles", addr: "1 Maplewood Rd", city: "Closter", state: "NJ", zip: "07624", email: "mmiles@clostersupply.com", phone: "+1 800-503-9805",
+      toId: "44120871", to: "Rancho DC", toAttn: "Dock Team", toAddr: "1 Rancho Cir", toCity: "Rancho Santa Margarita", toState: "CA", toZip: "92688", toEmail: "dock@ranchodc.com", toPhone: "949-712-4180",
+      so: "", reqShip: "08/21/2026", reqArr: "08/27/2026", qtyLeft: "100", item: "BRNG-220", itemDesc: "Roller bearing, 220 mm", hts: "8482500000", price: "72.00", total: "7,200.00",
+      lineStatus: "Open", pick: "", hu: "2", cuft: "40", wpp: "12", cat: "Bearings", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-1017", sfcId: "19056841", vendor: "Closter Supply Co", attn: "Desiree Key", addr: "1 Maplewood Rd", city: "Closter", state: "NJ", zip: "07624", email: "dkey@clostersupply.com", phone: "+1 800-503-9805",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "", reqShip: "08/21/2026", reqArr: "08/27/2026", qtyLeft: "100", item: "HOSE-410", itemDesc: "Hydraulic hose, 4 ft", hts: "4009310000", price: "44.00", total: "4,400.00",
+      lineStatus: "Open", pick: "", hu: "2", cuft: "34", wpp: "9", cat: "Hoses", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-1016", sfcId: "19056841", vendor: "Closter Supply Co", attn: "David Villarreal", addr: "1 Maplewood Rd", city: "Closter", state: "NJ", zip: "07624", email: "dvillarreal@clostersupply.com", phone: "+1 800-503-9805",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "", reqShip: "08/22/2026", reqArr: "08/28/2026", qtyLeft: "100", item: "FLTR-050", itemDesc: "Inline filter, 50 micron", hts: "8421290000", price: "26.00", total: "2,600.00",
+      lineStatus: "Open", pick: "", hu: "1", cuft: "18", wpp: "6", cat: "Filters", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-1015", sfcId: "19056841", vendor: "Closter Supply Co", attn: "Cody Hill", addr: "1 Maplewood Rd", city: "Closter", state: "NJ", zip: "07624", email: "chill@clostersupply.com", phone: "+1 800-503-9805",
+      toId: "44120871", to: "Rancho DC", toAttn: "Dock Team", toAddr: "1 Rancho Cir", toCity: "Rancho Santa Margarita", toState: "CA", toZip: "92688", toEmail: "dock@ranchodc.com", toPhone: "949-712-4180",
+      so: "", reqShip: "08/22/2026", reqArr: "08/28/2026", qtyLeft: "100", item: "CPLG-118", itemDesc: "Shaft coupling, 118 mm", hts: "8483600000", price: "58.00", total: "5,800.00",
+      lineStatus: "Open", pick: "", hu: "1", cuft: "22", wpp: "8", cat: "Couplings", erpCarrier: "RateShop", erpService: "LTL" },
+    { po: "PO-1014", sfcId: "51220913", vendor: "Pacific Drayage Co", attn: "Ana Reyes", addr: "2826 W Roosevelt St", city: "Phoenix", state: "AZ", zip: "85009", email: "areyes@pacificdrayage.com", phone: "+1 602-441-7700",
+      toId: "31959478", to: "Lake Forest DC", toAttn: "Shipping and Receiving", toAddr: "25601 Commercentre Dr", toCity: "Lake Forest", toState: "CA", toZip: "92630", toEmail: "receiving@lakeforestdc.com", toPhone: "949-595-8244",
+      so: "", reqShip: "08/23/2026", reqArr: "08/25/2026", qtyLeft: "40", item: "MTR-900", itemDesc: "Gearmotor, 900 W", hts: "8501520000", price: "780.00", total: "31,200.00",
+      lineStatus: "Open", pick: "", hu: "3", cuft: "96", wpp: "48", cat: "Motors", erpCarrier: "RateShop", erpService: "LTL" }
+  ];
+  RATES = [
+    { carrier: "Old Dominion Freight Line", service: "LTL Standard", transit: "4 days", eta: "08/22/2026", total: "$862.40", bg: "#EAF2FB", radio: "#2C6DB5", radioFill: "#2C6DB5" },
+    { carrier: "XPO Logistics", service: "LTL Standard", transit: "4 days", eta: "08/22/2026", total: "$901.15", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" },
+    { carrier: "A Duie Pyle", service: "LTL Standard", transit: "5 days", eta: "08/23/2026", total: "$948.70", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" },
+    { carrier: "Werner Enterprises", service: "FTL Dry Van", transit: "3 days", eta: "08/21/2026", total: "$1,640.00", bg: "#fff", radio: "#B4C0CE", radioFill: "#fff" }
+  ];
+
+  A0 = { playing: true, cap: "01 · Open Inbound Transactions — every PO on its way to you",
+    scene: "inbound", curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    hoverRow: -1, booked: false, sweep: false, sweepStart: 0, sweepEnd: 1, parkAt: 0,
+    fromBorder: "#DDE4EC", toBorder: "#DDE4EC", etaBorder: "#DDE4EC", etaValue: "MM/DD/YYYY",
+    rateShopHot: false, shipHot: false, toastOn: false, toastBody: "" };
+  DUR = 57;
+  KF = [
+    { t: 2.6, s: { cap: "02 · Purchase orders arrive from the ERP with the vendor on them" } },
+    { t: 4.0, s: { sweep: true, sweepStart: 4.0, sweepEnd: 16.0, cap: "03 · Vendor contact, ship-to facility, dates, line detail, ERP fields" } },
+    { t: 16.0, s: { sweep: false, parkAt: 99999, cap: "07 · Every field the PO carries, in one queue" } },
+    { t: 19.0, s: { parkAt: 0, cap: "08 · Back to the front of the record" } },
+    { t: 22.6, s: { curX: 1351, curY: 249, hoverRow: 0, ripple: true, ripX: 1351, ripY: 249, cap: "09 · Open the PO to move it" } },
+    { t: 23.4, s: { ripple: false, hoverRow: -1, scene: "qs", curX: 700, curY: 300, cap: "10 · The PO becomes a shipment you control" } },
+    { t: 25.6, s: { fromBorder: "#4088CF", cap: "11 · Ship From is the vendor on the purchase order" } },
+    { t: 28.0, s: { fromBorder: "#DDE4EC", toBorder: "#4088CF", cap: "12 · Ship To is your own dock" } },
+    { t: 30.4, s: { toBorder: "#DDE4EC", cap: "13 · Handling units and class come off the PO lines" } },
+    { t: 33.0, s: { curX: 1368, curY: 673, rateShopHot: true, cap: "14 · Rate it on your carriers, not the vendor's" } },
+    { t: 33.8, s: { ripple: true, ripX: 1368, ripY: 673 } },
+    { t: 34.4, s: { ripple: false, rateShopHot: false, scene: "rates", curX: 700, curY: 400, cap: "15 · Rates on inbound freight, on your accounts" } },
+    { t: 38.0, s: { curX: 1350, curY: 268, shipHot: true, cap: "16 · Book it" } },
+    { t: 38.8, s: { ripple: true, ripX: 1350, ripY: 268 } },
+    { t: 39.4, s: { ripple: false, shipHot: false, scene: "inbound", booked: true, parkAt: 2400, curX: 700, curY: 300,
+      toastOn: true, toastBody: "PO-45118 booked with Old Dominion. Arrival 08/22/2026, tracking on the inbound record.",
+      cap: "17 · Back in the queue with a carrier and an arrival date" } },
+    { t: 44.0, s: { toastOn: false, cap: "18 · The dock can see what is coming before it arrives" } },
+    { t: 48.0, s: { parkAt: 0, cap: "19 · Incoming inventory is visible before it reaches the warehouse" } },
+    { t: 52.0, s: { cap: "20 · Procurement freight in the same system as fulfillment" } },
+    { t: 56.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const colsRaw = this.COLS;
+    const KEYS = ["po","type","sfcId","vendor","attn","addr","addr2","city","state","zip","country","email","phone",
+      "toId","to","toAttn","toAddr","toCity","toState","toZip","toCountry","toEmail","toPhone",
+      "canShip","canArrive","reqShip","reqArr",
+      "so","carrier","service","paidBy","qtyLeft","qtyToShip","qtyShipped",
+      "item","itemDesc","hts","coo","price","total",
+      "lineStatus","pick","shipBy","hu","cuft","wpp","wum","cat",
+      "erpCarrier","erpService","erpDate"];
+    const DEFAULTS = { type: "", addr2: "", country: "US", toCountry: "US", canShip: "NO", canArrive: "NO",
+      carrier: "RateShop", service: "", paidBy: "Sender", qtyToShip: "0", qtyShipped: "0", coo: "US", pick: "", shipBy: "", wum: "LB", erpDate: "08/16/2026" };
+    const rows = this.BASE.map((o, i) => {
+      const first = i === 0;
+      const src = { ...DEFAULTS, ...o };
+      if (first && a.booked) { src.carrier = "Old Dominion"; src.service = "LTL Standard"; src.canShip = "YES"; src.canArrive = "YES"; }
+      return {
+        bg: first && a.booked ? "#F2FAF1" : "#fff",
+        pencilBg: a.hoverRow === i ? "#EAF1FB" : "transparent",
+        cells: KEYS.map((k, j) => ({ t: src[k] === undefined ? "" : src[k], w: colsRaw[j] ? colsRaw[j][1] : 120,
+          color: j === 0 ? "#2C6DB5" : "#3C4B5C", deco: j === 0 ? "underline" : "none" }))
+      };
+    });
+    const totalW = this.COLS.reduce((n, c) => n + c[1], 34);
+    const maxScroll = Math.max(0, totalW - 1330);
+    let off = 0;
+    if (a.sweep) {
+      const span = Math.max(0.1, a.sweepEnd - a.sweepStart);
+      const p = Math.max(0, Math.min(1, (this.t - a.sweepStart) / span));
+      off = maxScroll * p;
+    } else { off = Math.min(a.parkAt || 0, maxScroll); }
+    let acc = 34, hlIdx = -1;
+    for (let k = 0; k < this.COLS.length; k++) {
+      const w = this.COLS[k][1];
+      if (acc + w > off + 40 && acc < off + 300) { hlIdx = k; break; }
+      acc += w;
+    }
+    const rates = this.RATES.map((r, i) => ({ ...r, shipBg: i === 0 && a.shipHot ? "#EAF1FB" : "#fff" }));
+    const cols = colsRaw.map((c, k) => ({ t: c[0], w: c[1],
+      color: k === hlIdx ? "#14263C" : "#33465C",
+      bg: k === hlIdx ? "#D8E8F8" : "transparent" }));
+    return { ...a, rows, rates, cols,
+      scrollX: "-" + off + "px",
+      thumbLeft: (maxScroll ? (off / maxScroll) * 74 : 0).toFixed(1) + "%",
+      hlIdx: hlIdx,
+      thumbW: "26%",
+      sInbound: a.scene === "inbound", sQs: a.scene === "qs", sRates: a.scene === "rates",
+      navOrders: a.scene === "inbound" ? "#fff" : "#C7D3E0",
+      navQs: a.scene === "qs" || a.scene === "rates" ? "#fff" : "#C7D3E0",
+      navTrack: "#C7D3E0",
+      rateShopBg: a.rateShopHot ? "#1F63A8" : "#4088CF",
+      scale: this.scaleVal,
+      paused: !a.playing, playing: a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes ohDot { 0%{left:0;opacity:0;} 12%{opacity:1;} 88%{opacity:1;} 100%{left:100%;opacity:0;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#051729;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#051729;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;">
+
+  <div style="position:absolute;left:72px;top:64px;right:72px;">
+    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#3DD6B5;">Order to fulfillment</div>
+    <div style="font-family:'Manrope',sans-serif;font-weight:400;font-size:40px;line-height:1.1;letter-spacing:-.02em;color:#fff;margin-top:6px;">One order, from capture<br>to fulfillment.</div>
+  </div>
+
+  <div style="position:absolute;left:72px;right:72px;top:248px;display:flex;align-items:stretch;gap:0;">
+    <div style="flex:1;background:#0A2540;border:1.5px solid {{ omsBorder }};border-radius:16px;padding:24px;transition:border-color .4s;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:8px;background:{{ omsChip }};display:flex;align-items:center;justify-content:center;transition:background .4s;"><svg width="20" height="20" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="{{ omsIcon }}" stroke-width="1.8"></rect><path d="M8 9 L16 9 M8 13 L16 13 M8 17 L13 17" stroke="{{ omsIcon }}" stroke-width="1.8"></path></svg></div>
+        <div><div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;color:#7A96B0;">OMS</div><div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:24px;letter-spacing:-.01em;color:#fff;">Order Management</div></div>
+      </div>
+      <div style="font-size:15px;line-height:1.5;color:#B5CDE0;margin-top:16px;">The order arrives from the ERP, storefront or portal with its lines, addresses and dates already validated.</div>
+      <div style="font-size:13px;color:#7A96B0;margin-top:14px;">Order captured</div>
+    </div>
+
+    <div style="width:96px;display:flex;align-items:center;justify-content:center;">
+      <div style="position:relative;width:72px;height:2px;background:{{ flow1Bg }};transition:background .4s;">
+        <sc-if value="{{ flow1 }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:#3DD6B5;animation:ohDot 1.6s linear infinite;"></span>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="flex:1;background:#0A2540;border:1.5px solid {{ wmsBorder }};border-radius:16px;padding:24px;transition:border-color .4s;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:8px;background:{{ wmsChip }};display:flex;align-items:center;justify-content:center;transition:background .4s;"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 10 L12 4 L21 10 L21 20 L3 20 Z" fill="none" stroke="{{ wmsIcon }}" stroke-width="1.8"></path><path d="M9 20 L9 13 L15 13 L15 20" fill="none" stroke="{{ wmsIcon }}" stroke-width="1.8"></path></svg></div>
+        <div><div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;color:#7A96B0;">WMS</div><div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:24px;letter-spacing:-.01em;color:#fff;">Warehouse</div></div>
+      </div>
+      <div style="font-size:15px;line-height:1.5;color:#B5CDE0;margin-top:16px;">The same order becomes the pick, with bins, lots and license plates recorded against it as the work happens.</div>
+      <div style="font-size:13px;color:#7A96B0;margin-top:14px;">Order fulfilled</div>
+    </div>
+
+    <div style="width:96px;display:flex;align-items:center;justify-content:center;">
+      <div style="position:relative;width:72px;height:2px;background:{{ flow2Bg }};transition:background .4s;">
+        <sc-if value="{{ flow2 }}" hint-placeholder-val="{{ false }}">
+          <span style="position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:#3DD6B5;animation:ohDot 1.6s linear infinite;"></span>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="flex:1;background:#0A2540;border:1.5px solid {{ tmsBorder }};border-radius:16px;padding:24px;transition:border-color .4s;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:8px;background:{{ tmsChip }};display:flex;align-items:center;justify-content:center;transition:background .4s;"><svg width="20" height="20" viewBox="0 0 26 20"><path d="M1 3 L14 3 L14 14 L1 14 Z M14 6.5 L19 6.5 L24 11 L24 14 L14 14 Z" fill="none" stroke="{{ tmsIcon }}" stroke-width="1.8"></path><circle cx="6" cy="16.5" r="2.2" fill="{{ tmsIcon }}"></circle><circle cx="19" cy="16.5" r="2.2" fill="{{ tmsIcon }}"></circle></svg></div>
+        <div><div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;color:#7A96B0;">TMS</div><div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:24px;letter-spacing:-.01em;color:#fff;">Transportation</div></div>
+      </div>
+      <div style="font-size:15px;line-height:1.5;color:#B5CDE0;margin-top:16px;">The packed result rates, books and ships, then tracking and freight cost write back to the order.</div>
+      <div style="font-size:13px;color:#7A96B0;margin-top:14px;">Order delivered, cost written back</div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:72px;right:72px;top:560px;height:1px;background:rgba(255,255,255,.10);"></div>
+
+  <div style="position:absolute;left:72px;right:72px;top:596px;">
+    <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:18px;color:#fff;">What one vendor across the handoff buys you</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:20px;">
+      <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="4">
+        <div style="display:flex;gap:12px;opacity:{{ b.op }};transform:translateY({{ b.y }});transition:opacity .5s,transform .5s;">
+          <svg width="18" height="18" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px;"><path d="M4 12.5 L9.5 18 L20 6" fill="none" stroke="#3DD6B5" stroke-width="2.4"></path></svg>
+          <div><div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;color:#fff;">{{ b.title }}</div><div style="font-size:14px;line-height:1.5;color:#B5CDE0;margin-top:5px;">{{ b.body }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(10,37,64,.9);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  BEN = [
+    { title: "No integration to maintain", body: "OMS, WMS and TMS are the same system, so there is no middleware, no mapping and nothing to re-sync when a field changes." },
+    { title: "One record end to end", body: "Inventory, pick detail, carrier, tracking and freight cost all live on the order everyone is already looking at." },
+    { title: "One contract, one support call", body: "A single vendor, one login and one team accountable when something needs fixing." },
+    { title: "Decisions made once", body: "Consolidation, mode and pack decisions carry through fulfillment instead of being re-made at the dock." }
+  ];
+  A0 = { playing: true, stage: 0, flow1: false, flow2: false, shown: 0 };
+  DUR = 22;
+  KF = [
+    { t: 1.6, s: { stage: 1 } },
+    { t: 3.4, s: { flow1: true } },
+    { t: 4.2, s: { stage: 2 } },
+    { t: 6.0, s: { flow2: true } },
+    { t: 6.8, s: { stage: 3 } },
+    { t: 9.0, s: { shown: 1 } },
+    { t: 9.8, s: { shown: 2 } },
+    { t: 10.6, s: { shown: 3 } },
+    { t: 11.4, s: { shown: 4 } },
+    { t: 21.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim, on = (n) => a.stage >= n;
+    const b = (n) => on(n) ? "#3DD6B5" : "rgba(255,255,255,.06)";
+    const chip = (n) => on(n) ? "rgba(61,214,181,.14)" : "rgba(122,150,176,.14)";
+    const icon = (n) => on(n) ? "#3DD6B5" : "#7A96B0";
+    return { ...a,
+      omsBorder: b(1), wmsBorder: b(2), tmsBorder: b(3),
+      omsChip: chip(1), wmsChip: chip(2), tmsChip: chip(3),
+      omsIcon: icon(1), wmsIcon: icon(2), tmsIcon: icon(3),
+      flow1Bg: a.flow1 ? "rgba(61,214,181,.45)" : "rgba(255,255,255,.10)",
+      flow2Bg: a.flow2 ? "rgba(61,214,181,.45)" : "rgba(255,255,255,.10)",
+      benefits: this.BEN.map((x, i) => ({ ...x, op: a.shown > i ? "1" : "0", y: a.shown > i ? "0px" : "10px" })),
+      scale: this.scaleVal,
+      paused: !a.playing, playing: a.playing,
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap
+    };
+  }
+}
+</script>
+</body>
+</html>

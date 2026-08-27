@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srSpin { to{transform:rotate(360deg);} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <!-- TOP NAV -->
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+      <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;">
+    </div>
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;">
+      <svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg>
+      <span style="color:#9AA7B8;font-size:11px;">Search</span>
+    </div>
+    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;">
+      <span>Orders</span><span style="color:{{ navShipColor }};font-weight:{{ navShipWeight }};">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span style="color:{{ navCoColor }};font-weight:{{ navCoWeight }};">Company</span>
+    </div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <!-- TITLE + TABS -->
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
+    <sc-if value="{{ showRules }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+        <span>GENERAL</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">SHIPPING APPROVAL RULE</span><span>DISPATCHING</span><span>LOCATIONS</span><span>DOCUMENTS</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{ showShip }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+        <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- ═══ RULES PAGE ═══ -->
+  <sc-if value="{{ showRules }}" hint-placeholder-val="{{ true }}">
+    <!-- Settings card -->
+    <div style="position:absolute;left:30px;top:132px;width:400px;height:330px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Shipping Approval Rules</div>
+      <div style="display:flex;flex-direction:column;gap:18px;padding:20px 16px;">
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;flex-shrink:0;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Enable Shipping Approval Rules</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;flex-shrink:0;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Allow Order Import Without Approval</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#C6D0DC;position:relative;display:inline-block;flex-shrink:0;"><span style="position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Auto Delete Orders with Rejected Status</span>
+      </div>
+      <div style="position:absolute;left:16px;top:190px;width:200px;height:42px;border:1px solid #E1E7EF;border-radius:4px;background:#F7F9FB;"><span style="position:absolute;top:-7px;left:10px;background:#F7F9FB;padding:0 4px;font-size:10px;color:#8A97A8;">Delete After (days)</span></div>
+      <div style="position:absolute;left:16px;top:258px;right:16px;font-size:11.5px;line-height:1.5;color:#5E7186;white-space:normal;">Orders can be imported for rate shopping, but cannot ship until all required approvals are met.</div>
+    </div>
+
+    <!-- Rules grid -->
+    <div style="position:absolute;left:450px;top:132px;width:960px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:44px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Approval Rules</span><span style="background:{{ addRuleBg }};border-radius:4px;padding:9px 14px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">+ ADD RULE</span></div>
+      <div style="position:absolute;left:0;right:0;top:44px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+        <span style="position:absolute;left:44px;top:8px;">Rule Name</span><span style="position:absolute;left:250px;top:8px;">Criteria</span><span style="position:absolute;left:560px;top:8px;">Approvers</span><span style="position:absolute;left:730px;top:8px;">Use Rule In</span><span style="position:absolute;left:890px;top:8px;">Enabled</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:76px;">
+        <sc-for list="{{ ruleRows }}" as="r" hint-placeholder-count="2">
+          <div style="{{ r.rowStyle }}">
+            <span style="position:absolute;left:16px;top:16px;color:#8A97A8;font-size:13px;letter-spacing:2px;">⋮⋮</span>
+            <span style="position:absolute;left:44px;top:16px;font-size:12.5px;font-weight:600;color:#24354A;">{{ r.name }}</span>
+            <span style="position:absolute;left:250px;top:16px;font-size:12px;color:#3A4B60;">{{ r.crit }}</span>
+            <span style="position:absolute;left:560px;top:16px;font-size:12px;color:#3A4B60;">{{ r.appr }}</span>
+            <span style="position:absolute;left:730px;top:16px;font-size:12px;color:#3A4B60;">{{ r.use }}</span>
+            <span style="position:absolute;left:890px;top:16px;width:28px;height:15px;border-radius:8px;background:#4088CF;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:16px;bottom:14px;font-size:11.5px;color:#8A97A8;">Rules execute in the order they are structured — drag to reprioritize.</div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ ADD RULE MODAL ═══ -->
+  <sc-if value="{{ showModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+    <div style="position:absolute;left:360px;top:110px;width:720px;height:568px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:srFadeUp .3s ease both;">
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:600;color:#14263C;">Add Shipping Approval Rule</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="position:absolute;left:24px;top:66px;display:flex;gap:32px;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Enable Rule</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#C6D0DC;position:relative;display:inline-block;"><span style="position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Stop Processing Additional Rules</span>
+      </div>
+      <div style="position:absolute;left:24px;top:112px;width:400px;height:42px;border:1.5px solid {{ nameBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Rule Name</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ ruleName }}<sc-if value="{{ nameFocus }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:srBlink 1s infinite;"></span></sc-if></div></div>
+      <div style="position:absolute;left:440px;top:112px;width:256px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Use Rule In</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Orders &amp; Quote/Ship</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:10px;top:17px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+      <div style="position:absolute;left:24px;top:182px;font-size:12px;font-weight:700;color:#24354A;letter-spacing:.03em;">RULE CRITERIA</div>
+      <div style="position:absolute;left:24px;top:208px;width:230px;height:42px;border:1.5px solid {{ critFieldBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Field Name</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ critField }}</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:10px;top:17px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+      <div style="position:absolute;left:270px;top:208px;width:200px;height:42px;border:1.5px solid {{ critOpBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Operator</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ critOp }}</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:10px;top:17px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+      <div style="position:absolute;left:486px;top:208px;width:210px;height:42px;border:1.5px solid {{ critValBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Field Value</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ critVal }}</div></div>
+      <div style="position:absolute;left:24px;top:268px;font-size:11.5px;color:#8A97A8;white-space:normal;width:672px;">Operators: Equals To · Exists · Contains · Does Not Equal To. Hazmat, International and User approvals use Equals To + True.</div>
+      <div style="position:absolute;left:24px;top:318px;font-size:12px;font-weight:700;color:#24354A;letter-spacing:.03em;">RULE APPROVERS</div>
+      <div style="position:absolute;left:24px;top:344px;width:672px;height:52px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;gap:8px;padding:0 12px;">
+        <sc-if value="{{ apprOn }}" hint-placeholder-val="{{ false }}">
+          <span style="background:#EAF3FF;border:1px solid #B9CDE8;border-radius:14px;padding:5px 12px;font-size:12px;color:#1F5FBF;animation:srFadeUp .3s both;">Compliance Team ✕</span>
+          <span style="background:#EAF3FF;border:1px solid #B9CDE8;border-radius:14px;padding:5px 12px;font-size:12px;color:#1F5FBF;animation:srFadeUp .3s .12s both;">J. Meyers (Manager) ✕</span>
+        </sc-if>
+        <sc-if value="{{ apprOff }}" hint-placeholder-val="{{ true }}"><span style="font-size:12.5px;color:#9AA7B8;">Select users or enable Manager Approval</span></sc-if>
+      </div>
+      <div style="position:absolute;left:24px;top:414px;font-size:12px;font-weight:700;color:#24354A;letter-spacing:.03em;">RULE DECLINE REASONS <span style="font-weight:400;color:#8A97A8;">(optional, max 15)</span></div>
+      <div style="position:absolute;left:24px;top:440px;width:672px;height:42px;border:1px solid #E1E7EF;border-radius:4px;background:#F7F9FB;"><div style="padding:12px 0 0 12px;font-size:12.5px;color:#9AA7B8;">e.g. Missing hazmat documentation</div></div>
+      <div style="position:absolute;right:24px;bottom:22px;display:flex;gap:10px;">
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 16px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+        <span style="background:{{ saveBg }};border-radius:4px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">SAVE RULE</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ SHIP SCENE ═══ -->
+  <sc-if value="{{ showShip }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ showBookedBanner }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:30px;top:128px;width:1380px;height:42px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;z-index:3;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">Approved by J. Meyers — shipment processed with FedEx Freight. Approval recorded on the audit trail.</span></div>
+    </sc-if>
+    <!-- Locations -->
+    <div style="position:absolute;left:30px;top:{{ shipTopA }};width:690px;height:130px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Locations</div>
+      <div style="position:absolute;left:20px;top:50px;width:315px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship From</span><div style="padding:12px 10px 0 12px;font-size:12.5px;color:#2A3B50;white-space:nowrap;overflow:hidden;">FreightPOP, 1 Rancho Circle, Lake Forest, CA</div></div>
+      <div style="position:absolute;left:355px;top:50px;width:315px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Ship To</span><div style="padding:12px 10px 0 12px;font-size:12.5px;color:#2A3B50;white-space:nowrap;overflow:hidden;">Phoenix Chemical Supply, Phoenix, AZ, 85043</div></div>
+    </div>
+    <!-- Shipment Details -->
+    <div style="position:absolute;left:30px;top:{{ shipTopB }};width:690px;height:260px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Shipment Details</div>
+      <div style="position:absolute;left:0;top:36px;right:0;height:34px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid #EDF1F6;"><svg width="10" height="10" viewBox="0 0 24 24"><path d="M4 15 L12 7 L20 15" fill="none" stroke="#5E7186" stroke-width="3"></path></svg><span style="font-size:12.5px;font-weight:600;color:#24354A;">4 DRUM | 23x23x35 @ 410 lb | 85</span><span style="font-size:11px;color:#8A97A8;">UN1830 Sulfuric Acid, PG II</span></div>
+      <div style="position:absolute;left:20px;top:92px;display:flex;flex-direction:column;gap:14px;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#2A3B50;"><span style="width:28px;height:15px;border-radius:8px;background:#C6D0DC;position:relative;display:inline-block;"><span style="position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Non Stackable</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#2A3B50;border-radius:6px;padding:4px 8px;margin:-4px -8px;box-shadow:{{ hazShadow }};transition:box-shadow .3s;"><span style="width:28px;height:15px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Hazmat</span>
+      </div>
+      <div style="position:absolute;left:340px;top:96px;width:330px;height:100px;border:1px solid #F0D9A6;background:#FDF6E7;border-radius:6px;padding:12px 14px;white-space:normal;">
+        <div style="font-size:11px;font-weight:700;color:#9A7B2D;letter-spacing:.05em;">⚠ HAZMAT SHIPMENT</div>
+        <div style="font-size:12px;color:#6E5A28;line-height:1.5;margin-top:6px;">UN1830 · Class 8 Corrosive · PG II. Emergency contact and DG declaration attached from product catalog.</div>
+      </div>
+    </div>
+    <!-- Carrier -->
+    <div style="position:absolute;left:740px;top:{{ shipTopA }};width:670px;height:130px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Carrier</div>
+      <div style="position:absolute;left:20px;top:50px;width:305px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Carrier</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">FedEx Freight</div></div>
+      <div style="position:absolute;left:345px;top:50px;width:305px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Service</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Priority · 2 Day</div></div>
+    </div>
+    <!-- Approval status -->
+    <sc-if value="{{ apprStatusOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:740px;top:{{ shipTopB }};width:670px;height:180px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);animation:srFadeUp .35s both;">
+        <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Shipment Approval Status</div>
+        <div style="position:absolute;left:20px;top:54px;right:20px;display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:13px;font-weight:700;color:#24354A;">Hazmat Approval</div><div style="font-size:11.5px;color:#5E7186;margin-top:4px;">Rule criteria: Hazmat Approval · Equals To · True</div></div>
+          <sc-if value="{{ apprPending }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;gap:8px;background:#FDF3DC;border-radius:12px;padding:5px 12px;font-size:11px;font-weight:700;color:#9A7B2D;letter-spacing:.04em;"><span style="width:12px;height:12px;border-radius:50%;border:2.5px solid #E8CF96;border-top-color:#C79A38;animation:srSpin .9s linear infinite;display:inline-block;"></span>PENDING</span></sc-if>
+          <sc-if value="{{ apprApproved }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;gap:7px;background:#E7F4E4;border-radius:12px;padding:5px 12px;font-size:11px;font-weight:700;color:#2E5E33;letter-spacing:.04em;animation:srFadeUp .3s both;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg>APPROVED</span></sc-if>
+        </div>
+        <div style="position:absolute;left:20px;top:112px;right:20px;height:1px;background:#EDF1F6;"></div>
+        <div style="position:absolute;left:20px;top:128px;font-size:12px;color:#3A4B60;">Approvers: Compliance Team · J. Meyers (Manager) <span style="color:#8A97A8;">— notified by email &amp; in-app</span></div>
+      </div>
+    </sc-if>
+    <!-- Bottom bar -->
+    <div style="position:absolute;left:0;right:0;top:758px;height:52px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:9px;padding:0 24px;z-index:6;">
+      <div style="display:flex;gap:24px;font-size:12px;color:#3A4B60;white-space:nowrap;"><span>Total Handling Units: <b>4</b></span><span>Total Weight: <b>1,640 LB</b></span><span>Quote: <b>612.80 USD</b></span></div>
+      <div style="margin-left:auto;display:flex;gap:9px;align-items:center;">
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 12px;color:#24354A;font-size:10.5px;font-weight:700;letter-spacing:.04em;">CLEAR SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:4px;padding:10px 12px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">PREVIEW BOL</span>
+        <span style="border:1px solid #B9CDE8;border-radius:4px;padding:10px 12px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SAVE SHIPMENT</span>
+        <span style="background:{{ shipBg }};border-radius:4px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:background .2s;">SHIP</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ APPROVAL REQUIRED MODAL ═══ -->
+  <sc-if value="{{ showApprModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+    <div style="position:absolute;left:440px;top:210px;width:560px;height:330px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:srFadeUp .3s ease both;">
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;padding:0 24px;gap:10px;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M12 2 L23 21 L1 21 Z" fill="#E8A33D"></path><rect x="11" y="9" width="2" height="6" fill="#fff"></rect><rect x="11" y="17" width="2" height="2" fill="#fff"></rect></svg><span style="font-size:16px;font-weight:600;color:#14263C;">Approval Required</span></div>
+      <div style="padding:20px 24px;white-space:normal;">
+        <div style="font-size:13px;color:#3A4B60;line-height:1.55;">This shipment triggered the rule <b>Hazmat Approval</b> and is blocked from processing until approved.</div>
+        <div style="margin-top:14px;background:#F7F9FB;border:1px solid #E1E7EF;border-radius:6px;padding:12px 14px;">
+          <div style="font-size:11px;color:#5E7186;">Rule criteria met</div>
+          <div style="font-size:13px;font-weight:600;color:#24354A;margin-top:4px;">Hazmat Approval · Equals To · True</div>
+          <div style="font-size:11.5px;color:#5E7186;margin-top:6px;">Approval request sent to Compliance Team and J. Meyers (Manager).</div>
+        </div>
+        <div style="margin-top:16px;width:100%;height:42px;border:1px solid #C6D0DC;border-radius:4px;position:relative;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Approval Password (override)</span></div>
+      </div>
+      <div style="position:absolute;right:24px;bottom:20px;display:flex;gap:10px;">
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 16px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+        <span style="background:#4088CF;border-radius:4px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;">SUBMIT FOR APPROVAL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ OVERLAYS ═══ -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
+  </sc-if>
+
+  <!-- CURSOR -->
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { scene: "rules", modal: false, playing: true, cap: "01 · Open the rules engine",
+    curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    addRuleBg: "#4088CF", ruleAdded: false,
+    ruleName: "", nameFocus: false, nameBorder: "#C6D0DC",
+    critField: "", critFieldBorder: "#C6D0DC", critOp: "", critOpBorder: "#C6D0DC", critVal: "", critValBorder: "#C6D0DC",
+    apprOn: false, saveBg: "#4088CF",
+    hazShadow: "none", shipBg: "#4088CF",
+    apprModal: false, apprStatusOn: false, apprApproved: false, booked: false };
+  DUR = 26;
+  KF = [
+    { t: 0.6, s: { curX: 1320, curY: 166 } },
+    { t: 1.3, s: { ripple: true, ripX: 1320, ripY: 166, addRuleBg: "#1557B0" } },
+    { t: 1.7, s: { ripple: false, modal: true, addRuleBg: "#4088CF", cap: "02 · Define the rule once", nameFocus: true, nameBorder: "#4088CF", curX: 470, curY: 245 } },
+    { t: 4.0, s: { nameFocus: false, nameBorder: "#C6D0DC", curX: 470, curY: 340 } },
+    { t: 4.6, s: { ripple: true, ripX: 470, ripY: 340, critFieldBorder: "#4088CF" } },
+    { t: 4.9, s: { ripple: false, critField: "Hazmat Approval" } },
+    { t: 5.5, s: { curX: 690, curY: 340, critFieldBorder: "#C6D0DC" } },
+    { t: 6.0, s: { ripple: true, ripX: 690, ripY: 340, critOpBorder: "#4088CF" } },
+    { t: 6.3, s: { ripple: false, critOp: "Equals To" } },
+    { t: 6.9, s: { curX: 900, curY: 340, critOpBorder: "#C6D0DC" } },
+    { t: 7.4, s: { ripple: true, ripX: 900, ripY: 340, critValBorder: "#4088CF" } },
+    { t: 7.7, s: { ripple: false, critVal: "True" } },
+    { t: 8.4, s: { critValBorder: "#C6D0DC", apprOn: true, curX: 600, curY: 480 } },
+    { t: 9.6, s: { curX: 1010, curY: 645 } },
+    { t: 10.3, s: { ripple: true, ripX: 1010, ripY: 645, saveBg: "#1557B0" } },
+    { t: 10.7, s: { ripple: false, modal: false, ruleAdded: true, saveBg: "#4088CF", cap: "03 · Live company-wide, instantly", curX: 900, curY: 320 } },
+    { t: 13.2, s: { scene: "ship", cap: "04 · A hazmat order comes in", curX: 300, curY: 500 } },
+    { t: 14.4, s: { hazShadow: "0 0 0 3px rgba(64,136,207,.20)", curX: 120, curY: 458 } },
+    { t: 15.8, s: { hazShadow: "none", curX: 1370, curY: 782 } },
+    { t: 16.6, s: { ripple: true, ripX: 1370, ripY: 782, shipBg: "#1557B0" } },
+    { t: 17.0, s: { ripple: false, apprModal: true, shipBg: "#4088CF", cap: "05 · The rule fires at ship time", curX: 940, curY: 508 } },
+    { t: 19.4, s: { ripple: true, ripX: 940, ripY: 508 } },
+    { t: 19.8, s: { ripple: false, apprModal: false, apprStatusOn: true, curX: 1100, curY: 620 } },
+    { t: 21.6, s: { apprApproved: true, cap: "06 · Approved — full audit trail" } },
+    { t: 22.4, s: { booked: true } },
+  ];
+  TYPERS = [
+    { t0: 2.1, dur: 1.6, field: "ruleName", text: "Hazmat Approval", until: Infinity },
+  ];
+  RULES = [
+    { name: "Shipment Cost > $5,000", crit: "Total Cost · Greater Than · 5000", appr: "J. Meyers", use: "Quote/Ship" },
+    { name: "International Orders", crit: "International Approval · Equals To · True", appr: "T. Alvarez", use: "Orders & Quote/Ship" },
+    { name: "Hazmat Approval", crit: "Hazmat Approval · Equals To · True", appr: "Compliance Team", use: "Orders & Quote/Ship", added: true },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start();
+    else this.forceUpdate();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._onResize);
+    cancelAnimationFrame(this._raf);
+  }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() {
+    if (!this._wrap) return;
+    const s = this._wrap.offsetWidth / 1440;
+    if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); }
+  }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame();
+    this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() {
+    while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; }
+    for (const ty of this.TYPERS) {
+      if (this.t >= ty.t0 && this.t < ty.until) {
+        const frac = Math.min(1, (this.t - ty.t0) / ty.dur);
+        this.anim[ty.field] = ty.text.slice(0, Math.round(frac * ty.text.length));
+      }
+    }
+  }
+  seek(t) {
+    const playing = this.anim.playing;
+    this.t = t; this._ki = 0;
+    this.anim = { ...this.A0, playing };
+    this._applyFrame();
+  }
+  togglePlay = () => {
+    this.anim.playing = !this.anim.playing;
+    if (this.anim.playing) this._start();
+    this.forceUpdate();
+  };
+  restart = (e) => {
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+    if (e) e.stopPropagation();
+    this.seek(0);
+    if (!this.anim.playing) { this.anim.playing = true; }
+    this._start();
+    this.forceUpdate();
+  };
+  renderVals() {
+    const a = this.anim;
+    const rows = a.ruleAdded ? this.RULES : this.RULES.slice(0, 2);
+    const ruleRows = rows.map((r, i) => ({ ...r,
+      rowStyle: "position:relative;height:48px;border-bottom:1px solid #EDF1F6;background:" + (r.added ? "#EAF3FF" : "#fff") + ";" + (r.added ? "animation:srFadeUp .4s both;" : ""),
+    }));
+    return {
+      ...a,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      pageTitle: a.scene === "rules" ? "Company / Rules" : "Quote/Ship (Order: SO-88214)",
+      showRules: a.scene === "rules", showModal: a.modal,
+      showShip: a.scene === "ship", showApprModal: a.apprModal,
+      apprPending: a.apprStatusOn && !a.apprApproved,
+      showBookedBanner: a.booked,
+      shipTopA: a.booked ? "186px" : "132px", shipTopB: a.booked ? "332px" : "278px",
+      apprOff: !a.apprOn,
+      navCoColor: a.scene === "rules" ? "#fff" : "#C7D3E0", navCoWeight: a.scene === "rules" ? "600" : "400",
+      navShipColor: a.scene === "ship" ? "#fff" : "#C7D3E0", navShipWeight: a.scene === "ship" ? "600" : "400",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      ruleRows,
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

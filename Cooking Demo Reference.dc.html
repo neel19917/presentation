@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+doc-page:not(:defined){visibility:hidden}
+body { margin:0; }
+a { color:#146F8C; } a:hover { color:#0A4557; }
+</style>
+<script src="./doc-page.js"></script>
+</helmet>
+<doc-page margin="0.7in">
+  <div slot="header" style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #D8DFE7;padding-bottom:7px;font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.09em;text-transform:uppercase;color:#7E8B99;">
+    <span>FreightPOP TMS Sales Deck v17 — Cooking Demo Reference</span><span>Internal</span>
+  </div>
+  <div slot="footer" style="display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid #D8DFE7;padding-top:7px;font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.09em;text-transform:uppercase;color:#7E8B99;">
+    <span>July 28, 2026</span><span>35 demos · 1440×810 canvas each</span>
+  </div>
+
+  <h1 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:27pt;line-height:1.1;letter-spacing:-.02em;color:#0A2540;margin:0 0 10px;">What each cooking demo shows</h1>
+  <p style="font-family:'Manrope',sans-serif;font-size:11.5pt;line-height:1.55;color:#3A4B60;margin:0 0 18px;max-width:6.2in;">A screen-by-screen account of all 35 animated walkthroughs in the deck — the FreightPOP page each one imitates, the navigation it performs, and what a prospect actually sees move. Read this before a live pitch so the demo and your narration agree.</p>
+
+  <div style="border:1px solid #D8DFE7;border-radius:6px;background:#F7F9FC;padding:13px 16px;margin:0 0 22px;break-inside:avoid;">
+    <div style="font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.09em;text-transform:uppercase;color:#146F8C;margin-bottom:7px;">How every demo is built</div>
+    <p style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.6;color:#3A4B60;margin:0;">Each one is a 1440×810 reconstruction of the real app — dark navy top nav with the FreightPOP mark, global search, the module tabs, the white page-title bar with its sub-tabs, and grey-blue cards with <span style="font-family:'DM Mono',monospace;font-size:9pt;">#F3F6FA</span> headers. A synthetic cursor moves, clicks ripple, fields type themselves, and a teal caption strip in the lower left names the current step while a teal progress bar runs along the bottom. Click the frame to pause, use the circular arrow to replay, and Expand to blow it up full-screen. No demo shows a real login or real customer data — the companies, orders and PROs are invented; the screens, fields and behaviour are not.</p>
+  </div>
+
+  <h2 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15pt;color:#0A2540;margin:26px 0 4px;border-bottom:2px solid #0A2540;padding-bottom:6px;">Transportation Management (TMS)</h2>
+
+  <sc-for list="{{ tms }}" as="d" hint-placeholder-count="20">
+    <div style="break-inside:avoid;margin:18px 0 0;">
+      <h3 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:12.5pt;color:#0A2540;margin:0 0 3px;">{{ d.card }}</h3>
+      <div style="font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.05em;color:#7E8B99;margin-bottom:7px;">{{ d.meta }}</div>
+      <p style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.6;color:#3A4B60;margin:0 0 7px;">{{ d.screen }}</p>
+      <ol style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.55;color:#3A4B60;margin:0;padding-left:18px;">
+        <sc-for list="{{ d.steps }}" as="s" hint-placeholder-count="6"><li style="margin-bottom:3px;">{{ s }}</li></sc-for>
+      </ol>
+      <sc-if value="{{ d.note }}" hint-placeholder-val="{{ false }}">
+        <p style="font-family:'Manrope',sans-serif;font-size:9.5pt;line-height:1.55;color:#8A5A12;background:#FFF9EE;border-left:3px solid #E8A33D;padding:7px 11px;margin:8px 0 0;">{{ d.note }}</p>
+      </sc-if>
+    </div>
+  </sc-for>
+
+  <h2 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15pt;color:#0A2540;margin:30px 0 4px;border-bottom:2px solid #0A2540;padding-bottom:6px;break-before:page;">Order Management (OMS)</h2>
+
+  <sc-for list="{{ oms }}" as="d" hint-placeholder-count="9">
+    <div style="break-inside:avoid;margin:18px 0 0;">
+      <h3 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:12.5pt;color:#0A2540;margin:0 0 3px;">{{ d.card }}</h3>
+      <div style="font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.05em;color:#7E8B99;margin-bottom:7px;">{{ d.meta }}</div>
+      <p style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.6;color:#3A4B60;margin:0 0 7px;">{{ d.screen }}</p>
+      <ol style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.55;color:#3A4B60;margin:0;padding-left:18px;">
+        <sc-for list="{{ d.steps }}" as="s" hint-placeholder-count="6"><li style="margin-bottom:3px;">{{ s }}</li></sc-for>
+      </ol>
+      <sc-if value="{{ d.note }}" hint-placeholder-val="{{ false }}">
+        <p style="font-family:'Manrope',sans-serif;font-size:9.5pt;line-height:1.55;color:#8A5A12;background:#FFF9EE;border-left:3px solid #E8A33D;padding:7px 11px;margin:8px 0 0;">{{ d.note }}</p>
+      </sc-if>
+    </div>
+  </sc-for>
+
+  <h2 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15pt;color:#0A2540;margin:30px 0 4px;border-bottom:2px solid #0A2540;padding-bottom:6px;break-before:page;">Warehouse Management (WMS)</h2>
+
+  <sc-for list="{{ wms }}" as="d" hint-placeholder-count="6">
+    <div style="break-inside:avoid;margin:18px 0 0;">
+      <h3 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:12.5pt;color:#0A2540;margin:0 0 3px;">{{ d.card }}</h3>
+      <div style="font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.05em;color:#7E8B99;margin-bottom:7px;">{{ d.meta }}</div>
+      <p style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.6;color:#3A4B60;margin:0 0 7px;">{{ d.screen }}</p>
+      <ol style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.55;color:#3A4B60;margin:0;padding-left:18px;">
+        <sc-for list="{{ d.steps }}" as="s" hint-placeholder-count="6"><li style="margin-bottom:3px;">{{ s }}</li></sc-for>
+      </ol>
+      <sc-if value="{{ d.note }}" hint-placeholder-val="{{ false }}">
+        <p style="font-family:'Manrope',sans-serif;font-size:9.5pt;line-height:1.55;color:#8A5A12;background:#FFF9EE;border-left:3px solid #E8A33D;padding:7px 11px;margin:8px 0 0;">{{ d.note }}</p>
+      </sc-if>
+    </div>
+  </sc-for>
+
+  <h2 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15pt;color:#0A2540;margin:30px 0 4px;border-bottom:2px solid #0A2540;padding-bottom:6px;break-before:page;">Fidelity — where I'm certain and where I'm not</h2>
+  <p style="font-family:'Manrope',sans-serif;font-size:10.5pt;line-height:1.6;color:#3A4B60;margin:10px 0 12px;">Every demo was built from Confluence documentation and recorded customer calls rather than from a screen recording, so accuracy varies by feature. Three tiers:</p>
+  <sc-for list="{{ fidelity }}" as="f" hint-placeholder-count="3">
+    <div style="break-inside:avoid;margin:0 0 13px;border-left:3px solid {{ f.color }};padding-left:13px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9pt;letter-spacing:.07em;text-transform:uppercase;color:{{ f.color }};margin-bottom:5px;">{{ f.tier }}</div>
+      <p style="font-family:'Manrope',sans-serif;font-size:10pt;line-height:1.6;color:#3A4B60;margin:0;">{{ f.body }}</p>
+    </div>
+  </sc-for>
+</doc-page>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  TMS = [
+    { card: "01 · Shipping Rules Engine", meta: "ShippingRulesDemo · 26s · Settings › Company › Rules, then Quote/Ship",
+      screen: "Opens on the Shipping Approval Rules configuration screen, then cuts to a live Quote/Ship page where the rule it just wrote fires on a real hazmat order. Two screens, one story.",
+      steps: ["Rules engine opens — the existing approval-rule list is visible.", "A new rule is composed: condition, carrier restriction, approver.", "Saved — it goes live company-wide with no deploy.", "Scene change: a hazmat order (4 DRUM, 23×23×35, 410 lb, class 85) is entered on Quote/Ship.", "At ship time the rule intercepts it and sets Shipment Approval Status.", "Approved, with the audit trail attached to the shipment."] },
+    { card: "02 · Users, Roles & Permissions", meta: "UsersRolesDemo · 21s · Settings › User Manager",
+      screen: "The User Manager grid — Name, Email, User Type, Role, Warehouse, Visibility and an active dot — then the Add User form beside an Allowed Screens permission grid.",
+      steps: ["Grid of eight users, mixing Standard, Sales, Vendor and Customer types.", "Row menu opens on M. Torres; Clone is chosen.", "The Add User form appears carrying a 'cloned from M. Torres' badge; name, email and phone type themselves.", "Role dropdown opens and switches Shipping Manager → Customer Service. The Allowed Screens panel on the right instantly rewrites: Quote/Ship, Carrier Management, Reports, Audit and Company Settings turn off; Track becomes the default screen.", "User Visibility radio moves to 'Show Default Warehouse Shipments'.", "A user-level markup of 8% is typed into Advanced Settings.", "Save — the grid returns with Dana Alvarez at the top, flagged NEW, and a green confirmation strip."] },
+    { card: "03 · Carrier Management", meta: "CarrierMgmtDemo · 24s · Carrier Management",
+      screen: "The Registered Carriers grid — the full carrier network in one table with account, mode and site scope.",
+      steps: ["The grid loads with the existing carrier list.", "A regional LTL carrier is added.", "It is enabled across every site at once.", "The connection verifies live on screen.", "It appears rating on the very next quote — no EDI project."] },
+    { card: "04 · Rate Shopping", meta: "RateShopDemo · 24s · Quote/Ship (the flagship demo)",
+      screen: "The full Quote/Ship page: Locations, Shipment Details, Schedule Pickup, Carrier and Favorite Accessorials cards, then the Rates grid, then the booked Shipment Details record.",
+      steps: ["Ship To is typed — 'University of Tennessee, Knoxville, TN'.", "The Address Validator modal opens with side-by-side maps and suggested addresses; one is selected.", "Freight is described: 10 pallets, 48×40×60, 150 lb each — density, cubic feet and class 250 calculate themselves.", "Carrier is left on 'Rate Shop'.", "RATE SHOP is clicked; a spinner rates parcel, LTL, FTL and air, then four services return with LOWEST RATE flagged.", "The booked view appears — quote ID, shipment ID, tracking numbers, BOL and labels generated."] },
+    { card: "05 · Spot Quoting & Bid Portal", meta: "SpotQuoteDemo · 1:49 · Carrier setup → Quote/Ship → Carrier Portal → Shipment Details",
+      screen: "One continuous run: Add Carrier (General and Contacts), that carrier's spot quote settings, Quote/Ship on an FTL lane, the Spot Quote Request modal, the carrier's email and bid portal, the message center, the rates grid with the bid merged in, the booked shipment, its Documents tab, and the carrier-side rankings.",
+      steps: ["A user-defined carrier is created in five fields — name, type, mode, SCAC, account number.", "The Contacts tab opens empty; three contacts are added through the Contact Information drawer, each landing as a row in the grid.", "Carrier spot quote settings: POD upload required before the carrier can mark delivered, and invoices submitted as PDFs.", "Quote/Ship is filled — lane, pallet count and dimensions; freight class calculates itself the moment weight and dims are entered.", "RATE SHOP returns three API rates on an FTL lane; SPOT QUOTE sits in the same header.", "The request modal fills bid due date, required arrival time and special instructions.", "A Spot Quote Group of three carriers is chosen — one send instead of three emails; all three appear on the grid as pending rows.", "The carrier's email arrives with the load facts and a link into the portal.", "The portal shows load facts, instructions, a three-field bid entry, SUBMIT BID and the submitted confirmation with quote number.", "In FreightPOP the message center badge appears; the view-quote button opens the returned bid — $3,285.00, under every API rate — with the cost breakdown behind it.", "Ridgeline is awarded, SHIP IT books the load and the PRO/tracking number is entered.", "The booked Shipment Details record appears; the Documents tab scrolls the full set FreightPOP generates off the shipment — BOL, labels, pick list, manifests, customs forms.", "Closes on the carrier portal's own bid list: their bid, their rank and status — rank only, never a competitor's amount or name."] },
+    { card: "06 · Address & Accessorial Checks", meta: "AccessorialDemo · 21s · Quote/Ship",
+      screen: "Quote/Ship with a Locations card, a Shipment Details card and a full-height Accessorials card, then the Rates grid with per-accessorial columns.",
+      steps: ["A residential destination is typed: 418 Sycamore Ln, Marietta, GA.", "VERIFY ADDRESSES opens the Address Validator — origin verified commercial, destination flagged Residential with a warning block and a house-shaped map tile.", "APPLY & FLAG ACCESSORIALS closes the modal; a 'CLASSIFIED · Residential' chip appears on the Locations card.", "Residential Delivery and Destination Lift Gate toggle themselves on, each pulsing with an AUTO-FLAGGED chip; the other four accessorials stay off.", "A 'why these fired' panel explains: no dock, and 640 lb on a pallet exceeds hand-unload.", "The Rates grid appears with Base, Residential and Lift Gate as separate columns, and a footer reading invoice-vs-quote variance $0.00."] },
+    { card: "07 · Shipment Consolidation", meta: "ConsolidationDemo · 24s · Orders › Outbound, then Rates",
+      screen: "The Outbound Orders grid, a Consolidated Shipment panel and a Rates grid — four same-metro orders becoming one load.",
+      steps: ["Four orders to the same metro on the same day are showing.", "They are selected and consolidated.", "A savings comparison appears before anything is committed.", "One shipment is created; the four orders stay locked and linked to it.", "The consolidated load is rate-shopped and booked once with SAIA."] },
+    { card: "08 · Pooling & Cross-Dock", meta: "PoolingDemo · 26s · Pooling (its own top-nav item)",
+      screen: "The Pooling Transactions grid (Open / Completed tabs), then the New Pooling Transaction form, an Add Shipments modal and a Quote Comparison panel.",
+      steps: ["The pooling grid lists prior pools with Pool ID, reference, pooling point, linehaul carrier and status — including one in Error.", "ADD NEW opens the form: Pool ID 10442 is assigned automatically; the reference NE-POOL-WK31 types itself.", "The Pooling Point dropdown lists only addresses flagged as pooling points, each with its cross-dock fee; Keystone Cross-Dock, Bethlehem PA is chosen.", "Linehaul carrier, From Main Location and From Pooling Point all sit on Rate Shop; equipment is a 53' dry van; the $1,450 cross-dock fee shows read-only.", "ADD SHIPMENTS opens a picker of same-origin shipments; twenty tick on.", "Quote runs — a spinner rates all twenty individually, then the linehaul plus twenty final-mile legs.", "The comparison lands: $18,940.60 across 20 LTL loads at 6 days, versus $13,215.40 pooled at 4 days, with the cross-dock fee already inside.", "PROCESS POOLING returns to the grid with pool 10442 completed and a strip explaining the one linehaul BOL plus twenty final-mile BOLs, all carrying Pooling ID 10442."] },
+    { card: "09 · Multi-Leg Shipments", meta: "MultiLegDemo · 24s · Shipment Details 14559104",
+      screen: "A single shipment record with a Legs panel (Port of Long Beach → Austin), a Unified Tracking timeline and a Cost Roll-Up.",
+      steps: ["A port-to-door move opens as one record.", "The final-mile leg is added.", "Three carriers appear on one continuous timeline.", "Milestones roll up across the legs.", "Cost totals across drayage, linehaul and final mile in one place."] },
+    { card: "10 · Batch Shipping", meta: "BatchShipDemo · 24s · Orders, then Batch Ship",
+      screen: "An Outbound Orders release-day grid, then a batch panel rating every order at once.",
+      steps: ["Six orders sit waiting on release day.", "The whole batch is selected.", "Batch B-4471 rate-shops every order simultaneously.", "Rules and address checks run per order inside the batch.", "The batch books, labels and schedules pickup in a single pass."] },
+    { card: "11 · Parcel Shipping", meta: "ParcelDemo · 22s · Quote/Ship",
+      screen: "Quote/Ship configured for a single box, with a Dimensional Weight panel replacing the usual freight-class emphasis, then a Multi Rate Shop grid with a Mode column.",
+      steps: ["Dims 18 × 14 × 12 type into the package row against a 23 lb weight; freight class shows 'n/a — parcel'.", "The DIM panel computes live: 3,024 in³ ÷ 139 = 21.8 lb, shown beside actual weight 23.0 lb, with billable weight highlighted green at 23.0 lb.", "A DIM Factor Override dropdown swaps the carrier default 139 for a negotiated 166; the dimensional figure drops to 18.2 lb.", "RATE SHOP runs Multi Rate Shop — the same order rated boxed as parcel and palletized as LTL.", "Six rows return with a Mode chip: four PARCEL (UPS, FedEx, USPS) and two LTL, each showing its packaging and billable weight.", "A footer contrasts cheapest parcel $31.84 against cheapest LTL $142.60."] },
+    { card: "12 · Documents & BOL Control", meta: "DocsBolDemo · 21s · Shipment Details 14571908 › Documents tab",
+      screen: "A Documents list on the left with per-document print routing, and a full rendered Bill of Lading preview on the right — header, ship-from/ship-to blocks, carrier, PRO, terms, an item table and a signature line.",
+      steps: ["Six documents are listed with red PDF and blue ZPL icons: BOL v1, shipping labels, packing list, commercial invoice, pallet labels, rate confirmation.", "The printer routing field shows BOL and packing list going to the Dock 2 laser and labels to the Zebra ZT410.", "CORRECT WEIGHT opens a modal: BOL weight 1,240 lb read-only, actual weight 1,412 lb typing in, reason 'Carrier reweigh at terminal', with reissue and notify-carrier toggles on.", "On save the BOL badge flips to 'VERSION 2 — SUPERSEDES V1'; the changed weight cells highlight amber and the totals update.", "A change-log block appears on the BOL face recording the old and new weight, the reason, the user and the time.", "PRINT ALL reprints to Dock 2 and pushes the corrected weight to Old Dominion."] },
+    { card: "13 · Fleet & Dispatch", meta: "FleetDispatchDemo · 19s · Dispatch Board, week view",
+      screen: "A week grid — Mon–Fri columns across, four asset rows down (three owned trucks with named drivers, plus a contract carrier) — with load cards in the cells, an unassigned strip on top and a capacity bar per asset.",
+      steps: ["The board loads: blue FLEET cards on the trucks, purple CARRIER cards on the Greenline Transit row, two unassigned loads in the top strip.", "Truck 12's Monday runs hot — its capacity bar turns orange at 118% and the row tints amber.", "Load L-88214 lifts, tilts and shadows, and a dashed drop target outlines Tuesday on Truck 08.", "The card animates into the new cell; Truck 12 falls to 86% green and Truck 08 rises to 74%.", "A green strip confirms the driver was notified in the app and the delivery window was pushed to the customer.", "The demo ends on the contract-carrier row to make the point that brokered loads sit on the same board as owned trucks."] },
+    { card: "14 · Route Optimization", meta: "RouteOptDemo · 22s · Route Optimization (transaction RT-3318)",
+      screen: "A stop list for Truck 12 with a route metrics panel, and an optimization progress state citing the Google Route Optimization API.",
+      steps: ["Twelve stops sit in the dispatcher's original order.", "Optimization runs against the Google Route Optimization API.", "The list re-sequences — 24% fewer miles.", "The optimized route feeds straight into dispatch.", "Shipments save and the driver manifest is produced."] },
+    { card: "15 · Driver App & POD", meta: "DriverPodDemo · 25s · split screen — driver phone plus the office Track record",
+      screen: "A phone mockup on the left running the FreightPOP Driver app, and the desktop Track record for shipment 14571908 on the right with a milestone timeline and a shipment-facts panel. Both update together.",
+      steps: ["The phone shows today's six stops, three already green.", "Stop 4 opens: address, a map tile with a location pin, shipment ID, pieces, BOL weight and the delivery window, with a big ARRIVED AT STOP button.", "Arrive is tapped — on the desktop, 'Arrived at stop' lights up on the timeline, sourced DRIVER APP.", "The pieces-and-weight screen: two piece lines tick off, actual weight 1,412 lb types in, and a comment records the dock-scale reweigh.", "The POD screen: two photo tiles appear, then a signature draws itself stroke by stroke and is attributed to R. Chen, Receiving.", "MARK DELIVERED — the phone shows a green confirmation and the desktop timeline completes.", "A POD block opens on the desktop with both photos, the signature and the driver's comment, noting the weight variance is flagged to invoice audit automatically."] },
+    { card: "16 · Tracking & Notifications", meta: "TrackNotifyDemo · 20s · Track",
+      screen: "Three panels: an active-shipment grid across five different carriers, a notification trail, and a preview of the customer-facing branded tracking page.",
+      steps: ["Five shipments show with their last milestone and its source — API, EDI 214 and ELD geolocation.", "A weather hold turns one row amber: status pulses to 'Late — Weather', ETA becomes 'Jul 29 (+1 day)', and the Exceptions tab count ticks to 1.", "The row is selected and four notifications drop in one by one: customer email, internal alert to the account owner, a Message Center queue entry, and a revised-ETA publish — all timestamped 6:14 AM.", "The right panel renders the customer's view at track.northlandsupply.com, in the customer's own navy branding: expected date, the delay reason in red, a four-step progress rail, carrier and PRO, last scan and their PO number."] },
+    { card: "17 · Freight Invoice Audit", meta: "InvoiceAuditDemo · 21s · Audit",
+      screen: "A KPI strip, an invoice grid with Quoted / Invoiced / Variance columns, then a full-page audit detail modal.",
+      steps: ["Stats read 412 invoices this week, 381 auto-approved, 3 flagged, $248,910 recovered year to date.", "Six invoices list; three are amber-flagged with reasons — reweigh, liftgate not on BOL, residential surcharge.", "The Old Dominion reweigh line opens the detail modal.", "Charges compare line by line: linehaul, the +$172.00 reweigh re-rate highlighted amber, fuel, appointment, and a green credit line showing the contracted class-70 re-rate should have been $104.30.", "An explanation block ties the reweigh to the driver's POD — the weight is real, the re-rate is wrong; true exposure $67.70.", "QUEUE DISPUTE returns to the grid with the row now purple 'Disputed' and a strip confirming BOL v2, POD and rate confirmation were attached automatically."] },
+    { card: "18 · Reporting & Analytics", meta: "ReportsDemo · 22s · Analytics › Spend",
+      screen: "A filter bar, a five-tile KPI strip, a bar chart of spend by carrier and a top-lanes table — all reacting to the same filters.",
+      steps: ["The page opens on all sites, all modes: $640,000 spend, 1,842 loads, $347 per load, 94.2% on-time.", "The Site filter is set to Lake Forest — the chip turns blue and every bar and KPI animates down.", "The Mode filter narrows to LTL — the UPS Parcel and Schneider FTL bars collapse to grey stubs.", "A carrier bar is clicked; it darkens and the lane table swaps to XPO's own lanes, with sub-90% on-time figures in red.", "The insight line under the table changes with the drill-down, naming Spokane as the lane to re-bid.", "The run ends on SAVE VIEW and SCHEDULE, making the point that nobody exports to a spreadsheet."] },
+    { card: "19 · Dock Scheduling", meta: "DockSchedDemo · 22s · Dock Scheduling, Lake Forest DC",
+      screen: "A dock-day board for one site plus an Unscheduled Shipments panel.",
+      steps: ["The day's dock appointments are laid out at a glance.", "One pickup remains unscheduled.", "A carrier self-books a slot from its own portal.", "The system auto-schedules against real dock capacity.", "The appointment ID lands on the shipment record."] },
+    { card: "Unused · Auto Dispatch", meta: "AutoDispatchDemo · 24s · Auto Dispatching — Outbound Transactions",
+      screen: "The auto-dispatch queue working itself: guardrail configuration, the rules engine choosing a carrier, orders booking, tendering and labelling untouched, and exceptions peeling off to a person.",
+      steps: ["Guardrails are set once.", "The Rules Engine picks the carrier per order.", "The queue processes itself down the list.", "Orders book, tender and label with no clicks.", "Exceptions route to a human."],
+      note: "This demo is built and working but no card currently points at it — the Shipping Rules card uses its own animation. Worth attaching to a card or retiring." }
+  ];
+  OMS = [
+    { card: "01 · Order Intake", meta: "OmsSalesOrderDemo · 22s · Order Management › Open Sales Orders",
+      screen: "The open sales-order queue with orders arriving from multiple channels, then a single order opening with address validation.",
+      steps: ["Orders arrive from every channel into one queue.", "A NetSuite order lands with nothing re-typed.", "Ship From pulls from the address book.", "Validation catches a bad address.", "It is corrected at entry rather than on a truck.", "One clean record is left, ready for picking and rating."] },
+    { card: "02 · Order Management", meta: "OmsOrderMgmtDemo · 23s · Orders › Outbound",
+      screen: "The outbound order queue with tabs for Outbound, Inbound, Transfers and On Hold, a bulk-action bar, and eight orders showing their source system.",
+      steps: ["Eight orders list with sources tagged NetSuite, Shopify, EDI 850, CSV import and Portal; the action bar is greyed out with nothing selected.", "Three Denver orders tick on and the action bar lights up.", "QUOTE fills the Quoted column and flips the three rows to 'Quoted'.", "CONSOLIDATE replaces them with a single purple SH-90441 row badged '3 ORDERS · 1 SHIPMENT', 16 lines, 4,590 lb, $1,284.", "RELEASE TO SHIPPING turns it green and a strip reports $1,842 saved, with each order keeping its own tracking and ERP writeback."] },
+    { card: "03 · Quote & Ship", meta: "OmsProductDetailDemo · 22s · Order SO-99207 › Add Line Item",
+      screen: "An order's line-item entry, with catalog lookup, auto-filled classification, hazmat detail and ocean detail.",
+      steps: ["A line is added by typing the item.", "The catalog match pulls in, ERP serial included.", "Class, NMFC and packaging auto-fill.", "Hazmat detail applies from the UN/NA catalog.", "Ocean detail is captured on the order itself.", "The order is quote-ready, right the first time."],
+      note: "Content mismatch: this is a product-detail animation sitting on the Quote & Ship card, while the Product & Shipment Detail card runs the hazmat demo. Swapping the two would line each demo up with its card." },
+    { card: "04 · Product & Shipment Detail", meta: "OmsHazmatDemo · 22s · Order SO-118461 › Product Details tab",
+      screen: "A line-items table with SKU, dims, weight, class, NMFC and a flags column, a Dangerous Goods panel below it, and a Documents Queued panel to the right.",
+      steps: ["Three ordinary lines are showing; the DG panel reads 'No hazardous line items'.", "+ ADD ITEM opens a catalog search; 'acetone cleaner' types in and three results appear, the first already tagged HAZMAT · UN1263.", "Selecting it adds a fourth row on an amber tint with a HAZMAT flag, dims, weight, class 70 and NMFC 045300 all pulled from the catalog.", "The Hazmat toggle flips orange and the DG panel fills with eight read-only fields: UN1263, proper shipping name, hazard class 3, packing group II, 4G fiberboard packaging, quantity per package, CHEMTREC number and contract number.", "The Documents panel adds three amber QUEUED entries: hazmat-format BOL, Shipper's Declaration for DG, and eight class 3 hazard labels routed to the Zebra.", "The closing caption makes the compliance point: carriers that can't accept class 3 are dropped before rating."] },
+    { card: "05 · Order Consolidation", meta: "OmsConsolidationDemo · 22s · Order Management › Consolidation",
+      screen: "The day's open orders, a selection of same-destination orders, and the savings maths before committing.",
+      steps: ["The day's open orders are listed.", "Same-destination, same-day orders are selected.", "Three orders resolve to one Phoenix door.", "Consolidation happens before rating, so the savings are real.", "One shipment, one rate, one POD.", "$436 comes back on freight that was going the same way."] },
+    { card: "06 · Auto Pack", meta: "AutoPackDemo · 22s · Order SO-99252 › Packaging",
+      screen: "An order with loose items and a kit, being packed into cartons and then a palletized handling unit.",
+      steps: ["An order with loose items and a kit opens.", "Kits pack by rule — six components, every time.", "Auto Pack builds cartons and handling units.", "Eight cartons become one palletized handling unit.", "Real dims and real weight exist before the quote.", "The rate quoted is the rate paid."] },
+    { card: "07 · Third-Party & Inbound", meta: "OmsThirdPartyDemo · 20s · Order SO-118477 (big-box customer)",
+      screen: "A Carrier & Payment card, a live BOL preview, and an inbound-PO grid across the bottom.",
+      steps: ["The order opens with Payee on Sender and terms Prepaid.", "The Payee dropdown lists Sender, Recipient and Third Party with an explanatory line each; Third Party is chosen.", "Freight Payment Terms flips to Collect and shows a purple LOCKED marker; the carrier field switches to the customer's FedEx Freight account and the service to their routing-guide priority.", "A purple third-party bill-to panel appears with the customer's account number, bill-to address and routing guide revision, all drawn from the customer record.", "The BOL preview re-renders: the badge reads 'THIRD PARTY — CUSTOMER'S BOL', the bill-to block turns purple with their account, and a routing-guide compliance note appears.", "The bottom grid shows three inbound POs tracked as shipments, with Collect and Prepaid terms and one held in customs."] },
+    { card: "08 · Order-to-Fulfillment Handoff", meta: "OrderHandoffDemo · 24s · one record, SO-99260, end to end",
+      screen: "A single order record traced from capture through WMS picking, TMS rating and booking, and back to the customer-facing answer.",
+      steps: ["An order arrives and the record is created.", "It flows straight into WMS picking with no re-key.", "The picked order rate-shops and books itself.", "Tracking and cost flow back upstream.", "One screen answers the customer.", "Zero re-keys from capture to carrier."] },
+    { card: "09 · Returns & Portals", meta: "ReturnsPortalDemo · 22s · customer portal, then the internal view",
+      screen: "The scoped customer self-service portal, then your own side of the same transaction.",
+      steps: ["The customer's portal opens, scoped to only their orders.", "A delivered order needs a return.", "Item and reason are entered in the portal.", "The return label generates from default return processing.", "On your side an RMA appears — not a support ticket.", "Your team handles exceptions instead of requests."] }
+  ];
+  WMS = [
+    { card: "01 · Guided Receiving", meta: "WmsReceivingDemo · 24s · WMS › Receipts, Lake Forest DC",
+      screen: "The receipts screen with a scan-driven PO receipt, line validation and ERP posting.",
+      steps: ["The PO the TMS tracked inbound is ready to receive.", "Items scan into a bin with live validation against expected quantity.", "A partial receipt saves and can be resumed later.", "The next session closes the line and it turns green.", "Receive-to-dock is shown as an alternative, with the lot auto-filling.", "Approved — the purchase receipt posts to the ERP."] },
+    { card: "02 · License Plating & Serialized Handling", meta: "LicensePlateDemo · 23s · WMS › Bin Transfers",
+      screen: "A license plate holding 48 serials across 2 lots, moved as one unit.",
+      steps: ["A pallet is shown as one plate: 48 serials, 2 lots.", "Plate naming options — PO, job or custom schema.", "One scan of the plate…", "…and the destination bin fills itself.", "A full move keeps the original plate intact.", "Every serial and lot moves with it — a pallet, not a serial number."] },
+    { card: "03 · Put-Away & Bin Transfers", meta: "BinTransferDemo · 24s · WMS › Bin Transfers",
+      screen: "Received stock being split across three very different bins, with a remaining-quantity counter.",
+      steps: ["Received stock sits ready for put-away.", "The item scans out of QA.", "600 go to the fast-pick zone.", "250 go to a service truck — a truck is a bin.", "148 go to a job; remaining hits zero and turns green.", "Three recorded moves with who, what and when."] },
+    { card: "04 · Order Picking & Fulfillment", meta: "WmsPickingDemo · 25s · WMS › Picking, rugged scanner view",
+      screen: "A picking ticket on a handheld, with line colour states and an approval gate before writeback.",
+      steps: ["A sales order has become a picking ticket.", "It opens on the rugged scanner.", "A bin-directed scan turns the line green.", "A partial pick shows yellow until the line is filled.", "A short-key confirms the full quantity.", "An optional approval gate runs before writeback.", "Posted — the TMS record updates itself.", "The picked order books freight, one vendor end to end."] },
+    { card: "05 · Inventory Visibility & Adjustments", meta: "WmsInventoryDemo · 24s · WMS › Inventory, all locations",
+      screen: "A single item searched across nine sites, then an on-the-spot write-off with photo capture.",
+      steps: ["One item is searched across nine sites at once.", "Reno shows water-damaged stock found by a picker.", "It is written off on the spot from the scanner.", "Photos attach as QA proof and vendor RMA evidence.", "Posted — the live view is already correct.", "Nine sites, one truth, including lots, plates and expiry."] },
+    { card: "06 · Cycle Counting", meta: "CycleCountDemo · 24s · WMS › Cycle Counts",
+      screen: "A scheduled blind count with variance review and ERP adjustment writeback.",
+      steps: ["Counts run on a schedule with no shutdown.", "A blind count starts in Zone A fast movers.", "The bin is scanned and counted.", "One bin doesn't match and is flagged instantly.", "Variance review offers approve or recount.", "Approved — the adjustment writes back to NetSuite."] }
+  ];
+  FID = [
+    { tier: "Built from documented screens", color: "#0F8A6D",
+      body: "Rate Shopping, Pooling & Cross-Dock, Users/Roles, Parcel Shipping, Address & Accessorials, Shipping Rules, Carrier Management, Dock Scheduling and the WMS set follow Confluence articles that describe the actual fields, buttons and sequences. Field names, dropdown options and behaviours should match what a prospect sees in the app." },
+    { tier: "Built from transcripts and workflow logic", color: "#146F8C",
+      body: "Spot Quoting, Documents & BOL, Tracking & Notifications, Invoice Audit, Reporting, Order Management, Hazmat detail, Third-Party & Inbound. The workflow is confirmed by recorded customer calls and the data is realistic, but the exact screen layout is my reconstruction. Safe to demo; don't promise pixel parity." },
+    { tier: "Inferred — verify before a technical audience", color: "#B03A2E",
+      body: "Fleet & Dispatch (the week-by-asset board and drag-to-reschedule) and Driver App & POD (the mobile screens) are modelled on how reps describe them, not on a screenshot. If a prospect asks to see the real thing, treat these as concept illustrations. Send me screenshots and I'll rebuild them exactly." }
+  ];
+  renderVals() { return { tms: this.TMS, oms: this.OMS, wms: this.WMS, fidelity: this.FID }; }
+}
+</script>
+</body>
+</html>

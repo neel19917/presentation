@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srSpin { to{transform:rotate(360deg);} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span style="color:{{ navOrdColor }};font-weight:{{ navOrdWeight }};">Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span style="color:{{ navCoColor }};font-weight:{{ navCoWeight }};">Company</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
+    <sc-if value="{{ showConfig }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>GENERAL</span><span>SHIPPING APPROVAL RULES</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">DISPATCHING</span><span>ORDER TYPES</span><span>MARKUPS</span></div>
+    </sc-if>
+    <sc-if value="{{ showOrders }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">OUTBOUND</span><span>INBOUND</span><span>HISTORY</span></div>
+    </sc-if>
+  </div>
+
+  <!-- ═══ CONFIG SCENE ═══ -->
+  <sc-if value="{{ showConfig }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:30px;top:132px;width:680px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Auto Dispatching — Outbound Transactions</div>
+      <div style="display:flex;flex-direction:column;gap:17px;padding:20px 18px;">
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:#2A3B50;border-radius:6px;padding:4px 8px;margin:-4px -8px;box-shadow:{{ enShadow }};transition:box-shadow .3s;"><span style="{{ tgOn }}"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Enable Auto Dispatching</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="{{ tgOn }}"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Required Ship Date — today or earlier only</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="{{ tgOn }}"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Require Carrier and Service Assigned</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="{{ tgOn }}"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Auto-select carrier via Rules Engine (Best Way)</span>
+        <span style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#2A3B50;"><span style="{{ tgOff }}"><span style="position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>Auto Dispatch Inbound Transactions</span>
+      </div>
+      <div style="position:absolute;left:18px;top:262px;width:280px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Run Schedule</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Every 30 minutes</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:10px;top:17px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
+      <div style="position:absolute;left:318px;top:262px;width:280px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Exceptions Route To</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Logistics Coordinator queue</div></div>
+      <div style="position:absolute;left:18px;top:330px;right:18px;font-size:11.5px;color:#8A97A8;white-space:normal;line-height:1.55;">Orders that meet every guardrail book, tender and label themselves. Anything that misses a criterion routes to a person instead of shipping wrong.</div>
+      <div style="position:absolute;right:18px;bottom:18px;"><span style="background:{{ saveBg }};border-radius:4px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">SAVE</span></div>
+    </div>
+    <div style="position:absolute;left:740px;top:132px;width:670px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">How it runs</div>
+      <div style="padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:13px 15px;"><div style="font-size:12.5px;font-weight:700;color:#24354A;">1 · Orders arrive from your ERP</div><div style="font-size:11.5px;color:#5E7186;margin-top:4px;white-space:normal;">Imported into Outbound Transactions automatically.</div></div>
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:13px 15px;"><div style="font-size:12.5px;font-weight:700;color:#24354A;">2 · Guardrails filter the queue</div><div style="font-size:11.5px;color:#5E7186;margin-top:4px;white-space:normal;">Ship date due · carrier &amp; service assigned · rules pass.</div></div>
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:13px 15px;"><div style="font-size:12.5px;font-weight:700;color:#24354A;">3 · Qualifying orders book themselves</div><div style="font-size:11.5px;color:#5E7186;margin-top:4px;white-space:normal;">Rate, tender, confirm, label — tracking flows back. No human touch.</div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ ORDERS SCENE ═══ -->
+  <sc-if value="{{ showOrders }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;top:132px;width:1380px;height:490px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:44px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Outbound Transactions</span><span style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:#5E7186;"><span style="width:8px;height:8px;border-radius:50%;background:#3B9E4E;"></span>Auto Dispatch active · next run {{ nextRun }}</span></div>
+      <div style="position:absolute;left:0;right:0;top:44px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+        <span style="position:absolute;left:20px;top:8px;">Order #</span><span style="position:absolute;left:170px;top:8px;">Ship To</span><span style="position:absolute;left:490px;top:8px;">Required Ship</span><span style="position:absolute;left:640px;top:8px;">Carrier · Service</span><span style="position:absolute;left:930px;top:8px;">Tracking</span><span style="position:absolute;left:1150px;top:8px;">Status</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:76px;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
+          <div style="{{ r.rowStyle }}">
+            <span style="position:absolute;left:20px;top:16px;font-size:12.5px;font-weight:600;color:#24354A;">{{ r.num }}</span>
+            <span style="position:absolute;left:170px;top:16px;font-size:12px;color:#3A4B60;">{{ r.to }}</span>
+            <span style="position:absolute;left:490px;top:16px;font-size:12px;color:#3A4B60;">Today</span>
+            <span style="position:absolute;left:640px;top:16px;font-size:12px;color:#3A4B60;">{{ r.carrier }}</span>
+            <span style="position:absolute;left:930px;top:16px;font-size:12px;color:{{ r.trkColor }};">{{ r.trk }}</span>
+            <sc-if value="{{ r.spin }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:1150px;top:14px;width:14px;height:14px;border-radius:50%;border:2.5px solid #B9CDE8;border-top-color:#4088CF;animation:srSpin .8s linear infinite;display:inline-block;"></span></sc-if>
+            <sc-if value="{{ r.chip }}" hint-placeholder-val="{{ true }}"><span style="{{ r.chipStyle }}">{{ r.st }}</span></sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:16px;bottom:14px;font-size:11.5px;color:#8A97A8;">No one touched these. The exception below is the only order a person will see today.</div>
+    </div>
+    <sc-if value="{{ excOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:30px;top:638px;width:1380px;height:54px;background:#FDF6E7;border:1px solid #F0D9A6;border-radius:6px;display:flex;align-items:center;gap:12px;padding:0 18px;animation:srFadeUp .35s both;"><svg width="17" height="17" viewBox="0 0 24 24"><path d="M12 2 L23 21 L1 21 Z" fill="#E8A33D"></path><rect x="11" y="9" width="2" height="6" fill="#fff"></rect><rect x="11" y="17" width="2" height="2" fill="#fff"></rect></svg><span style="font-size:12.5px;font-weight:600;color:#6E5A28;">SO-66120 skipped — missing package weight. Routed to the Logistics Coordinator queue; everything else shipped.</span></div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ═══ OVERLAYS ═══ -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { scene: "config", playing: true, cap: "01 · Set the guardrails once",
+    curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    enShadow: "none", saveBg: "#4088CF", booked: 0, excOn: false };
+  DUR = 24;
+  KF = [
+    { t: 1.2, s: { curX: 90, curY: 210, enShadow: "0 0 0 3px rgba(64,136,207,.20)" } },
+    { t: 3.2, s: { enShadow: "none", curX: 300, curY: 430, cap: "02 · Rules Engine picks the carrier" } },
+    { t: 5.2, s: { curX: 660, curY: 660 } },
+    { t: 6.0, s: { ripple: true, ripX: 660, ripY: 660, saveBg: "#1557B0" } },
+    { t: 6.4, s: { ripple: false, scene: "orders", saveBg: "#4088CF", cap: "03 · The queue works itself", curX: 720, curY: 420 } },
+    { t: 8.2, s: { booked: 1 } },
+    { t: 9.6, s: { booked: 2, cap: "04 · Book, tender, label — no clicks" } },
+    { t: 11.0, s: { booked: 3 } },
+    { t: 12.4, s: { booked: 4 } },
+    { t: 13.8, s: { excOn: true, cap: "05 · Exceptions route to a person", curX: 700, curY: 662 } },
+    { t: 21.5, s: {} },
+  ];
+  ROWS = [
+    { num: "SO-66114", to: "Ridgeline Components, Mesa, AZ", carrier: "FedEx · Ground", trk: "782114906512" },
+    { num: "SO-66115", to: "Copper State Mfg, Tucson, AZ", carrier: "UPS · Ground", trk: "1Z442A80031194" },
+    { num: "SO-66117", to: "Sierra Instruments, Fresno, CA", carrier: "FedEx · 2Day", trk: "782114907023" },
+    { num: "SO-66119", to: "Basin Electric Supply, Las Vegas, NV", carrier: "OnTrac · Ground", trk: "D10014485320" },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); if (!this.anim.playing) { this.anim.playing = true; } this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const rows = this.ROWS.map((r, i) => {
+      const done = a.booked > i;
+      const active = a.booked === i && a.scene === "orders";
+      return { ...r, spin: active, chip: !active,
+        carrier: done ? r.carrier : (active ? "Selecting via rules…" : r.carrier),
+        trk: done ? r.trk : "—", trkColor: done ? "#4088CF" : "#8A97A8",
+        st: done ? "SHIPPED" : "OPEN",
+        chipStyle: "position:absolute;left:1150px;top:13px;border-radius:12px;padding:4px 11px;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:" + (done ? "#E7F4E4" : "#EAF3FF") + ";color:" + (done ? "#2E5E33" : "#1F5FBF") + ";" + (done ? "animation:srFadeUp .3s both;" : ""),
+        rowStyle: "position:relative;height:48px;border-bottom:1px solid #EDF1F6;background:" + (done ? "#F1F9EF" : "#fff") + ";transition:background .3s;",
+      };
+    });
+    return { ...a,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      pageTitle: a.scene === "config" ? "Company / Rules" : "Orders",
+      showConfig: a.scene === "config", showOrders: a.scene === "orders",
+      rows, nextRun: "12 min",
+      tgOn: "width:28px;height:15px;border-radius:8px;background:#4088CF;position:relative;display:inline-block;flex-shrink:0;",
+      tgOff: "width:28px;height:15px;border-radius:8px;background:#C6D0DC;position:relative;display:inline-block;flex-shrink:0;",
+      navCoColor: a.scene === "config" ? "#fff" : "#C7D3E0", navCoWeight: a.scene === "config" ? "600" : "400",
+      navOrdColor: a.scene === "orders" ? "#fff" : "#C7D3E0", navOrdWeight: a.scene === "orders" ? "600" : "400",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

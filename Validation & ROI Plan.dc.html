@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; }
+  a { color: #0A6E5C; text-decoration: none; }
+  a:hover { color: #051729; text-decoration: underline; }
+</style>
+</helmet>
+<x-import component-from-global-scope="doc-page" from="./doc-page.js" hint-size="100%,100%">
+<div style="font-family:'Inter Tight',system-ui,sans-serif;color:#12212F;font-size:11pt;line-height:1.5;text-wrap:pretty;">
+
+  <div style="display:flex;flex-direction:column;gap:6px;border-bottom:3px solid #051729;padding-bottom:14px;margin-bottom:22px;">
+    <div style="font-family:'DM Mono',monospace;font-size:8.5pt;letter-spacing:.16em;text-transform:uppercase;color:#0A6E5C;">FreightPOP · Sales Deck · Internal working doc</div>
+    <div style="font-size:23pt;font-weight:700;letter-spacing:-.02em;line-height:1.1;">Validation &amp; ROI Plan</div>
+    <div style="font-size:10.5pt;color:#4A5A69;">What proof each of the 35 demo cards needs, what evidence actually exists today, and the math for a live per-feature ROI calculator that sums to one number at the end of the pitch.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:26px;">
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:4px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#6B7A88;">Hard $ proof today</div>
+      <div style="font-size:19pt;font-weight:700;color:#051729;">1</div>
+      <div style="font-size:9pt;color:#4A5A69;">Buffalo Seal &amp; Gasket: $140,294 modeled annual savings against $23,661 ARR. The only complete dollar model in our records.</div>
+    </div>
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:4px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#6B7A88;">Post-go-live metrics</div>
+      <div style="font-size:19pt;font-weight:700;color:#B3261E;">0</div>
+      <div style="font-size:9pt;color:#4A5A69;">Every case-study intake grades Quantified Results 1/5. Alley-Cassetty and Callaway Blue have baselines only.</div>
+    </div>
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:4px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#6B7A88;">Third-party standing</div>
+      <div style="font-size:19pt;font-weight:700;color:#051729;">4.8 / 39</div>
+      <div style="font-size:9pt;color:#4A5A69;">G2: 4.8 stars across 39 reviews, 57.9% mid-market, Quality of Support 9.7, Ease of Use 9.6.</div>
+    </div>
+  </div>
+
+  <h2 style="font-size:14pt;font-weight:700;margin:0 0 8px;color:#051729;">1. The three-layer rule</h2>
+  <p style="margin:0 0 12px;">Every card carries at most three proof objects, and never a bare adjective. If a layer has no source, the card says so out loud rather than implying one.</p>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+    <div style="display:grid;grid-template-columns:120px 1fr;gap:14px;border-left:3px solid #3DD6B5;padding:10px 0 10px 14px;">
+      <div style="font-weight:600;">Metric</div>
+      <div>One number with a named origin — a customer baseline, a platform fact, or a benchmark range from the ROI tool. Ranges beat point estimates: <strong>5–15%</strong> reads as honest, <strong>12.4%</strong> reads as invented.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr;gap:14px;border-left:3px solid #3DD6B5;padding:10px 0 10px 14px;">
+      <div style="font-weight:600;">Testimony</div>
+      <div>A verbatim quote with speaker, title, company, and source. Anonymized to role + industry when the customer hasn't cleared their name.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr;gap:14px;border-left:3px solid #3DD6B5;padding:10px 0 10px 14px;">
+      <div style="font-weight:600;">ROI math</div>
+      <div>A formula taking one or two inputs from the prospect profile, producing a dollar line that drops into the running ledger. Shown as low / likely / high, never a single number.</div>
+    </div>
+  </div>
+
+  <h2 style="font-size:14pt;font-weight:700;margin:0 0 8px;color:#051729;">2. Evidence inventory</h2>
+  <p style="margin:0 0 14px;">Everything below is sourced from Confluence (case-study intakes, closed-won/lost analyses, the ROI tool spec), Fathom-derived deal records, and public review sites. Grade A = quantified and attributable. B = quoted but not quantified. C = benchmark or marketing claim, no customer number behind it.</p>
+
+  <table style="width:100%;border-collapse:collapse;font-size:9.5pt;margin-bottom:10px;">
+    <thead>
+      <tr style="background:#051729;color:#fff;text-align:left;">
+        <th style="padding:8px 10px;font-weight:600;">Evidence</th>
+        <th style="padding:8px 10px;font-weight:600;">Detail</th>
+        <th style="padding:8px 10px;font-weight:600;">Source</th>
+        <th style="padding:8px 10px;font-weight:600;width:46px;">Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Buffalo Seal &amp; Gasket ROI model</td>
+        <td style="padding:8px 10px;">$140,294 annual savings modeled; closed at $23,661 ARR on a 3-year term. Positioned as "cost of doing nothing."</td>
+        <td style="padding:8px 10px;">Closed Won analysis, Dec 22 2025</td>
+        <td style="padding:8px 10px;font-weight:700;color:#0A6E5C;">A</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Legacy TMS speed penalty</td>
+        <td style="padding:8px 10px;">Starship took 3–5 minutes per parcel shipment in the afternoon; 20–30 packages left unshipped daily as a result.</td>
+        <td style="padding:8px 10px;">Buffalo Seal discovery (Matt Brantner)</td>
+        <td style="padding:8px 10px;font-weight:700;color:#0A6E5C;">A</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Billing-error example</td>
+        <td style="padding:8px 10px;">A single $225 carrier billing discrepancy is what made freight audit land with the owner.</td>
+        <td style="padding:8px 10px;">Buffalo Seal win analysis</td>
+        <td style="padding:8px 10px;font-weight:700;color:#0A6E5C;">A</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">ROI tool benchmark ranges</td>
+        <td style="padding:8px 10px;">Rate shopping 5–15% of mode spend; invoice auditing 1–3%; volume/DIM optimization as a third lever. Per-mode overrides for parcel, LTL, FTL, ocean, air.</td>
+        <td style="padding:8px 10px;">Mode-Level ROI spec, Jan 2026</td>
+        <td style="padding:8px 10px;font-weight:700;color:#0A6E5C;">A</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Alley-Cassetty baseline</td>
+        <td style="padding:8px 10px;">49,680 deliveries/yr, 115+ owned trucks, 15 locations, ~4,000 FTL/month, ~10,000 invoices/month — all previously run on Excel, Word and pegboards.</td>
+        <td style="padding:8px 10px;">Case Study Intake, Feb 2026</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B98900;">B</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Callaway Blue baseline</td>
+        <td style="padding:8px 10px;">20 docks, single facility, ~100% customer pickup, appointments run on Excel + clipboards, no carrier no-show tracking, schedule refreshed once daily.</td>
+        <td style="padding:8px 10px;">Case Study Intake, Jun 2026</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B98900;">B</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Bulk quoting testimony</td>
+        <td style="padding:8px 10px;">"I spend many many hours quoting customers with hundreds or thousands of locations… This feature alone has saved me days of work in the last couple of months."</td>
+        <td style="padding:8px 10px;">G2 review (Catherine C.)</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B98900;">B</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Cost + payroll testimony</td>
+        <td style="padding:8px 10px;">"Saved us a TON of money in both shipment costs and payroll costs due to the saved time."</td>
+        <td style="padding:8px 10px;">G2 review (Francisco A.)</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B98900;">B</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">Reporting-driven carrier choice</td>
+        <td style="padding:8px 10px;">"The reporting allowed us to save considerable money by illuminating which carriers can deliver each kind of product at the lowest cost and highest service levels." Same reviewer cites 85 carriers on one system.</td>
+        <td style="padding:8px 10px;">Software Advice review</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B98900;">B</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">ERP re-key error elimination</td>
+        <td style="padding:8px 10px;">"An extra number here or there when manually keyed has killed us on shipments in the past… This problem is virtually eliminated now."</td>
+        <td style="padding:8px 10px;">G2 review</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B98900;">B</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">"Up to 30% freight spend reduction"</td>
+        <td style="padding:8px 10px;">Public marketing claim on our own listings. Use only as a ceiling next to the 5–15% modeled range — never as the working assumption in a live model.</td>
+        <td style="padding:8px 10px;">GetApp listing</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B3261E;">C</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">"40% increase in on-time deliveries"</td>
+        <td style="padding:8px 10px;">Currently on the Route Optimization card. <strong>No source found in Confluence, deal records, or public material.</strong> Replace with a sourced claim or drop it.</td>
+        <td style="padding:8px 10px;">Unsourced — deck copy only</td>
+        <td style="padding:8px 10px;font-weight:700;color:#B3261E;">C</td>
+      </tr>
+      <tr style="border-bottom:1px solid #E3E9EE;">
+        <td style="padding:8px 10px;font-weight:600;">ROI qualification threshold</td>
+        <td style="padding:8px 10px;">100+ freight shipments/month is the stated ICP threshold for strong ROI. Below it, price objections are the norm.</td>
+        <td style="padding:8px 10px;">Acumatica partner training, May 2026</td>
+        <td style="padding:8px 10px;font-weight:700;color:#0A6E5C;">A</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 10px;font-weight:600;">Known calculator failure</td>
+        <td style="padding:8px 10px;">Hero Bread (closed lost): "The questions asked would not be great for determining our ROI." A one-person shipping team needed absolute cost reduction, not labor-efficiency gains.</td>
+        <td style="padding:8px 10px;">Closed Lost analysis, Mar 2025</td>
+        <td style="padding:8px 10px;font-weight:700;color:#0A6E5C;">A</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin:0 0 24px;font-size:9.5pt;color:#4A5A69;">Net read: our freight-cost math is defensible, our labor math is anecdotal, and we have no post-implementation numbers from any customer. The calculator therefore has to be transparent about which lines are modeled and which are measured.</p>
+
+  <h2 style="font-size:14pt;font-weight:700;margin:0 0 8px;color:#051729;">3. Live ROI calculator — architecture</h2>
+  <p style="margin:0 0 14px;">One discovery profile is captured once, at the start of the walkthrough. Every card then reads only the inputs it needs and contributes one line to a running ledger. Nothing is entered twice, and the total at the end is the sum of the lines the rep actually showed.</p>
+
+  <div style="border:1px solid #D6DEE5;border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+    <div style="font-family:'DM Mono',monospace;font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#0A6E5C;margin-bottom:8px;">Profile — captured once</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;font-size:10pt;">
+      <div>Annual freight spend by mode — parcel, LTL, FTL, ocean, air</div>
+      <div>Annual shipment count by the same five modes</div>
+      <div>Shipping/logistics headcount and loaded hourly rate</div>
+      <div>Minutes spent per shipment today, end to end</div>
+      <div>Carrier invoices processed per month</div>
+      <div>Dock appointments per week; number of docks</div>
+      <div>Locations, and owned trucks if any</div>
+      <div>Incumbent TMS annual cost, if replacing one</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:14px;">
+      <div style="font-weight:600;margin-bottom:6px;">Three bands, always</div>
+      <div style="font-size:10pt;color:#33465A;">Each line computes low / likely / high straight from the ROI tool's percentage ranges. The ledger totals all three. The pitch quotes the low number and lets the high number sit visible next to it.</div>
+    </div>
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:14px;">
+      <div style="font-weight:600;margin-bottom:6px;">Every line is defeasible</div>
+      <div style="font-size:10pt;color:#33465A;">A prospect can zero out any lever on the spot — "we already audit invoices" — and the total re-sums. A model that survives being argued with is the one that gets forwarded to the CFO.</div>
+    </div>
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:14px;">
+      <div style="font-weight:600;margin-bottom:6px;">No double counting</div>
+      <div style="font-size:10pt;color:#33465A;">Freight-cost levers apply to mode spend once. Consolidation, pooling and mode-shift all reduce the same LTL spend, so they share a single capped pool rather than stacking.</div>
+    </div>
+    <div style="border:1px solid #D6DEE5;border-radius:8px;padding:14px;">
+      <div style="font-weight:600;margin-bottom:6px;">Two profiles, not one</div>
+      <div style="font-size:10pt;color:#33465A;">Hero Bread taught us that a team of one has no labor to save. A "cost reduction" profile hides labor lines entirely and models freight, error and claim recovery only.</div>
+    </div>
+  </div>
+
+  <div style="background:#F2F6F8;border-radius:8px;padding:14px 16px;margin-bottom:24px;font-size:10pt;">
+    <div style="font-weight:600;margin-bottom:6px;">Ledger behavior during the pitch</div>
+    A persistent strip shows <em>Savings identified so far</em> and grows as cards are visited, with the card name attached to each line. The closing screen lists every line with its source, the three-band total, subscription cost against it, payback in months, and a one-click export. Buffalo Seal's model ran 5.9× ARR — that ratio is the shape to aim for, stated as a ratio rather than a promise.
+  </div>
+
+  <h2 style="font-size:14pt;font-weight:700;margin:0 0 8px;color:#051729;">4. Per-card validation map</h2>
+  <p style="margin:0 0 14px;">Formula shorthand: <code style="font-family:'DM Mono',monospace;font-size:9pt;">S<sub>m</sub></code> = annual spend in mode m, <code style="font-family:'DM Mono',monospace;font-size:9pt;">N<sub>m</sub></code> = annual shipments in mode m, <code style="font-family:'DM Mono',monospace;font-size:9pt;">L</code> = loaded hourly labor rate, <code style="font-family:'DM Mono',monospace;font-size:9pt;">t</code> = minutes saved per unit of work.</p>
+
+  <h3 style="font-size:11.5pt;font-weight:700;margin:0 0 8px;color:#0A6E5C;">Transportation — 19 cards</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:18px;">
+    <thead>
+      <tr style="background:#051729;color:#fff;text-align:left;">
+        <th style="padding:7px 9px;font-weight:600;width:23%;">Card</th>
+        <th style="padding:7px 9px;font-weight:600;width:30%;">Metric + testimony available</th>
+        <th style="padding:7px 9px;font-weight:600;">ROI line</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Rate Shopping</td><td style="padding:7px 9px;">5–15% of mode spend (ROI tool). Software Advice reviewer: 85 carriers on one system, "save considerable money."</td><td style="padding:7px 9px;">Σ S<sub>m</sub> × 5–15% — the anchor line of the whole model</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Freight Invoice Audit</td><td style="padding:7px 9px;">1–3% recovered (ROI tool). Buffalo Seal's $225 discrepancy is the story that sells it.</td><td style="padding:7px 9px;">Σ S<sub>m</sub> × 1–3%, plus invoices/mo × 4 min × L for match labor</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Shipping Rules / Auto-Dispatch</td><td style="padding:7px 9px;">Anchor Distributing target: 80–90% hands-off auto-ship. Card claim of 100% rule compliance is a platform fact, not a metric.</td><td style="padding:7px 9px;">N × auto-rate × t<sub>touch</sub> × L</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Batch Ship</td><td style="padding:7px 9px;">Strongest testimony we own — "saved me days of work" (G2). Keep the quote on the card verbatim.</td><td style="padding:7px 9px;">batch volume × t<sub>per-shipment</sub> × L; Starship's 3–5 min is the credible before-figure</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Parcel / Multi Rate Shop</td><td style="padding:7px 9px;">Parcel-mode override exists in the ROI tool; parcel included at no extra cost is a differentiator called out in G2 reviews.</td><td style="padding:7px 9px;">S<sub>parcel</sub> × 5–15%, plus mode-shift saving on qualifying LTL</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Consolidation</td><td style="padding:7px 9px;">No customer metric. Needs an LTL minimum figure from the prospect.</td><td style="padding:7px 9px;">consolidatable pairs/yr × avg LTL minimum — capped, shares the LTL pool</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Pooling</td><td style="padding:7px 9px;">No customer metric. Model as linehaul + local vs. n × LTL.</td><td style="padding:7px 9px;">(n × LTL rate) − (linehaul + n × final mile) × pool events/yr</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Accessorials</td><td style="padding:7px 9px;">No customer metric; a reweigh/reclass rate input is the honest way in.</td><td style="padding:7px 9px;">N<sub>LTL</sub> × surprise-charge rate × avg accessorial cost</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Spot Quote</td><td style="padding:7px 9px;">No metric. Positioning is auditability, not savings.</td><td style="padding:7px 9px;">spot loads/yr × t<sub>email chase</sub> × L; freight delta only if prospect supplies one</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Multi-Leg / International</td><td style="padding:7px 9px;">Ocean and air overrides exist in the ROI tool. No customer testimony yet.</td><td style="padding:7px 9px;">(S<sub>ocean</sub> + S<sub>air</sub>) × override %, plus per-leg tracking labor</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Docs &amp; BOL</td><td style="padding:7px 9px;">Reweigh correction is what makes audit defensible — chain it to the audit card, as the demos already do.</td><td style="padding:7px 9px;">Counts inside audit; separate doc-prep labor line only</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Route Optimization</td><td style="padding:7px 9px;"><strong style="color:#B3261E;">Fix required.</strong> The 40% on-time claim has no source. Alley-Cassetty's 3 deliveries/driver/day across 115 trucks is a usable baseline instead.</td><td style="padding:7px 9px;">trucks × stops/day × +1 stop capacity × margin/stop, or miles saved × cost/mile</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Fleet &amp; Dispatch</td><td style="padding:7px 9px;">Alley-Cassetty pre-state: 15 locations, each on its own Excel/Word/pegboard method. Demo itself is still inference-based.</td><td style="padding:7px 9px;">dispatchers × replan hours/day × L</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Driver App / POD</td><td style="padding:7px 9px;">No metric; demo is unverified against real chrome. Frame as billing-cycle acceleration.</td><td style="padding:7px 9px;">deliveries/yr × days saved to invoice × daily cost of capital</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Tracking &amp; Notifications</td><td style="padding:7px 9px;">Best qualitative pair we have: Alley-Cassetty's coordinator "gets calls all day," Callaway Blue had once-daily visibility only.</td><td style="padding:7px 9px;">status calls/day × t<sub>call</sub> × L × 250 days</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Reports &amp; Analytics</td><td style="padding:7px 9px;">Software Advice quote on carrier selection is the right proof. Avoid claiming a separate saving — it enables the rate-shopping line.</td><td style="padding:7px 9px;">No independent line. Shown as what sustains the rate-shopping % year over year</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Dock Scheduling</td><td style="padding:7px 9px;">Callaway Blue: 20 docks, spreadsheet + clipboard, no no-show tracking. Metrics due at their 90-day review.</td><td style="padding:7px 9px;">appointments/wk × t<sub>phone booking</sub> × L × 52, plus no-show rate × cost of an idle dock hour</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Carrier Management</td><td style="padding:7px 9px;">1,500+ connections built in-house is a platform fact. G2 reviewers cite fast new-carrier setup.</td><td style="padding:7px 9px;">new carriers/yr × onboarding days saved × L (small line — keep it small)</td></tr>
+      <tr><td style="padding:7px 9px;font-weight:600;">Users &amp; Roles</td><td style="padding:7px 9px;">No per-seat cost is a real commercial differentiator against per-seat competitors.</td><td style="padding:7px 9px;">incremental users × competitor per-seat price — only when a per-seat quote is in play</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:11.5pt;font-weight:700;margin:0 0 8px;color:#0A6E5C;">Order management — 10 cards</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:18px;">
+    <thead>
+      <tr style="background:#051729;color:#fff;text-align:left;">
+        <th style="padding:7px 9px;font-weight:600;width:23%;">Card</th>
+        <th style="padding:7px 9px;font-weight:600;width:30%;">Metric + testimony available</th>
+        <th style="padding:7px 9px;font-weight:600;">ROI line</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Sales Order Intake</td><td style="padding:7px 9px;">Strongest evidence set in the deck. Callaway Blue re-keyed every PO from a printed PDF; Acumatica ICP names double data entry as the #1 buying trigger; G2 reviewer on keying errors.</td><td style="padding:7px 9px;">orders/yr × t<sub>re-key</sub> × L, plus error rate × avg cost of a misshipment</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Order Management grid</td><td style="padding:7px 9px;">No standalone metric — it's the surface the other levers act on.</td><td style="padding:7px 9px;">No independent line</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Quote &amp; Ship / Product Detail</td><td style="padding:7px 9px;"><strong style="color:#B3261E;">Fix first:</strong> these two cards' animations are swapped. Validation can't be attached until they're right.</td><td style="padding:7px 9px;">Folded into rate shopping and re-key labor</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Hazmat / Class &amp; NMFC</td><td style="padding:7px 9px;">Thatcher Co. (pipeline) is the hazmat reference. No customer number yet.</td><td style="padding:7px 9px;">N<sub>LTL</sub> × reclass rate × avg reclass charge</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Order Consolidation</td><td style="padding:7px 9px;">Same pool as the TMS consolidation card — do not count twice.</td><td style="padding:7px 9px;">Shares the consolidation cap</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Auto-Pack / Palletization</td><td style="padding:7px 9px;">DIM/volume optimization is a named ROI-tool lever. Callaway Blue's open "how do customers know their pallet count" question is the pain in plain words.</td><td style="padding:7px 9px;">S<sub>parcel+LTL</sub> × volume-optimization %</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Third-Party / Collect</td><td style="padding:7px 9px;">No metric. The point is coverage: collect and inbound freight are usually the least visible volume.</td><td style="padding:7px 9px;">Visibility line, $0 — or inbound spend × audit % where the prospect owns the terms</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Order → Ship Handoff</td><td style="padding:7px 9px;">Freight cost written back to the ERP order was called "a big deal" for invoicing by Buffalo Seal's owner.</td><td style="padding:7px 9px;">orders/yr × t<sub>reconcile</sub> × L, plus freight-billing recovery on marked-up orders</td></tr>
+      <tr><td style="padding:7px 9px;font-weight:600;">Returns Portal</td><td style="padding:7px 9px;">No metric. Self-service is the claim.</td><td style="padding:7px 9px;">return requests/yr × t<sub>manual label</sub> × L</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:11.5pt;font-weight:700;margin:0 0 8px;color:#0A6E5C;">Warehouse — 6 cards</h3>
+  <p style="margin:0 0 10px;font-size:10pt;">WMS is our thinnest evidence area: no live WMS customer has produced a number. Alley-Cassetty is the closest and is still in pilot. Until that changes, WMS cards should carry benchmark math labeled as modeled, plus the internal go-to-market instruction to lead with the receive → pick → ship flow rather than screens.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:18px;">
+    <thead>
+      <tr style="background:#051729;color:#fff;text-align:left;">
+        <th style="padding:7px 9px;font-weight:600;width:23%;">Card</th>
+        <th style="padding:7px 9px;font-weight:600;width:30%;">Metric + testimony available</th>
+        <th style="padding:7px 9px;font-weight:600;">ROI line</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Receiving</td><td style="padding:7px 9px;">Callaway Blue's manual PO re-key is the adjacent proof. No WMS customer metric.</td><td style="padding:7px 9px;">receipts/yr × t<sub>manual receipt</sub> × L, plus discrepancy rate × avg claim value</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">License Plate / Pallet moves</td><td style="padding:7px 9px;">No metric. One scan per pallet vs. per unit is the mechanism to show.</td><td style="padding:7px 9px;">pallet moves/yr × (units/pallet − 1) × t<sub>scan</sub> × L</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Bins &amp; Transfers</td><td style="padding:7px 9px;">No metric. "Ghost moves" needs a pick-failure rate to be a dollar.</td><td style="padding:7px 9px;">picks/yr × not-found rate × t<sub>search</sub> × L</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Picking</td><td style="padding:7px 9px;">No metric. Mis-pick cost is the standard industry frame; ask for their own number.</td><td style="padding:7px 9px;">orders/yr × mis-pick rate × cost per mis-pick (return + reship + credit)</td></tr>
+      <tr style="border-bottom:1px solid #E3E9EE;"><td style="padding:7px 9px;font-weight:600;">Inventory / Adjustments</td><td style="padding:7px 9px;">No metric. Tie to shrink as a % of inventory value.</td><td style="padding:7px 9px;">inventory value × shrink-reduction %</td></tr>
+      <tr><td style="padding:7px 9px;font-weight:600;">Cycle Count</td><td style="padding:7px 9px;">No metric. Avoided shutdown days is the cleanest input.</td><td style="padding:7px 9px;">physical-count shutdown days × daily throughput value</td></tr>
+    </tbody>
+  </table>
+
+  <h2 style="font-size:14pt;font-weight:700;margin:0 0 8px;color:#051729;">5. Gaps to close, in order</h2>
+  <ol style="margin:0 0 20px;padding-left:20px;display:flex;flex-direction:column;gap:7px;">
+    <li><strong>Strip the two unsourced numbers</strong> — the 40% on-time claim and any use of "up to 30%" as a working assumption. These are the only things in the deck that can be falsified in the room.</li>
+    <li><strong>Fix the two structural defects first</strong> — swapped OMS 03/04 animations and the orphaned AutoDispatchDemo. Validation attached to the wrong animation is worse than none.</li>
+    <li><strong>Run three customer interviews.</strong> Alley-Cassetty (Bill Westman has already volunteered as a reference and spoken to a prospect), Callaway Blue at 90 days, Buffalo Seal at one year against the $140,294 model. Ask for four numbers each: minutes per shipment before and after, status calls per day before and after, invoice errors caught per month, and freight spend change per mode.</li>
+    <li><strong>Get one measured case study published.</strong> Every intake we have grades Quantified Results 1/5; that is the single biggest hole in the pitch.</li>
+    <li><strong>Add the cost-reduction profile</strong> so small-team prospects don't get a labor-savings model that reads as irrelevant — the documented Hero Bread failure.</li>
+    <li><strong>Wire the ledger.</strong> Once numbers are agreed, the calculator is mechanical: a profile object, one formula per card, one summing strip, one closing screen.</li>
+  </ol>
+
+  <div style="border-top:2px solid #051729;padding-top:12px;font-size:9pt;color:#6B7A88;">
+    Sources: Confluence — case-study intakes (Alley-Cassetty, Callaway Blue, Miami Beef, VIRA, Suja, Forma, DP Wagner, Thomas Foods), Closed Won Buffalo Seal &amp; Gasket, Closed Lost Hero Bread and Traverse City, Mode-Level ROI Tool spec, Acumatica Partnership training, WMS Context. Public — G2, Software Advice, GetApp. No figure in this document is invented; anything without a named source is marked unsourced.
+  </div>
+</div>
+</x-import>
+</x-dc>
+</body>
+</html>

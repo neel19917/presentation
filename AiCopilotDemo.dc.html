@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsBlink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+@keyframes rsDot { 0%,80%,100%{opacity:.25;} 40%{opacity:1;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#DCE7F5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#0B1A2E;display:flex;align-items:center;gap:14px;padding:0 20px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
+    <span style="margin-left:22px;color:#8FB9EC;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;padding:7px 13px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <span style="width:1px;height:22px;background:rgba(255,255,255,.18);flex-shrink:0;"></span>
+    <div style="display:flex;align-items:center;gap:17px;font-size:12.5px;color:#DCE7F5;white-space:nowrap;"><span>Orders</span><span style="color:#fff;font-weight:600;">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:56px;left:0;right:0;height:74px;background:#fff;padding:12px 34px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
+    <div style="display:flex;gap:26px;margin-top:9px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+  </div>
+
+  <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:34px;top:150px;width:600px;height:190px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;"><span style="font-size:16px;font-weight:600;color:#24354A;">Locations</span><span style="font-size:12px;color:#5E7186;">Search by Zip</span></div>
+      <div style="position:absolute;left:18px;top:52px;width:564px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Ship From</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">FreightPOP Demo, 1 Rancho Cir, Lake Forest, CA, 92630</div></div>
+      <div style="position:absolute;left:18px;top:114px;width:564px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Ship To</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">Disneyland Park, 1313 S Harbor Blvd, Anaheim, CA, 92802</div></div>
+    </div>
+
+    <div style="position:absolute;left:34px;top:358px;width:600px;height:342px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;"><span style="font-size:16px;font-weight:600;color:#24354A;">Shipment Details</span><span style="font-size:12px;color:#5E7186;">CUBISCAN</span></div>
+      <div style="position:absolute;left:18px;top:50px;right:18px;height:34px;border-top:1px solid #EDF1F6;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;"><span style="font-size:13px;font-weight:600;color:#24354A;">{{ pkgLine }}</span><span style="font-size:11.5px;color:#8A97A8;">Generic Product</span></div>
+      <div style="position:absolute;left:18px;top:100px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Quantity</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ qty }}</div></div>
+      <div style="position:absolute;left:200px;top:100px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Type</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ pkgType }}</div></div>
+      <div style="position:absolute;left:382px;top:100px;width:200px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Container Type</span><div style="padding:13px 0 0 12px;font-size:13px;color:#8A97A8;">—</div></div>
+      <div style="position:absolute;left:18px;top:164px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Length</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ dimL }}</div></div>
+      <div style="position:absolute;left:200px;top:164px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Width</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ dimW }}</div></div>
+      <div style="position:absolute;left:382px;top:164px;width:200px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Height</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ dimH }}</div></div>
+      <div style="position:absolute;left:18px;top:228px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Weight (per piece)</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ wt }}</div></div>
+      <div style="position:absolute;left:18px;top:280px;right:18px;">
+        <div style="font-size:12.5px;font-weight:600;color:#24354A;margin-bottom:10px;">Accessorials</div>
+        <sc-if value="{{ liftGate }}" hint-placeholder-val="{{ false }}">
+          <span style="display:inline-flex;align-items:center;gap:8px;background:#EAF1FB;border:1px solid #C3D8F3;color:#4088CF;font-size:12.5px;padding:7px 12px;border-radius:16px;animation:rsFadeUp .3s both;">Destination Lift Gate<span style="color:#7EA3D2;">✕</span></span>
+        </sc-if>
+        <sc-if value="{{ noAcc }}" hint-placeholder-val="{{ true }}">
+          <span style="font-size:12.5px;color:#9AA7B8;">None selected</span>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:34px;top:150px;width:855px;height:550px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);overflow:hidden;animation:rsFadeUp .35s both;">
+      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #EDF1F6;"><span style="font-size:15px;font-weight:600;color:#24354A;">Rate results · Quote Id 44268596</span><span style="font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:6px 12px;">SPOT QUOTE</span></div>
+      <div style="position:absolute;left:0;right:0;top:44px;height:34px;background:#F8FAFD;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#5E7186;">
+        <span style="position:absolute;left:18px;top:10px;">Service</span><span style="position:absolute;left:250px;top:10px;">Delivery Days</span><span style="position:absolute;left:390px;top:10px;">Discounted Rate</span><span style="position:absolute;left:550px;top:10px;">Marked Up Rate</span><span style="position:absolute;left:700px;top:10px;">Carrier</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:78px;">
+        <sc-for list="{{ rates }}" as="r" hint-placeholder-count="9">
+          <div style="{{ r.row }}">
+            <span style="position:absolute;left:18px;top:16px;font-size:12.5px;color:#24354A;font-weight:{{ r.weight }};">{{ r.svc }}</span>
+            <span style="position:absolute;left:250px;top:16px;font-size:12.5px;color:#4A5B70;">{{ r.days }}</span>
+            <span style="position:absolute;left:390px;top:16px;font-size:12.5px;color:#24354A;">{{ r.disc }}</span>
+            <span style="position:absolute;left:550px;top:16px;font-size:12.5px;color:#4A5B70;">{{ r.markup }}</span>
+            <span style="position:absolute;left:700px;top:16px;font-size:12.5px;color:#4A5B70;">{{ r.carrier }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:938px;top:150px;width:472px;height:550px;background:#fff;border-radius:8px;box-shadow:0 12px 44px rgba(10,30,55,.28);border:1px solid #DDE4EC;overflow:hidden;z-index:20;">
+    <div style="height:52px;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;padding:0 16px;">
+      <span style="font-size:15px;font-weight:600;color:#14263C;">FreightPOP AI</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;background:#EAF1FB;color:#4088CF;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:5px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 6h11M4 12h8M4 18h13" stroke="#4088CF" stroke-width="2.4" stroke-linecap="round"></path></svg>New chat</span>
+      <span style="margin-left:auto;display:flex;align-items:center;gap:14px;color:#5E7186;">
+        <svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="2"></circle><path d="M12 7v5.5l3.5 2" fill="none" stroke="#5E7186" stroke-width="2" stroke-linecap="round"></path></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#5E7186" stroke-width="2.2" stroke-linecap="round"></path></svg>
+      </span>
+    </div>
+
+    <div style="position:absolute;left:16px;right:16px;top:64px;bottom:100px;overflow:hidden;">
+      <div style="position:absolute;left:0;right:0;bottom:0;">
+      <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;">Hi! Try: "Set ship from city to Los Angeles", "Add a package", "Set order number to ORD-001"…</div>
+
+      <sc-if value="{{ showQ1 }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:flex-end;margin-top:16px;animation:rsFadeUp .3s both;"><span style="max-width:330px;background:#2E7CE4;color:#fff;font-size:13.5px;line-height:1.55;padding:11px 15px;border-radius:8px;white-space:normal;display:block;">{{ q1 }}</span></div>
+      </sc-if>
+      <sc-if value="{{ thinking1 }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:5px;margin-top:16px;"><span style="width:6px;height:6px;border-radius:50%;background:#8A97A8;animation:rsDot 1.1s infinite;"></span><span style="width:6px;height:6px;border-radius:50%;background:#8A97A8;animation:rsDot 1.1s .18s infinite;"></span><span style="width:6px;height:6px;border-radius:50%;background:#8A97A8;animation:rsDot 1.1s .36s infinite;"></span></div>
+      </sc-if>
+      <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:16px;font-size:13.5px;color:#3A4B60;animation:rsFadeUp .3s both;">Done.</div>
+      </sc-if>
+      <sc-if value="{{ showA1 }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:12px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">I set package 1 to: 3 × Box, each 50 lb, 10 × 10 × 10 inches — and added the Destination Lift Gate accessorial. Anything else you want to change or should I run the rate shop?</div>
+      </sc-if>
+      <sc-if value="{{ showQ2 }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:flex-end;margin-top:16px;animation:rsFadeUp .3s both;"><span style="max-width:330px;background:#2E7CE4;color:#fff;font-size:13.5px;line-height:1.55;padding:11px 15px;border-radius:8px;white-space:normal;display:block;">{{ q2 }}</span></div>
+      </sc-if>
+      <sc-if value="{{ showA2 }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:16px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">Rate shop started — fetching rates now. I'll let you know when results come in.</div>
+        <div style="display:flex;gap:14px;margin-top:12px;color:#8A97A8;">
+          <svg width="15" height="15" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6" fill="none" stroke="#8A97A8" stroke-width="2"></path><path d="M18 2v5h-5" fill="none" stroke="#8A97A8" stroke-width="2"></path></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="#8A97A8" stroke-width="2"></rect><path d="M16 5H6a2 2 0 0 0-2 2v10" fill="none" stroke="#8A97A8" stroke-width="2"></path></svg>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showChips }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:10px;margin-top:16px;animation:rsFadeUp .3s both;">
+          <span style="border:1px solid #D5DEE9;border-radius:6px;padding:9px 13px;font-size:12.5px;color:#3A4B60;">Set ship from city to Los Angeles</span>
+          <span style="border:1px solid #D5DEE9;border-radius:6px;padding:9px 13px;font-size:12.5px;color:#3A4B60;">Add a new package</span>
+        </div>
+      </sc-if>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:16px;right:16px;bottom:16px;height:72px;border:1px solid #D5DEE9;border-radius:6px;background:#fff;">
+      <div style="position:absolute;left:14px;top:13px;right:96px;font-size:13.5px;line-height:1.45;color:{{ typedColor }};white-space:normal;">{{ typedShown }}<sc-if value="{{ caret }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:14px;background:#2E7CE4;margin-left:1px;vertical-align:-2px;animation:rsBlink 1s infinite;"></span></sc-if></div>
+      <span style="position:absolute;right:52px;bottom:12px;width:30px;height:30px;border-radius:5px;border:1px solid #C3D8F3;display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3" fill="#4088CF"></rect><path d="M5 12a7 7 0 0 0 14 0M12 19v3" fill="none" stroke="#4088CF" stroke-width="2"></path></svg></span>
+      <span style="position:absolute;right:12px;bottom:12px;width:30px;height:30px;border-radius:5px;background:{{ sendBg }};display:flex;align-items:center;justify-content:center;transition:background .2s;"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M12 20V5M12 5 L6 11M12 5 L18 11" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"></path></svg></span>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:26px;padding:0 34px;z-index:15;">
+    <span style="font-size:12.5px;color:#4A5B70;">Total Handling Units: {{ totalUnits }}</span>
+    <span style="font-size:12.5px;color:#4A5B70;">Total Weight: {{ totalWeight }}</span>
+    <span style="font-size:12.5px;color:#4A5B70;">Total Linear Feet: {{ totalFeet }}</span>
+    <span style="margin-left:auto;display:flex;gap:10px;">
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">CLEAR SHIPMENT</span>
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">PREVIEW BOL</span>
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">SAVE SHIPMENT</span>
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">SPOT QUOTE</span>
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#fff;background:#4088CF;border-radius:4px;padding:8px 16px;">RATE SHOP</span>
+    </span>
+  </div>
+
+  <div style="position:absolute;left:16px;bottom:66px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #2E7CE4;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Ask instead of filling the form", curX: 900, curY: 700,
+    ripple: false, ripX: 0, ripY: 0, typed: "", caret: false, scene: "form",
+    showQ1: false, thinking1: false, showDone: false, showA1: false,
+    showQ2: false, showA2: false, showChips: false, q1: "", q2: "",
+    sendBg: "#A9C3E4", filled: false, liftGate: false };
+  DUR = 24;
+  Q1 = "Add three boxes, ten by ten by ten, fifty pounds each add accessorial destination lift gate";
+  Q2 = "run the rate shop for me";
+  KF = [
+    { t: 0.5, s: { curX: 1050, curY: 745 } },
+    { t: 1.0, s: { caret: true, cap: "02 · Plain language, no menu hunting" } },
+    { t: 5.6, s: { caret: false, sendBg: "#2E7CE4" } },
+    { t: 6.0, s: { ripple: true, ripX: 1382, ripY: 752 } },
+    { t: 6.4, s: { ripple: false, typed: "", showQ1: true, q1: this.Q1, thinking1: true, sendBg: "#A9C3E4", cap: "03 · CoPilot fills the shipment out" } },
+    { t: 7.8, s: { thinking1: false, showDone: true, filled: true, liftGate: true, curX: 500, curY: 500 } },
+    { t: 8.6, s: { showA1: true } },
+    { t: 12.0, s: { caret: true, cap: "04 · Then run the work, same way", curX: 1050, curY: 745 } },
+    { t: 14.4, s: { caret: false, sendBg: "#2E7CE4" } },
+    { t: 14.8, s: { ripple: true, ripX: 1382, ripY: 752 } },
+    { t: 15.2, s: { ripple: false, typed: "", showQ2: true, q2: this.Q2, sendBg: "#A9C3E4" } },
+    { t: 16.0, s: { showA2: true } },
+    { t: 17.4, s: { scene: "rates", cap: "05 · Every carrier priced, hands off the keyboard", curX: 600, curY: 400 } },
+    { t: 19.0, s: { showChips: true } },
+    { t: 21.0, s: { cap: "06 · Order to rates without opening a single tab" } },
+  ];
+  TYPERS = [
+    { t0: 1.1, dur: 4.2, field: "typed", text: this.Q1, until: 6.0 },
+    { t0: 12.1, dur: 2.0, field: "typed", text: this.Q2, until: 14.8 }
+  ];
+  RATES = [
+    { svc: "FedEx Ground®", days: "1", disc: "$ 47.22 USD", markup: "$ 47.22 USD", carrier: "FedEx Parcel New", best: true },
+    { svc: "Ground", days: "1", disc: "$ 94.56 USD", markup: "$ 104.02 USD", carrier: "FedEx" },
+    { svc: "UPS Ground", days: "1", disc: "$ 113.16 USD", markup: "$ 113.16 USD", carrier: "UPS Parcel New" },
+    { svc: "UPS Ground", days: "1", disc: "$ 113.16 USD", markup: "$ 113.16 USD", carrier: "UPS" },
+    { svc: "FedEx 2Day®", days: "2", disc: "$ 150.44 USD", markup: "$ 150.44 USD", carrier: "FedEx Parcel New" },
+    { svc: "FedEx Express Saver®", days: "4", disc: "$ 175.98 USD", markup: "$ 175.98 USD", carrier: "FedEx Parcel New" },
+    { svc: "FedEx Standard Overnight®", days: "1", disc: "$ 177.79 USD", markup: "$ 177.79 USD", carrier: "FedEx Parcel New" },
+    { svc: "FedEx Priority Overnight®", days: "1", disc: "$ 183.65 USD", markup: "$ 183.65 USD", carrier: "FedEx Parcel New" },
+    { svc: "Standard LTL", days: "1", disc: "$ 200.75 USD", markup: "$ 200.75 USD", carrier: "ABF demo" }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } for (const ty of this.TYPERS) { if (this.t >= ty.t0 && this.t < ty.until) { const f = Math.min(1, (this.t - ty.t0) / ty.dur); this.anim[ty.field] = ty.text.slice(0, Math.round(f * ty.text.length)); } } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim, f = a.filled;
+    const rates = this.RATES.map((r, i) => ({ ...r,
+      weight: r.best ? "700" : "400",
+      row: "position:relative;height:51px;border-bottom:1px solid #EDF1F6;background:" + (r.best ? "#F5FAFF" : "#fff") + ";animation:rsFadeUp .3s " + (i * 0.06) + "s both;" }));
+    return { ...a, rates,
+      pageTitle: a.scene === "rates" ? "Quote/Ship (Quote Id: 44268596)" : "Quote/Ship",
+      showForm: a.scene === "form", showRates: a.scene === "rates",
+      pkgLine: f ? "3  10x10x10 @ 50 lb" : "0  0x0x0 @ 0 lb",
+      qty: f ? "3" : "0", pkgType: f ? "BOX" : "—",
+      dimL: f ? "10 in" : "in", dimW: f ? "10 in" : "in", dimH: f ? "10 in" : "in", wt: f ? "50 lb" : "lb",
+      noAcc: !a.liftGate,
+      totalUnits: f ? "3" : "0", totalWeight: f ? "150 LB" : "0 LB", totalFeet: f ? "0.28" : "0",
+      typedShown: a.typed || "Ask FreightPOP AI…", typedColor: a.typed ? "#2A3B50" : "#9AA7B8",
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px", paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+
+</script>
+</body>
+</html>

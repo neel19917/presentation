@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+@keyframes srPop { from{opacity:0;transform:translateY(14px) scale(.985);} to{opacity:1;transform:translateY(0) scale(1);} }
+@keyframes lpScan { 0%{top:8%;} 50%{top:88%;} 100%{top:8%;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#EAEFF7;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#0B2039;display:flex;align-items:center;gap:20px;padding:0 20px;z-index:5;">
+    <div style="display:flex;flex-direction:column;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:9px;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:15px;width:auto;display:block;"><span style="color:#fff;font-size:20px;font-weight:700;letter-spacing:.02em;">WMS</span></div>
+      <span style="color:#8FA9C0;font-size:7px;letter-spacing:.03em;margin-top:2px;">Powered by FreightPOP</span>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:20px;font-size:12.5px;color:#DCE6F0;white-space:nowrap;">
+      <svg width="17" height="17" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" fill="none" stroke="#fff" stroke-width="1.8"></rect><path d="M4 9 L20 9 L20 17 L17 17 M7 17 L4 17 Z" fill="none" stroke="#fff" stroke-width="1.8"></path><rect x="7" y="14" width="10" height="7" fill="none" stroke="#fff" stroke-width="1.8"></rect></svg>
+      <span>Picking</span><span>Receipts</span><span>History</span><span>Bin Transfers</span><span>Transactions</span><span>Inventory</span><span>Cycle Counts</span><span>Manufacturing</span><span>Analytics</span><span style="color:#fff;font-weight:600;">Settings</span>
+      <div style="width:30px;height:30px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+    </div>
+  </div>
+
+  <!-- ══════════ SCENE 1 · WAREHOUSE RULES ══════════ -->
+  <sc-if value="{{ sRules }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;z-index:2;">
+      <div style="padding:22px 0 0 22px;font-size:12.5px;color:#5E7186;">Warehouses <span style="color:#93A2B4;">/</span> Add New Warehouse</div>
+      <div style="padding:8px 0 0 22px;font-size:22px;font-weight:700;color:#14263C;">Add New Warehouse</div>
+      <div style="display:flex;gap:34px;margin:22px 0 0 22px;font-size:12px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+        <span>GENERAL</span><span style="color:#2C6DB5;border-bottom:2.5px solid #2C6DB5;padding-bottom:9px;">RULES</span><span>SECTIONS</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:150px;bottom:0;background:#EDF2F9;overflow:hidden;">
+        <div style="position:absolute;left:0;right:0;top:30px;display:flex;flex-direction:column;align-items:center;gap:18px;transform:translateY({{ scrollY }}px);transition:transform .9s cubic-bezier(.4,.05,.2,1);">
+
+          <div style="width:676px;background:#fff;border:1px solid #E3E9F0;">
+            <div style="height:44px;background:#EDEDED;border-bottom:1px solid #E3E9F0;display:flex;align-items:center;padding:0 20px;font-size:17px;color:#24354A;">Identifiers</div>
+            <div style="padding:2px 20px 18px;">
+              <div style="height:46px;display:flex;align-items:center;gap:14px;"><span style="{{ tgLp }}"><span style="{{ knLp }}"></span></span><span style="font-size:14px;color:{{ lbLp }};">Use License Plates</span></div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;padding-left:40px;"><span style="{{ tgAuto }}"><span style="{{ knAuto }}"></span></span><span style="font-size:14px;color:{{ lbAuto }};">Auto Generate License Plates</span></div>
+              <div style="font-size:11px;color:#2C6DB5;">License Plate Prefix</div>
+              <div style="height:36px;background:#F5F6F8;border-bottom:1px solid #D6DDE6;display:flex;align-items:center;padding:0 6px;font-size:14px;color:#24354A;">{{ prefix }}</div>
+              <div style="font-size:11px;color:#2C6DB5;margin-top:12px;">License Plate Starting Number</div>
+              <div style="height:36px;background:#F5F6F8;border-bottom:1px solid #D6DDE6;display:flex;align-items:center;padding:0 6px;font-size:14px;color:#24354A;">{{ startNum }}</div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;margin-top:8px;"><span style="{{ tgLot }}"><span style="{{ knLot }}"></span></span><span style="font-size:14px;color:{{ lbLot }};">Use Lots Ids</span></div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;padding-left:40px;"><span style="{{ tgExp }}"><span style="{{ knExp }}"></span></span><span style="font-size:14px;color:{{ lbExp }};">Use Lot Expiration</span></div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;padding-left:40px;"><span style="{{ tgDef }}"><span style="{{ knDef }}"></span></span><span style="font-size:14px;color:{{ lbDef }};">Default Lot Id When Empty</span></div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;"><span style="{{ tgAdd }}"><span style="{{ knAdd }}"></span></span><span style="font-size:14px;color:{{ lbAdd }};">Use Additional Identifier</span></div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;"><span style="{{ tgSec }}"><span style="{{ knSec }}"></span></span><span style="font-size:14px;color:#2C6DB5;">Use Sections</span></div>
+            </div>
+          </div>
+
+          <div style="width:676px;background:#fff;border:1px solid #E3E9F0;">
+            <div style="height:44px;background:#EDEDED;border-bottom:1px solid #E3E9F0;display:flex;align-items:center;padding:0 20px;font-size:17px;color:#24354A;">Picking Rules</div>
+            <div style="padding:2px 20px 12px;">
+              <div style="height:46px;display:flex;align-items:center;gap:14px;"><span style="{{ tgScan }}"><span style="{{ knScan }}"></span></span><span style="font-size:14px;color:{{ lbScan }};">Mobile Scanning Required</span></div>
+            </div>
+          </div>
+
+          <div style="width:676px;background:#fff;border:1px solid #E3E9F0;">
+            <div style="height:44px;background:#EDEDED;border-bottom:1px solid #E3E9F0;display:flex;align-items:center;padding:0 20px;font-size:17px;color:#24354A;">Pick Slip Options</div>
+            <div style="padding:2px 20px 12px;">
+              <div style="height:46px;display:flex;align-items:center;gap:14px;"><span style="{{ tgBom }}"><span style="{{ knBom }}"></span></span><span style="font-size:14px;color:{{ lbBom }};">Print BOM Components</span><span style="margin-left:auto;{{ info }}">i</span></div>
+              <div style="height:46px;display:flex;align-items:center;gap:14px;padding-left:40px;"><span style="{{ tgBomN }}"><span style="{{ knBomN }}"></span></span><span style="font-size:14px;color:#2C6DB5;">Print BOM Nested Components</span><span style="margin-left:auto;{{ info }}">i</span></div>
+            </div>
+          </div>
+
+          <div style="width:676px;background:#fff;border:1px solid #E3E9F0;">
+            <div style="height:44px;background:#EDEDED;border-bottom:1px solid #E3E9F0;display:flex;align-items:center;padding:0 20px;font-size:17px;color:#24354A;">Customize Pick Slip</div>
+            <div style="padding:6px 20px 16px;">
+              <div style="height:46px;display:flex;align-items:center;gap:16px;"><span style="{{ cbProd }}"></span><span style="font-size:14px;color:#2C6DB5;">Product Details</span></div>
+              <div style="height:42px;display:flex;align-items:center;gap:16px;padding-left:32px;"><span style="{{ cbCat }}"></span><span style="font-size:14px;color:#2C6DB5;">Category</span></div>
+              <div style="height:42px;display:flex;align-items:center;gap:16px;padding-left:32px;"><span style="{{ cbHaz }}"></span><span style="font-size:14px;color:#2C6DB5;">Hazmat ID</span></div>
+              <div style="height:42px;display:flex;align-items:center;gap:16px;padding-left:32px;"><span style="{{ cbU1 }}"></span><span style="font-size:14px;color:#2C6DB5;">User Defined Field 1</span></div>
+              <div style="height:42px;display:flex;align-items:center;gap:16px;padding-left:32px;"><span style="{{ cbU2 }}"></span><span style="font-size:14px;color:#2C6DB5;">User Defined Field 2</span></div>
+              <div style="margin:10px 0 0 20px;background:#FDF3E0;border-radius:4px;padding:13px 16px;display:flex;gap:11px;align-items:flex-start;">
+                <svg width="16" height="16" viewBox="0 0 24 24" style="flex:none;margin-top:1px;"><path d="M12 3 L22 20 L2 20 Z" fill="none" stroke="#C98A21" stroke-width="2"></path><rect x="11.1" y="9" width="1.8" height="6" fill="#C98A21"></rect><rect x="11.1" y="16.2" width="1.8" height="1.8" fill="#C98A21"></rect></svg>
+                <span style="font-size:13px;line-height:1.45;color:#3D4C5E;white-space:normal;">Selecting more than six product detail options may distort the pick list. Your TMS pick slip settings also add columns to this document and may already be using some of this space.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid #E3E9F0;display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 24px;z-index:4;">
+        <span style="border:1px solid #C9D4E0;border-radius:3px;padding:11px 20px;font-size:12px;font-weight:700;letter-spacing:.05em;color:#33465C;">CANCEL</span>
+        <span style="border-radius:3px;padding:11px 24px;font-size:12px;font-weight:700;letter-spacing:.05em;background:{{ saveBg }};color:{{ saveColor }};transition:all .25s;">SAVE</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ SCENE 2 · THE THREE IDENTIFIERS ══════════ -->
+  <sc-if value="{{ sGraphic }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;top:56px;left:0;right:0;bottom:0;z-index:6;background:#051729;display:flex;align-items:center;justify-content:center;animation:srPop .4s both;">
+      <div style="width:1180px;">
+        <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;color:#3DD6B5;text-transform:uppercase;">Identifying and tracking inventory</div>
+        <div style="font-family:'Manrope',sans-serif;font-weight:400;font-size:38px;color:#fff;letter-spacing:-.02em;margin-top:6px;line-height:1.1;">Three ways to identify inventory,<br>set at the warehouse level.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;margin-top:44px;">
+          <div style="background:#0A2540;border:1.5px solid {{ cLpBorder }};border-radius:16px;padding:24px;transition:all .35s;">
+            <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#7A96B0;">License plate (LPN)</div>
+            <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:22px;color:#fff;letter-spacing:-.01em;margin-top:14px;white-space:normal;line-height:1.2;">A physical container or group of inventory</div>
+            <div style="font-family:'DM Sans',sans-serif;font-weight:400;font-size:14.5px;color:#B5CDE0;margin-top:14px;white-space:normal;line-height:1.5;">Track and move inventory as a unit. Auto-generated from a prefix and starting number, required on every receiving allocation line, and split automatically when you pick less than the full plate.</div>
+          </div>
+          <div style="background:#0A2540;border:1.5px solid {{ cLotBorder }};border-radius:16px;padding:24px;transition:all .35s;">
+            <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#7A96B0;">Lot tracking</div>
+            <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:22px;color:#fff;letter-spacing:-.01em;margin-top:14px;white-space:normal;line-height:1.2;">A batch or group of like inventory</div>
+            <div style="font-family:'DM Sans',sans-serif;font-weight:400;font-size:14.5px;color:#B5CDE0;margin-top:14px;white-space:normal;line-height:1.5;">Maintain batch-level traceability, with lot expiration for shelf-life goods. Empty lot ids can default to today's date, the PO number or a fixed value — a lot id typed by hand is never overwritten.</div>
+          </div>
+          <div style="background:#0A2540;border:1.5px solid {{ cSerBorder }};border-radius:16px;padding:24px;transition:all .35s;">
+            <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#7A96B0;">Serialization</div>
+            <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:22px;color:#fff;letter-spacing:-.01em;margin-top:14px;white-space:normal;line-height:1.2;">One individual item</div>
+            <div style="font-family:'DM Sans',sans-serif;font-weight:400;font-size:14.5px;color:#B5CDE0;margin-top:14px;white-space:normal;line-height:1.5;">Maintain unit-level traceability. Serials import from the ERP, are viewed and edited from Product Details on Quote/Ship, and can print on the BOL and packing slip — grouped by stop on multi-stop loads.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:44px;">
+          <span style="flex:1;height:1px;background:rgba(255,255,255,.10);"></span>
+          <span style="font-family:'DM Sans',sans-serif;font-weight:400;font-size:17px;color:#B5CDE0;">Enabled per warehouse, then mandatory on every transaction in it.</span>
+          <span style="flex:1;height:1px;background:rgba(255,255,255,.10);"></span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ══════════ SCENE 3 · MOVING A PLATE ══════════ -->
+  <sc-if value="{{ sMove }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;top:56px;left:0;right:0;bottom:0;z-index:2;">
+      <div style="position:absolute;top:0;left:0;right:0;height:60px;background:#fff;border-bottom:1px solid #E1E7EF;padding:9px 26px 0;display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div style="font-size:19px;font-weight:700;color:#14263C;">Bin Transfers · Lake Forest DC</div>
+          <div style="font-size:11.5px;color:#5E7186;margin-top:3px;">LP-enabled warehouse · lot ids and serials on</div>
+        </div>
+        <span style="border:1px solid #B9CDE8;border-radius:4px;padding:10px 16px;color:#2C6DB5;font-size:10.5px;font-weight:700;letter-spacing:.05em;margin-top:5px;">SINGLE ITEM TO OTHER BIN(S)</span>
+      </div>
+
+      <div style="position:absolute;left:26px;top:76px;width:452px;bottom:26px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+        <div style="height:40px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;gap:10px;padding:0 16px;">
+          <span style="font-size:13px;font-weight:700;color:#24354A;">License Plate</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;background:#0B1A2E;color:#3DD6B5;padding:4px 10px;border-radius:4px;">LP-1001</span>
+        </div>
+        <div style="position:relative;margin:14px 16px 0;border:2px solid {{ palletBorder }};border-radius:8px;padding:12px;transition:all .3s;background:{{ palletBg }};">
+          <sc-if value="{{ scanBeam }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:4px;right:4px;top:8%;height:2.5px;background:#E5484D;box-shadow:0 0 12px #E5484D;animation:lpScan 1.4s ease-in-out infinite;z-index:3;"></div>
+          </sc-if>
+          <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;font-weight:700;color:#24354A;">On this plate</span><span style="font-size:11px;color:#5E7186;">48 units · 2 lots · 36 serials</span></div>
+          <div style="margin-top:9px;display:flex;flex-direction:column;gap:7px;font-size:11.5px;">
+            <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:5px;padding:8px 10px;"><span style="font-weight:700;color:#24354A;">ITEM-0007</span><span style="color:#5E7186;">24 · LOT-20260731 · SN 44012–44035</span></div>
+            <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:5px;padding:8px 10px;"><span style="font-weight:700;color:#24354A;">ITEM-0007</span><span style="color:#5E7186;">12 · LOT-20260803 · SN 44036–44047</span></div>
+            <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:5px;padding:8px 10px;"><span style="font-weight:700;color:#24354A;">ITEM-0012</span><span style="color:#5E7186;">12 · LOT-8814 · exp 03/12/2027</span></div>
+          </div>
+          <div style="margin-top:10px;height:34px;border-radius:4px;background:repeating-linear-gradient(90deg,#0B1A2E 0 3px,#fff 3px 6px);"></div>
+          <div style="text-align:center;font-family:'DM Mono',monospace;font-size:10.5px;color:#5E7186;margin-top:4px;">LP-1001</div>
+        </div>
+        <div style="margin:12px 16px 0;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;font-size:11.5px;">
+          <div style="font-weight:700;color:#24354A;">Generated from warehouse rules</div>
+          <div style="color:#5E7186;margin-top:5px;white-space:normal;">Prefix LP- and starting number 1001, set on the Rules tab. Walmart-formatted pallet ids generate the same way when that toggle is on.</div>
+        </div>
+        <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:11.5px;color:#8A97A8;white-space:normal;">One scannable id carries the items, their lots and their serials.</div>
+      </div>
+
+      <div style="position:absolute;left:498px;top:76px;right:26px;bottom:26px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+        <div style="height:40px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:13px;font-weight:700;color:#24354A;">Transfer — one scan moves the plate</div>
+        <div style="display:flex;gap:20px;padding:18px;">
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#8A97A8;">FROM</div>
+            <div style="margin-top:8px;border:1.5px solid {{ fromBorder }};border-radius:8px;padding:14px;transition:all .3s;background:{{ fromBg }};">
+              <div style="font-size:14px;font-weight:700;color:#24354A;">RECEIVING-QA</div>
+              <div style="font-size:11.5px;color:#5E7186;margin-top:4px;">Scanned LP: <b style="font-family:'DM Mono',monospace;color:{{ lpScanColor }};">{{ lpScanned }}</b></div>
+              <div style="font-size:11.5px;color:#5E7186;margin-top:3px;">Bin auto-filled from the plate</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;font-size:26px;color:#8A97A8;">→</div>
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#8A97A8;">TO</div>
+            <div style="margin-top:8px;border:1.5px solid {{ toBorder }};border-radius:8px;padding:14px;transition:all .3s;background:{{ toBg }};">
+              <div style="font-size:14px;font-weight:700;color:#24354A;">PICK-A-114</div>
+              <div style="font-size:11.5px;color:#5E7186;margin-top:4px;">Keep original license plate <b style="color:{{ keepColor }};">{{ keepLabel }}</b></div>
+              <div style="font-size:11.5px;color:#5E7186;margin-top:3px;">Contents move as one unit</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin:4px 18px 0;border:1px solid #E1E7EF;border-radius:6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#F8FAFC;font-size:12px;font-weight:700;color:#24354A;">What moved with that one scan<span style="font-weight:400;color:#8A97A8;">transaction TRX-88410</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 14px;font-size:11.5px;">
+            <div style="border:1px solid {{ rowBorder }};border-radius:5px;padding:8px 10px;transition:all .3s;background:{{ rowBg }};"><b style="color:#24354A;">1 license plate</b><div style="color:#5E7186;margin-top:2px;">LP-1001</div></div>
+            <div style="border:1px solid {{ rowBorder }};border-radius:5px;padding:8px 10px;transition:all .3s;background:{{ rowBg }};"><b style="color:#24354A;">2 lots</b><div style="color:#5E7186;margin-top:2px;">one with an expiration</div></div>
+            <div style="border:1px solid {{ rowBorder }};border-radius:5px;padding:8px 10px;transition:all .3s;background:{{ rowBg }};"><b style="color:#24354A;">36 serials</b><div style="color:#5E7186;margin-top:2px;">SN 44012–44047</div></div>
+          </div>
+        </div>
+        <sc-if value="{{ splitOn }}" hint-placeholder-val="{{ false }}">
+          <div style="margin:14px 18px 0;border:1px solid #E8CFA0;background:#FDF6E7;border-radius:6px;padding:12px 15px;animation:srFadeUp .3s both;">
+            <div style="font-size:12.5px;font-weight:700;color:#7A5A12;">Split Required</div>
+            <div style="font-size:12px;color:#5E7186;margin-top:4px;white-space:normal;">Picking 20 of 48 off this plate. The system generates LP-1002 for the 28 units staying in the bin, so both quantities keep their lots and serials.</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ bannerOn }}" hint-placeholder-val="{{ false }}">
+          <div style="margin:14px 18px 0;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">One scan moved 48 units, 2 lots and 36 serials — none of them re-scanned.</span></div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Identifiers are set per warehouse, on the Rules tab",
+    scene: 0, curX: 700, curY: 640, ripple: false, ripX: 0, ripY: 0,
+    lp: false, auto: false, lot: false, exp: false, def: false, add: false, sec: false,
+    scan: false, bom: false, bomN: false, ckProd: false, ckCat: false, ckHaz: false,
+    prefix: "", startNum: "0", saveHot: false, scrollY: 0,
+    cLp: false, cLot: false, cSer: false,
+    palletBorder: "#E1E7EF", palletBg: "#fff", scanBeam: false,
+    lpScanned: "—", lpScanColor: "#8A97A8",
+    fromBorder: "#E1E7EF", fromBg: "#fff", toBorder: "#E1E7EF", toBg: "#fff",
+    keepLabel: "", keepColor: "#5E7186",
+    rowBorder: "#E1E7EF", rowBg: "#fff", splitOn: false, bannerOn: false };
+  DUR = 58;
+  KF = [
+    { t: 1.8, s: { curX: 420, curY: 305 } },
+    { t: 2.4, s: { ripple: true, ripX: 420, ripY: 305, lp: true, cap: "02 · Use License Plates — on, and now mandatory in this warehouse" } },
+    { t: 3.9, s: { ripple: false, curX: 458, curY: 351 } },
+    { t: 4.5, s: { ripple: true, ripX: 458, ripY: 351, auto: true, cap: "03 · Auto generate plates from a prefix and a starting number" } },
+    { t: 6.0, s: { ripple: false, prefix: "LP-", curX: 700, curY: 408 } },
+    { t: 7.2, s: { startNum: "1001", cap: "04 · LP-1001 onward, no numbering by hand" } },
+    { t: 9.0, s: { curX: 420, curY: 521 } },
+    { t: 9.6, s: { ripple: true, ripX: 420, ripY: 521, lot: true, cap: "05 · Lot ids on — batch-level traceability" } },
+    { t: 11.1, s: { ripple: false, curX: 458, curY: 567 } },
+    { t: 11.7, s: { ripple: true, ripX: 458, ripY: 567, exp: true, cap: "06 · Lot expiration for anything with a shelf life" } },
+    { t: 13.4, s: { ripple: false, curX: 420, curY: 659 } },
+    { t: 14.0, s: { ripple: true, ripX: 420, ripY: 659, add: true, cap: "07 · Additional identifiers for anything else you track" } },
+    { t: 15.8, s: { ripple: false, scrollY: -340, curX: 700, curY: 460, cap: "08 · The same tab decides whether picking has to be scanned" } },
+    { t: 18.6, s: { curX: 700, curY: 600, cap: "09 · …and what prints on the pick slip" } },
+    { t: 20.4, s: { scrollY: -700, curX: 700, curY: 480, cap: "10 · Category, hazmat id and your own fields can print with it" } },
+    { t: 23.2, s: { scrollY: 0, curX: 1290, curY: 780, saveHot: true, cap: "11 · Save — every transaction here now carries these ids" } },
+    { t: 24.1, s: { ripple: true, ripX: 1290, ripY: 780 } },
+    { t: 24.6, s: { ripple: false, saveHot: false, curX: 700, curY: 640 } },
+    { t: 26.0, s: { scene: 1, cap: "12 · Three identifiers, three different jobs" } },
+    { t: 27.6, s: { cLp: true, cap: "13 · A license plate identifies a container or pallet — move it as one unit" } },
+    { t: 30.6, s: { cLp: false, cLot: true, cap: "14 · A lot identifies a batch — recalls and expiration dates live here" } },
+    { t: 33.6, s: { cLot: false, cSer: true, cap: "15 · A serial identifies one item — unit-level history and warranty" } },
+    { t: 36.6, s: { cSer: false, cap: "16 · Serials import from the ERP and can print on the BOL and packing slip" } },
+    { t: 39.2, s: { scene: 2, cap: "17 · On the floor: one plate holding 48 units, 2 lots and 36 serials" } },
+    { t: 41.6, s: { curX: 250, curY: 340, palletBorder: "#E5484D", palletBg: "#FFF7F7", scanBeam: true, cap: "18 · Scan the plate…" } },
+    { t: 43.8, s: { scanBeam: false, palletBorder: "#3B9E4E", palletBg: "#F4FBF3", lpScanned: "LP-1001", lpScanColor: "#2C6DB5", fromBorder: "#2C6DB5", fromBg: "#F4F8FE", curX: 700, curY: 300, cap: "19 · …and the bin fills itself from the plate" } },
+    { t: 46.0, s: { curX: 1150, curY: 300, toBorder: "#2C6DB5", toBg: "#F4F8FE", keepLabel: "ON", keepColor: "#3B9E4E", cap: "20 · A full move keeps the original plate" } },
+    { t: 47.6, s: { ripple: true, ripX: 1150, ripY: 300 } },
+    { t: 48.1, s: { ripple: false, rowBorder: "#3B9E4E", rowBg: "#F4FBF3", curX: 950, curY: 470, cap: "21 · Every lot and serial moved with it" } },
+    { t: 50.2, s: { splitOn: true, curX: 950, curY: 560, cap: "22 · Pick less than the plate and the system splits it for you" } },
+    { t: 53.2, s: { splitOn: false, bannerOn: true, curX: 700, curY: 640, cap: "23 · Move a pallet, not a serial number" } },
+    { t: 57.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  _tg(on, small) {
+    const w = small ? 32 : 36, h = small ? 16 : 18;
+    return "position:relative;display:inline-block;flex:none;width:" + w + "px;height:" + h + "px;border-radius:" + h + "px;transition:background .25s;background:" + (on ? "#2C6DB5" : "#CDD5DE") + ";";
+  }
+  _kn(on, small) {
+    const h = small ? 16 : 18, d = h - 4;
+    return "position:absolute;top:2px;left:" + (on ? (small ? 14 : 16) : 2) + "px;width:" + d + "px;height:" + d + "px;border-radius:50%;background:#fff;transition:left .25s;box-shadow:0 1px 2px rgba(16,42,67,.35);";
+  }
+  _cb(on) {
+    return "width:17px;height:17px;flex:none;border:1.6px solid " + (on ? "#2C6DB5" : "#8A97A8") + ";border-radius:2px;background:" + (on ? "#2C6DB5" : "#fff") + ";display:inline-block;transition:all .25s;";
+  }
+  renderVals() {
+    const a = this.anim, on = "#2C6DB5", off = "#5E7186";
+    return { ...a,
+      sRules: a.scene === 0, sGraphic: a.scene === 1, sMove: a.scene === 2,
+      tgLp: this._tg(a.lp), knLp: this._kn(a.lp), lbLp: a.lp ? on : off,
+      tgAuto: this._tg(a.auto, true), knAuto: this._kn(a.auto, true), lbAuto: a.auto ? on : off,
+      tgLot: this._tg(a.lot), knLot: this._kn(a.lot), lbLot: a.lot ? on : off,
+      tgExp: this._tg(a.exp, true), knExp: this._kn(a.exp, true), lbExp: a.exp ? on : off,
+      tgDef: this._tg(a.def, true), knDef: this._kn(a.def, true), lbDef: a.def ? on : off,
+      tgAdd: this._tg(a.add), knAdd: this._kn(a.add), lbAdd: a.add ? on : off,
+      tgSec: this._tg(a.sec), knSec: this._kn(a.sec),
+      tgScan: this._tg(a.scan), knScan: this._kn(a.scan), lbScan: a.scan ? on : off,
+      tgBom: this._tg(a.bom), knBom: this._kn(a.bom), lbBom: a.bom ? on : off,
+      tgBomN: this._tg(a.bomN, true), knBomN: this._kn(a.bomN, true),
+      cbProd: this._cb(a.ckProd), cbCat: this._cb(a.ckCat), cbHaz: this._cb(a.ckHaz),
+      cbU1: this._cb(false), cbU2: this._cb(false),
+      info: "width:17px;height:17px;border-radius:50%;border:1.4px solid #9AA7B8;color:#9AA7B8;font-size:11px;font-style:italic;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;",
+      saveBg: a.saveHot ? "#1557B0" : (a.add ? "#4088CF" : "#E3E7EC"),
+      saveColor: a.add || a.saveHot ? "#fff" : "#9AA7B8",
+      cLpBorder: a.cLp ? "#3DD6B5" : "rgba(255,255,255,.06)",
+      cLotBorder: a.cLot ? "#3DD6B5" : "rgba(255,255,255,.06)",
+      cSerBorder: a.cSer ? "#3DD6B5" : "rgba(255,255,255,.06)",
+      scale: this.scaleVal,
+      paused: !a.playing, playing: a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap
+    };
+  }
+}
+</script>
+</body>
+</html>

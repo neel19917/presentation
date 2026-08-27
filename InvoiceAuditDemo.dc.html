@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <div style="display:flex;align-items:center;gap:16px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span style="color:#fff;font-weight:600;">Audit</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
+    <div style="font-size:20px;font-weight:700;color:#14263C;">Freight Invoice Audit</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">TO REVIEW ({{ reviewCount }})</span><span>APPROVED</span><span>DISPUTED ({{ dispCount }})</span><span>PAID</span></div>
+  </div>
+
+  <div style="position:absolute;left:30px;top:132px;width:1380px;height:96px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);display:flex;align-items:center;gap:0;padding:0 8px;">
+    <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+      <div style="{{ s.style }}"><div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">{{ s.k }}</div><div style="{{ s.vStyle }}">{{ s.v }}</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">{{ s.note }}</div></div>
+    </sc-for>
+  </div>
+
+  <div style="position:absolute;left:30px;top:246px;width:1380px;height:486px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:40px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Carrier Invoices — matched against the rate you approved</span><span style="font-size:11px;color:#8A97A8;">Auto-approve under $5 variance</span></div>
+    <div style="position:absolute;left:0;right:0;top:40px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+      <span style="position:absolute;left:16px;top:8px;">Invoice</span><span style="position:absolute;left:150px;top:8px;">Carrier</span><span style="position:absolute;left:340px;top:8px;">Shipment</span><span style="position:absolute;left:490px;top:8px;">PRO</span><span style="position:absolute;left:660px;top:8px;">Quoted</span><span style="position:absolute;left:800px;top:8px;">Invoiced</span><span style="position:absolute;left:940px;top:8px;">Variance</span><span style="position:absolute;left:1090px;top:8px;">Reason</span><span style="position:absolute;left:1290px;top:8px;">Status</span>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:72px;">
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+        <div style="{{ r.rowStyle }}">
+          <span style="position:absolute;left:16px;top:15px;font-family:'DM Mono',monospace;font-size:11.5px;color:#4088CF;">{{ r.inv }}</span>
+          <span style="position:absolute;left:150px;top:15px;font-size:12.5px;font-weight:600;color:#24354A;">{{ r.carrier }}</span>
+          <span style="position:absolute;left:340px;top:15px;font-size:12px;color:#4A5B70;">{{ r.ship }}</span>
+          <span style="position:absolute;left:490px;top:15px;font-family:'DM Mono',monospace;font-size:11px;color:#4A5B70;">{{ r.pro }}</span>
+          <span style="position:absolute;left:660px;top:15px;font-size:12.5px;color:#4A5B70;">{{ r.quoted }}</span>
+          <span style="position:absolute;left:800px;top:15px;font-size:12.5px;color:#24354A;">{{ r.invoiced }}</span>
+          <span style="{{ r.varStyle }}">{{ r.variance }}</span>
+          <span style="position:absolute;left:1090px;top:15px;font-size:12px;color:#5E7186;">{{ r.reason }}</span>
+          <span style="{{ r.statStyle }}">{{ r.status }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <sc-if value="{{ modal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+    <div style="position:absolute;left:280px;top:120px;width:880px;height:600px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .3s ease both;">
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:600;color:#14263C;">Invoice ODFL-771902 — Old Dominion · Shipment 14571908</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="position:absolute;left:24px;top:64px;width:832px;height:30px;display:flex;align-items:center;background:#F3F6FA;border-radius:4px;padding:0 14px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">
+        <span style="width:300px;">CHARGE</span><span style="width:150px;text-align:right;">QUOTED</span><span style="width:150px;text-align:right;">INVOICED</span><span style="width:150px;text-align:right;">VARIANCE</span>
+      </div>
+      <div style="position:absolute;left:24px;top:102px;width:832px;">
+        <sc-for list="{{ lines }}" as="l" hint-placeholder-count="6">
+          <div style="{{ l.rowStyle }}">
+            <span style="width:300px;font-size:12.5px;color:#24354A;">{{ l.k }}</span>
+            <span style="width:150px;text-align:right;font-size:12.5px;color:#4A5B70;">{{ l.q }}</span>
+            <span style="width:150px;text-align:right;font-size:12.5px;color:#24354A;">{{ l.i }}</span>
+            <span style="{{ l.vStyle }}">{{ l.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:24px;top:352px;width:832px;height:96px;border:1px solid #E8C88A;background:#FFF9EE;border-radius:6px;padding:13px 16px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.05em;color:#9A5B0A;">WHY THIS FLAGGED</div>
+        <div style="margin-top:8px;font-size:12.5px;color:#6B4A12;line-height:1.7;white-space:normal;">Carrier billed a reweigh at 1,412 lb against a BOL weight of 1,240 lb. Your driver's POD recorded 1,412 lb on the dock scale — so the reweigh is <b>valid</b>, but the re-rate should have used your contracted class 70 tariff, not the base rate. Correct exposure: <b>$104.30</b>, not $172.00.</div>
+      </div>
+      <div style="position:absolute;left:24px;top:466px;width:832px;height:60px;display:flex;align-items:center;gap:16px;">
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:10px 14px;"><span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">SUPPORTING DOCS</span><div style="font-size:12px;color:#4088CF;margin-top:4px;">BOL v2 · POD photo · rate confirmation Q45911284</div></div>
+        <div style="border:1px solid #E1E7EF;border-radius:6px;padding:10px 14px;"><span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">CONTRACT</span><div style="font-size:12px;color:#24354A;margin-top:4px;">ODFL 2026 tariff · class 70 · FAK</div></div>
+      </div>
+      <div style="position:absolute;left:24px;bottom:16px;font-size:12px;color:#5E7186;">Every invoice is checked, not sampled.</div>
+      <div style="position:absolute;right:170px;bottom:14px;width:130px;height:42px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">APPROVE AS BILLED</div>
+      <div style="position:absolute;right:24px;bottom:14px;width:132px;height:42px;background:{{ dispBg }};border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;">QUEUE DISPUTE</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;bottom:64px;width:1380px;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;z-index:9;animation:rsFadeUp .3s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">Dispute queued to Old Dominion for $67.70 — BOL v2, POD and rate confirmation attached automatically.</span></div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:24px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · Every carrier invoice, matched line by line", curX: 700, curY: 700,
+    ripple: false, ripX: 0, ripY: 0, modal: false, sel: -1, dispBg: "#4088CF", disputed: false, toast: false };
+  DUR = 21;
+  KF = [
+    { t: 2.0, s: { cap: "02 · Under $5 auto-approves — humans see the rest", curX: 500, curY: 200 } },
+    { t: 4.2, s: { cap: "03 · A reweigh on a variable-weight load", curX: 700, curY: 390, sel: 1 } },
+    { t: 4.9, s: { ripple: true, ripX: 700, ripY: 390 } },
+    { t: 5.3, s: { ripple: false, modal: true, curX: 700, curY: 300 } },
+    { t: 7.4, s: { cap: "04 · Quoted vs invoiced, charge by charge" } },
+    { t: 10.4, s: { cap: "05 · The reweigh is real — the re-rate is wrong", curX: 700, curY: 460 } },
+    { t: 14.2, s: { curX: 1080, curY: 690, cap: "06 · Dispute with the paperwork already attached" } },
+    { t: 14.9, s: { ripple: true, ripX: 1080, ripY: 690, dispBg: "#1557B0" } },
+    { t: 15.3, s: { ripple: false, modal: false, dispBg: "#4088CF", disputed: true, toast: true, sel: -1, curX: 700, curY: 700, cap: "07 · Nothing gets paid on trust" } },
+  ];
+  BASE = [
+    { inv: "FXFE-330817", carrier: "FedEx Freight", ship: "14571862", pro: "7791-2280-4", quoted: "$412.60", invoiced: "$414.10", variance: "+$1.50", reason: "Fuel index rounding", status: "Auto-approved" },
+    { inv: "ODFL-771902", carrier: "Old Dominion", ship: "14571908", pro: "0441-772-9086", quoted: "$1,284.00", invoiced: "$1,456.00", variance: "+$172.00", reason: "Reweigh 1,240 → 1,412 lb", status: "Flagged", flag: true },
+    { inv: "ESTE-449120", carrier: "Estes Express", ship: "14571877", pro: "3320-9915", quoted: "$688.40", invoiced: "$783.40", variance: "+$95.00", reason: "Liftgate not on BOL", status: "Flagged", flag: true },
+    { inv: "XPO-118843", carrier: "XPO Logistics", ship: "14571844", pro: "8812-4471", quoted: "$3,922.00", invoiced: "$3,922.00", variance: "$0.00", reason: "Match", status: "Auto-approved" },
+    { inv: "UPS-660214", carrier: "UPS", ship: "14571901", pro: "1Z9V8830", quoted: "$31.84", invoiced: "$47.09", variance: "+$15.25", reason: "Residential surcharge", status: "Flagged", flag: true },
+    { inv: "GRNL-004417", carrier: "Greenline Transit", ship: "14571889", pro: "GL-88214", quoted: "$1,640.00", invoiced: "$1,640.00", variance: "$0.00", reason: "Match", status: "Auto-approved" }
+  ];
+  LINES = [
+    { k: "Linehaul — class 70, 1,240 lb", q: "$984.00", i: "$984.00", v: "$0.00" },
+    { k: "Reweigh re-rate — 1,412 lb", q: "—", i: "$172.00", v: "+$172.00", hot: true },
+    { k: "Fuel surcharge (28.4%)", q: "$279.50", i: "$279.50", v: "$0.00" },
+    { k: "Delivery appointment", q: "$20.50", i: "$20.50", v: "$0.00" },
+    { k: "Contracted class 70 re-rate (should be)", q: "—", i: "$104.30", v: "−$67.70", credit: true },
+    { k: "Invoice total", q: "$1,284.00", i: "$1,456.00", v: "+$172.00", total: true }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = this.props.speed || 1; this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const rows = this.BASE.map((r, i) => {
+      const status = (i === 1 && a.disputed) ? "Disputed" : r.status;
+      return { ...r, status,
+        rowStyle: "position:relative;height:46px;border-bottom:1px solid #EDF1F6;background:" + (a.sel === i ? "#EAF3FF" : r.flag ? "#FFFBF3" : "#fff") + ";",
+        varStyle: "position:absolute;left:940px;top:15px;font-size:12.5px;font-weight:" + (r.flag ? "700" : "400") + ";color:" + (r.flag ? "#B03A2E" : "#4A5B70") + ";",
+        statStyle: "position:absolute;left:1290px;top:14px;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:9px;" + (status === "Disputed" ? "background:#EDE7FA;color:#5B4B9E;" : r.flag ? "background:#FBE4E2;color:#B03A2E;" : "background:#DCF5EE;color:#0F8A6D;"),
+      };
+    });
+    const lines = this.LINES.map((l) => ({ ...l,
+      rowStyle: "display:flex;align-items:center;height:40px;border-bottom:1px solid #EDF1F6;" + (l.hot ? "background:#FFF9EE;" : l.credit ? "background:#F2FBF5;" : "") + (l.total ? "border-top:1.5px solid #C6D0DC;font-weight:700;" : ""),
+      vStyle: "width:150px;text-align:right;font-size:12.5px;font-weight:700;color:" + (l.credit ? "#0F8A6D" : (l.hot || l.total) ? "#B03A2E" : "#4A5B70") + ";",
+    }));
+    const STATS = [
+      { k: "INVOICES THIS WEEK", v: "412", note: "every one checked" },
+      { k: "AUTO-APPROVED", v: "381", note: "variance under $5" },
+      { k: "FLAGGED FOR REVIEW", v: a.disputed ? "2" : "3", note: "reweighs, accessorials, class" },
+      { k: "RECOVERED YTD", v: "$248,910", note: "disputes won" }
+    ];
+    const stats = STATS.map((s, i) => ({ ...s,
+      style: "flex:1;padding:0 20px;" + (i > 0 ? "border-left:1px solid #EDF1F6;" : ""),
+      vStyle: "font-size:26px;font-weight:700;margin-top:6px;color:" + (i === 3 ? "#0F8A6D" : i === 2 ? "#B03A2E" : "#24354A") + ";",
+    }));
+    return { ...a, rows, lines, stats,
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      reviewCount: a.disputed ? "2" : "3", dispCount: a.disputed ? "1" : "0",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>

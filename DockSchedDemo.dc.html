@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@font-face { font-family:'Manrope'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/44f1f850-1c11-4783-957b-06228cbdba34.woff2") format('woff2'); }
+@font-face { font-family:'DM Sans'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/57c86411-ac2a-4d01-85f6-619031a8873e.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <sc-if value="{{ inShipper }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
+    <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
+    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span style="color:#fff;font-weight:600;">Dock Scheduling</span></div>
+    <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
+  </div>
+
+  <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:#14263C;">Dock Scheduling — Lake Forest DC · Wed 07/23</div>
+      <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="{{ tabGrid }}">DOCK GRID</span><span>APPOINTMENTS</span><span style="{{ tabGeneral }}">GENERAL</span><span>SETTINGS</span></div>
+    </div>
+    <span style="border:1px solid #B9CDE8;border-radius:4px;padding:11px 18px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;margin-top:8px;">SCHEDULING LINK ⧉</span>
+  </div>
+
+  <sc-if value="{{ inDock }}" hint-placeholder-val="{{ true }}">
+  <!-- ═══ UNSCHEDULED LIST ═══ -->
+  <div style="position:absolute;left:30px;top:132px;width:340px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:600;color:#24354A;">Unscheduled Shipments</div>
+    <div style="padding:12px;display:flex;flex-direction:column;gap:10px;">
+      <sc-if value="{{ pendOn }}" hint-placeholder-val="{{ true }}">
+        <div style="border:1.5px solid {{ pendBorder }};border-radius:6px;padding:11px 13px;background:{{ pendBg }};transition:all .3s;"><div style="font-size:12.5px;font-weight:700;color:#24354A;">Shipment 14554382 · Pickup</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">XPO Logistics · 10 PLT · 1,500 lb</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">Requested: tomorrow AM</div></div>
+      </sc-if>
+      <sc-if value="{{ pend2On }}" hint-placeholder-val="{{ true }}">
+      <div style="border:1.5px solid {{ pend2Border }};border-radius:6px;padding:11px 13px;background:{{ pend2Bg }};transition:all .3s;"><div style="font-size:12.5px;font-weight:700;color:#24354A;">Shipment 14554391 · Inbound</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">Old Dominion · 6 PLT · 2,940 lb</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">Requested: Thursday PM</div></div>
+      </sc-if>
+    </div>
+    <div style="position:absolute;left:14px;bottom:14px;right:14px;font-size:11.5px;color:#8A97A8;white-space:normal;">Carriers book against your real door capacity — from the shareable scheduling link, no phone calls.</div>
+  </div>
+
+  <!-- ═══ DOCK GRID ═══ -->
+  <div style="position:absolute;left:390px;top:132px;width:1020px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+    <div style="position:absolute;left:70px;top:0;width:300px;height:34px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4A5B70;background:#F3F6FA;">DOCK 1 · Outbound</div>
+    <div style="position:absolute;left:370px;top:0;width:300px;height:34px;border-bottom:1px solid #E1E7EF;border-left:1px solid #E1E7EF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4A5B70;background:#F3F6FA;">DOCK 2 · Outbound</div>
+    <div style="position:absolute;left:670px;top:0;width:300px;height:34px;border-bottom:1px solid #E1E7EF;border-left:1px solid #E1E7EF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4A5B70;background:#F3F6FA;">DOCK 3 · Inbound</div>
+    <sc-for list="{{ hours }}" as="h" hint-placeholder-count="6">
+      <div style="{{ h.rowStyle }}"><span style="position:absolute;left:12px;top:-7px;font-size:10.5px;color:#8A97A8;">{{ h.label }}</span></div>
+    </sc-for>
+    <div style="position:absolute;left:70px;top:34px;bottom:0;width:1px;background:#EDF1F6;"></div>
+    <div style="position:absolute;left:370px;top:34px;bottom:0;width:1px;background:#EDF1F6;"></div>
+    <div style="position:absolute;left:670px;top:34px;bottom:0;width:1px;background:#EDF1F6;"></div>
+    <!-- existing appointments -->
+    <div style="{{ fedexStyle }}"><div style="font-size:11.5px;font-weight:700;color:#1F5FBF;">8:00 – 9:00 · FedEx Freight</div><div style="font-size:10.5px;color:#5E7186;margin-top:2px;">Pickup · Shipment 14554203 · APPT-2201</div></div>
+    <div style="position:absolute;left:678px;top:112px;width:284px;height:68px;box-sizing:border-box;background:#EAF3FF;border:1px solid #B9CDE8;border-radius:6px;padding:8px 11px;"><div style="font-size:11.5px;font-weight:700;color:#1F5FBF;">9:00 – 10:00 · SAIA</div><div style="font-size:10.5px;color:#5E7186;margin-top:2px;">Inbound PO-8841 · APPT-2202</div></div>
+    <div style="position:absolute;left:78px;top:268px;width:284px;height:68px;box-sizing:border-box;background:#EAF3FF;border:1px solid #B9CDE8;border-radius:6px;padding:8px 11px;"><div style="font-size:11.5px;font-weight:700;color:#1F5FBF;">12:00 – 13:00 · UPS Freight</div><div style="font-size:10.5px;color:#5E7186;margin-top:2px;">Pickup · Shipment 14554317 · APPT-2204</div></div>
+    <!-- highlight slot -->
+    <sc-if value="{{ slotGlow }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:378px;top:164px;width:284px;height:68px;box-sizing:border-box;border:2px dashed #4088CF;border-radius:6px;background:rgba(64,136,207,.06);animation:srFadeUp .3s both;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;color:#4088CF;">10:00 – 11:00 available</div>
+    </sc-if>
+    <sc-if value="{{ selfOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:678px;top:320px;width:284px;height:68px;box-sizing:border-box;background:#E7F4E4;border:1.5px solid #3B9E4E;border-radius:6px;padding:8px 11px;animation:srFadeUp .35s both;"><div style="font-size:11.5px;font-weight:700;color:#2E5E33;">13:00 – 14:00 · Old Dominion</div><div style="font-size:10.5px;color:#4A6B4E;margin-top:2px;">Inbound · Shipment 14554391 · APPT-2208 · self-booked</div></div>
+    </sc-if>
+    <sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ ghostStyle }}"><div style="font-size:12.5px;font-weight:700;color:#24354A;">Shipment 14554382 · Pickup</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">XPO Logistics · 10 PLT · 1,500 lb</div></div>
+    </sc-if>
+    <sc-if value="{{ apptOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:378px;top:164px;width:284px;height:68px;box-sizing:border-box;background:#E7F4E4;border:1.5px solid #3B9E4E;border-radius:6px;padding:8px 11px;animation:srFadeUp .35s both;"><div style="font-size:11.5px;font-weight:700;color:#2E5E33;">10:00 – 11:00 · XPO Logistics</div><div style="font-size:10.5px;color:#4A6B4E;margin-top:2px;">Pickup · Shipment 14554382 · {{ apptId }}</div>
+      <sc-if value="{{ equipChip }}" hint-placeholder-val="{{ false }}">
+        <span style="position:absolute;right:9px;bottom:7px;display:flex;align-items:center;gap:5px;background:#E7F4E4;border:1px solid #9CCB9F;border-radius:12px;padding:3px 9px;font-size:10px;font-weight:700;color:#2E5E33;animation:srFadeUp .3s both;"><svg width="10" height="10" viewBox="0 0 24 24"><path d="M3 16 L3 9 L11 9 L11 6 L17 6 L17 16 Z" fill="none" stroke="#2E5E33" stroke-width="2"></path><circle cx="7" cy="18.5" r="2" fill="#2E5E33"></circle><circle cx="15" cy="18.5" r="2" fill="#2E5E33"></circle></svg>Forklift #2</span>
+      </sc-if>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ═══ GENERAL TAB · SCHEDULING LINK ═══ -->
+  <sc-if value="{{ inSettings }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:30px;top:132px;right:30px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);padding:24px 26px 30px;">
+      <div style="font-size:15px;font-weight:600;color:#24354A;">Scheduling Link</div>
+      <div style="margin-top:6px;font-size:12.5px;color:#5E7186;white-space:normal;max-width:820px;">Send this link to carriers who do not use the carrier portal. They book against the same dock rules after validating with a tracking number or BOL.</div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:12px;">
+        <div style="box-sizing:border-box;width:760px;height:44px;border:1px solid #C6D0DC;border-radius:4px;background:#F7F9FC;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#24354A;">https://schedule.freightpop.com/harborline/lake-forest-dc</div>
+        <span style="{{ copyBtn }}">COPY LINK</span>
+        <span style="border:1px solid #C6D0DC;border-radius:3px;padding:12px 20px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#24354A;">REGENERATE</span>
+        <sc-if value="{{ copied }}" hint-placeholder-val="{{ false }}">
+          <span style="display:flex;align-items:center;gap:7px;background:#EFF7E9;border:1px solid #9CCB9F;border-radius:4px;padding:9px 14px;font-size:12px;font-weight:600;color:#2E5E33;animation:srFadeUp .25s both;">Link copied</span>
+        </sc-if>
+      </div>
+      <div style="margin-top:26px;display:flex;gap:34px;">
+        <div><div style="font-size:11px;color:#8A97A8;letter-spacing:.04em;">REQUIRED VALIDATION</div><div style="margin-top:6px;font-size:13px;color:#24354A;">Tracking # or BOL</div></div>
+        <div><div style="font-size:11px;color:#8A97A8;letter-spacing:.04em;">BOOKING WINDOW</div><div style="margin-top:6px;font-size:13px;color:#24354A;">Up to 14 days out</div></div>
+        <div><div style="font-size:11px;color:#8A97A8;letter-spacing:.04em;">RESCHEDULE CUTOFF</div><div style="margin-top:6px;font-size:13px;color:#24354A;">4 hours before arrival</div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ APPOINTMENT DETAILS ═══ -->
+  <sc-if value="{{ panelOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(9,25,42,.32);z-index:11;"></div>
+    <div style="position:absolute;box-sizing:border-box;left:280px;top:44px;width:880px;height:690px;background:#fff;border-radius:4px;box-shadow:0 24px 64px rgba(5,20,40,.42);z-index:12;animation:srFadeUp .3s both;">
+      <div style="position:absolute;left:30px;top:22px;font-size:20px;font-weight:400;color:#24354A;">Appointment Details</div>
+      <span style="position:absolute;right:26px;top:22px;font-size:18px;color:#5E7186;">✕</span>
+      <div style="position:absolute;box-sizing:border-box;left:34px;top:64px;width:812px;height:560px;border:1px solid #E4E9EF;border-radius:4px;">
+        <div style="position:absolute;left:20px;top:16px;display:flex;gap:26px;align-items:center;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#4088CF;padding-bottom:9px;border-bottom:2px solid #4088CF;">APPOINTMENT</span>
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">SHIPMENTS (1)</span>
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:.06em;color:#5E7186;">DOCUMENTS</span>
+        </div>
+        <div style="position:absolute;left:0;right:0;top:50px;height:1px;background:#E4E9EF;"></div>
+
+        <div style="{{ fA }}"><span style="{{ fL }}">Appointment Date</span><span style="{{ fV }}">08/13/2026</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" style="position:absolute;right:12px;top:16px;"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7" fill="none"></path></svg></div>
+        <div style="{{ fB }}"><span style="{{ fL }}">Truck Status</span><span style="{{ fV }}">Scheduled</span><span style="{{ fCar }}">▾</span></div>
+
+        <div style="{{ fC }}"><span style="{{ fL }}">Location</span><span style="{{ fV }}">Lake Forest DC, 25601 Commercentre Dr, Lake Forest, CA, 92630, US</span>{{ magIcon }}</div>
+        <div style="{{ fD }}"><span style="{{ fL }}">Dock</span><span style="{{ fV }}">{{ dockSel }}</span>{{ magIcon }}</div>
+
+        <div style="{{ fE }}"><span style="{{ fL }}">Carrier</span><span style="{{ fV }}">{{ carrierVal }}</span>{{ magIcon }}</div>
+        <div style="{{ fF }}"><span style="{{ fL }}">Direction</span><span style="{{ fV }}">Outbound</span><span style="{{ fCar }}">▾</span></div>
+
+        <div style="{{ fG }}"><span style="{{ fL }}">Start</span><span style="{{ fV }}">10:00 AM</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" style="position:absolute;right:12px;top:16px;"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7.5 V12 L15.5 14" stroke="#5E7186" stroke-width="1.7" fill="none"></path></svg></div>
+        <div style="{{ fH }}"><span style="{{ fL }}">Estimated End</span><span style="{{ fV }}">11:00 AM</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" style="position:absolute;right:12px;top:16px;"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="1.7"></circle><path d="M12 7.5 V12 L15.5 14" stroke="#5E7186" stroke-width="1.7" fill="none"></path></svg></div>
+
+        <div style="{{ fI }}"><span style="{{ fL }}">Equipment</span><span style="{{ fV }}">{{ equipSel }}</span><span style="{{ fCar }}">▾</span></div>
+        <div style="{{ fJ }}"><span style="{{ fL }}">Notes</span></div>
+
+        <sc-if value="{{ equipDD }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:20px;width:772px;bottom:148px;background:#fff;border:1px solid #C6D0DC;border-radius:4px;box-shadow:0 12px 30px rgba(5,20,40,.2);z-index:4;animation:srFadeUp .2s both;">
+            <div style="padding:11px 14px;font-size:13px;color:#24354A;">Dock Plate A</div>
+            <div style="{{ equipOpt2 }}">Forklift #2</div>
+            <div style="padding:11px 14px;font-size:13px;color:#24354A;">Pallet Jack B</div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="position:absolute;left:34px;bottom:22px;display:flex;gap:14px;align-items:center;">
+        <span style="{{ saveBtn }}">SAVE</span>
+        <span style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 22px;font-size:12px;font-weight:700;letter-spacing:.05em;color:#24354A;">CANCEL</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ═══ BOOKING TOAST ═══ -->
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:34px;top:80px;width:430px;background:#fff;border:1px solid #E1E7EF;border-left:4px solid #4088CF;border-radius:8px;box-shadow:0 10px 30px rgba(5,20,40,.18);padding:14px 16px;z-index:9;animation:srFadeUp .35s both;">
+      <div style="font-size:12.5px;font-weight:700;color:#24354A;">Carrier booking via scheduling link</div>
+      <div style="font-size:11.5px;color:#5E7186;margin-top:4px;white-space:normal;">XPO Logistics selected Dock 2, 10:30 AM for Shipment 14554382. Auto-scheduling matched the dock and equipment.</div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ bannerOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:30px;top:80px;width:900px;height:42px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;z-index:8;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">{{ bannerText }}</span></div>
+  </sc-if>
+
+  </sc-if>
+
+  <!-- ═══ CARRIER PORTAL ═══ -->
+  <sc-if value="{{ inPortal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:#F1F4F8;"></div>
+    <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;padding:0 22px;z-index:5;">
+      <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:24px;width:auto;display:block;">
+      <span style="margin-left:20px;color:#fff;font-size:12.5px;font-weight:600;">Carrier Portal · Old Dominion</span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:22px;font-size:12.5px;color:#E4E7EB;"><span style="color:#fff;font-weight:600;">Shipments</span><span>Appointments</span><span>Invoices</span><span>Users</span></div>
+    </div>
+    <div style="position:absolute;left:60px;top:92px;width:1320px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;padding:14px 20px;font-size:15px;font-weight:600;color:#24354A;">Shipments Requiring an Appointment</div>
+      <div style="display:grid;grid-template-columns:150px 1fr 190px 150px 130px 210px;gap:10px;align-items:center;padding:12px 20px;border-bottom:1px solid #E1E7EF;font-size:11px;font-weight:700;letter-spacing:.05em;color:#7A8CA0;"><span>SHIPMENT</span><span>FACILITY</span><span>DELIVERY DATE</span><span>FREIGHT</span><span>STATUS</span><span></span></div>
+      <sc-for list="{{ portalRows }}" as="p" hint-placeholder-count="3">
+        <div style="{{ p.row }}"><span style="font-size:12.5px;font-weight:700;color:#4088CF;">{{ p.sid }}</span><span style="font-size:12.5px;color:#24354A;">{{ p.fac }}</span><span style="font-size:12.5px;color:#24354A;">{{ p.date }}</span><span style="font-size:12.5px;color:#5E7186;">{{ p.frt }}</span><span style="{{ p.statusStyle }}">{{ p.status }}</span><span style="{{ p.btnStyle }}">{{ p.btn }}</span></div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ slotModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(9,25,42,.45);z-index:14;"></div>
+      <div style="position:absolute;left:420px;top:150px;width:600px;background:#fff;border-radius:6px;box-shadow:0 22px 60px rgba(5,20,40,.4);z-index:15;animation:srFadeUp .3s both;">
+        <div style="background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;padding:14px 20px;font-size:15px;font-weight:600;color:#24354A;display:flex;justify-content:space-between;">Book Appointment · Shipment 14554391<span style="color:#8A97A8;">✕</span></div>
+        <div style="padding:18px 22px 22px;">
+          <div style="display:flex;gap:14px;">
+            <div style="flex:1;"><div style="font-size:11px;color:#8A97A8;letter-spacing:.04em;">FACILITY</div><div style="box-sizing:border-box;margin-top:5px;height:38px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:#24354A;">Lake Forest DC · Inbound docks</div></div>
+            <div style="width:180px;"><div style="font-size:11px;color:#8A97A8;letter-spacing:.04em;">DATE</div><div style="box-sizing:border-box;margin-top:5px;height:38px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:#24354A;">07/23/2026</div></div>
+          </div>
+          <div style="margin-top:16px;font-size:11px;color:#8A97A8;letter-spacing:.04em;">AVAILABLE WINDOWS · LIVE DOCK CAPACITY</div>
+          <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="9">
+              <div style="{{ s.style }}">{{ s.label }}<span style="display:block;font-size:10px;font-weight:400;margin-top:2px;">{{ s.note }}</span></div>
+            </sc-for>
+          </div>
+          <div style="margin-top:14px;font-size:11.5px;color:#8A97A8;white-space:normal;">Only windows that match this carrier's dock assignments and the 60-minute unload duration are offered.</div>
+          <div style="margin-top:16px;display:flex;gap:10px;"><span style="{{ confirmBtn }}">CONFIRM APPOINTMENT</span><span style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 18px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">CANCEL</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ portalDone }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:420px;top:230px;width:600px;background:#fff;border-radius:6px;box-shadow:0 22px 60px rgba(5,20,40,.4);z-index:16;padding:26px 28px;animation:srFadeUp .3s both;text-align:center;">
+        <svg width="42" height="42" viewBox="0 0 24 24" style="display:block;margin:0 auto;"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg>
+        <div style="margin-top:12px;font-size:17px;font-weight:700;color:#24354A;">Appointment APPT-2208 confirmed</div>
+        <div style="margin-top:6px;font-size:12.5px;color:#5E7186;white-space:normal;">Lake Forest DC · Dock 3 · 07/23/2026, 1:00 – 2:00 PM. You can reschedule from the Appointments tab up to 4 hours before arrival.</div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ═══ SHAREABLE LINK BOOKING PAGE ═══ -->
+  <sc-if value="{{ inLink }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:#EEF2F7;"></div>
+    <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;padding:0 22px;">
+      <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:24px;width:auto;display:block;">
+      <span style="margin-left:20px;color:#fff;font-size:12.5px;font-weight:600;">Book a Dock Appointment · Harborline Industrial — Lake Forest DC</span>
+    </div>
+    <div style="position:absolute;left:420px;top:104px;width:600px;background:#fff;border-radius:6px;box-shadow:0 2px 10px rgba(16,42,67,.14);">
+      <div style="background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;padding:14px 20px;font-size:15px;font-weight:600;color:#24354A;">{{ linkTitle }}</div>
+      <div style="padding:20px 22px 24px;">
+        <sc-if value="{{ linkGate }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size:12.5px;color:#5E7186;white-space:normal;">Enter the tracking number or BOL for the load you are delivering. No login required.</div>
+            <div style="margin-top:16px;font-size:11px;color:#8A97A8;letter-spacing:.04em;">TRACKING # OR BOL</div>
+            <div style="{{ bolField }}"><span style="font-size:13.5px;color:#24354A;">{{ bolVal }}</span></div>
+            <div style="margin-top:18px;"><span style="{{ contBtn }}">CONTINUE</span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ linkSlots }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-size:12.5px;color:#24354A;">Shipment 14554391 · 6 PLT · 2,940 lb · delivering 07/23/2026</div>
+            <div style="margin-top:14px;font-size:11px;color:#8A97A8;letter-spacing:.04em;">AVAILABLE WINDOWS · LIVE DOCK CAPACITY</div>
+            <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+              <sc-for list="{{ slots }}" as="s" hint-placeholder-count="9">
+                <div style="{{ s.style }}">{{ s.label }}<span style="display:block;font-size:10px;font-weight:400;margin-top:2px;">{{ s.note }}</span></div>
+              </sc-for>
+            </div>
+            <div style="margin-top:16px;"><span style="{{ confirmBtn }}">CONFIRM APPOINTMENT</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ titleOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(10,25,42,.86);z-index:46;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+      <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#3DD6B5;">{{ titleKicker }}</span>
+      <span style="font-family:'Manrope',sans-serif;font-size:56px;font-weight:400;line-height:1.05;letter-spacing:-.02em;color:#fff;">{{ titleText }}</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:400;line-height:1.5;color:#9AB0C6;">{{ titleSub }}</span>
+    </div>
+  </sc-if>
+
+  <!-- ═══ OVERLAYS ═══ -->
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, cap: "01 · The dock day, at a glance",
+    curX: 700, curY: 620, ripple: false, ripX: 0, ripY: 0,
+    pendOn: true, pendBorder: "#E1E7EF", pendBg: "#fff",
+    toastOn: false, slotGlow: false, apptOn: false, bannerOn: false, apptId: "APPT-2207",
+    bannerText: "APPT-2208 self-booked by Old Dominion — it lands on Dock 3 at 1:00 PM with no call to your receiving team.",
+    dragging: false, dgX: -348, dgY: 44,
+    panelOn: false, dockSel: "12346 - Dock 2 Outbound", carrierVal: "XPO Logistics",
+    equipDD: false, equipSel: "0 selected", equipPick: false, equipChip: false,
+    fedexLeft: 78, saveHot: false,
+    scene: 0, pend2On: true, pend2Border: "#E1E7EF", pend2Bg: "#fff",
+    mailHot: false, bookHot: false, slotModal: false, slotPick: -1, confirmHot: false, portalDone: false, selfOn: false,
+    copyHot: false, copied: false, linkStep: 0, bolVal: "", bolHot: false, contHot: false,
+    titleOn: true, titleKicker: "Part one", titleText: "Shipper workflow", titleSub: "Booking and moving appointments on your own dock grid" };
+  DUR = 54;
+  KF = [
+    { t: 2.4, s: { titleOn: false, cap: "01 · The dock day, at a glance" } },
+    { t: 4.0, s: { curX: 200, curY: 250, pendBorder: "#4088CF", pendBg: "#F4F8FE", cap: "02 · One pickup still unscheduled" } },
+    { t: 5.4, s: { ripple: true, ripX: 200, ripY: 250 } },
+    { t: 5.8, s: { ripple: false, dragging: true, pendOn: false, slotGlow: true, cap: "03 · Drag it straight onto an open door and window" } },
+    { t: 6.3, s: { dgX: 378, dgY: 164, curX: 910, curY: 330 } },
+    { t: 7.8, s: { ripple: true, ripX: 910, ripY: 330 } },
+    { t: 8.2, s: { ripple: false, dragging: false, slotGlow: false, apptOn: true, cap: "04 · Dock 2, 10:00 — checked against real capacity" } },
+    { t: 9.0, s: { panelOn: true, cap: "05 · Appointment Details opens on the drop" } },
+    { t: 11.0, s: { cap: "06 · Carrier, date, dock, direction and window are already set" } },
+    { t: 12.8, s: { curX: 1105, curY: 551, cap: "07 · Assign the equipment for that window" } },
+    { t: 13.6, s: { ripple: true, ripX: 1105, ripY: 551 } },
+    { t: 14.0, s: { ripple: false, equipDD: true } },
+    { t: 15.2, s: { curX: 700, curY: 461, equipPick: true } },
+    { t: 15.9, s: { ripple: true, ripX: 700, ripY: 461 } },
+    { t: 16.3, s: { ripple: false, equipDD: false, equipPick: false, equipSel: "1 selected" } },
+    { t: 17.4, s: { curX: 354, curY: 694, saveHot: true } },
+    { t: 18.1, s: { ripple: true, ripX: 354, ripY: 694 } },
+    { t: 18.5, s: { ripple: false, panelOn: false, saveHot: false, equipChip: true, bannerOn: true,
+      bannerText: "APPT-2207 booked on Dock 2, 10:00 – 11:00 with Forklift #2 held — the carrier is notified automatically.",
+      cap: "08 · Saved — dock, window and equipment all held" } },
+    { t: 21.4, s: { bannerOn: false, titleOn: true, titleKicker: "Part two", titleText: "Carrier workflow", titleSub: "Two ways a carrier books their own dock appointment" } },
+    { t: 24.0, s: { titleOn: false, scene: 2, cap: "09 · One: the carrier portal — Book Appointment on eligible shipments", curX: 900, curY: 300 } },
+    { t: 26.4, s: { curX: 1230, curY: 206, bookHot: true } },
+    { t: 27.2, s: { ripple: true, ripX: 1230, ripY: 206 } },
+    { t: 27.6, s: { ripple: false, bookHot: false, slotModal: true, cap: "10 · Live availability — only windows the dock rules allow" } },
+    { t: 30.0, s: { curX: 908, curY: 383, slotPick: 5, cap: "11 · The carrier selects their own time slot" } },
+    { t: 30.8, s: { ripple: true, ripX: 908, ripY: 383 } },
+    { t: 31.2, s: { ripple: false } },
+    { t: 32.0, s: { curX: 530, curY: 544, confirmHot: true } },
+    { t: 32.7, s: { ripple: true, ripX: 530, ripY: 544 } },
+    { t: 33.1, s: { ripple: false, confirmHot: false, slotModal: false, portalDone: true, cap: "12 · Confirmed — and they can reschedule from the portal too" } },
+    { t: 35.6, s: { scene: 3, portalDone: false, slotPick: -1, cap: "13 · Two: a shareable scheduling link — Dock Scheduling → General", curX: 700, curY: 300 } },
+    { t: 38.0, s: { curX: 872, curY: 252, copyHot: true, cap: "14 · Copy it and send it to any carrier" } },
+    { t: 38.8, s: { ripple: true, ripX: 872, ripY: 252 } },
+    { t: 39.2, s: { ripple: false, copyHot: false, copied: true } },
+    { t: 41.2, s: { scene: 4, copied: false, cap: "15 · No login — they validate with a tracking number or BOL", curX: 700, curY: 300 } },
+    { t: 43.2, s: { curX: 700, curY: 268, bolHot: true } },
+    { t: 43.9, s: { ripple: true, ripX: 700, ripY: 268 } },
+    { t: 44.3, s: { ripple: false, bolVal: "BOL-14554391" } },
+    { t: 45.6, s: { curX: 500, curY: 330, contHot: true } },
+    { t: 46.2, s: { ripple: true, ripX: 500, ripY: 330 } },
+    { t: 46.6, s: { ripple: false, contHot: false, linkStep: 1, cap: "16 · Same live availability, same dock rules" } },
+    { t: 48.4, s: { curX: 908, curY: 330, slotPick: 5 } },
+    { t: 49.1, s: { ripple: true, ripX: 908, ripY: 330 } },
+    { t: 49.5, s: { ripple: false } },
+    { t: 50.4, s: { curX: 560, curY: 430, confirmHot: true } },
+    { t: 51.0, s: { ripple: true, ripX: 560, ripY: 430 } },
+    { t: 51.4, s: { ripple: false, confirmHot: false, scene: 0, selfOn: true, pend2On: false, bannerOn: true,
+      bannerText: "APPT-2208 self-booked by Old Dominion — it lands on Dock 3 at 1:00 PM with no call to your receiving team.",
+      cap: "17 · Either way it lands on your dock grid the moment they book", curX: 1100, curY: 480 } },
+    { t: 54.4, s: {} },
+  ];
+  SLOTS = [
+    ["8:00 AM", "Full", 0], ["9:00 AM", "Full", 0], ["10:00 AM", "2 doors open", 1],
+    ["11:00 AM", "1 door open", 1], ["12:00 PM", "Full", 0], ["1:00 PM", "2 doors open", 1],
+    ["2:00 PM", "1 door open", 1], ["3:00 PM", "Full", 0], ["4:00 PM", "1 door open", 1],
+  ];
+  PORTAL = [
+    ["14554391", "Lake Forest DC · Harborline Industrial", "07/23/2026", "6 PLT · 2,940 lb", "APPOINTMENT REQUIRED", "BOOK APPOINTMENT", true],
+    ["14551022", "Ontario DC · Harborline Industrial", "07/24/2026", "12 PLT · 8,120 lb", "SCHEDULED 10:00 AM", "RESCHEDULE", false],
+    ["14549770", "Reno DC · Cascade Hardware", "07/25/2026", "4 PLT · 1,610 lb", "NO APPOINTMENT NEEDED", "", false],
+  ];
+  HOURS = [
+    { label: "8:00", top: 60 }, { label: "9:00", top: 112 }, { label: "10:00", top: 164 }, { label: "11:00", top: 216 },
+    { label: "12:00", top: 268 }, { label: "13:00", top: 320 }, { label: "14:00", top: 372 }, { label: "15:00", top: 424 }, { label: "16:00", top: 476 },
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { if (this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); if (el && window.ResizeObserver && !this._ro) { this._ro = new ResizeObserver(() => this._measure()); this._ro.observe(el); } };
+  _measure() { if (!this._wrap) return; const s = this._wrap.clientWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); if (!this.anim.playing) { this.anim.playing = true; } this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const hours = this.HOURS.map((h) => ({ ...h, rowStyle: "position:absolute;left:0;right:0;top:" + (h.top - 8) + "px;height:1px;background:#EDF1F6;margin-top:8px;" }));
+    const fld = (x, y, w, h) => "position:absolute;box-sizing:border-box;left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + (h || 50) + "px;border:1px solid #C6D0DC;border-radius:4px;background:#fff;";
+    const opt = (hot) => "padding:11px 14px;font-size:13px;color:#24354A;background:" + (hot ? "#EAF3FF" : "transparent") + ";";
+    const slots = this.SLOTS.map((s, i) => {
+      const open = s[2] === 1, picked = a.slotPick === i;
+      return { label: s[0], note: s[1],
+        style: "box-sizing:border-box;height:46px;border-radius:4px;padding:6px 10px;font-size:12.5px;font-weight:700;border:1.5px solid " +
+          (picked ? "#4088CF" : open ? "#B9CDE8" : "#E4E9EF") + ";background:" + (picked ? "#EAF3FF" : open ? "#fff" : "#F4F6F9") +
+          ";color:" + (open ? "#24354A" : "#A9B4C0") + ";" };
+    });
+    const portalRows = this.PORTAL.map((p) => ({ sid: p[0], fac: p[1], date: p[2], frt: p[3], status: p[4], btn: p[5],
+      row: "display:grid;grid-template-columns:150px 1fr 190px 150px 130px 210px;gap:10px;align-items:center;padding:14px 20px;border-bottom:1px solid #EDF1F6;background:" + (p[6] ? "#F7FAFF" : "#fff") + ";",
+      statusStyle: "font-size:10.5px;font-weight:700;letter-spacing:.04em;color:" + (p[6] ? "#B4761B" : "#5E7186") + ";",
+      btnStyle: p[5] ? ("justify-self:start;border-radius:4px;padding:9px 16px;font-size:10.5px;font-weight:700;letter-spacing:.05em;" + (p[6] ? ("color:#fff;background:" + (a.bookHot ? "#1959B8" : "#4088CF") + ";") : "color:#4088CF;border:1px solid #B9CDE8;")) : "" }));
+    const L = 20, W2 = 376, W1 = 772, R2 = 416;
+    return { ...a,
+      fL: "position:absolute;left:11px;top:-7px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;",
+      fV: "position:absolute;left:14px;top:15px;font-size:13.5px;color:#24354A;white-space:nowrap;",
+      fCar: "position:absolute;right:13px;top:15px;font-size:11px;color:#5E7186;",
+      fMag: "position:absolute;right:12px;top:14px;color:#4088CF;font-size:14px;",
+      magIcon: React.createElement("svg", { width: 17, height: 17, viewBox: "0 0 24 24", style: { position: "absolute", right: 12, top: 16 } },
+        React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5, fill: "none", stroke: "#4088CF", strokeWidth: 1.9 }),
+        React.createElement("path", { d: "M15.5 15.5 L21 21", stroke: "#4088CF", strokeWidth: 1.9, strokeLinecap: "round" })),
+      fA: fld(L, 78, W2), fB: fld(R2, 78, W2),
+      fC: fld(L, 146, W1), fD: fld(L, 214, W1),
+      fE: fld(L, 282, W2), fF: fld(R2, 282, W2),
+      fG: fld(L, 350, W2), fH: fld(R2, 350, W2),
+      fI: fld(L, 418, W1), fJ: fld(L, 486, W1, 62),
+      inShipper: a.scene === 0 || a.scene === 3,
+      tabGrid: a.scene === 0 ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;" : "",
+      tabGeneral: a.scene === 3 ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;" : "",
+      inDock: a.scene === 0, inMail: a.scene === 1, inPortal: a.scene === 2,
+      inSettings: a.scene === 3, inLink: a.scene === 4,
+      linkGate: a.linkStep === 0, linkSlots: a.linkStep === 1,
+      linkTitle: a.linkStep === 0 ? "Find your shipment" : "Choose an appointment window",
+      copyBtn: "border-radius:3px;padding:12px 22px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#fff;background:" + (a.copyHot ? "#1959B8" : "#4088CF") + ";",
+      bolField: "box-sizing:border-box;margin-top:6px;height:44px;border:1px solid " + (a.bolHot ? "#4088CF" : "#C6D0DC") + ";border-radius:4px;background:#fff;display:flex;align-items:center;padding:0 14px;",
+      contBtn: "border-radius:3px;padding:12px 24px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#fff;background:" + (a.contHot ? "#1959B8" : "#4088CF") + ";",
+      slots, portalRows,
+      linkBook: "font-size:13.5px;font-weight:700;color:#1155CC;text-decoration:underline;background:" + (a.mailHot ? "#FFF3A8" : "transparent") + ";padding:2px 6px;border-radius:3px;",
+      confirmBtn: "border-radius:4px;padding:10px 20px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#fff;background:" + (a.confirmHot ? "#1959B8" : "#4088CF") + ";",
+      ghostStyle: "position:absolute;left:0;top:0;width:284px;height:68px;box-sizing:border-box;background:#fff;border:1.5px solid #4088CF;border-radius:6px;padding:8px 11px;box-shadow:0 14px 28px rgba(5,20,40,.28);z-index:9;transform:translate(" + a.dgX + "px," + a.dgY + "px) rotate(-2deg);transition:transform .5s cubic-bezier(.3,.7,.3,1);",
+      fedexStyle: "position:absolute;left:" + a.fedexLeft + "px;top:60px;width:284px;height:68px;box-sizing:border-box;background:#EAF3FF;border:1px solid #B9CDE8;border-radius:6px;padding:8px 11px;transition:left .55s cubic-bezier(.3,.7,.3,1);",
+      equipOpt2: opt(a.equipPick),
+      saveBtn: "border-radius:3px;padding:11px 26px;font-size:12px;font-weight:700;letter-spacing:.05em;color:#fff;background:" + (a.saveHot ? "#1959B8" : "#4088CF") + ";",
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      hours,
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)",
+      ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,
+    };
+  }
+}
+</script>
+</body>
+</html>

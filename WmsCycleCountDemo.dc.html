@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes srClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes srFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div ref="{{ setCol }}" onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#16324E;display:flex;align-items:center;padding:0 18px;z-index:6;">
+    <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:20px;width:auto;display:block;">
+    <span style="color:#fff;font-size:20px;font-weight:700;letter-spacing:.02em;margin-left:14px;">WMS</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:22px;font-size:12.5px;color:#DCE6F1;">
+      <svg width="16" height="16" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" fill="#DCE6F1"></rect><rect x="3" y="9" width="18" height="8" rx="1.5" fill="#DCE6F1"></rect><rect x="6" y="14" width="12" height="7" fill="#fff"></rect></svg>
+      <span>Picking</span><span>Receipts</span><span>History</span><span>Bin Transfers</span><span>Transactions</span><span>Inventory</span><span style="color:#fff;font-weight:700;">Cycle Counts</span><span>Manufacturing</span><span>Analytics</span><span>Settings</span>
+      <span style="width:30px;height:30px;border-radius:50%;background:#42586F;display:flex;align-items:center;justify-content:center;"><svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#DCE6F1"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#DCE6F1"></path></svg></span>
+    </div>
+  </div>
+
+  <sc-if value="{{ gridOn }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;left:0;right:0;top:56px;bottom:0;">
+    <div style="position:absolute;left:24px;top:26px;font-size:24px;font-weight:700;color:#1B2B3D;">Cycle Counts</div>
+    <div style="position:absolute;left:10px;right:10px;top:70px;display:flex;gap:20px;">
+      <div style="flex:1;height:86px;background:#fff;border:1px solid #E3E9F0;border-radius:4px;padding:14px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;color:#5E7186;">TOTAL BATCHES</div>
+        <div style="font-size:30px;font-weight:700;color:#1B2B3D;margin-top:8px;">{{ kTotal }}</div>
+      </div>
+      <div style="flex:1;height:86px;background:#fff;border:1px solid #E3E9F0;border-radius:4px;padding:14px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;color:#5E7186;">IN PROGRESS</div>
+        <div style="font-size:30px;font-weight:700;color:#4088CF;margin-top:8px;">{{ kProg }}</div>
+      </div>
+      <div style="flex:1;height:86px;background:#fff;border:1px solid #E3E9F0;border-radius:4px;padding:14px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.07em;color:#5E7186;">COMPLETED</div>
+        <div style="font-size:30px;font-weight:700;color:#3B9E4E;margin-top:8px;">{{ kDone }}</div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:10px;right:10px;top:178px;bottom:16px;border:1px solid #E3E9F0;border-radius:4px;">
+      <div style="height:74px;display:flex;align-items:center;padding:0 18px;gap:16px;">
+        <div style="width:280px;height:44px;border:1px solid #CBD5E1;border-radius:4px;display:flex;align-items:center;padding:0 14px;gap:10px;">
+          <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg>
+          <span style="color:#9AA7B8;font-size:13px;flex:1;">Search</span>
+          <span style="color:#5E7186;font-size:12px;font-weight:700;letter-spacing:.06em;">GO</span>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.6"></path></svg>
+        <div style="position:relative;width:210px;height:44px;border:1px solid #CBD5E1;border-radius:4px;display:flex;align-items:center;padding:0 14px;font-size:13px;color:#3C4B5C;">
+          <span style="position:absolute;top:-8px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#7A8798;">Filter by Warehouse</span>
+          <span style="margin-left:auto;color:#5E7186;">▾</span>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+          <div data-t="newBatch" style="background:#4088CF;color:#fff;border-radius:4px;padding:13px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;">NEW BATCH</div>
+          <div style="width:44px;height:44px;border:1px solid #B9CDE8;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#4088CF;font-size:16px;letter-spacing:.1em;">···</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;height:38px;background:#F5F7FA;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:12.5px;font-weight:700;color:#33465C;padding:0 14px;">
+        <span style="width:300px;">Batch Name</span><span style="width:200px;">Warehouse</span><span style="width:110px;">Count T...</span><span style="width:125px;">Status</span><span style="width:85px;">Blind</span><span style="width:70px;">T...</span><span style="width:80px;">Coun...</span><span style="width:125px;">Created</span><span style="width:190px;">Created By</span>
+      </div>
+      <sc-for list="{{ batches }}" as="b" hint-placeholder-count="7">
+        <div style="display:flex;align-items:center;height:39px;border-bottom:1px solid #EDF1F6;font-size:12.5px;color:#3C4B5C;padding:0 14px;background:{{ b.bg }};">
+          <span style="width:300px;">{{ b.name }}</span><span style="width:200px;">{{ b.wh }}</span><span style="width:110px;color:{{ b.typeColor }};">{{ b.type }}</span><span style="width:125px;color:{{ b.statusColor }};">{{ b.status }}</span><span style="width:85px;">{{ b.blind }}</span><span style="width:70px;">{{ b.tasks }}</span><span style="width:80px;">{{ b.counted }}</span><span style="width:125px;">{{ b.created }}</span><span style="width:190px;overflow:hidden;text-overflow:ellipsis;">{{ b.by }}</span>
+          <span style="margin-left:auto;display:flex;gap:20px;padding-right:12px;align-items:center;"><span style="color:#4088CF;font-size:12px;">{{ b.play }}</span><svg width="15" height="14" viewBox="0 0 24 24"><path d="M3 6 L14 6 L14 20 L3 20 Z" fill="none" stroke="#1B2B3D" stroke-width="2"></path><path d="M10 15 L20 4 L23 7 L13 18 Z" fill="#1B2B3D"></path></svg></span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ createOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;left:0;right:0;top:56px;bottom:0;">
+    <div style="position:absolute;left:24px;top:22px;font-size:12.5px;color:#4088CF;">Cycle Counts / <span style="color:#4088CF;">{{ crumbMid }}</span><span style="color:#5E7186;">New Batch</span></div>
+    <div style="position:absolute;left:24px;top:48px;font-size:24px;font-weight:700;color:#1B2B3D;">Create Cycle Count Batch</div>
+
+    <div style="position:absolute;left:14px;right:14px;top:96px;background:#fff;border:1px solid #E3E9F0;border-radius:4px;padding:22px 26px 20px;">
+      <div style="display:flex;gap:32px;">
+        <div data-t="bname" style="position:relative;flex:1;height:46px;border:1px solid #C3CDD9;border-radius:3px;display:flex;align-items:center;padding:0 13px;font-size:14px;color:#1B2B3D;">
+          <span style="position:absolute;top:-9px;left:10px;background:#fff;padding:0 5px;font-size:11px;color:#7A8798;">Batch Name *</span>{{ bname }}
+        </div>
+        <div data-t="wh" style="position:relative;flex:1;height:46px;border:1px solid #C3CDD9;border-radius:3px;display:flex;align-items:center;padding:0 13px;font-size:14px;color:#1B2B3D;">
+          <span style="position:absolute;top:-9px;left:10px;background:#fff;padding:0 5px;font-size:11px;color:#7A8798;">Warehouse *</span>{{ whVal }}
+          <span style="margin-left:auto;color:#5E7186;">▾</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:32px;margin-top:22px;align-items:center;">
+        <div style="position:relative;flex:1;">
+          <div data-t="ctype" style="position:relative;height:46px;border:1px solid #C3CDD9;border-radius:3px;display:flex;align-items:center;padding:0 13px;font-size:14px;color:#1B2B3D;">
+            <span style="position:absolute;top:-9px;left:10px;background:#fff;padding:0 5px;font-size:11px;color:{{ ctypeLabelColor }};">Count Type</span>{{ ctype }}
+            <span style="margin-left:auto;color:#5E7186;">▾</span>
+          </div>
+          <sc-if value="{{ ctypeOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:47px;background:#fff;border:1px solid #DDE4EC;box-shadow:0 10px 24px rgba(11,26,46,.16);z-index:9;animation:srFadeUp .18s both;">
+              <div style="height:38px;display:flex;align-items:center;padding:0 13px;font-size:13.5px;color:#1B2B3D;">Full Count</div>
+              <div data-t="ctPartial" style="height:38px;display:flex;align-items:center;padding:0 13px;font-size:13.5px;color:#1B2B3D;background:{{ partialBg }};">Partial Count</div>
+              <div style="height:38px;display:flex;align-items:center;padding:0 13px;font-size:13.5px;color:#1B2B3D;">ABC Analysis</div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;gap:14px;">
+          <span style="width:38px;height:20px;border-radius:10px;background:#D6DEE7;display:flex;align-items:center;padding:0 3px;"><span style="width:14px;height:14px;border-radius:50%;background:#fff;display:block;"></span></span>
+          <span style="font-size:14px;color:#1B2B3D;">Blind Count Mode</span>
+          <span style="font-size:11.5px;color:#B08A3E;">Hides expected quantities during counting</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ partialOn }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:srFadeUp .3s both;">
+        <div style="height:1px;background:#E3E9F0;margin:20px 0 16px;"></div>
+        <div style="font-size:13px;font-weight:700;color:#1B2B3D;">Warehouse Tracking Configuration</div>
+        <div style="display:inline-block;border:1px solid #E0C99A;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#8A6A22;margin-top:10px;">Bin + Qty</div>
+        <div style="height:1px;background:#E3E9F0;margin:16px 0;"></div>
+        <div style="font-size:17px;color:#1B2B3D;">Select Items to Count</div>
+        <div style="font-size:11.5px;color:#8A97A8;margin-top:5px;">Choose specific item/bin combinations for the partial count.</div>
+        <div style="display:flex;align-items:center;height:34px;border-bottom:1px solid #E3E9F0;font-size:12.5px;font-weight:600;color:#33465C;margin-top:12px;">
+          <span style="width:44px;"><span style="display:inline-block;width:15px;height:15px;border-radius:2px;background:#4088CF;color:#fff;font-size:11px;text-align:center;line-height:15px;">–</span></span>
+          <span style="width:390px;">Item Number</span><span style="width:450px;">Description</span><span style="flex:1;">Bin</span><span style="width:110px;text-align:right;">Qty on Hand</span>
+        </div>
+        <sc-for list="{{ items }}" as="i" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;height:32px;border-bottom:1px solid #F0F3F7;font-size:12.5px;color:#3C4B5C;">
+            <span style="width:44px;"><span style="display:inline-block;width:15px;height:15px;border-radius:2px;border:1.5px solid {{ i.boxBorder }};background:{{ i.boxBg }};color:#fff;font-size:11px;text-align:center;line-height:13px;">{{ i.tick }}</span></span>
+            <span style="width:390px;">{{ i.sku }}</span><span style="width:450px;">{{ i.descr }}</span><span style="flex:1;">{{ i.bin }}</span><span style="width:110px;text-align:right;">{{ i.qty }}</span>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <div style="height:1px;background:#E3E9F0;margin:20px 0 0;"></div>
+      <div style="display:flex;justify-content:flex-end;gap:14px;margin-top:16px;">
+        <div style="border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:11px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;">CANCEL</div>
+        <div data-t="createBtn" style="background:#4088CF;color:#fff;border-radius:3px;padding:11px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;">CREATE BATCH</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ taskOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;left:0;right:0;top:56px;bottom:0;">
+    <div style="position:absolute;left:24px;top:20px;font-size:12.5px;color:#4088CF;">Cycle Counts / Batches / Test604 / <span style="color:#5E7186;">Task #{{ taskNo }}</span></div>
+    <div style="position:absolute;left:24px;top:44px;font-size:24px;font-weight:700;color:#1B2B3D;">Count Task</div>
+    <div style="position:absolute;left:24px;top:78px;font-size:12.5px;color:#5E7186;">Task {{ taskNo }} of 2 — WH-A (Los Angeles, CA)</div>
+
+    <div style="position:absolute;left:14px;right:14px;top:106px;border:1px solid #E3E9F0;border-radius:4px;padding:16px 20px;display:flex;">
+      <div style="width:300px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">ITEM NUMBER</div><div style="font-size:17px;font-weight:700;color:#1B2B3D;margin-top:8px;">{{ tSku }}</div></div>
+      <div style="width:330px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">DESCRIPTION</div><div style="font-size:15px;color:#1B2B3D;margin-top:9px;">{{ tDescr }}</div></div>
+      <div style="width:330px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">BIN</div><div style="font-size:15px;color:#1B2B3D;margin-top:9px;">{{ tBin }}</div></div>
+      <div><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">STATUS</div><div style="display:inline-block;background:#F1F3F6;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#5E7186;margin-top:8px;">{{ tStatus }}</div></div>
+    </div>
+
+    <div style="position:absolute;left:14px;right:14px;top:216px;border:1px solid #E3E9F0;border-radius:4px;padding:14px 20px 6px;">
+      <div style="font-size:13.5px;font-weight:700;color:#1B2B3D;">Expected Inventory</div>
+      <div style="display:flex;align-items:center;height:30px;border-bottom:1px solid #E3E9F0;font-size:12.5px;color:#5E7186;margin-top:10px;"><span style="flex:1;">Bin</span><span>Qty</span></div>
+      <div style="display:flex;align-items:center;height:34px;font-size:12.5px;color:#3C4B5C;"><span style="flex:1;">{{ tBin }}</span><span style="font-weight:700;">{{ tExpected }}</span></div>
+    </div>
+
+    <div style="position:absolute;left:14px;right:14px;top:352px;border:1px solid #E3E9F0;border-radius:4px;padding:14px 20px 18px;">
+      <div style="display:flex;align-items:flex-start;">
+        <div>
+          <div style="font-size:13.5px;font-weight:700;color:#1B2B3D;">Count Entries</div>
+          <div style="font-size:11.5px;color:#8A97A8;margin-top:5px;">1 entry — Total counted: {{ tCounted }} (expected: {{ tExpected }})</div>
+        </div>
+        <div style="margin-left:auto;border:1px solid #B9CDE8;border-radius:3px;padding:8px 14px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4088CF;">+ ADD ENTRY</div>
+      </div>
+      <div style="border:1px solid #E3E9F0;border-radius:4px;padding:12px 16px 16px;margin-top:14px;">
+        <div style="display:flex;align-items:center;"><span style="font-size:12.5px;font-weight:700;color:#1B2B3D;">Entry #1</span><svg width="13" height="14" viewBox="0 0 24 24" style="margin-left:auto;"><path d="M5 7 L19 7 L17.5 21 L6.5 21 Z M9 4 L15 4 L15 7 L9 7 Z" fill="#8A97A8"></path></svg></div>
+        <div style="display:flex;gap:24px;margin-top:18px;">
+          <div style="position:relative;width:530px;height:44px;border:1px solid #C3CDD9;border-radius:3px;display:flex;align-items:center;padding:0 13px;font-size:14px;color:#1B2B3D;">
+            <span style="position:absolute;top:-9px;left:10px;background:#fff;padding:0 5px;font-size:11px;color:#7A8798;">Bin</span>{{ tBin }}
+            <span style="margin-left:auto;color:#5E7186;">▾</span>
+          </div>
+          <div data-t="tQty" style="position:relative;width:530px;height:44px;border:1px solid #C3CDD9;border-radius:3px;display:flex;align-items:center;padding:0 13px;font-size:14px;color:#1B2B3D;">
+            <span style="position:absolute;top:-9px;left:10px;background:#fff;padding:0 5px;font-size:11px;color:#7A8798;">Quantity *</span>{{ tQty }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:14px;right:14px;top:600px;display:flex;align-items:center;">
+      <div style="border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:11px 20px;font-size:12px;font-weight:700;letter-spacing:.06em;">BACK TO BATCHES</div>
+      <div style="margin-left:auto;display:flex;gap:14px;">
+        <div style="border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:11px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;">SAVE</div>
+        <div data-t="nextBtn" style="background:#4088CF;color:#fff;border-radius:3px;padding:11px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;">{{ nextLabel }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ varOn }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;left:0;right:0;top:56px;bottom:0;">
+    <div style="position:absolute;left:24px;top:20px;font-size:12.5px;color:#4088CF;">Cycle Counts / Batches / Test604 / <span style="color:#5E7186;">Variance Review</span></div>
+    <div style="position:absolute;left:24px;top:44px;font-size:24px;font-weight:700;color:#1B2B3D;">Variance Review</div>
+    <div style="position:absolute;right:24px;top:50px;background:#E7F4E4;border:1px solid #BFE0C4;border-radius:11px;padding:3px 13px;font-size:11.5px;color:#2E5E33;">Completed</div>
+    <div style="position:absolute;left:24px;top:78px;font-size:12.5px;color:#5E7186;">Test604 — WH-A (Los Angeles, CA)</div>
+
+    <div style="position:absolute;left:14px;right:14px;top:106px;display:flex;gap:18px;">
+      <div style="flex:1;border:1px solid #E3E9F0;border-radius:4px;padding:13px 18px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">TOTAL TASKS</div><div style="font-size:27px;font-weight:700;color:#1B2B3D;margin-top:6px;">2</div></div>
+      <div style="flex:1;border:1px solid #E3E9F0;border-radius:4px;padding:13px 18px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">MATCHES</div><div style="font-size:27px;font-weight:700;color:#3B9E4E;margin-top:6px;">1</div></div>
+      <div style="flex:1;border:1px solid #E3E9F0;border-radius:4px;padding:13px 18px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">TOTAL VARIANCES</div><div style="font-size:27px;font-weight:700;color:#E38A00;margin-top:6px;">1</div></div>
+      <div style="flex:1;border:1px solid #E3E9F0;border-radius:4px;padding:13px 18px;"><div style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#8A97A8;">COUNT TYPE</div><div style="font-size:22px;font-weight:700;color:#1B2B3D;margin-top:10px;">Partial</div></div>
+    </div>
+
+    <div style="position:absolute;left:14px;right:14px;top:222px;border:1px solid #E3E9F0;border-radius:4px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+        <span style="border:1px solid #CBD5E1;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#5E7186;">Total Variances: 1</span>
+        <span style="border:1px solid #E8C083;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#9A6B12;">Qty Variance: 1</span>
+        <span style="border:1px solid #D3BEE8;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#6B4A9A;">Identity Mismatch: 0</span>
+        <span style="border:1px solid #E8B4B0;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#A3382F;">Missing: 0</span>
+        <span style="border:1px solid #D3BEE8;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#6B4A9A;">Unexpected: 0</span>
+        <span style="margin-left:auto;border:1px solid #BFE0C4;border-radius:11px;padding:3px 12px;font-size:11.5px;color:#2E5E33;">Matches: 1</span>
+      </div>
+      <div style="display:flex;align-items:center;height:38px;background:#F5F7FA;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:12.5px;font-weight:700;color:#33465C;padding:0 16px;">
+        <span style="width:150px;">Item</span><span style="width:420px;">Description</span><span style="width:150px;">Bin</span><span style="width:110px;text-align:right;">Ex...</span><span style="width:110px;text-align:right;">Cnt...</span><span style="width:100px;text-align:right;">D...</span><span style="width:200px;padding-left:34px;">Variance Type</span><span style="width:130px;">Resolu...</span>
+      </div>
+      <div style="display:flex;align-items:center;height:44px;border-bottom:1px solid #EDF1F6;font-size:12.5px;color:#3C4B5C;padding:0 16px;">
+        <span style="width:150px;">SKU-1002</span><span style="width:420px;">Widget Beta</span><span style="width:150px;">A-01-02</span><span style="width:110px;text-align:right;">100</span><span style="width:110px;text-align:right;">90</span><span style="width:100px;text-align:right;color:#D3372C;font-weight:700;">-10</span>
+        <span style="width:200px;padding-left:34px;"><span style="background:#F5900B;color:#fff;border-radius:3px;padding:4px 10px;font-size:11px;font-weight:700;">Quantity Variance</span></span>
+        <span style="width:130px;"><span style="background:{{ resBg }};border:1px solid {{ resBorder }};border-radius:11px;padding:3px 11px;font-size:11.5px;color:{{ resColor }};">{{ resLabel }}</span></span>
+        <span data-t="approve" style="margin-left:auto;display:flex;gap:16px;align-items:center;padding-right:8px;">
+          <svg width="19" height="19" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.4"></path></svg>
+          <svg width="19" height="19" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#D3372C"></circle><path d="M8 8 L16 16 M16 8 L8 16" stroke="#fff" stroke-width="2.4"></path></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="position:absolute;right:24px;bottom:82px;width:44px;height:44px;border-radius:50%;background:#4088CF;box-shadow:0 2px 8px rgba(64,136,207,.35);display:flex;align-items:center;justify-content:center;z-index:7;"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 5 H21 V16 H9 L3 20 Z" fill="#fff"></path></svg></div>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:22px;bottom:130px;width:340px;z-index:44;background:{{ toastBg }};border:1px solid {{ toastBorder }};border-radius:6px;box-shadow:0 10px 26px rgba(11,26,46,.16);padding:13px 15px;animation:srFadeUp .3s both;white-space:normal;">
+      <div style="font-size:13px;font-weight:700;color:{{ toastColor }};">{{ toastTitle }}</div>
+      <div style="font-size:12.5px;color:{{ toastColor }};opacity:.85;margin-top:4px;line-height:1.45;">{{ toastBody }}</div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:78px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:112px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ringOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;top:0;z-index:38;pointer-events:none;transform:{{ ringT }};width:{{ ringW }};height:{{ ringH }};border:2px solid #4088CF;border-radius:4px;box-shadow:0 0 0 4px rgba(64,136,207,.14);"></div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
+    <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  BATCHES = [
+    { name: "Tanner Test", wh: "Ramsey Corp", type: "Partial", typeColor: "#3C4B5C", status: "Completed", statusColor: "#9A6B12", blind: "No", tasks: "3", counted: "3", created: "08/12/2026", by: "tannerh@freightpo...", play: "", bg: "#fff" },
+    { name: "Test", wh: "Ramsey Corp", type: "Partial", typeColor: "#3C4B5C", status: "Completed", statusColor: "#9A6B12", blind: "No", tasks: "2", counted: "2", created: "08/12/2026", by: "tannerh@freightpo...", play: "", bg: "#fff" },
+    { name: "Test", wh: "Ramsey Corp", type: "Partial", typeColor: "#3C4B5C", status: "InProgress", statusColor: "#9A6B12", blind: "Yes", tasks: "3", counted: "0", created: "07/30/2026", by: "tannerh@freightpo...", play: "▶", bg: "#fff" },
+    { name: "12212", wh: "ABC Corp", type: "Partial", typeColor: "#3C4B5C", status: "InProgress", statusColor: "#9A6B12", blind: "Yes", tasks: "4", counted: "0", created: "07/10/2026", by: "Doug@freightpop....", play: "▶", bg: "#fff" },
+    { name: "Rob's Test Count", wh: "ABC Corp", type: "Full", typeColor: "#9A6B12", status: "InProgress", statusColor: "#9A6B12", blind: "Yes", tasks: "15", counted: "0", created: "07/07/2026", by: "rbuntin2@freightp...", play: "▶", bg: "#fff" },
+    { name: "Rob's Test Count", wh: "Ramsey Corp", type: "Full", typeColor: "#9A6B12", status: "InProgress", statusColor: "#9A6B12", blind: "Yes", tasks: "31", counted: "0", created: "07/07/2026", by: "rbuntin2@freightp...", play: "▶", bg: "#fff" },
+    { name: "Rob's Full Count", wh: "ABC", type: "Full", typeColor: "#9A6B12", status: "InProgress", statusColor: "#9A6B12", blind: "Yes", tasks: "45", counted: "0", created: "06/24/2026", by: "rbuntin2@freightp...", play: "▶", bg: "#fff" }
+  ];
+  ITEMS = [
+    { sku: "SKU-1001", descr: "Widget Alpha", bin: "A-01-01", qty: "48" },
+    { sku: "SKU-1002", descr: "Widget Beta", bin: "A-01-02", qty: "100" },
+    { sku: "SKU-1003", descr: "Gadget Gamma", bin: "A-02-01", qty: "30" },
+    { sku: "SKU-1004", descr: "Connector Delta", bin: "A-02-02", qty: "200" },
+    { sku: "SKU-1005", descr: "Bracket Epsilon", bin: "A-03-01", qty: "15" }
+  ];
+  A0 = { playing: true, cap: "01 · Cycle Counts — counts run while the warehouse keeps working",
+    curX: 700, curY: 560, ripple: false, ripX: 0, ripY: 0, focus: null,
+    gridOn: true, createOn: false, taskOn: false, varOn: false,
+    kTotal: "7", kProg: "5", kDone: "2",
+    crumbMid: "", bname: "", whVal: "", ctype: "Full Count", ctypeOpen: false, ctypeLabelColor: "#B08A3E", partialBg: "#fff", partialOn: false,
+    checked: 0,
+    taskNo: "1", tSku: "SKU-1001", tDescr: "Widget Alpha", tBin: "A-01-01", tStatus: "Pending",
+    tExpected: "48", tCounted: "0", tQty: "0", nextLabel: "SAVE & NEXT TASK  ›",
+    resLabel: "Pending", resBg: "#F1F3F6", resBorder: "#DDE4EC", resColor: "#5E7186",
+    toastOn: false, toastTitle: "", toastBody: "", toastBg: "#EAF6EC", toastBorder: "#BFE0C4", toastColor: "#2E5E33" };
+  DUR = 48;
+  KF = [
+    { t: 2.2, s: { focus: "newBatch", ripple: true, cap: "02 · Start a new batch" } },
+    { t: 2.8, s: { ripple: false, gridOn: false, createOn: true, focus: null, curX: 700, curY: 300,
+      cap: "03 · Name it, pick the warehouse" } },
+    { t: 4.2, s: { focus: "bname" } },
+    { t: 4.8, s: { bname: "Test604" } },
+    { t: 6.0, s: { focus: "wh", ripple: true } },
+    { t: 6.6, s: { ripple: false, whVal: "WH-A (Los Angeles, CA)", crumbMid: "Batches / " } },
+    { t: 8.0, s: { focus: "ctype", ripple: true, cap: "04 · Full count, partial count, or ABC analysis" } },
+    { t: 8.6, s: { ripple: false, ctypeOpen: true } },
+    { t: 10.2, s: { focus: "ctPartial", ripple: true, partialBg: "#F1F5FA" } },
+    { t: 10.8, s: { ripple: false, ctypeOpen: false, ctype: "Partial Count", ctypeLabelColor: "#7A8798", partialOn: true, focus: null, curX: 500, curY: 560,
+      cap: "05 · Partial count opens the item picker below" } },
+    { t: 13.0, s: { checked: 1, cap: "06 · Choose the item and bin combinations to count" } },
+    { t: 14.0, s: { checked: 2 } },
+    { t: 15.6, s: { focus: "createBtn", ripple: true, cap: "07 · Create the batch" } },
+    { t: 16.2, s: { ripple: false, createOn: false, taskOn: true, focus: null, curX: 700, curY: 400,
+      cap: "08 · The count task lands on the floor — task 1 of 2" } },
+    { t: 18.6, s: { focus: "tQty", cap: "09 · Widget Alpha — 48 expected, 48 on the shelf" } },
+    { t: 19.4, s: { tQty: "48", tCounted: "48" } },
+    { t: 21.2, s: { focus: "nextBtn", ripple: true, cap: "10 · Save and move to the next task" } },
+    { t: 21.8, s: { ripple: false, focus: null, curX: 700, curY: 400,
+      taskNo: "2", tSku: "SKU-1002", tDescr: "Widget Beta", tBin: "A-01-02", tExpected: "100", tCounted: "0", tQty: "0",
+      nextLabel: "SAVE & REVIEW VARIANCES  ›",
+      toastOn: true, toastTitle: "Success", toastBody: "Task #503 saved with 1 entries.", cap: "11 · Task 2 of 2" } },
+    { t: 24.4, s: { toastOn: false, focus: "tQty", cap: "12 · Widget Beta — 100 expected, only 90 there" } },
+    { t: 25.2, s: { tQty: "90", tCounted: "90" } },
+    { t: 27.2, s: { focus: "nextBtn", ripple: true, cap: "13 · Save and review the variances" } },
+    { t: 27.8, s: { ripple: false, taskOn: false, varOn: true, focus: null, curX: 700, curY: 400,
+      toastOn: true, toastBg: "#EAF2FB", toastBorder: "#BFD5EE", toastColor: "#1F5FBF",
+      toastTitle: "Info", toastBody: "All tasks completed. Redirecting to variance review.",
+      cap: "14 · One match, one variance — 90 counted against 100 expected" } },
+    { t: 31.4, s: { toastOn: false, cap: "15 · The variance is typed and quantified before anyone decides" } },
+    { t: 34.0, s: { focus: "approve", ripple: true, cap: "16 · Approve, and the system makes the adjustment" } },
+    { t: 34.6, s: { ripple: false, resLabel: "Approved", resBg: "#E7F4E4", resBorder: "#BFE0C4", resColor: "#2E5E33",
+      toastOn: true, toastBg: "#EAF6EC", toastBorder: "#BFE0C4", toastColor: "#2E5E33",
+      toastTitle: "Success", toastBody: "Variance approved. Inventory adjusted by -10 in bin A-01-02 and written back to the ERP." } },
+    { t: 39.0, s: { toastOn: false, focus: null, curX: 700, curY: 560,
+      cap: "17 · Reject instead, and the count goes back to the floor until it resolves" } },
+    { t: 47.6, s: {} }
+  ];
+  anim = { ...this.A0 };
+  t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() {
+    this._measure();
+    this._onResize = () => this._measure();
+    window.addEventListener("resize", this._onResize);
+    this.anim.playing = this.props.autoPlay !== false;
+    if (this.anim.playing) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); (this._settleTimers || []).forEach(clearTimeout); }
+  _settle() {
+    (this._settleTimers || []).forEach(clearTimeout);
+    this._settleTimers = [0, 30, 90, 240, 760].map((d) => setTimeout(() => this.forceUpdate(), d));
+  }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  setCol = (el) => { this._col = el; };
+  _focusEl() { return this._col && this.anim.focus ? this._col.querySelector('[data-t="' + this.anim.focus + '"]') : null; }
+  _off(el) { let x = 0, y = 0, n = el; while (n && n !== this._col) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return [x, y]; }
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => {
+    if (!this.anim.playing) return;
+    const speed = this.props.speed || 1;
+    this.t += ((now - this._last) / 1000) * speed;
+    this._last = now;
+    if (this.t >= this.DUR) { this.seek(0); }
+    this._applyFrame(); this.forceUpdate();
+    this._raf = requestAnimationFrame(this._tick);
+  };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const playing = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); this._settle(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); this._settle(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); this._settle(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  renderVals() {
+    const a = this.anim;
+    const items = this.ITEMS.map((it, i) => {
+      const on = i < a.checked;
+      return { ...it, tick: on ? "✓" : "", boxBg: on ? "#4088CF" : "#fff", boxBorder: on ? "#4088CF" : "#B4C0CE" };
+    });
+    const el = this._focusEl();
+    let cx = a.curX, cy = a.curY, ring = null;
+    if (el) {
+      const [x, y] = this._off(el);
+      const w = el.offsetWidth, h = el.offsetHeight;
+      cx = Math.round(x + Math.min(w / 2, 130));
+      cy = Math.round(y + h / 2);
+      ring = { t: "translate(" + x + "px, " + y + "px)", w: w + "px", h: h + "px" };
+    }
+    const rx = el ? cx : a.ripX, ry = el ? cy : a.ripY;
+    return { ...a, batches: this.BATCHES, items,
+      scale: this.scaleVal, paused: !a.playing, playing: a.playing,
+      ringOn: !!ring, ringT: ring ? ring.t : "translate(0,0)", ringW: ring ? ring.w : "0px", ringH: ring ? ring.h : "0px",
+      curT: "translate(" + cx + "px, " + cy + "px)",
+      ripT: "translate(" + rx + "px, " + ry + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap, setCol: this.setCol
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family:'DM Mono'; font-style:normal; font-weight:400; font-display:swap; src:url("extracted/49669ec2-ba62-419b-b07d-499e2c7dd681.woff2") format('woff2'); }
+@keyframes rsClick { from{transform:scale(.35);opacity:.9;} to{transform:scale(1.7);opacity:0;} }
+@keyframes rsSpin { to{transform:rotate(360deg);} }
+@keyframes rsFadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+@keyframes rsSlideL { from{transform:translateX(30px);opacity:0;} to{transform:translateX(0);opacity:1;} }
+@keyframes rsPulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.35);opacity:.55;} }
+body { margin:0; background:#051729; }
+a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
+</style>
+</helmet>
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+
+  <!-- FREIGHTPOP TOP NAV -->
+  <sc-if value="{{ inApp }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#12293F;display:flex;align-items:center;padding:0 18px;z-index:5;">
+      <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;flex-shrink:0;">
+      <div style="margin-left:auto;display:flex;align-items:center;gap:16px;">
+        <span style="background:#4088CF;color:#fff;font-size:10px;font-weight:700;letter-spacing:.05em;padding:6px 11px;border-radius:3px;">NEW EXPERIENCE</span>
+        <span style="color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.05em;">DASHBOARD</span>
+        <span style="width:1px;height:20px;background:#3B5470;display:block;"></span>
+        <span style="display:flex;align-items:center;gap:15px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span style="{{ navOrders }}">Orders</span><span style="{{ navQuote }}">Quote/Ship</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span style="{{ navSettings }}">Audit</span></span>
+        <div style="position:relative;flex-shrink:0;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#C7D3E0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#5E7186"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#5E7186"></path></svg></div>
+          <sc-if value="{{ badge }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;border-radius:10px;background:#E0453A;border:2px solid #12293F;color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px;animation:rsPulse 1.1s ease-in-out infinite;">{{ badgeN }}</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- CARRIER PORTAL HEADER -->
+  <sc-if value="{{ inPortal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;padding:0 22px;z-index:5;">
+      <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:24px;width:auto;display:block;">
+      <sc-if value="{{ s9 }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-left:auto;display:flex;align-items:center;gap:22px;font-size:12.5px;color:#E4E7EB;"><span>Tracking</span><span>History</span><span>Invoices</span><span>Rates</span><span>User Manager</span><span style="font-weight:600;">Spot Quotes</span><span style="width:28px;height:28px;border-radius:14px;background:#41546B;display:block;"></span></div>
+      </sc-if>
+      <sc-if value="{{ portalPlain }}" hint-placeholder-val="{{ true }}">
+        <span style="margin-left:auto;color:#7FB2F2;font-size:11px;letter-spacing:.06em;">SUPPORT@FREIGHTPOP.COM</span>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <!-- 01 CARRIER SETUP -->
+  <sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:150px;background:#fff;border-bottom:1px solid #E1E7EF;padding:14px 30px 0;z-index:4;">
+      <div style="font-size:11.5px;font-weight:700;color:#4088CF;">Carrier Management <span style="color:#9AA7B8;">/ Add Carrier</span></div>
+      <div style="margin-top:6px;font-size:20px;font-weight:700;color:#14263C;">Add Carrier: User Defined Carrier</div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:10px;background:#E8F1FB;border-radius:3px;padding:9px 14px;">
+        <span style="width:15px;height:15px;border-radius:8px;border:1.4px solid #4088CF;color:#4088CF;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;">i</span>
+        <span style="font-size:12px;color:#2A3B50;">Please assign what users should be allowed to use this account in Users (81) tab</span>
+        <span style="margin-left:auto;color:#5E7186;font-size:14px;">✕</span>
+      </div>
+      <div style="display:flex;gap:24px;margin-top:11px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+        <span style="{{ tabGeneral }}">GENERAL</span><span>CONFIGURE SERVICES</span><span>MANAGE CARRIER</span><span>CARRIER LANES</span><span style="{{ tabContacts }}">CONTACTS</span><span>USERS (81)</span><span>ACCESSORIALS</span><span>CARRIER PROS</span>
+      </div>
+    </div>
+
+    <sc-if value="{{ tabIsGeneral }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;box-sizing:border-box;left:450px;top:216px;width:540px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ udcHead }}">Type</div>
+        <div style="padding:18px 20px;"><div style="{{ f1 }}"><span style="{{ lbl }}">Type</span><div style="{{ fv }}">{{ vType }}</div></div></div>
+      </div>
+      <div style="position:absolute;box-sizing:border-box;left:450px;top:344px;width:540px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ udcHead }}">Credentials</div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:16px;">
+          <div style="{{ f2 }}"><span style="{{ lbl }}">Carrier Name</span><div style="{{ fv }}">{{ vName }}</div></div>
+          <div style="{{ f3 }}"><span style="{{ lbl }}">Account Nickname</span><div style="{{ fv }}">{{ vNick }}</div></div>
+        </div>
+      </div>
+      <div style="position:absolute;box-sizing:border-box;left:450px;top:534px;width:540px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ udcHead }}">Location Details</div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:16px;">
+          <div style="{{ f4 }}"><span style="{{ lbl }}">Street Address for Shipping Location on Carrier Contract</span><div style="{{ fv }}">{{ vStreet }}</div></div>
+          <div style="{{ f5 }}"><span style="{{ lbl }}">Zip Code(s) for Shipping Location on Carrier Contract</span><div style="{{ fv }}">{{ vZips }}</div></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ tabIsContacts }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:1338px;top:214px;width:44px;height:44px;border-radius:22px;background:#4088CF;color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;z-index:6;">+</div>
+      <div style="position:absolute;box-sizing:border-box;left:30px;right:30px;top:230px;bottom:70px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;padding:14px 16px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="display:flex;align-items:center;gap:10px;width:290px;height:42px;border:1px solid #C6D0DC;border-radius:3px;padding:0 12px;">
+            <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#7A8CA0" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#7A8CA0" stroke-width="2"></path></svg>
+            <span style="font-size:12.5px;color:#9AA7B8;flex:1;">Search</span><span style="font-size:11px;font-weight:700;color:#5E7186;">GO</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 4 L21 4 L14 12.5 L14 20 L10 18 L10 12.5 Z" fill="none" stroke="#7A8CA0" stroke-width="1.8"></path></svg>
+        </div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:150px 150px 230px 150px 90px 90px 130px 150px;gap:10px;background:#F4F6F9;border:1px solid #E1E7EF;padding:10px 12px;font-size:11.5px;font-weight:700;color:#24354A;">
+          <span>First Name</span><span>Last Name</span><span>Street 1</span><span>City</span><span>State</span><span>Zip</span><span>Phone</span><span>Contact Type</span>
+        </div>
+        <sc-for list="{{ contactRows }}" as="c" hint-placeholder-count="3">
+          <div style="{{ c.row }}"><span>{{ c.first }}</span><span>{{ c.last }}</span><span>{{ c.street }}</span><span>{{ c.city }}</span><span>{{ c.state }}</span><span>{{ c.zip }}</span><span>{{ c.phone }}</span><span style="{{ c.kind }}">{{ c.role }}</span></div>
+        </sc-for>
+        <sc-if value="{{ noContact }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:120px 0;text-align:center;font-size:12.5px;color:#8496AA;">No Rows To Show</div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;right:0;top:52px;bottom:0;width:400px;background:#fff;box-shadow:-6px 0 22px rgba(16,42,67,.16);z-index:12;padding:20px 22px;box-sizing:border-box;animation:rsSlideL .32s both;">
+          <div style="display:flex;align-items:center;"><span style="font-size:18px;font-weight:600;color:#14263C;">Contact Information</span><span style="margin-left:auto;color:#5E7186;font-size:16px;">✕</span></div>
+          <div style="margin-top:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="{{ d1 }}"><span style="{{ lbl }}">First Name</span><div style="{{ fv }}">{{ dFirst }}</div></div>
+            <div style="{{ d2 }}"><span style="{{ lbl }}">Last Name</span><div style="{{ fv }}">{{ dLast }}</div></div>
+            <div style="{{ d3 }}"><span style="{{ lbl }}">Email</span><div style="{{ fv }}">{{ dMail }}</div></div>
+            <div style="{{ d4 }}"><span style="{{ lbl }}">Phone</span><div style="{{ fv }}">{{ dPhone }}</div></div>
+            <div style="{{ d5 }}"><span style="{{ lbl }}">Contact Type</span><div style="{{ fv }}">{{ dType }}</div></div>
+          </div>
+          <div style="position:absolute;left:22px;bottom:22px;display:flex;gap:12px;">
+            <div style="background:#4088CF;border-radius:3px;padding:11px 24px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</div>
+            <div style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 22px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</div>
+          </div>
+        </div>
+      </sc-if>
+    </sc-if>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;height:58px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;justify-content:flex-end;gap:20px;padding:0 26px;z-index:8;">
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;">DOWNLOAD RATE SHEET(S)</span>
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;">HOW TO OBTAIN CREDENTIALS</span>
+      <div style="border:1px solid #C6D0DC;border-radius:3px;padding:11px 20px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</div>
+      <div style="background:{{ saveBg }};border-radius:3px;padding:11px 26px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</div>
+    </div>
+  </sc-if>
+
+  <!-- 02 SPOT QUOTE CARRIER SETTINGS -->
+  <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:104px;background:#fff;border-bottom:1px solid #E1E7EF;padding:12px 36px 0;z-index:4;">
+      <div style="font-size:11.5px;font-weight:700;color:#4088CF;">Carrier Management <span style="color:#9AA7B8;">/ Ridgeline Carriers</span></div>
+      <div style="margin-top:6px;font-size:20px;font-weight:700;color:#14263C;">Add Carrier: User Defined Carrier</div>
+      <div style="display:flex;gap:24px;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+        <span>GENERAL</span><span>CONFIGURE SERVICES</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">MANAGE CARRIER</span><span>CARRIER LANES</span><span>CONTACTS</span><span>USERS (81)</span><span>ACCESSORIALS</span><span>CARRIER PROS</span>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:400px;top:186px;width:640px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
+      <div style="background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;padding:14px 20px;font-size:15px;font-weight:600;color:#24354A;">Carrier Portal</div>
+      <div style="padding:18px 22px 22px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ portalTog }}"><span style="{{ portalKnob }}"></span></span><span style="font-size:13.5px;color:#24354A;">Activate Carrier Portal</span></div>
+        <div style="margin-top:16px;position:relative;height:44px;background:#F4F5F7;border-bottom:1px solid #C6D0DC;"><span style="position:absolute;top:4px;left:10px;font-size:10.5px;color:#5E7186;">Admin Email</span><div style="padding:20px 0 0 10px;font-size:12.5px;color:#2A3B50;">{{ vAdminMail }}</div></div>
+        <div style="margin-top:14px;position:relative;height:44px;background:#F4F5F7;border-bottom:1px solid #C6D0DC;"><span style="position:absolute;top:4px;left:10px;font-size:10.5px;color:#5E7186;">Admin Password</span><div style="padding:20px 0 0 10px;font-size:12.5px;color:#2A3B50;letter-spacing:.18em;">{{ vAdminPw }}</div><svg width="16" height="16" viewBox="0 0 24 24" style="position:absolute;right:12px;top:16px;"><path d="M2 12 C6 5 18 5 22 12 C18 19 6 19 2 12 Z" fill="none" stroke="#5E7186" stroke-width="1.8"></path><circle cx="12" cy="12" r="3" fill="none" stroke="#5E7186" stroke-width="1.8"></circle><path d="M4 20 L20 4" stroke="#5E7186" stroke-width="1.8"></path></svg></div>
+        <div style="margin-top:16px;">
+          <sc-for list="{{ settingRows }}" as="q" hint-placeholder-count="5">
+            <div style="{{ q.row }}">
+              <span style="{{ q.toggle }}"><span style="{{ q.knob }}"></span></span>
+              <span style="font-size:13.5px;color:#24354A;">{{ q.label }}</span>
+              <sc-if value="{{ q.info }}" hint-placeholder-val="{{ false }}"><span style="margin-left:auto;width:17px;height:17px;border-radius:9px;border:1.3px solid #7A8290;color:#7A8290;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">i</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- 04 QUOTE/SHIP FORM -->
+  <sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:78px;background:#fff;border-bottom:1px solid #E1E7EF;padding:12px 30px 0;z-index:4;">
+      <div style="font-size:20px;font-weight:700;color:#14263C;">Quote/Ship</div>
+      <div style="display:flex;gap:26px;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:130px;bottom:52px;overflow:hidden;">
+      <div style="position:absolute;left:0;right:0;top:0;transform:translateY({{ scrollY }});transition:transform .7s cubic-bezier(.4,0,.2,1);">
+        <!-- LEFT COLUMN -->
+        <div style="position:absolute;left:30px;top:14px;width:670px;">
+          <div style="{{ cardLoc }}">
+            <div style="{{ cardHead }}">Locations</div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:16px;">
+              <div style="{{ fShipFrom }}"><span style="{{ lbl }}">Ship From</span><div style="{{ fv }}">FreightPOP, 1 Rancho Circle, Lake Forest, CA, 9263…</div></div>
+              <div style="color:#4088CF;font-size:12.5px;font-weight:700;letter-spacing:.04em;">↕ SWAP FROM &amp; TO</div>
+              <div style="{{ fShipTo }}"><span style="{{ lbl }}">Ship To</span><div style="{{ fv }}">{{ vShipTo }}</div></div>
+              <div style="{{ verifyStyle }}">✓ VERIFY ADDRESSES</div>
+            </div>
+          </div>
+          <div style="{{ cardShip }}">
+            <div style="{{ cardHead }}">Shipment Details</div>
+            <div style="padding:18px 20px 22px;">
+              <div style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid #EDF1F6;">
+                <span style="font-size:13.5px;font-weight:600;color:#24354A;">{{ unitSummary }}</span>
+                <span style="font-size:12px;color:#7A8CA0;">{{ vDesc }}</span>
+                <span style="margin-left:auto;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">CUBISCAN</span>
+              </div>
+              <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+                <div style="{{ q1 }}"><span style="{{ lbl }}">Quantity</span><div style="{{ fv }}">{{ vQty }}</div></div>
+                <div style="{{ q2 }}"><span style="{{ lbl }}">Type</span><div style="{{ fv }}">{{ vPkg }}</div></div>
+                <div style="{{ q3 }}"><span style="{{ lbl }}">Container Type</span><div style="{{ fv }}"></div></div>
+                <div style="{{ q4 }}"><span style="{{ lbl }}">Length</span><div style="{{ fv }}">{{ vLen }}</div></div>
+                <div style="{{ q5 }}"><span style="{{ lbl }}">Width</span><div style="{{ fv }}">{{ vWid }}</div></div>
+                <div style="{{ q6 }}"><span style="{{ lbl }}">Height</span><div style="{{ fv }}">{{ vHgt }}</div></div>
+                <div style="{{ q7 }}"><span style="{{ lbl }}">Weight (per piece)</span><div style="{{ fv }}">{{ vWgt }}</div></div>
+                <div style="{{ q8 }}"><span style="{{ lbl }}">Freight Class</span><div style="{{ fvClass }}">{{ vClass }}</div></div>
+                <div style="{{ q9 }}"><span style="{{ lbl }}">NMFC</span><div style="{{ fv }}">{{ vNmfc }}</div></div>
+              </div>
+              <div style="margin-top:16px;{{ q10 }}"><span style="{{ lbl }}">Description</span><div style="{{ fv }}">{{ vDesc }}</div></div>
+            </div>
+          </div>
+          <div style="{{ cardAdd }}">
+            <div style="{{ cardHead }}">Additional Information</div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:16px;">
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Shipping Notes</span><div style="{{ fv }}"></div></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div style="{{ fPlain }}"><span style="{{ lbl }}">Pickup Special Instructions</span><div style="{{ fv }}"></div></div>
+                <div style="{{ fPlain }}"><span style="{{ lbl }}">Delivery Special Instructions</span><div style="{{ fv }}"></div></div>
+                <div style="{{ fSo }}"><span style="{{ lbl }}">SO Number</span><div style="{{ fv }}">{{ vSo }}</div></div>
+                <div style="{{ fPo }}"><span style="{{ lbl }}">PO Number</span><div style="{{ fv }}">{{ vPo }}</div></div>
+              </div>
+              <div style="font-size:13.5px;font-weight:600;color:#24354A;padding-top:6px;">References</div>
+            </div>
+          </div>
+        </div>
+        <!-- RIGHT COLUMN -->
+        <div style="position:absolute;left:730px;top:14px;width:670px;">
+          <div style="{{ cardPickup }}">
+            <div style="{{ cardHead }}">Schedule Pickup</div>
+            <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Pickup Date</span><div style="{{ fvMuted }}">MM/DD/YYYY</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Delivery Date</span><div style="{{ fvMuted }}">MM/DD/YYYY</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Ready Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Open Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Cutoff Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Close Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Dock</span><div style="{{ fv }}"></div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Equipment</span><div style="{{ fvMuted }}">0 selected</div></div>
+            </div>
+          </div>
+          <div style="{{ cardCarrier }}">
+            <div style="{{ cardHead }}">Carrier</div>
+            <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Carrier</span><div style="{{ fv }}">Rate Shop</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Service</span><div style="{{ fv }}"></div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Payee</span><div style="{{ fv }}">Sender</div></div>
+              <div style="{{ fPlain }}"><span style="{{ lbl }}">Payment Type</span><div style="{{ fv }}">Prepaid</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:16px;padding:0 22px;z-index:6;">
+      <div style="flex:1;"></div>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Outer Handling Units: 0</span>
+      <span style="{{ totalStyle }}">Total Handling Units: {{ tUnits }}</span>
+      <span style="{{ totalStyle }}">Total Weight: {{ tWeight }}</span>
+      <span style="{{ totalStyle }}">Total Linear Feet: {{ tFeet }}</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 12px;color:#5E7186;font-size:11px;font-weight:700;">⋯</span>
+      <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">CLEAR SHIPMENT</span>
+      <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">PREVIEW BOL</span>
+      <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SAVE SHIPMENT</span>
+      <span style="{{ spotBtnStyle }}">SPOT QUOTE</span>
+      <span style="background:#1565C0;border-radius:4px;padding:10px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;">RATE SHOP</span>
+    </div>
+  </sc-if>
+
+  <!-- 11 RATES — THE BID ON THE QUOTE -->
+  <sc-if value="{{ sRates }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:112px;background:#fff;border-bottom:1px solid #E1E7EF;padding:12px 24px 0;z-index:4;">
+      <div style="font-size:19px;font-weight:700;color:#14263C;">Quote/Ship (Quote Id: 42636850, Shipment Id: 13374884)</div>
+      <div style="display:flex;align-items:flex-end;gap:16px;margin-top:12px;">
+        <div style="display:flex;gap:26px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+        <div style="margin-left:38px;position:relative;display:flex;align-items:center;gap:8px;width:250px;height:42px;border:1.5px solid #4088CF;border-radius:3px;padding:0 10px;">
+          <span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 4px;font-size:10px;color:#4088CF;">Order Import</span>
+          <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="#5E7186" stroke-width="1.8"></circle><circle cx="12" cy="12" r="8" fill="none" stroke="#5E7186" stroke-width="1.8" stroke-dasharray="3 2.4"></circle></svg>
+          <span style="flex:1;font-size:12px;color:#9AA7B8;">Use a comma to separate</span>
+          <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7" fill="none" stroke="#4088CF" stroke-width="2"></circle><path d="M16 16 L21 21" stroke="#4088CF" stroke-width="2"></path></svg>
+        </div>
+        <span style="{{ hdrBtn }}">START CONSOLIDATION</span>
+        <span style="{{ hdrBtn }}">RECENT QUOTES</span>
+        <span style="{{ hdrBtn }}">TEMPLATES</span>
+        <div style="position:relative;display:flex;align-items:center;gap:10px;height:42px;border:1px solid #C6D0DC;border-radius:3px;padding:0 12px;">
+          <span style="position:absolute;top:-7px;left:9px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Process Date</span>
+          <span style="font-size:12.5px;color:#2A3B50;">08/11/2026</span>
+          <svg width="15" height="15" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7"></path></svg>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:100px;top:186px;width:1240px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;">
+      <div style="display:flex;align-items:center;background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;padding:12px 18px;">
+        <span style="font-size:15px;font-weight:600;color:#24354A;">Rates</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:18px;">
+          <svg width="17" height="17" viewBox="0 0 24 24"><path d="M20 12 A8 8 0 1 1 17.6 6.4 M17.6 6.4 L18.2 2.2 M17.6 6.4 L13.2 6.2" fill="none" stroke="#4088CF" stroke-width="1.8"></path></svg>
+          <svg width="17" height="17" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="1.6" fill="none" stroke="#4088CF" stroke-width="1.7"></rect><path d="M3 6 L12 13 L21 6" fill="none" stroke="#4088CF" stroke-width="1.7"></path></svg>
+          <svg width="17" height="17" viewBox="0 0 24 24"><path d="M7 8 V3 H17 V8 M5 8 H19 A2 2 0 0 1 21 10 V16 H17 V21 H7 V16 H3 V10 A2 2 0 0 1 5 8 Z" fill="none" stroke="#4088CF" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+        </span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;">
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #C6D0DC;border-radius:4px;padding:9px 12px;width:220px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="flex:1;font-size:12.5px;color:#9AA7B8;">Search</span><span style="font-size:11px;font-weight:700;color:#5E7186;">GO</span></div>
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M2.5 4h15l-6 6.5V17l-3-1.6v-4.9L2.5 4z" stroke="#6B7280" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+        <span style="margin-left:auto;{{ gridSpotBtn }}">SPOT QUOTE</span>
+      </div>
+      <div style="display:grid;grid-template-columns:220px 170px 105px 140px 145px 85px 140px 120px;gap:8px;padding:11px 18px;background:#F3F6FA;border-top:1px solid #E1E7EF;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#24354A;">
+        <span>Carrier</span><span>Service</span><span>Delivery Days</span><span>Discounted Rate</span><span>Marked Up Rate</span><span>Rating</span><span>Carrier Nickname</span><span></span>
+      </div>
+      <sc-for list="{{ apiRows }}" as="r" hint-placeholder-count="3">
+        <div style="{{ r.row }}">
+          <span style="font-size:12.5px;color:#24354A;">{{ r.carrier }}</span>
+          <span style="font-size:12.5px;color:#24354A;">{{ r.svc }}</span>
+          <span style="font-size:12.5px;color:#24354A;">{{ r.days }}</span>
+          <span style="font-size:12.5px;font-weight:700;color:#24354A;">{{ r.rate }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">{{ r.list }}</span>
+          <span style="font-size:12.5px;color:#4088CF;text-decoration:underline;">{{ r.rating }}</span>
+          <span style="font-size:12.5px;color:#24354A;">{{ r.nick }}</span>
+          <span style="{{ rowIcons }}">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2" width="11" height="12" rx="1" stroke="#4088CF" stroke-width="1.3"></rect><path d="M5 5.5h6 M5 8h6 M5 10.5h4" stroke="#4088CF" stroke-width="1.1" stroke-linecap="round"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12.4l.6-2.4 6.2-6.2 1.8 1.8-6.2 6.2-2.4.6z" stroke="#4088CF" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <svg width="19" height="15" viewBox="0 0 20 16" fill="none"><rect x="1" y="3" width="10" height="8" rx="1" fill="#4088CF"></rect><path d="M11 6h4l3 3v2h-7V6z" fill="#4088CF"></path><circle cx="5" cy="12.6" r="1.6" fill="#4088CF"></circle><circle cx="14.5" cy="12.6" r="1.6" fill="#4088CF"></circle></svg>
+          </span>
+        </div>
+      </sc-for>
+      <sc-for list="{{ spotRows }}" as="b" hint-placeholder-count="3">
+        <div style="{{ b.row }}">
+          <span style="display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;color:#24354A;"><span style="{{ b.dot }}"></span>{{ b.carrier }}</span>
+          <span style="font-size:12.5px;color:#24354A;">{{ b.svc }}</span>
+          <span style="font-size:12.5px;color:#24354A;">{{ b.days }}</span>
+          <span style="{{ b.rateStyle }}">{{ b.rate }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">{{ b.list }}</span>
+          <span style="font-size:12.5px;color:#4088CF;text-decoration:underline;">{{ b.rating }}</span>
+          <span style="font-size:12.5px;color:#24354A;">{{ b.nick }}</span>
+          <span style="{{ b.icons }}">
+            <span style="{{ b.noteIcon }}"><svg width="17" height="17" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="2" width="11" height="12" rx="1" stroke="#4088CF" stroke-width="1.4"></rect><path d="M5 5.5h6 M5 8h6 M5 10.5h4" stroke="#4088CF" stroke-width="1.2" stroke-linecap="round"></path></svg></span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12.4l.6-2.4 6.2-6.2 1.8 1.8-6.2 6.2-2.4.6z" stroke="#4088CF" stroke-width="1.3" fill="none" stroke-linejoin="round"></path></svg>
+            <span style="{{ b.truckIcon }}"><svg width="20" height="16" viewBox="0 0 20 16" fill="none"><rect x="1" y="3" width="10" height="8" rx="1" fill="#4088CF"></rect><path d="M11 6h4l3 3v2h-7V6z" fill="#4088CF"></path><circle cx="5" cy="12.6" r="1.6" fill="#4088CF"></circle><circle cx="14.5" cy="12.6" r="1.6" fill="#4088CF"></circle></svg></span>
+          </span>
+        </div>
+      </sc-for>
+      <div style="padding:14px 18px;font-size:12px;color:#7A8CA0;">Results Per Page: 10 &nbsp;·&nbsp; {{ resultCount }}</div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;bottom:0;height:50px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:16px;padding:0 22px;z-index:6;">
+      <div style="flex:1;"></div>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Outer Handling Units: 0</span><span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: 3</span><span style="font-size:12.5px;color:#3A4B60;">Total Weight: 1,200 LB</span><span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 5</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 13px;color:#5E7186;font-size:12px;font-weight:700;">···</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 13px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.04em;">CLEAR SHIPMENT</span>
+      <span style="{{ bolBtn }}">PREVIEW BOL</span>
+      <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SAVE SHIPMENT</span>
+      <span style="background:#1565C0;border-radius:4px;padding:10px 16px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;">RATE SHOP</span>
+    </div>
+
+    <sc-if value="{{ breakModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+      <div style="position:absolute;box-sizing:border-box;left:470px;top:190px;width:500px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .25s both;padding:20px 24px 22px;">
+        <div style="display:flex;align-items:center;"><span style="font-size:15px;font-weight:600;color:#14263C;">Rate Breakdown: Ridgeline Carriers - LTL</span><span style="margin-left:auto;color:#5E7186;">✕</span></div>
+        <div style="margin-top:16px;border:1px solid #E1E7EF;border-radius:4px;padding:14px 16px;font-size:13px;color:#24354A;line-height:1.8;"><div style="font-weight:700;">Quote #</div><div>Test123456</div><div style="margin-top:6px;">Expiration Date: 08/12/2026</div></div>
+        <div style="margin-top:12px;border:1px solid #E1E7EF;border-radius:4px;padding:12px 16px;font-size:12.5px;color:#24354A;">Carrier Notes: Test Note</div>
+        <div style="margin-top:12px;border:1px solid #E1E7EF;border-radius:4px;padding:14px 16px;font-size:13px;color:#24354A;line-height:1.8;"><div style="font-weight:700;">Quote Details</div><div>Freight: $2,650.00</div><div>Fuel Surcharge: $560.00</div><div>Accessorials: $75.00</div></div>
+        <div style="margin-top:12px;border:1px solid #E1E7EF;border-radius:4px;padding:12px 16px;font-size:13px;font-weight:700;color:#14263C;">Total Rate: $3,285.00</div>
+        <div style="margin-top:18px;display:flex;gap:12px;"><div style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 20px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CLOSE</div><div style="border:1px solid #4088CF;border-radius:4px;padding:10px 20px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">PREVIEW BOL</div></div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ bolModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.55);z-index:12;"></div>
+      <div style="position:absolute;box-sizing:border-box;left:290px;top:96px;width:860px;height:690px;background:#323639;border-radius:4px;box-shadow:0 18px 50px rgba(5,20,40,.5);z-index:13;animation:rsFadeUp .25s both;overflow:hidden;">
+        <div style="height:30px;background:#202124;display:flex;align-items:center;gap:10px;padding:0 12px;color:#E4E7EB;font-size:11px;">BOL_4263685013374884.pdf — Google Chrome</div>
+        <div style="height:34px;background:#3C4043;display:flex;align-items:center;gap:14px;padding:0 14px;color:#D4D7DB;font-size:11px;">
+          <span>☰</span><span>BOL_4263685013374884.pdf</span>
+          <span style="margin-left:auto;display:flex;align-items:center;gap:14px;"><span style="background:#5F6368;border-radius:2px;padding:2px 6px;">1</span><span>/ 1</span><span>−</span><span>87%</span><span>+</span><span>⤓</span><span>🖨</span></span>
+        </div>
+        <div style="position:absolute;left:0;top:64px;bottom:0;width:120px;background:#525659;padding:12px;">
+          <div style="height:130px;background:#fff;border:2px solid #7FB2F2;"></div>
+          <div style="margin-top:6px;text-align:center;color:#C7CDD3;font-size:10px;">1</div>
+        </div>
+        <div style="position:absolute;left:120px;right:0;top:64px;bottom:0;background:#525659;display:flex;justify-content:center;padding:14px 0;overflow:hidden;">
+          <div style="position:relative;width:540px;background:#fff;padding:16px 18px;">
+            <div style="text-align:center;font-size:9px;color:#7A8CA0;">1 of 1</div>
+            <div style="display:flex;justify-content:space-between;font-size:9.5px;color:#24354A;"><span>Pro #:</span><span>08/11/2026</span></div>
+            <div style="margin-top:6px;display:flex;align-items:flex-end;">
+              <div style="flex:1;text-align:center;font-size:15px;font-weight:700;color:#4F8FC9;">Bill of Lading<div style="font-size:9px;color:#5E7186;font-weight:400;">BOL#</div></div>
+              <div style="flex:1;text-align:center;"><div style="font-size:13px;font-weight:700;color:#24354A;border-bottom:1px solid #24354A;padding-bottom:2px;">Ridgeline Carriers</div><div style="font-size:9px;color:#24354A;">Service: LTL</div></div>
+            </div>
+            <div style="margin-top:8px;font-size:9px;color:#24354A;">Payment Terms &nbsp;☑ Prepaid &nbsp;☐ Collect &nbsp;☐ 3rd Party</div>
+            <div style="margin-top:4px;display:grid;grid-template-columns:1fr 1fr;">
+              <div><div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">Shipper</div><div style="border:1px solid #24354A;border-top:0;padding:6px;font-size:9px;color:#24354A;line-height:1.5;height:56px;">Harborline Industrial, LLC<br>4120 Commerce Park Drive<br>Columbus, OH, 43219, US<br>6145550142</div></div>
+              <div><div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">Consignee</div><div style="border:1px solid #24354A;border-top:0;border-left:0;padding:6px;font-size:9px;color:#24354A;line-height:1.5;height:56px;">Sunshine Cleaners<br>1442 Franklin Street<br>Santa Clara, CA, 95050, US<br>4085550119</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;font-size:9px;color:#24354A;"><div style="border:1px solid #24354A;border-top:0;padding:3px 6px;">Order Number: SO-88214</div><div style="border:1px solid #24354A;border-top:0;border-left:0;padding:3px 6px;">PO Number: PO-44170</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;"><div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">Pickup Instructions</div><div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;border-left:1px solid #fff;">Delivery Instructions</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;font-size:9px;color:#24354A;"><div style="border:1px solid #24354A;border-top:0;padding:5px 6px;height:34px;">Non Stackable<br>Carrier Provided Quote Number: Test123456</div><div style="border:1px solid #24354A;border-top:0;border-left:0;padding:5px 6px;height:34px;">Dock 3 check-in. Appointment required.</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;"><div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">Billing Party</div><div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;border-left:1px solid #fff;">International Broker</div><div style="background:#C0392B;color:#fff;font-size:9px;text-align:center;padding:2px;border-left:1px solid #fff;">Hazmat Info</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;font-size:9px;color:#24354A;"><div style="border:1px solid #24354A;border-top:0;padding:5px 6px;height:44px;line-height:1.5;">Harborline Industrial, LLC<br>4120 Commerce Park Drive<br>Columbus, OH, 43219, US</div><div style="border:1px solid #24354A;border-top:0;border-left:0;height:44px;"></div><div style="border:1px solid #24354A;border-top:0;border-left:0;height:44px;"></div></div>
+            <div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">Shipment Information</div>
+            <div style="display:grid;grid-template-columns:34px 52px 40px 1fr 56px 62px 44px 52px;border:1px solid #24354A;border-top:0;font-size:8.5px;color:#24354A;">
+              <span style="padding:3px;font-weight:700;">Qty</span><span style="padding:3px;font-weight:700;">HU TYPE</span><span style="padding:3px;font-weight:700;">HM</span><span style="padding:3px;font-weight:700;">DESCRIPTION</span><span style="padding:3px;font-weight:700;">PIECES</span><span style="padding:3px;font-weight:700;">WEIGHT</span><span style="padding:3px;font-weight:700;">CLASS</span><span style="padding:3px;font-weight:700;">NMFC</span>
+              <span style="padding:3px;border-top:1px solid #C6D0DC;">3</span><span style="padding:3px;border-top:1px solid #C6D0DC;">PALLET</span><span style="padding:3px;border-top:1px solid #C6D0DC;"></span><span style="padding:3px;border-top:1px solid #C6D0DC;">Palletized dry goods · 48X40X48 in</span><span style="padding:3px;border-top:1px solid #C6D0DC;">3</span><span style="padding:3px;border-top:1px solid #C6D0DC;">1,200 LB</span><span style="padding:3px;border-top:1px solid #C6D0DC;">125</span><span style="padding:3px;border-top:1px solid #C6D0DC;">156600</span>
+            </div>
+            <div style="border:1px solid #24354A;border-top:0;height:96px;background:repeating-linear-gradient(#fff 0 15px, #E1E7EF 15px 16px);"></div>
+            <div style="display:grid;grid-template-columns:1fr 60px 90px 90px;border:1px solid #24354A;border-top:0;font-size:9px;color:#24354A;"><span style="padding:3px 6px;font-weight:700;">Total</span><span style="padding:3px;">3</span><span style="padding:3px;">1,200 LB</span><span style="padding:3px;">133.33 CFT</span></div>
+            <div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">COD Amount</div>
+            <div style="border:1px solid #24354A;border-top:0;padding:4px 6px;font-size:9px;color:#24354A;">$ &nbsp;☐ COD Amount &nbsp;&nbsp; Fee Terms: ☐ Prepaid &nbsp;☐ Collect &nbsp;☐ Customer Check Acceptable</div>
+            <div style="background:#C0392B;color:#fff;font-size:8px;padding:5px 6px;white-space:normal;line-height:1.45;">NOTE: Liability limitation for loss or damage in this shipment may be applicable. See 49 U.S.C. 14706(c)(1)(A) and (B).</div>
+            <div style="border:1px solid #24354A;border-top:0;padding:5px 6px;font-size:8.5px;color:#24354A;">SPECIAL AGREEMENT: Declared Value: $0 &nbsp;&nbsp;&nbsp; Shipper's Initials ______</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;border:1px solid #24354A;border-top:0;font-size:8.5px;color:#24354A;"><div style="padding:8px 6px;height:52px;">SHIPPER SIGNATURE/DATE<br><br>DRIVER SIGN IN / OUT</div><div style="padding:8px 6px;border-left:1px solid #24354A;height:52px;">Receiving and Carrier Signature/Date<br><br>TRAILER NUMBER &nbsp;&nbsp; SEAL NUMBER</div></div>
+            <div style="position:absolute;left:0;right:0;top:44%;text-align:center;font-size:64px;font-weight:700;color:rgba(90,110,135,.16);letter-spacing:.14em;transform:rotate(-32deg);pointer-events:none;">PREVIEW</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ proModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:14;"></div>
+      <div style="position:absolute;box-sizing:border-box;left:450px;top:190px;width:540px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:15;animation:rsFadeUp .25s both;padding:20px 24px 22px;">
+        <div style="display:flex;align-items:center;"><span style="font-size:15px;font-weight:600;color:#14263C;">PRO/Tracking Number</span><span style="margin-left:auto;color:#5E7186;">✕</span></div>
+        <div style="margin-top:10px;font-size:12px;color:#5E7186;white-space:normal;line-height:1.6;">This carrier does not enter a PRO/Tracking Number. You can manually enter a PRO/Tracking Number and, if necessary, update additional fields here.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="{{ fPlain }}"><span style="{{ lbl }}">PRO/Tracking Number</span><div style="{{ fv }}"></div></div>
+          <div style="{{ fPlain }}"><span style="{{ lbl }}">BOL Number</span><div style="{{ fv }}"></div></div>
+          <div style="{{ fPlain }}"><span style="{{ lbl }}">Quote Number</span><div style="{{ fv }}">Test123456</div></div>
+          <div style="{{ fPlain }}"><span style="{{ lbl }}">Total Cost</span><div style="{{ fv }}">$ 3,285.00</div></div>
+        </div>
+        <div style="margin-top:12px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">+ ADD BREAKDOWN</div>
+        <div style="margin-top:18px;display:flex;gap:12px;"><div style="background:{{ shipItBg }};border-radius:4px;padding:11px 22px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;">SHIP IT</div><div style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 18px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">I DON'T HAVE A PRO/TRACKING NUMBER</div></div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 07 SPOT QUOTE REQUEST MODAL -->
+  <sc-if value="{{ modal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+    <div style="position:absolute;box-sizing:border-box;left:400px;top:92px;width:648px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .3s ease both;">
+      <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid #EDF1F6;">
+        <span style="font-size:16px;font-weight:600;color:#14263C;white-space:nowrap;">Spot Quote Request</span>
+        <div style="{{ mBidDate }}"><span style="{{ lbl }}">Bid Cutoff Date</span><div style="{{ fv }}">{{ vBidDue }}</div></div>
+        <div style="{{ mBidTime }}"><span style="{{ lbl }}">Bid Cutoff Time</span><div style="{{ fv }}">{{ vBidTime }}</div></div>
+        <span style="font-size:16px;color:#5E7186;">✕</span>
+      </div>
+      <div style="padding:20px 18px 18px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="{{ mShipDate }}"><span style="{{ lbl }}">Ship Date</span><div style="{{ fv }}">{{ vShipDate }}</div></div>
+          <div style="{{ mArrive }}"><span style="{{ lbl }}">Arrive By Date</span><div style="{{ fv }}">{{ vArrive }}</div></div>
+        </div>
+        <div style="{{ mInstr }}"><span style="{{ lbl }}">Special Instructions</span><div style="padding:16px 12px 0;font-size:12.5px;color:#2A3B50;white-space:normal;line-height:1.5;">{{ vInstr }}</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div style="{{ mPickIns }}"><span style="{{ lbl }}">Pickup Special Instructions</span><div style="{{ fv }}">{{ vPickIns }}</div></div>
+          <div style="{{ mPlain }}"><span style="{{ lbl }}">Delivery Special Instructions</span><div style="{{ fv }}"></div></div>
+          <div style="{{ mPlain }}"><span style="{{ lbl }}">Ready Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+          <div style="{{ mPlain }}"><span style="{{ lbl }}">Open Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+          <div style="{{ mPlain }}"><span style="{{ lbl }}">Cutoff Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+          <div style="{{ mPlain }}"><span style="{{ lbl }}">Close Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+        </div>
+        <div style="{{ mPlain }}"><span style="{{ lbl }}">Attached Documents</span><div style="{{ fv }}"></div></div>
+        <div style="position:relative;">
+          <div style="{{ mCarriers }}"><span style="{{ lbl }}">Select Carriers</span><div style="{{ fv }}">{{ grp }}</div></div>
+          <sc-if value="{{ grpOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:0;right:0;top:46px;background:#fff;border:1px solid #E1E7EF;border-radius:0 0 6px 6px;box-shadow:0 12px 26px rgba(5,20,40,.18);z-index:6;animation:rsFadeUp .2s both;">
+              <sc-for list="{{ grpOpts }}" as="g" hint-placeholder-count="4"><div style="{{ g.style }}">{{ g.label }}<span style="color:#8A97A8;font-size:11px;margin-left:8px;">{{ g.n }}</span></div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding-top:2px;">
+          <div style="background:{{ sendBg }};border-radius:4px;padding:12px 22px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">CONFIRM</div>
+          <div style="border:1px solid #C6D0DC;border-radius:4px;padding:12px 22px;color:#5E7186;font-size:11.5px;font-weight:700;letter-spacing:.05em;">CANCEL</div>
+          <span style="margin-left:auto;font-size:12px;color:#5E7186;">Goes to <b style="color:#24354A;">{{ grpCount }}</b> carriers in one send.</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- 09 THE REQUEST EMAIL THE CARRIER GETS -->
+  <sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:#1F2226;"></div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:0;height:44px;background:#2B2F35;display:flex;align-items:center;padding:0 20px;color:#E4E7EB;font-size:12.5px;">Harborline Industrial, LLC — Request For Spot Quote Q42636850 SO: SO-88214 PO: PO-44170 — Carrier Ridgeline Carriers</div>
+    <div style="position:absolute;left:20px;top:56px;display:flex;align-items:center;gap:12px;color:#9AA7B8;font-size:12px;"><span style="color:#7FB2F2;">SpotQuoteRequest@FreightPOP.com</span><span>To: Ridgeline Carriers · quotes@ridgelinecarriers.com</span></div>
+    <div style="position:absolute;box-sizing:border-box;left:390px;top:92px;width:660px;height:700px;background:#fff;overflow:hidden;">
+      <div style="background:#D9D9D9;padding:16px 0;text-align:center;font-size:26px;font-weight:600;color:#14263C;">Harborline Industrial, LLC</div>
+      <div style="padding:18px 22px;font-size:13px;color:#24354A;line-height:1.6;white-space:normal;">
+        <div>Hello,</div>
+        <div>This is Karen Whitfield from Harborline Industrial, LLC.</div>
+        <div style="margin-top:12px;">Can you please provide a spot quote for the shipment below. Your fast response is appreciated. To respond click on the link below or if you have any additional questions please call me at 6145550142 or email me at karen.whitfield@harborline.com.</div>
+        <div style="margin-top:16px;margin-bottom:8px;display:flex;align-items:center;gap:8px;white-space:nowrap;">
+          <span style="{{ linkAdd }}">Click here</span><span style="font-size:13px;color:#24354A;">to add the spot quote amount into the customer portal.</span>
+        </div>
+        <div style="margin-top:14px;display:flex;">
+          <div style="width:200px;"><div style="background:#EDEDED;padding:3px 6px;">Expected Ship Date</div><div style="padding:3px 6px;">Ready Time</div><div style="background:#EDEDED;padding:3px 6px;">Cutoff Time</div></div>
+          <div style="width:190px;"><div style="background:#EDEDED;padding:3px 6px;">08/10/2026</div><div style="padding:3px 6px;">08:00 AM</div><div style="background:#EDEDED;padding:3px 6px;">05:00 PM</div></div>
+          <div style="flex:1;text-align:right;"><span style="{{ linkDecline }}">Click here to decline</span></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;">
+          <div style="width:200px;color:#24354A;"><div style="background:#EDEDED;padding:3px 6px;font-weight:600;">Origin</div><div style="padding:3px 6px;">Company:</div><div style="padding:3px 6px;">Ship From:</div><div style="background:#EDEDED;padding:3px 6px;font-weight:600;margin-top:8px;">Final Destination</div><div style="padding:3px 6px;">Company:</div><div style="padding:3px 6px;">Ship To:</div></div>
+          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;">&nbsp;</div><div style="padding:3px 6px;">Harborline Industrial, LLC</div><div style="padding:3px 6px;">4120 Commerce Park Drive, Columbus, OH, 43219, US</div><div style="padding:3px 6px;margin-top:8px;">&nbsp;</div><div style="padding:3px 6px;">Sunshine Cleaners</div><div style="padding:3px 6px;">1442 Franklin Street, Santa Clara, CA, 95050, US</div></div>
+        </div>
+        <div style="margin-top:14px;font-weight:600;color:#24354A;">Shipment Details</div>
+        <div style="margin-top:6px;display:flex;gap:10px;">
+          <div style="width:200px;color:#24354A;"><div style="padding:3px 6px;">Package Quantity:</div><div style="background:#EDEDED;padding:3px 6px;">Package Type:</div><div style="padding:3px 6px;">Dimensions:</div><div style="background:#EDEDED;padding:3px 6px;">Weight Per Piece:</div><div style="padding:3px 6px;">Freight Class:</div><div style="background:#EDEDED;padding:3px 6px;">Description:</div><div style="padding:3px 6px;">Non Stackable:</div></div>
+          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;">3</div><div style="background:#EDEDED;padding:3px 6px;">PALLET</div><div style="padding:3px 6px;">48, 40, 48 ins</div><div style="background:#EDEDED;padding:3px 6px;">400 LBS</div><div style="padding:3px 6px;">125</div><div style="background:#EDEDED;padding:3px 6px;">Palletized dry goods</div><div style="padding:3px 6px;">Yes</div></div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;">
+          <div style="width:200px;color:#24354A;"><div style="background:#EDEDED;padding:3px 6px;font-weight:600;">References</div><div style="padding:3px 6px;">SO Number:</div><div style="background:#EDEDED;padding:3px 6px;">PO Number:</div></div>
+          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;">&nbsp;</div><div style="padding:3px 6px;">SO-88214</div><div style="background:#EDEDED;padding:3px 6px;">PO-44170</div></div>
+        </div>
+      </div>
+    </div>
+    <sc-if value="{{ emailCallout }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;box-sizing:border-box;left:1062px;top:250px;width:300px;background:#0F8A6D;color:#fff;border-radius:8px;padding:16px 18px;font-size:13.5px;line-height:1.6;white-space:normal;z-index:20;animation:rsFadeUp .3s both;box-shadow:0 12px 30px rgba(0,0,0,.35);">The carrier answers from the email itself — one link to enter a rate, one to decline.</div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 10 CARRIER SPOT QUOTE PAGE -->
+  <sc-if value="{{ s6 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:80px;background:#fff;border-bottom:1px solid #E1E7EF;padding:14px 30px 0;z-index:4;">
+      <div style="font-size:20px;font-weight:700;color:#14263C;">Spot Quote</div>
+      <div style="display:flex;gap:26px;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+    </div>
+    <div style="position:absolute;left:30px;top:130px;width:640px;">
+      <div style="{{ cardLoc }}">
+        <div style="{{ cardHead }}">Locations</div>
+        <div style="padding:16px 20px;font-size:12.5px;color:#24354A;line-height:1.7;">
+          <div style="font-weight:700;">Ship From</div><div>Harborline Industrial, LLC</div><div style="color:#5E7186;">4120 Commerce Park Drive, Columbus, OH, 43219, US</div>
+          <div style="font-weight:700;margin-top:12px;">Ship To</div><div>Sunshine Cleaners</div><div style="color:#5E7186;">1442 Franklin Street, Santa Clara, CA, 95050, US</div>
+        </div>
+      </div>
+      <div style="position:absolute;box-sizing:border-box;left:0;top:236px;width:640px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}">Shipment Details</div>
+        <div style="padding:14px 20px 18px;">
+          <div style="font-size:13px;font-weight:600;color:#24354A;">3 PALLET &nbsp;·&nbsp; 48x40x48 @ 400 lb &nbsp;·&nbsp; class 125</div>
+          <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px 18px;font-size:12px;color:#24354A;">
+            <div><div style="font-weight:700;">Quantity</div>3</div><div><div style="font-weight:700;">Type</div>PALLET</div><div><div style="font-weight:700;">Length in</div>48</div><div><div style="font-weight:700;">Width in</div>40</div>
+            <div><div style="font-weight:700;">Height in</div>48</div><div><div style="font-weight:700;">Weight lb (per piece)</div>400</div><div><div style="font-weight:700;">Freight Class</div>125</div><div><div style="font-weight:700;">Cubic Feet</div>133</div>
+          </div>
+          <div style="margin-top:14px;font-size:12px;color:#24354A;"><span style="font-weight:700;">Description</span> · Palletized dry goods &nbsp; <span style="font-weight:700;">Non Stackable</span> · Yes &nbsp; <span style="font-weight:700;">Hazmat</span> · No</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;left:700px;top:130px;width:700px;">
+      <div style="{{ cardLoc }}">
+        <div style="{{ cardHead }}">Additional Information</div>
+        <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;font-size:12px;color:#24354A;">
+          <div><div style="font-weight:700;">Spot Quote Special Instructions</div>Dock 3 check-in. Appointment required.</div>
+          <div><div style="font-weight:700;">Carrier Insurance Amount</div>—</div>
+          <div><div style="font-weight:700;">SO Number</div>SO-88214</div>
+          <div><div style="font-weight:700;">PO Number</div>PO-44170</div>
+        </div>
+      </div>
+      <div style="position:absolute;box-sizing:border-box;left:0;top:176px;width:700px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}">Pickup Information</div>
+        <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;font-size:12px;color:#24354A;">
+          <div><div style="font-weight:700;">Expected Ship Date</div>08/10/2026</div><div><div style="font-weight:700;">Must Arrive By Date</div>08/12/2026</div>
+          <div><div style="font-weight:700;">Ready Time</div>08:00 AM</div><div><div style="font-weight:700;">Cutoff Time</div>05:00 PM</div>
+        </div>
+      </div>
+      <div style="position:absolute;box-sizing:border-box;left:0;top:342px;width:700px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+        <div style="{{ cardHead }}">Rate Quote</div>
+        <div style="padding:16px 20px 20px;">
+          <div style="background:#F3F6FA;border:1px solid #E1E7EF;border-radius:4px;padding:12px 14px;font-size:13px;color:#24354A;"><span style="font-size:10.5px;color:#5E7186;display:block;">Carrier</span>Ridgeline Carriers</div>
+          <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+            <div style="{{ r1 }}"><span style="{{ lbl }}">Service</span><div style="{{ fv }}">{{ vSvc }}</div></div>
+            <div style="{{ r2 }}"><span style="{{ lbl }}">Delivery Days</span><div style="{{ fv }}">{{ vDays }}</div></div>
+            <div style="{{ r3 }}"><span style="{{ lbl }}">Rate $</span><div style="{{ fv }}">{{ vRate }}</div></div>
+            <div style="{{ r4 }}"><span style="{{ lbl }}">Quote Number</span><div style="{{ fv }}">{{ vQuoteNo }}</div></div>
+            <div style="{{ r5 }}"><span style="{{ lbl }}">Notes</span><div style="{{ fv }}">{{ vNotes }}</div></div>
+            <div style="{{ breakBtn }}">+ ADD BREAKDOWN</div>
+          </div>
+          <div style="margin-top:16px;border:1px solid #4088CF;border-radius:4px;display:inline-block;padding:10px 16px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">+ ADD QUOTE</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;bottom:0;height:50px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:6;">
+      <div style="flex:1;"></div>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: 3</span><span style="font-size:12.5px;color:#3A4B60;">Total Weight: 1,200 LB</span><span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 5</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 18px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">DECLINE</span>
+      <span style="background:{{ submitBg }};border-radius:4px;padding:11px 22px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;transition:background .2s;">SUBMIT</span>
+    </div>
+    <sc-if value="{{ costModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+      <div style="position:absolute;box-sizing:border-box;left:430px;top:170px;width:580px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .3s both;padding:22px 26px 24px;">
+        <div style="display:flex;align-items:center;"><span style="font-size:17px;font-weight:600;color:#14263C;">Cost Breakdown</span><span style="margin-left:auto;color:#5E7186;">✕</span></div>
+        <div style="margin-top:20px;display:flex;align-items:center;gap:18px;"><span style="width:170px;font-size:13.5px;color:#24354A;">Freight Charges $</span><div style="{{ cb1 }}"><div style="padding:12px 14px;font-size:13px;color:#2A3B50;">{{ vFreight }}</div></div></div>
+        <div style="margin-top:12px;border:1px solid #4088CF;border-radius:4px;display:inline-block;padding:8px 14px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">+ ADD BREAKDOWN</div>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:18px;"><span style="width:170px;font-size:13.5px;color:#24354A;">Fuel Surcharge $</span><div style="{{ cb2 }}"><div style="padding:12px 14px;font-size:13px;color:#2A3B50;">{{ vFuel }}</div></div></div>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:18px;"><span style="width:170px;font-size:13.5px;color:#24354A;">Other Charges $</span><div style="{{ cb3 }}"><div style="padding:12px 14px;font-size:13px;color:#2A3B50;">{{ vOther }}</div></div></div>
+        <div style="margin-top:12px;border:1px solid #4088CF;border-radius:4px;display:inline-block;padding:8px 14px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.05em;">+ ADD CHARGE</div>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:18px;"><span style="width:170px;font-size:13.5px;color:#24354A;">Total Charges $</span><div style="flex:1;background:#F3F6FA;border:1px solid #E1E7EF;border-radius:4px;padding:12px 14px;font-size:13px;font-weight:700;color:#14263C;">{{ vCostTotal }}</div></div>
+        <div style="margin-top:22px;display:flex;gap:12px;"><div style="background:{{ saveCbBg }};border-radius:4px;padding:11px 24px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</div><div style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 24px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</div></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ bidDone }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;box-sizing:border-box;left:30px;top:620px;width:640px;background:#DCF5EE;border:1px solid #0F8A6D;border-radius:6px;padding:16px 20px;z-index:9;animation:rsFadeUp .3s both;">
+        <div style="font-size:14px;font-weight:700;color:#0F6B56;">Quote submitted to Harborline Industrial, LLC</div>
+        <div style="margin-top:6px;font-size:12.5px;color:#2E5E33;white-space:normal;">Quote Test123456 · $3,285.00 with cost breakdown · a copy was emailed to quotes@ridgelinecarriers.com.</div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 11 NOTIFICATION → MESSAGE CENTER -->
+  <sc-if value="{{ sOrders }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:96px;background:#fff;padding:14px 30px 0;z-index:4;">
+      <div style="font-size:22px;font-weight:700;color:#14263C;">Order Management</div>
+      <div style="display:flex;gap:26px;margin-top:14px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">OPEN SALES ORDERS</span><span>OPEN OUTBOUND TRANSACTIONS</span><span>OPEN INBOUND TRANSACTIONS</span><span>SERVICES MANAGEMENT</span><span>ROI CALCULATION</span></div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:24px;top:168px;right:24px;bottom:22px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;">
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #C6D0DC;border-radius:4px;padding:10px 12px;width:230px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="flex:1;font-size:12.5px;color:#9AA7B8;">Search</span><span style="font-size:11px;font-weight:700;color:#5E7186;">GO</span></div>
+        <span style="margin-left:auto;border:1px solid #C6D0DC;border-radius:4px;padding:9px 14px;color:#24354A;font-size:10.5px;font-weight:700;letter-spacing:.04em;">AUTO DISPATCH</span>
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 14px;color:#24354A;font-size:10.5px;font-weight:700;letter-spacing:.04em;">BATCHES</span>
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 14px;color:#24354A;font-size:10.5px;font-weight:700;letter-spacing:.04em;">FILTERS</span>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 200px 160px 170px 160px 150px 1fr 130px;gap:8px;padding:11px 18px;background:#F3F6FA;border-top:1px solid #E1E7EF;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;"><span>Order Number</span><span>Consolidation Number</span><span>Quote Id</span><span>Shipment Id</span><span>Shipment Details</span><span>Order Type</span><span>Ship From Company Id</span><span></span></div>
+      <sc-for list="{{ orderRows }}" as="o" hint-placeholder-count="6">
+        <div style="{{ o.row }}">
+          <span style="{{ o.numStyle }}">{{ o.num }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">{{ o.cons }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">{{ o.quote }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">{{ o.ship }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">Yes</span>
+          <span style="font-size:12.5px;color:#5E7186;">{{ o.type }}</span>
+          <span style="font-size:12.5px;color:#5E7186;">19056841</span>
+          <span style="display:grid;grid-template-columns:26px 26px 26px;gap:12px;justify-items:center;align-items:center;justify-content:end;">
+            <span style="{{ o.viewIcon }}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="{{ o.tint }}" stroke-width="1.5"></rect><path d="M7 13l6-6 M9 7h4v4" stroke="{{ o.tint }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <svg width="18" height="14" viewBox="0 0 20 16" fill="none"><rect x="1" y="3" width="10" height="8" rx="1" fill="{{ o.tint }}"></rect><path d="M11 6h4l3 3v2h-7V6z" fill="{{ o.tint }}"></path><circle cx="5" cy="12.6" r="1.6" fill="{{ o.tint }}"></circle><circle cx="14.5" cy="12.6" r="1.6" fill="{{ o.tint }}"></circle></svg>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 12.4l.6-2.4 6.2-6.2 1.8 1.8-6.2 6.2-2.4.6z" stroke="{{ o.tint }}" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+          </span>
+        </div>
+      </sc-for>
+      <div style="padding:14px 18px;font-size:12px;color:#7A8CA0;">Results Per Page: 50 &nbsp;·&nbsp; 1–19 of 19</div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ s7 }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;right:16px;top:56px;width:250px;background:#fff;border-radius:6px;box-shadow:0 18px 44px rgba(5,20,40,.34);z-index:12;animation:rsFadeUp .2s both;padding:8px 0;">
+        <div style="padding:10px 16px;font-size:12px;color:#5E7186;border-bottom:1px solid #EDF1F6;">karen.whitfield@harborline.com</div>
+        <div style="{{ menuNotif }}"><span style="width:18px;height:18px;border-radius:9px;background:#E0453A;color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;">2</span>Notifications</div>
+        <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="6"><div style="padding:9px 16px;font-size:12.5px;color:#24354A;">{{ m.label }}</div></sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ msgCenter }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:13;"></div>
+      <div style="position:absolute;box-sizing:border-box;left:210px;top:130px;width:1020px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:14;animation:rsFadeUp .25s both;padding:20px 24px 22px;">
+        <div style="display:flex;align-items:center;"><span style="font-size:17px;font-weight:600;color:#14263C;">Message Center</span><span style="margin-left:auto;color:#5E7186;">✕</span></div>
+        <div style="margin-top:18px;display:flex;align-items:center;gap:16px;">
+          <div style="display:flex;align-items:center;gap:10px;border:1px solid #C6D0DC;border-radius:4px;padding:9px 12px;width:230px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="flex:1;font-size:12.5px;color:#9AA7B8;">Search</span><span style="font-size:11px;font-weight:700;color:#5E7186;">GO</span></div>
+          <span style="display:flex;align-items:center;gap:9px;font-size:12.5px;color:#24354A;"><span style="width:34px;height:18px;border-radius:9px;background:#4088CF;position:relative;display:inline-block;"><span style="position:absolute;top:2px;left:18px;width:14px;height:14px;border-radius:7px;background:#fff;"></span></span>Only Show Unread</span>
+          <span style="margin-left:auto;font-size:11.5px;font-weight:700;color:#4088CF;">MARK ALL AS READ</span>
+        </div>
+        <div style="margin-top:16px;border:1px solid #E1E7EF;border-radius:4px;">
+          <div style="display:grid;grid-template-columns:170px 180px 180px 1fr;padding:10px 14px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;"><span>User</span><span>Received</span><span>Type</span><span>Message</span></div>
+          <sc-for list="{{ msgRows }}" as="m" hint-placeholder-count="2">
+            <div style="{{ m.row }}"><span style="font-size:12.5px;color:#24354A;">{{ m.user }}</span><span style="font-size:12.5px;color:#5E7186;">{{ m.at }}</span><span style="font-size:12.5px;color:#5E7186;">{{ m.type }}</span><span style="font-size:12.5px;color:#24354A;white-space:normal;line-height:1.5;display:flex;align-items:center;gap:10px;"><span>{{ m.msg }}</span><span style="{{ m.link }}"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="#4088CF" stroke-width="1.5"></rect><path d="M7 13l6-6 M9 7h4v4" stroke="#4088CF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></span></div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;display:flex;"><div style="border:1px solid #C6D0DC;border-radius:4px;padding:10px 20px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CLOSE</div></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ levelsOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+      <div style="position:absolute;z-index:11;box-sizing:border-box;left:380px;top:200px;width:700px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);padding:24px 28px 28px;animation:rsFadeUp .25s both;">
+        <div style="font-size:15px;font-weight:600;color:#24354A;">Spot quote notification levels</div>
+        <div style="margin-top:4px;font-size:11.5px;color:#7A8CA0;">Per user — set once, applies to every spot quote you send.</div>
+        <div style="margin-top:18px;">
+          <sc-for list="{{ levelRows }}" as="q" hint-placeholder-count="2">
+            <div style="{{ q.row }}">
+              <span style="{{ q.toggle }}"><span style="{{ q.knob }}"></span></span>
+              <div><div style="font-size:13.5px;font-weight:600;color:#24354A;">{{ q.label }}</div><div style="margin-top:4px;font-size:11.5px;color:#7A8CA0;white-space:normal;">{{ q.note }}</div></div>
+              <span style="{{ q.chan }}">{{ q.channel }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 12 SHIPMENT PROCESSED -->
+  <sc-if value="{{ s10 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:112px;background:#fff;border-bottom:1px solid #E1E7EF;padding:12px 30px 0;z-index:4;">
+      <div style="font-size:19px;font-weight:700;color:#14263C;">Shipment Details (Shipment Id: 13374884)</div>
+      <div style="margin-top:8px;background:#FDF3DC;border-radius:3px;padding:7px 10px;font-size:11.5px;color:#7A5B12;">⚠ Changes made to the shipment information may cause the carrier to change the quote provided. Each carrier treats this differently.</div>
+      <div style="display:flex;gap:26px;margin-top:10px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:190px;top:180px;width:530px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+      <div style="{{ cardHead }}">General</div>
+      <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="{{ roField }}"><span style="{{ lbl }}">Order Number</span><div style="{{ fv }}">SO-88214</div></div>
+        <div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Carrier</span><div style="{{ fv }}">Ridgeline Carriers</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Carrier Nickname</span><div style="{{ fv }}">Ridgeline</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Tracking</span><div style="{{ fv }}">FRTPOP 2200231522</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Return Tracking</span><div style="{{ fv }}"></div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Process Date</span><div style="{{ fv }}">08/11/2026</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Pickup Request Number</span><div style="{{ fv }}"></div></div>
+      </div>
+      <div style="padding:0 18px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="border:1px solid #4088CF;border-radius:4px;text-align:center;padding:11px 0;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">CHANGE LOG</div>
+        <div style="border:1px solid #4088CF;border-radius:4px;text-align:center;padding:11px 0;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">VIEW ALL QUOTES</div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:190px;top:560px;width:530px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+      <div style="{{ cardHead }}">Locations</div>
+      <div style="padding:16px 18px;display:flex;flex-direction:column;gap:12px;">
+        <div style="{{ roField }}"><span style="{{ lbl }}">Ship From</span><div style="{{ fv }}">Harborline Industrial, LLC, 4120 Commerce Park…</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Ship To</span><div style="{{ fv }}">Sunshine Cleaners, 1442 Franklin Street, Santa Cla…</div></div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:740px;top:180px;width:530px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+      <div style="{{ cardHead }}">Shipment Confirmation</div>
+      <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="{{ roField }}"><span style="{{ lbl }}">Quote Id</span><div style="{{ fv }}">42636850</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Shipment Id</span><div style="{{ fv }}">13374884</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Shipment Quote</span><div style="{{ fv }}">$ 3,285.00</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Quote</span><div style="{{ fv }}">Test123456</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">List Rate</span><div style="{{ fv }}">$ 3,285.00</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Markup Rate</span><div style="{{ fv }}">$ 3,285.00</div></div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:740px;top:440px;width:530px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+      <div style="background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:4px 4px 0 0;padding:13px 18px;display:flex;align-items:center;"><span style="font-size:15px;font-weight:600;color:#24354A;">Pickup Information</span><span style="{{ schedBtn }}">SCHEDULE PICKUP</span></div>
+      <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="{{ roField }}"><span style="{{ lbl }}">Pickup Date</span><div style="{{ fv }}">{{ vPickupDate }}</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Delivery Date</span><div style="{{ fv }}">08/15/2026</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Ready Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Open Time</span><div style="{{ fvMuted }}">hh:mm aa</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Pickup Status</span><div style="{{ pickupStatusStyle }}">{{ vPickupStatus }}</div></div>
+        <div style="{{ roField }}"><span style="{{ lbl }}">Transit Days</span><div style="{{ fv }}">4</div></div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;bottom:0;height:50px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:14px;padding:0 22px;z-index:6;">
+      <div style="flex:1;"></div>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: 3</span><span style="font-size:12.5px;color:#3A4B60;">Total Weight: 1,200 LB</span><span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 5</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 13px;color:#5E7186;font-size:10px;font-weight:700;letter-spacing:.04em;">CANCEL SHIPMENT</span>
+      <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10px;font-weight:700;letter-spacing:.04em;">EMAIL SHIPPING LABELS/BOL</span>
+      <span style="background:#C6D0DC;border-radius:4px;padding:10px 20px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">SAVE</span>
+    </div>
+    <sc-if value="{{ processedToast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;box-sizing:border-box;left:740px;top:684px;width:530px;background:#E7F4E4;border:1px solid #3B9E4E;border-radius:4px;padding:14px 18px;animation:rsFadeUp .3s both;">
+        <div style="font-size:13.5px;font-weight:700;color:#2E5E33;">Shipment processed successfully</div>
+        <div style="margin-top:5px;font-size:12px;color:#2E5E33;white-space:normal;">Tendered to Ridgeline Carriers at $3,285.00 — BOL and tracking number generated.</div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 10 RESPONSE EMAIL BACK TO THE CARRIER -->
+  <sc-if value="{{ s8 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:#1F2226;"></div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:0;height:44px;background:#2B2F35;display:flex;align-items:center;padding:0 20px;color:#E4E7EB;font-size:12.5px;">Ridgeline Carriers Responded For Spot Quote Q42636850 SO: SO-88214 PO: PO-44170</div>
+    <div style="position:absolute;left:20px;top:56px;display:flex;align-items:center;gap:12px;color:#9AA7B8;font-size:12px;"><span style="color:#7FB2F2;">SpotQuoteRequest@FreightPOP.com</span><span>To: Karen Whitfield &nbsp;·&nbsp; Cc: Ridgeline Carriers</span></div>
+    <div style="position:absolute;box-sizing:border-box;left:430px;top:92px;width:580px;height:700px;background:#26292E;padding:22px 26px;overflow:hidden;">
+      <div style="text-align:center;font-size:13px;color:#7FB2F2;">Harborline Industrial, LLC</div>
+      <div style="margin-top:8px;text-align:center;font-size:20px;font-weight:700;color:#7FB2F2;">Spot Quote Response</div>
+      <div style="margin-top:16px;font-size:12.5px;color:#7FB2F2;line-height:2;"><div>Quote Date: 08/11/2026</div><div>SO Number: SO-88214</div><div>PO Number: PO-44170</div></div>
+      <div style="margin-top:14px;background:#4088CF;color:#fff;padding:6px 10px;font-size:12.5px;font-weight:600;">Shipment Details</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:10px;background:#33373D;font-size:11px;color:#C7D3E0;">
+        <span>Package Qty</span><span>Package Type</span><span>Dimensions</span><span>Weight</span><span>Freight Class</span><span>Non Stackable?</span>
+        <span style="color:#fff;">3</span><span style="color:#fff;">PALLET</span><span style="color:#fff;">48X40X48 (in)</span><span style="color:#fff;">400 (lbs)</span><span style="color:#fff;">125</span><span style="color:#fff;">Yes</span>
+      </div>
+      <div style="margin-top:14px;background:#4088CF;color:#fff;padding:6px 10px;font-size:12.5px;font-weight:600;">Spot Quote Rate Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;padding:10px;background:#33373D;font-size:11px;color:#C7D3E0;">
+        <span>Service</span><span>Quote Number</span><span>Estimated Delivery Days</span><span>Rate</span>
+        <span style="color:#fff;">LTL</span><span style="color:#fff;">Test123456</span><span style="color:#fff;">4</span><span style="color:#fff;">3,285</span>
+      </div>
+      <div style="margin-top:14px;background:#4088CF;color:#fff;padding:6px 10px;font-size:12.5px;font-weight:600;">Additional Details</div>
+      <div style="padding:10px;font-size:12px;color:#C7D3E0;">Movement Type: Door to Door</div>
+      <div style="margin-top:18px;text-align:center;font-size:11.5px;color:#8A97A8;">Thank you for your order. This notification was automatically generated by FreightPOP.</div>
+    </div>
+    <sc-if value="{{ emailCallout }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;box-sizing:border-box;left:1050px;top:240px;width:310px;background:#0F8A6D;color:#fff;border-radius:8px;padding:16px 18px;font-size:13.5px;line-height:1.6;white-space:normal;z-index:20;animation:rsFadeUp .3s both;box-shadow:0 12px 30px rgba(0,0,0,.35);">The carrier keeps a copy of exactly what they quoted — service, quote number, transit and rate.</div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 13 AWARD EMAIL TO THE CARRIER -->
+  <sc-if value="{{ s11 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:#1F2226;"></div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:0;height:44px;background:#2B2F35;display:flex;align-items:center;padding:0 20px;color:#E4E7EB;font-size:12.5px;">Ridgeline Carriers Was Selected For Spot Quote Q42636850 SO: SO-88214 PO: PO-44170</div>
+    <div style="position:absolute;box-sizing:border-box;left:430px;top:70px;width:580px;height:700px;background:#26292E;padding:22px 26px;overflow:hidden;">
+      <div style="text-align:center;font-size:13px;color:#7FB2F2;">Harborline Industrial, LLC</div>
+      <div style="margin-top:8px;text-align:center;font-size:20px;font-weight:700;color:#7FB2F2;">Spot Quote Awarded</div>
+      <div style="margin-top:16px;font-size:12.5px;color:#7FB2F2;line-height:2;"><div>Quote Number: Test123456</div><div>Shipment Id: 13374884</div><div>Tracking: FRTPOP 2200231522</div><div>SO Number: SO-88214 &nbsp; PO Number: PO-44170</div></div>
+      <div style="margin-top:14px;background:#4088CF;color:#fff;padding:6px 10px;font-size:12.5px;font-weight:600;">Awarded Rate</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:10px;background:#33373D;font-size:11px;color:#C7D3E0;"><span>Service</span><span>Estimated Delivery Days</span><span>Rate</span><span style="color:#fff;">LTL</span><span style="color:#fff;">4</span><span style="color:#fff;">$3,285.00</span></div>
+      <div style="margin-top:14px;background:#4088CF;color:#fff;padding:6px 10px;font-size:12.5px;font-weight:600;">Pickup</div>
+      <div style="padding:10px;font-size:12px;color:#C7D3E0;line-height:1.9;"><div>Harborline Industrial, LLC · 4120 Commerce Park Drive, Columbus, OH</div><div>Pickup Date: 08/12/2026 · Ready 08:00 AM · Cutoff 05:00 PM</div><div>Deliver To: Sunshine Cleaners · 1442 Franklin Street, Santa Clara, CA</div></div>
+      <div style="margin-top:14px;background:#4088CF;color:#fff;padding:6px 10px;font-size:12.5px;font-weight:600;">Required Documents</div>
+      <div style="padding:10px;font-size:12px;color:#C7D3E0;line-height:1.9;"><div>POD upload required before delivered status</div><div>Invoice PDF required when submitting invoice</div></div>
+      <div style="margin-top:16px;padding:14px;background:#33373D;text-align:center;font-size:12.5px;color:#C7D3E0;line-height:2.1;white-space:normal;">
+        <div>Please confirm this load:</div>
+        <div style="margin-top:8px;display:flex;justify-content:center;gap:26px;"><span style="{{ awardAccept }}">Accept Load</span><span style="{{ awardDecline }}">Decline Load</span></div>
+      </div>
+      <div style="margin-top:14px;text-align:center;font-size:11.5px;color:#8A97A8;">This notification was automatically generated by FreightPOP.</div>
+    </div>
+  </sc-if>
+
+  <!-- 15 CARRIER CONFIRMS PICKUP -->
+  <sc-if value="{{ s12 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:60px;background:#fff;border-bottom:1px solid #E1E7EF;padding:12px 30px 0;z-index:4;">
+      <div style="font-size:20px;font-weight:700;color:#14263C;">Confirm Pickup</div>
+      <div style="display:flex;gap:26px;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+    </div>
+    <div style="position:absolute;left:200px;top:140px;width:520px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;">
+      <div style="{{ cardHead }}">General</div>
+      <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;font-size:12px;color:#24354A;">
+        <div><div style="font-weight:700;">Carrier</div>Ridgeline Carriers</div>
+        <div><div style="font-weight:700;">Carrier NickName</div>Ridgeline</div>
+        <div><div style="font-weight:700;">Tracking Numbers</div>{{ vTracking }}</div>
+        <div><div style="font-weight:700;">Ship Date</div>08/12/2026</div>
+      </div>
+    </div>
+    <div style="position:absolute;left:200px;top:300px;width:520px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;">
+      <div style="{{ cardHead }}">Locations</div>
+      <div style="padding:16px 20px;font-size:12px;color:#24354A;line-height:1.7;">
+        <div style="font-weight:700;">Ship From</div><div>Harborline Industrial, LLC</div><div style="color:#5E7186;">4120 Commerce Park Drive, Columbus, OH, 43219, US</div>
+        <div style="font-weight:700;margin-top:12px;">Ship To</div><div>Sunshine Cleaners</div><div style="color:#5E7186;">1442 Franklin Street, Santa Clara, CA, 95050, US</div>
+      </div>
+    </div>
+    <div style="position:absolute;left:740px;top:140px;width:520px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;">
+      <div style="{{ cardHead }}">Shipment Confirmation</div>
+      <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;font-size:12px;color:#24354A;">
+        <div><div style="font-weight:700;">Quote Id</div>42636850</div>
+        <div><div style="font-weight:700;">Shipment Id</div>13374884</div>
+        <div><div style="font-weight:700;">Quote</div>Test123456</div>
+        <div><div style="font-weight:700;">Rate</div>$3,285.00</div>
+      </div>
+    </div>
+    <div style="position:absolute;left:740px;top:300px;width:520px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;">
+      <div style="{{ cardHead }}">Pickup Information</div>
+      <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;font-size:12px;color:#24354A;">
+        <div><div style="font-weight:700;">Pickup Date</div>08/12/2026</div>
+        <div><div style="font-weight:700;">Delivery Date</div>08/15/2026</div>
+        <div><div style="font-weight:700;">Ready Time</div>08:00 AM</div>
+        <div><div style="font-weight:700;">Cutoff Time</div>05:00 PM</div>
+        <div><div style="font-weight:700;">Pickup Status</div><span style="{{ confirmStatusStyle }}">{{ vConfirmStatus }}</span></div>
+        <div><div style="font-weight:700;">Pickup Request Email</div>pickups@ridgelinecarriers.com</div>
+      </div>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;bottom:0;height:50px;background:#fff;border-top:1px solid #E1E7EF;display:flex;align-items:center;gap:14px;padding:0 22px;z-index:6;">
+      <div style="flex:1;"></div>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: 3</span><span style="font-size:12.5px;color:#3A4B60;">Total Weight: 1,200 LB</span><span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 5</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 16px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.04em;">REJECT</span>
+      <span style="border:1px solid #C6D0DC;border-radius:4px;padding:9px 16px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.04em;">UPDATE RATE</span>
+      <span style="{{ acceptBtn }}">ACCEPT</span>
+    </div>
+    <sc-if value="{{ acceptModal }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
+      <div style="position:absolute;box-sizing:border-box;left:430px;top:250px;width:580px;background:#fff;border-radius:6px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:rsFadeUp .25s both;padding:20px 24px 22px;">
+        <div style="display:flex;align-items:center;"><span style="font-size:16px;font-weight:600;color:#14263C;">Accept</span><span style="margin-left:auto;color:#5E7186;">✕</span></div>
+        <div style="margin-top:12px;font-size:12.5px;color:#5E7186;white-space:normal;">By changing this tracking number, it will update the tracking number for this shipment.</div>
+        <div style="margin-top:16px;{{ trkField }}"><span style="{{ lbl }}">Tracking Number</span><div style="{{ fv }}">{{ vTrackingEdit }}</div></div>
+        <div style="margin-top:20px;display:flex;gap:12px;"><div style="background:{{ acceptSaveBg }};border-radius:4px;padding:11px 24px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</div><div style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 24px;color:#5E7186;font-size:11px;font-weight:700;letter-spacing:.05em;">CANCEL</div></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ acceptDone }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;box-sizing:border-box;left:200px;top:560px;width:1060px;background:#DCF5EE;border:1px solid #0F8A6D;border-radius:6px;padding:14px 20px;animation:rsFadeUp .3s both;">
+        <span style="font-size:13.5px;font-weight:700;color:#0F6B56;">Pickup accepted · tracking FRTPOP-2200231522</span>
+        <span style="margin-left:12px;font-size:12.5px;color:#2E5E33;">FreightPOP auto-populated the number — the carrier can replace it with their own.</span>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <!-- 16 SHIPMENT DOCUMENTS -->
+  <sc-if value="{{ s13 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:96px;background:#fff;border-bottom:1px solid #E1E7EF;padding:12px 30px 0;z-index:4;">
+      <div style="font-size:19px;font-weight:700;color:#14263C;">Shipment Details (Shipment Id: 13374884)</div>
+      <div style="margin-top:8px;background:#FDF3DC;border:1px solid #E8D9A8;border-radius:3px;padding:6px 10px;font-size:11.5px;color:#7A5B12;">Changes made to the shipment information may cause the carrier to change the quote provided.</div>
+      <div style="display:flex;gap:26px;margin-top:8px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span>GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">DOCUMENTS</span></div>
+    </div>
+    <div style="position:absolute;left:30px;top:170px;width:1380px;bottom:20px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #E1E7EF;">
+        <span style="font-size:15px;font-weight:600;color:#24354A;">Documents</span>
+        <span style="margin-left:auto;border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">PRINT SHIPPING LABELS/BOL</span>
+        <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">PRINT RATE CONFIRMATION</span>
+        <span style="border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;">UPLOAD DOCUMENT</span>
+        <span style="background:#4088CF;border-radius:4px;padding:10px 15px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;">SELECT ALL</span>
+      </div>
+      <div style="{{ docListPane }}">
+        <div style="{{ docListInner }}">
+          <sc-for list="{{ docRows }}" as="d" hint-placeholder-count="10">
+            <div style="{{ d.row }}"><span>{{ d.name }}</span><span style="{{ d.box }}"></span></div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="{{ docView }}">
+        <div style="height:30px;background:#2B2F35;display:flex;align-items:center;padding:0 12px;color:#E4E7EB;font-size:11.5px;">PALLET_4263685013374884.pdf &nbsp;·&nbsp; 1 / 3</div>
+        <div style="position:absolute;left:26px;top:60px;bottom:20px;width:110px;display:flex;flex-direction:column;gap:12px;">
+          <div style="height:120px;background:#fff;border:2px solid #7FB2F2;"></div>
+          <div style="height:120px;background:#fff;"></div>
+          <div style="height:120px;background:#fff;"></div>
+        </div>
+        <div style="position:absolute;left:170px;right:26px;top:60px;bottom:20px;background:#fff;padding:18px 22px;overflow:hidden;">
+          <div style="border:2px solid #24354A;padding:14px;font-size:12px;color:#24354A;line-height:1.7;width:480px;">
+            <div style="font-weight:700;">Consignee:</div><div>Sunshine Cleaners</div><div>1442 Franklin Street, Santa Clara, CA, 95050</div>
+            <div style="margin-top:12px;font-weight:700;">Carrier: Ridgeline Carriers</div><div>Service: LTL</div>
+            <div style="margin-top:22px;border-top:1px solid #24354A;padding-top:10px;">Pal 1 · PO# PO-44170<br>Pal 1 · SO# SO-88214<br><b>Weight: 400 lb</b><br>1 of 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- 17 CARRIER SPOT QUOTES LIST — BID POSITION -->
+  <sc-if value="{{ s9 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;box-sizing:border-box;left:0;right:0;top:52px;height:56px;background:#fff;display:flex;align-items:center;padding:0 30px;z-index:4;">
+      <span style="font-size:24px;font-weight:700;color:#14263C;">Spot Quotes</span>
+    </div>
+    <div style="position:absolute;box-sizing:border-box;left:24px;top:124px;right:24px;bottom:22px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
+      <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;">
+        <div style="display:flex;align-items:center;gap:10px;border:1px solid #C6D0DC;border-radius:4px;padding:10px 12px;width:230px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="flex:1;font-size:12.5px;color:#9AA7B8;">Search</span><span style="font-size:11px;font-weight:700;color:#5E7186;">GO</span></div>
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M2.5 4h15l-6 6.5V17l-3-1.6v-4.9L2.5 4z" stroke="#6B7280" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5"><span style="{{ c.style }}">{{ c.label }}</span></sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:260px 250px 100px 100px 110px 110px 120px 100px 120px;gap:10px;padding:11px 18px;border-top:1px solid #E1E7EF;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+        <span>Ship From</span><span>Ship To</span><span>Handling Units</span><span>Total Weight</span><span>Bid Position ↓</span><span>Date Received</span><span>Quote Submitted</span><span>Status</span><span>Time To Bid Cutoff</span>
+      </div>
+      <sc-for list="{{ quoteRows }}" as="q" hint-placeholder-count="6">
+        <div style="{{ q.row }}">
+          <span style="font-size:11.5px;color:#24354A;overflow:hidden;text-overflow:ellipsis;">{{ q.from }}</span>
+          <span style="font-size:11.5px;color:#24354A;overflow:hidden;text-overflow:ellipsis;">{{ q.to }}</span>
+          <span style="font-size:12px;color:#24354A;">{{ q.units }}</span>
+          <span style="font-size:12px;color:#24354A;">{{ q.weight }}</span>
+          <span><span style="{{ q.posStyle }}">{{ q.pos }}</span></span>
+          <span style="font-size:12px;color:#24354A;">{{ q.received }}</span>
+          <span style="font-size:12px;color:#24354A;">{{ q.submitted }}</span>
+          <span><span style="{{ q.statusStyle }}">{{ q.status }}</span></span>
+          <span style="font-size:11.5px;color:#5E7186;">{{ q.cutoff }}</span>
+        </div>
+      </sc-for>
+      <div style="padding:16px 18px;font-size:12px;color:#7A8CA0;">Bid Position shows where each of your bids ranks — never the competing amounts or carrier names.</div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;left:16px;bottom:70px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
+    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
+  </div>
+  <div style="position:absolute;right:22px;bottom:70px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
+    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+    </div>
+    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+  </div>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+  </sc-if>
+  <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
+  </sc-if>
+  <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  A0 = { playing: true, scene: 1, cap: "01 · A user-defined carrier takes five fields", curX: 700, curY: 640,
+    ripple: false, ripX: 0, ripY: 0,
+    vName: "", vNick: "", vType: "", vZips: "", vStreet: "", focus: 0, saveBg: "#8FA6BE", contacts: 0,
+    ctab: 0, drawer: false, dFocus: 0, dFirst: "", dLast: "", dMail: "", dPhone: "", dType: "",
+    portalOn: false, vAdminMail: "", vAdminPw: "",
+    scrollY: 0, qFocus: 0, vShipTo: "", verified: false, vQty: "", vPkg: "", vLen: "", vWid: "", vHgt: "", vWgt: "",
+    vClass: "", vNmfc: "", vDesc: "", vSo: "", vPo: "", totalsOn: false, spotHot: false,
+    vBidTime: "", vShipDate: "", vPickIns: "", emailCallout: false,
+    rFocus: 0, vSvc: "", vDays: "", vRate: "", vQuoteNo: "", vNotes: "", breakHot: false,
+    costModal: false, cbFocus: 0, vFreight: "", vFuel: "", vOther: "", saveCbBg: "#8FA6BE",
+    menuOpen: false, msgCenter: false, breakModal: false, bolModal: false, proModal: false,
+    noteHot: false, truckHot: false, viewHot: false, bolHot: false, shipItBg: "#4088CF",
+    docZoom: false, docScroll: 0, awardHot: false, processedToast: false, schedHot: false, vPickupDate: "MM/DD/YYYY", vPickupStatus: "",
+    acceptModal: false, acceptDone: false, acceptHot: false, acceptSaveBg: "#8FA6BE", trkFocus: false,
+    vTracking: "FRTPOP-2200231522", vTrackingEdit: "FRTPOP-2200231522", vConfirmStatus: "Pending Confirmation",
+    setOn: [false, false, false, false, true], setFocus: 0,
+    spotBorder: "#B9CDE8", spotBg: "#fff", modal: false,
+    grp: "Select a group", grpBorder: "#C6D0DC", grpOpen: false, grpSel: -1, grpCount: "0",
+    vBidDue: "", vArrive: "", vInstr: "", mFocus: 0, sendBg: "#4088CF",
+    vBid1: "", vBid2: "", vBid3: "", bFocus: 0, submitBg: "#8FA6BE", bidDone: false,
+    badge: false, badgeN: "3", notifOpen: false, levelsOpen: false, levelOn: [true, true],
+    bids: 0, waiting: false, waitMsg: "", selected: -1, processOn: false, tendered: false };
+  DUR = 109;
+  KF = [
+    // 01 · carrier setup
+    { t: 0.8, s: { curX: 720, curY: 296, focus: 1 } },
+    { t: 1.3, s: { vType: "North America Domestics LTL" } },
+    { t: 1.9, s: { curX: 720, curY: 424, focus: 2, vName: "Ridgeline Carriers" } },
+    { t: 2.5, s: { curX: 720, curY: 484, focus: 3, vNick: "Ridgeline — FTL West" } },
+    { t: 3.0, s: { curX: 720, curY: 614, focus: 4, vStreet: "4120 Commerce Park Dr, Columbus, OH" } },
+    { t: 3.5, s: { curX: 720, curY: 674, focus: 5, vZips: "92630, 91761, 85043", cap: "01 · Ship-from zips live on the General tab" } },
+    { t: 4.1, s: { focus: 0, cap: "02 · Contacts are their own tab", curX: 527, curY: 183 } },
+    { t: 4.5, s: { ripple: true, ripX: 527, ripY: 183, ctab: 1 } },
+    { t: 4.9, s: { ripple: false, curX: 1360, curY: 236 } },
+    { t: 5.2, s: { ripple: true, ripX: 1360, ripY: 236, drawer: true } },
+    { t: 5.6, s: { ripple: false, dFocus: 1, dFirst: "Dana", dLast: "Ruiz", dMail: "quotes@ridgelinecarriers.com", dPhone: "(614) 555-0142", dType: "Quote Request", cap: "02 · Quote request, pickup request, tracking update" } },
+    { t: 6.1, s: { dFocus: 0, drawer: false, contacts: 1, ripple: true, ripX: 1150, ripY: 760 } },
+    { t: 6.4, s: { ripple: false, drawer: true, dFirst: "Marco", dLast: "Silva", dMail: "pickups@ridgelinecarriers.com", dPhone: "(909) 555-0118", dType: "Pickup Request" } },
+    { t: 6.9, s: { drawer: false, contacts: 2 } },
+    { t: 7.2, s: { drawer: true, dFirst: "Ops", dLast: "Desk", dMail: "tracking@ridgelinecarriers.com", dPhone: "(949) 555-0173", dType: "Tracking Update" } },
+    { t: 7.7, s: { drawer: false, contacts: 3, saveBg: "#4088CF", curX: 1330, curY: 782 } },
+    { t: 8.1, s: { ripple: true, ripX: 1330, ripY: 782 } },
+    { t: 8.4, s: { ripple: false } },
+    // 02 · carrier portal settings
+    { t: 9.6, s: { scene: 2, cap: "03 · Carrier Portal — activate it on the carrier", curX: 430, curY: 262 } },
+    { t: 10.2, s: { ripple: true, ripX: 430, ripY: 262, portalOn: true, vAdminMail: "dispatch@ridgelinecarriers.com", vAdminPw: "••••••••••" } },
+    { t: 10.8, s: { ripple: false, curX: 430, curY: 420, cap: "03 · No POD upload, no delivered status" } },
+    { t: 11.4, s: { ripple: true, ripX: 430, ripY: 420, setOn: [true, false, false, false, true], setFocus: 1 } },
+    { t: 12.0, s: { ripple: false, curX: 430, curY: 500, cap: "03 · And invoices have to arrive as PDFs" } },
+    { t: 12.6, s: { ripple: true, ripX: 430, ripY: 500, setOn: [true, false, true, false, true], setFocus: 3 } },
+    { t: 13.2, s: { ripple: false, setFocus: 0 } },
+    // 04 · Quote/Ship — build the shipment
+    { t: 14.4, s: { scene: 4, cap: "04 · Ship From is already yours", scrollY: 0, curX: 300, curY: 300 } },
+    { t: 15.2, s: { qFocus: 1, curX: 300, curY: 340 } },
+    { t: 15.7, s: { vShipTo: "Sunshine Cleaners, 1442 Franklin Street, Santa Cla…" } },
+    { t: 16.4, s: { qFocus: 0, verified: true, curX: 200, curY: 400 } },
+    { t: 17.0, s: { scrollY: -180, cap: "04 · Three pallets", curX: 140, curY: 340, qFocus: 2 } },
+    { t: 17.6, s: { vQty: "3", qFocus: 3 } },
+    { t: 18.1, s: { vPkg: "PALLET", qFocus: 4, curX: 140, curY: 400 } },
+    { t: 18.6, s: { vLen: "48", qFocus: 5, curX: 350, curY: 400 } },
+    { t: 19.0, s: { vWid: "40", qFocus: 6, curX: 560, curY: 400 } },
+    { t: 19.4, s: { vHgt: "48", qFocus: 7, curX: 140, curY: 460 } },
+    { t: 19.9, s: { vWgt: "400 lb", vClass: "125", vNmfc: "156600", qFocus: 7, curX: 150, curY: 500, cap: "04 · Freight class and NMFC populate from the dims and weight" } },
+    { t: 20.8, s: { vDesc: "Palletized dry goods", qFocus: 0, curX: 150, curY: 565 } },
+    { t: 21.8, s: { totalsOn: true, cap: "04 · Totals calculate at the bottom", curX: 640, curY: 786 } },
+    { t: 23.8, s: { scrollY: -470, cap: "05 · SO and PO on Additional Information", curX: 200, curY: 470, qFocus: 11 } },
+    { t: 24.5, s: { vSo: "SO-88214", qFocus: 12, curX: 460, curY: 470 } },
+    { t: 25.2, s: { vPo: "PO-44170", qFocus: 0 } },
+    { t: 26.2, s: { scrollY: 0, cap: "05 · Back up to Schedule Pickup", curX: 1000, curY: 260 } },
+    { t: 27.2, s: { cap: "06 · Rate shop it first", curX: 1390, curY: 786 } },
+    { t: 27.9, s: { ripple: true, ripX: 1390, ripY: 786 } },
+    { t: 28.4, s: { ripple: false, scene: 3, bids: 0, cap: "06 · API rates come back — all of them high", curX: 700, curY: 320 } },
+    { t: 30.0, s: { cap: "06 · Spot quote sits on the same grid", curX: 1271, curY: 264, spotHot: true } },
+    { t: 30.7, s: { ripple: true, ripX: 1271, ripY: 264 } },
+    { t: 31.2, s: { ripple: false, modal: true, spotHot: false, curX: 880, curY: 160 } },
+    // 07 · spot quote request
+    { t: 31.6, s: { cap: "07 · Bid cutoff date and time", mFocus: 1 } },
+    { t: 32.1, s: { vBidDue: "08/11/2026", mFocus: 2, curX: 1000, curY: 160 } },
+    { t: 32.6, s: { vBidTime: "10:20 AM", mFocus: 3, curX: 500, curY: 240 } },
+    { t: 33.1, s: { vShipDate: "08/10/2026", mFocus: 4, curX: 840, curY: 240, cap: "07 · Ship date and arrive-by" } },
+    { t: 33.6, s: { vArrive: "08/12/2026", mFocus: 5, curX: 500, curY: 320 } },
+    { t: 34.3, s: { vInstr: "Dock 3 check-in. Appointment required. POD upload at delivery.", cap: "07 · Instructions ride with the request", mFocus: 6, curX: 500, curY: 410 } },
+    { t: 35.1, s: { vPickIns: "These are instructions for Pickup. 123122", mFocus: 0, curX: 700, curY: 620 } },
+    { t: 35.9, s: { grpOpen: true, mFocus: 8, cap: "08 · Send to a group, not one carrier at a time" } },
+    { t: 36.7, s: { curX: 620, curY: 672, grpSel: 1 } },
+    { t: 37.2, s: { ripple: true, ripX: 620, ripY: 672 } },
+    { t: 37.7, s: { ripple: false, grpOpen: false, mFocus: 0, grp: "Columbus → West Coast LTL", grpCount: "3" } },
+    { t: 38.2, s: { cap: "07 · Three carriers in one send — not three emails", curX: 470, curY: 726 } },
+    { t: 39.2, s: { ripple: true, ripX: 470, ripY: 726, sendBg: "#1557B0" } },
+    // 08 · the email the carrier receives
+    { t: 39.8, s: { ripple: false, modal: false, sendBg: "#4088CF", scene: 5, bids: 1, cap: "08 · This is the email every carrier gets", curX: 700, curY: 500 } },
+    { t: 41.4, s: { cap: "08 · Same request, same terms, to all three" } },
+    { t: 43.0, s: { cap: "08 · They answer from the email itself", curX: 560, curY: 300, emailCallout: true } },
+    { t: 44.0, s: { cap: "08 · The carrier clicks the link", emailCallout: false, curX: 451, curY: 320 } },
+    { t: 44.5, s: { ripple: true, ripX: 451, ripY: 320 } },
+    // 09 · carrier spot quote page
+    { t: 44.9, s: { ripple: false, scene: 6, emailCallout: false, cap: "09 · The link opens their spot quote page", curX: 700, curY: 300 } },
+    { t: 45.6, s: { rFocus: 1, curX: 830, curY: 560, cap: "09 · They enter the rate on the quote card" } },
+    { t: 46.2, s: { vSvc: "LTL", rFocus: 2, curX: 1050, curY: 560 } },
+    { t: 46.8, s: { vDays: "4", rFocus: 3, curX: 1270, curY: 560 } },
+    { t: 47.4, s: { vRate: "3,285", rFocus: 4, curX: 830, curY: 620 } },
+    { t: 48.0, s: { vQuoteNo: "Test123456", rFocus: 5, curX: 1050, curY: 620 } },
+    { t: 48.6, s: { vNotes: "Test Note", rFocus: 0, breakHot: true, curX: 1270, curY: 620, cap: "09 · A cost breakdown, when you require one" } },
+    { t: 49.3, s: { ripple: true, ripX: 1270, ripY: 620 } },
+    { t: 49.8, s: { ripple: false, costModal: true, breakHot: false, cbFocus: 1, curX: 700, curY: 290 } },
+    { t: 50.4, s: { vFreight: "2,650" } },
+    { t: 51.0, s: { cbFocus: 2, vFuel: "560", curX: 700, curY: 390 } },
+    { t: 51.6, s: { cbFocus: 3, vOther: "75", saveCbBg: "#4088CF", curX: 480, curY: 620 } },
+    { t: 52.3, s: { ripple: true, ripX: 480, ripY: 620 } },
+    { t: 52.8, s: { ripple: false, costModal: false, cbFocus: 0, submitBg: "#4088CF", curX: 1330, curY: 786 } },
+    { t: 53.6, s: { ripple: true, ripX: 1330, ripY: 786 } },
+    { t: 54.1, s: { ripple: false, bidDone: true, cap: "09 · Submitted — it goes straight back to the shipper" } },
+    // 10 · the carrier's emailed copy
+    { t: 55.8, s: { scene: 8, bidDone: false, cap: "10 · The carrier keeps an emailed copy of what they sent", curX: 700, curY: 400 } },
+    { t: 57.4, s: { emailCallout: true } },
+    // 11 · shipper notification → message center
+    { t: 59.2, s: { scene: 7, emailCallout: false, badge: true, badgeN: "2", bids: 2, cap: "11 · A badge on the profile icon — a spot quote came back", curX: 1200, curY: 200 } },
+    { t: 60.4, s: { curX: 1390, curY: 26 } },
+    { t: 61.0, s: { ripple: true, ripX: 1390, ripY: 26, menuOpen: true } },
+    { t: 61.6, s: { ripple: false, curX: 1250, curY: 118, cap: "11 · Notifications opens the message center" } },
+    { t: 62.3, s: { ripple: true, ripX: 1250, ripY: 118 } },
+    { t: 62.8, s: { ripple: false, menuOpen: false, msgCenter: true } },
+    { t: 64.2, s: { cap: "11 · The message links straight back to the quote", curX: 1084, curY: 304 } },
+    { t: 65.0, s: { ripple: true, ripX: 1084, ripY: 304 } },
+    // 12 · the bid on the quote
+    { t: 65.8, s: { ripple: false, msgCenter: false, badge: false, scene: 3, selected: 0, cap: "12 · Ridgeline answered — the other two are still pending", curX: 700, curY: 300 } },
+    { t: 68.6, s: { cap: "12 · Compare it against the API rates before you ship" } },
+    { t: 70.4, s: { curX: 1211, curY: 495, noteHot: true } },
+    { t: 71.1, s: { ripple: true, ripX: 1211, ripY: 495 } },
+    { t: 71.6, s: { ripple: false, breakModal: true, noteHot: false, cap: "12 · The carrier-provided cost breakdown" } },
+    { t: 73.8, s: { breakModal: false, bolHot: true, curX: 990, curY: 786, cap: "12 · And a preview of the BOL" } },
+    { t: 74.5, s: { ripple: true, ripX: 990, ripY: 786 } },
+    { t: 75.0, s: { ripple: false, bolModal: true, bolHot: false } },
+    { t: 77.4, s: { bolModal: false, truckHot: true, curX: 1286, curY: 496, cap: "13 · Ship it" } },
+    { t: 78.1, s: { ripple: true, ripX: 1286, ripY: 496 } },
+    { t: 78.6, s: { ripple: false, proModal: true, truckHot: false, curX: 516, curY: 593 } },
+    { t: 79.6, s: { shipItBg: "#1557B0" } },
+    { t: 80.2, s: { ripple: true, ripX: 516, ripY: 593 } },
+    { t: 80.8, s: { ripple: false, proModal: false, scene: 10, cap: "13 · Shipment processed — tracking and BOL generated", curX: 700, curY: 400 } },
+    { t: 82.8, s: { cap: "13 · Then schedule the pickup", curX: 1180, curY: 344, schedHot: true } },
+    { t: 83.6, s: { ripple: true, ripX: 1180, ripY: 344 } },
+    { t: 84.2, s: { ripple: false, schedHot: false, vPickupDate: "08/12/2026", vPickupStatus: "Scheduled" } },
+    // 14 · the carrier is told they won
+    { t: 86.0, s: { scene: 11, cap: "14 · The winning carrier is notified automatically", curX: 700, curY: 400 } },
+    { t: 88.2, s: { cap: "14 · Rate, pickup window and the documents they owe you" } },
+    // 15 · the carrier accepts from that email
+    { t: 90.0, s: { cap: "15 · Accept or decline, straight from the email", awardHot: true, curX: 666, curY: 680 } },
+    { t: 91.0, s: { ripple: true, ripX: 666, ripY: 680 } },
+    { t: 91.6, s: { ripple: false, awardHot: false, scene: 12, cap: "15 · Accepting opens their pickup confirmation in the portal", curX: 700, curY: 400 } },
+    { t: 92.8, s: { acceptHot: true, curX: 1330, curY: 786 } },
+    { t: 93.5, s: { ripple: true, ripX: 1330, ripY: 786 } },
+    { t: 94.0, s: { ripple: false, acceptModal: true, acceptHot: false, trkFocus: true, curX: 700, curY: 350, cap: "15 · FreightPOP fills a tracking number in for them" } },
+    { t: 95.4, s: { cap: "15 · The carrier can replace it with their own", acceptSaveBg: "#4088CF", curX: 500, curY: 470 } },
+    { t: 96.4, s: { ripple: true, ripX: 500, ripY: 470 } },
+    { t: 96.9, s: { ripple: false, acceptModal: false, acceptDone: true, vConfirmStatus: "Confirmed", trkFocus: false } },
+    // 16 · every shipping document generated for the shipper
+    { t: 98.6, s: { scene: 13, acceptDone: false, cap: "16 · Every shipment document is generated in FreightPOP", curX: 700, curY: 400 } },
+    { t: 100.4, s: { docZoom: true, cap: "16 · Every document FreightPOP can generate for a shipment", curX: 500, curY: 400 } },
+    { t: 101.4, s: { docScroll: -430, cap: "16 · BOL, labels, manifests, customs forms — generated off the shipment" } },
+    { t: 103.4, s: { docScroll: 0, docZoom: false } },
+    // 17 · carrier-side rankings
+    { t: 104.4, s: { scene: 9, cap: "17 · A high-level pass over the carrier portal", curX: 700, curY: 400 } },
+    { t: 106.4, s: { cap: "17 · Including spot quote rankings — position only, never a competitor's price" } },
+  ];
+  SETTINGS = [
+    ["Require POD Upload for Delivered Status", false],
+    ["Require POD Upload Prior to Submitting Invoice", false],
+    ["Require Invoice PDF Upload When Submitting Invoice", false],
+    ["Require Invoice Breakdown When Submitting Invoice", true],
+    ["Include Cost on Pickup Email/Portal", false]
+  ];
+  CONTACTS = [
+    ["Dana", "Ruiz", "4120 Commerce Park Dr", "Columbus", "OH", "43230", "(614) 555-0142", "QUOTE REQUEST"],
+    ["Marco", "Silva", "9951 Banana Ave", "Fontana", "CA", "92335", "(909) 555-0118", "PICKUP REQUEST"],
+    ["Ops", "Desk", "1 Rancho Circle", "Lake Forest", "CA", "92630", "(949) 555-0173", "TRACKING UPDATE"]
+  ];
+  DRAWER = [
+    ["Dana", "Ruiz", "quotes@ridgelinecarriers.com", "(614) 555-0142", "Quote Request"],
+    ["Marco", "Silva", "pickups@ridgelinecarriers.com", "(909) 555-0118", "Pickup Request"],
+    ["Ops", "Desk", "tracking@ridgelinecarriers.com", "(949) 555-0173", "Tracking Update"]
+  ];
+  LEVELS = [
+    ["Quote Response", "Notified via email and in-app message whenever a carrier submits a new rate.", "Email · In-app"],
+    ["Rate Updates", "Notified if a carrier modifies an existing bid.", "Email · In-app"]
+  ];
+  NOTIFS = [
+    ["Ridgeline Carriers bid $3,340.00", "SQ-45903117 · Lake Forest → Bethlehem · 2 min ago"],
+    ["Keystone Freight Co. bid $3,492.00", "SQ-45903117 · new best bid replaced · 6 min ago"],
+    ["Atlas Van Lines bid $3,768.00", "SQ-45903117 · 11 min ago"]
+  ];
+  BASE = [
+    { carrier: "Sunbelt Truckload (contract)", src: "CONTRACT", svc: "FTL Dry Van", days: "4", fr: "3,480.00", fuel: "690.00", acc: "0.00", tot: "4,170.00", qn: "CT-2214" },
+    { carrier: "XPO Logistics", src: "API", svc: "Volume LTL", days: "5", fr: "3,180.00", fuel: "742.00", acc: "0.00", tot: "3,922.00", qn: "—" },
+    { carrier: "Old Dominion", src: "API", svc: "Volume LTL", days: "4", fr: "3,404.00", fuel: "801.00", acc: "0.00", tot: "4,205.00", qn: "—" },
+    { carrier: "TForce Freight", src: "API", svc: "Volume LTL", days: "6", fr: "3,610.00", fuel: "858.00", acc: "0.00", tot: "4,468.00", qn: "—" }
+  ];
+  SPOT = [
+    { carrier: "Ridgeline Carriers", src: "SPOT BID", svc: "FTL Dry Van", days: "3", fr: "2,750.00", fuel: "465.00", acc: "125.00", tot: "3,340.00", qn: "RC-88214", best: true },
+    { carrier: "Keystone Freight Co.", src: "SPOT BID", svc: "FTL Dry Van", days: "3", fr: "2,980.00", fuel: "512.00", acc: "0.00", tot: "3,492.00", qn: "KF-40771" },
+    { carrier: "Atlas Van Lines", src: "SPOT BID", svc: "FTL Dry Van", days: "4", fr: "3,120.00", fuel: "498.00", acc: "150.00", tot: "3,768.00", qn: "AVL-2261" }
+  ];
+  DOCS = ["BOL", "Box/Pallet Label", "Certificate Of Compliance", "Pick List", "Packing Slip", "Commercial Invoice", "Canada Invoice", "SLI", "Truckload Manifest", "Carrier Shipment Manifest", "Dangerous Goods Declaration", "IMO Dangerous Goods Declaration", "Shipper Declaration Form", "Cert Of Origin / USMCA", "FedEx Commercial Invoice", "Certificate Of Analysis"];
+  MENU = [{ label: "Switch User Control" }, { label: "User Profile" }, { label: "User Manager" }, { label: "Knowledge Center" }, { label: "Address Book" }, { label: "Company" }, { label: "Carrier Management" }, { label: "Integrations" }];
+  MSGS = [
+    ["Karen Whitfield", "08/11/2026 09:22 AM", "Spot Quote Response", "Carrier Ridgeline Carriers Responded to Q42636850"],
+    ["Karen Whitfield", "08/11/2026 09:20 AM", "Spot Quote Email Sent", "Spot Quote Email Sent Successfully!"]
+  ];
+  CHIPS = ["All", "New", "Lost Bids", "Submitted", "Declined"];
+  QUOTES = [
+    ["Harborline Industrial, Columbus, OH", "Sunshine Cleaners, Santa Clara, CA", "3", "1,200", "#1", "08/11/2026", "08/11/2026", "Submitted", "—"],
+    ["Pooling Hub 12, Fontana, CA", "Grand Hotel, Anaheim, CA", "2", "861", "#4", "08/03/2026", "08/03/2026", "Submitted", "—"],
+    ["Pooling Hub 12, Fontana, CA", "Port of Long Beach 99, Long Beach, CA", "3", "12,324", "#2", "08/11/2026", "08/11/2026", "Submitted", "—"],
+    ["Pooling Hub 12, Fontana, CA", "Closter Yard, Closter, NJ", "1", "500", "#1", "07/09/2026", "07/09/2026", "Submitted", "—"],
+    ["LAX Air Cargo, Los Angeles, CA", "John Wayne Airport, Santa Ana, CA", "0", "0", "—", "08/16/2026", "—", "New", "6h 12m"],
+    ["LAX Air Cargo, Los Angeles, CA", "John Wayne Airport, Santa Ana, CA", "0", "0", "—", "08/16/2026", "—", "New", "6h 12m"]
+  ];
+  ORDERS = [
+    ["SO-88214", "", "42636850", "13374884", "LTL", true],
+    ["SO-88190", "", "42636104", "13374102", "LTL", false],
+    ["SO-88172", "46266716", "42598311", "13371255", "TL", false],
+    ["SO-88155", "", "42571980", "13369841", "LTL", false],
+    ["SO-88140", "", "42559012", "13368770", "Parcel", false],
+    ["SO-88121", "", "42540775", "13367402", "LTL", false]
+  ];
+  APIRATES = [
+    { carrier: "XPO Logistics", svc: "Volume LTL", days: "5", rate: "$ 3,922.00 USD", list: "$ 4,180.00 USD", rating: "96.00%", nick: "XPO" },
+    { carrier: "Old Dominion", svc: "Volume LTL", days: "4", rate: "$ 4,205.00 USD", list: "$ 4,410.00 USD", rating: "97.00%", nick: "ODFL" },
+    { carrier: "TForce Freight", svc: "Volume LTL", days: "6", rate: "$ 4,468.00 USD", list: "$ 4,690.00 USD", rating: "89.00%", nick: "TForce" }
+  ];
+  SPOT = [["Ridgeline Carriers", "Ridgeline"], ["Bluegrass Freight Systems", "Bluegrass"], ["Cascade Line Haul", "Cascade"]];
+  GROUPS = [{ label: "West Coast Regional LTL", n: "9 carriers" }, { label: "Columbus → West Coast LTL", n: "3 carriers" }, { label: "Flatbed & Oversize", n: "6 carriers" }, { label: "Reefer — All Lanes", n: "11 carriers" }];
+  FACTS = [["LANE", "Lake Forest, CA → Bethlehem, PA"], ["PICKUP", "07/29/2026 · 08:00"], ["DELIVER BY", "07/31/2026 · 14:00"], ["FREIGHT", "44,000 lb · 24 pallets · 53' Dry Van"]];
+  PORTAL_BIDS = [
+    { load: "SQ-45903117", lane: "Lake Forest, CA → Bethlehem, PA", amt: "$3,340.00", rank: "#1", rankNote: "of 7 bids", status: "AWARDED", tone: "win" },
+    { load: "SQ-45901884", lane: "Ontario, CA → Reno, NV", amt: "$1,180.00", rank: "#3", rankNote: "of 9 bids", status: "OPEN", tone: "open" },
+    { load: "SQ-45900412", lane: "Phoenix, AZ → El Paso, TX", amt: "$1,640.00", rank: "#2", rankNote: "of 5 bids", status: "OPEN", tone: "open" },
+    { load: "SQ-45898730", lane: "Fontana, CA → Salt Lake City, UT", amt: "$2,090.00", rank: "#4", rankNote: "of 6 bids", status: "NOT AWARDED", tone: "lost" }
+  ];
+  anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 0.5;
+  componentDidMount() { window.__spotDemo = this; this._measure(); this._onResize = () => this._measure(); window.addEventListener("resize", this._onResize); this.anim.playing = this.props.autoPlay !== false; if (this.anim.playing) this._start(); else this.forceUpdate(); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); }
+  setWrap = (el) => { this._wrap = el; this._measure(); };
+  _measure() { if (!this._wrap) return; const s = this._wrap.offsetWidth / 1440; if (s > 0 && Math.abs(s - this.scaleVal) > 0.002) { this.scaleVal = s; this.forceUpdate(); } }
+  _start() { this._last = performance.now(); cancelAnimationFrame(this._raf); this._raf = requestAnimationFrame(this._tick); }
+  _tick = (now) => { if (!this.anim.playing) return; const sp = 0.45 * (this.props.speed ?? 1); this.t += ((now - this._last) / 1000) * sp; this._last = now; if (this.t >= this.DUR) this.seek(0); this._applyFrame(); this.forceUpdate(); this._raf = requestAnimationFrame(this._tick); };
+  _applyFrame() { while (this._ki < this.KF.length && this.KF[this._ki].t <= this.t) { Object.assign(this.anim, this.KF[this._ki].s); this._ki++; } }
+  seek(t) { const p = this.anim.playing; this.t = t; this._ki = 0; this.anim = { ...this.A0, playing: p }; this._applyFrame(); }
+  togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
+  restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
+  _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
+  fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
+  scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+  _field(active, w) { return "position:relative;height:46px;border:" + (active ? "1.5px solid #4088CF" : "1px solid #C6D0DC") + ";border-radius:4px;background:#fff;transition:border-color .2s;" + (w || ""); }
+  _toggle(on) { return "width:34px;height:18px;border-radius:9px;position:relative;display:inline-block;flex-shrink:0;transition:background .2s;background:" + (on ? "#4088CF" : "#C6D0DC") + ";"; }
+  _knob(on) { return "position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;left:" + (on ? "18px" : "2px") + ";"; }
+  renderVals() {
+    const a = this.anim;
+    const sc = a.scene;
+    const list = this.SPOT.slice(0, a.bids).concat(this.BASE);
+    const rateRows = list.map((r, i) => {
+      const isSpot = r.src === "SPOT BID";
+      const sel = a.selected === i;
+      return { ...r,
+        rowStyle: "position:relative;height:46px;border-bottom:1px solid #EDF1F6;background:" + (sel ? "#EAF3FF" : (r.best ? "#F6FBF9" : "#fff")) + ";" + (isSpot ? "animation:rsFadeUp .4s both;" : ""),
+        radio: "position:absolute;left:18px;top:15px;width:16px;height:16px;border-radius:50%;border:2px solid " + (sel ? "#4088CF" : "#C6D0DC") + ";display:block;",
+        dot: sel ? "position:absolute;left:2px;top:2px;width:8px;height:8px;border-radius:50%;background:#4088CF;display:block;" : "display:none;",
+        srcStyle: "position:absolute;left:360px;top:14px;font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:9px;" + (isSpot ? "background:#FFF1DC;color:#9A5B0A;" : (r.src === "CONTRACT" ? "background:#E7EEFB;color:#1F4E9E;" : "background:#EDF2F8;color:#5E7186;"))
+      };
+    });
+    const grpOpts = this.GROUPS.map((g, i) => ({ ...g, style: "padding:10px 14px;font-size:12.5px;color:#24354A;background:" + (a.grpSel === i ? "#EAF3FF" : "#fff") + ";" }));
+    const settingRows = this.SETTINGS.map((q, i) => ({ label: q[0], info: q[1],
+      row: "display:flex;align-items:center;gap:14px;padding:11px 10px;border-radius:6px;background:" + (a.setFocus === i + 1 ? "#F2F8FF" : "#fff") + ";transition:background .25s;",
+      toggle: this._toggle(a.setOn[i]), knob: this._knob(a.setOn[i]) }));
+    const contactRows = this.CONTACTS.slice(0, a.contacts).map((c) => ({
+      first: c[0], last: c[1], street: c[2], city: c[3], state: c[4], zip: c[5], phone: c[6], role: c[7],
+      row: "display:grid;grid-template-columns:150px 150px 230px 150px 90px 90px 130px 150px;gap:10px;align-items:center;padding:11px 12px;border-bottom:1px solid #EDF1F6;font-size:12px;color:#24354A;animation:rsFadeUp .3s both;",
+      kind: "font-size:9.5px;font-weight:700;letter-spacing:.06em;color:#0F8A6D;background:#DCF5EE;padding:4px 8px;border-radius:9px;text-align:center;" }));
+    const levelRows = this.LEVELS.map((q, i) => ({ label: q[0], note: q[1], channel: q[2],
+      row: "display:flex;align-items:flex-start;gap:14px;padding:14px;border-radius:6px;background:#fff;",
+      toggle: this._toggle(a.levelOn[i]), knob: this._knob(a.levelOn[i]),
+      chan: "margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;background:#F0F4F9;padding:5px 10px;border-radius:9px;align-self:center;" }));
+    const notifs = this.NOTIFS.map((n, i) => ({ title: n[0], meta: n[1],
+      row: "display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid #EDF1F6;background:" + (i === 0 ? "#F7FAFF" : "#fff") + ";animation:rsFadeUp .3s both;" }));
+    const portalBids = this.PORTAL_BIDS.map((b) => ({ ...b,
+      row: "display:flex;align-items:center;padding:15px 14px;border-top:1px solid #EDF1F6;background:" + (b.tone === "win" ? "#F6FBF9" : "#fff") + ";",
+      rankStyle: "font-size:12.5px;font-weight:700;color:#fff;background:" + (b.rank === "#1" ? "#0F8A6D" : "#5E7186") + ";padding:4px 10px;border-radius:9px;",
+      statusStyle: "font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:4px 9px;border-radius:9px;" + (b.tone === "win" ? "background:#DCF5EE;color:#0F8A6D;" : (b.tone === "lost" ? "background:#F0F2F5;color:#7A8CA0;" : "background:#FFF1DC;color:#9A5B0A;")) }));
+    const navBase = "";
+    return { ...a,
+      s1: sc === 1, s2: sc === 2, sRates: sc === 3, sOrders: sc === 7, s4: sc === 4, s5: sc === 5, s6: sc === 6, s7: sc === 7,
+      s8: sc === 8, s9: sc === 9, s10: sc === 10, s11: sc === 11, s12: sc === 12, s13: sc === 13,
+      inApp: sc === 1 || sc === 2 || sc === 3 || sc === 4 || sc === 7 || sc === 10 || sc === 13,
+      inPortal: sc === 6 || sc === 9 || sc === 12, portalPlain: sc === 6 || sc === 12,
+      r1: this._field(a.rFocus === 1), r2: this._field(a.rFocus === 2), r3: this._field(a.rFocus === 3),
+      r4: this._field(a.rFocus === 4), r5: this._field(a.rFocus === 5),
+      breakBtn: "border:1px solid #4088CF;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;background:" + (a.breakHot ? "#EAF3FF" : "#fff") + ";",
+      cb1: "flex:1;border:" + (a.cbFocus === 1 ? "1.5px solid #4088CF" : "1px solid #C6D0DC") + ";border-radius:4px;",
+      cb2: "flex:1;border:" + (a.cbFocus === 2 ? "1.5px solid #4088CF" : "1px solid #C6D0DC") + ";border-radius:4px;",
+      cb3: "flex:1;border:" + (a.cbFocus === 3 ? "1.5px solid #4088CF" : "1px solid #C6D0DC") + ";border-radius:4px;",
+      vCostTotal: a.vFreight ? "3,285" : "0",
+      menuItems: this.MENU, menuNotif: "display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:12.5px;color:#24354A;background:#EAF3FF;",
+      msgRows: this.MSGS.map((m, i) => ({ user: m[0], at: m[1], type: m[2], msg: m[3],
+        row: "display:grid;grid-template-columns:170px 180px 180px 1fr;padding:11px 14px;border-bottom:1px solid #EDF1F6;background:" + (i === 0 ? "#F7FAFF" : "#fff") + ";",
+        link: i === 0 ? "display:flex;align-items:center;padding:3px;border:1px solid #C6D0DC;border-radius:4px;flex-shrink:0;" : "display:none;" })),
+      chips: this.CHIPS.map((c, i) => ({ label: c,
+        style: "font-size:11.5px;font-weight:600;padding:7px 14px;border-radius:14px;" + (i === 0 ? "background:#14263C;color:#fff;" : "border:1px solid #C6D0DC;color:#3A4B60;") })),
+      quoteRows: this.QUOTES.map((q, i) => ({ from: q[0], to: q[1], units: q[2], weight: q[3], pos: q[4], received: q[5], submitted: q[6], status: q[7],
+        cutoff: q[8],
+        row: "display:grid;grid-template-columns:260px 250px 100px 100px 110px 110px 120px 100px 120px;gap:10px;align-items:center;padding:13px 18px;border-bottom:1px solid #EDF1F6;background:" + (i % 2 ? "#FAFBFD" : "#fff") + ";",
+        posStyle: "display:inline-flex;align-items:center;justify-content:center;min-width:34px;padding:4px 9px;border-radius:11px;font-size:11.5px;font-weight:700;" + (q[4] === "#1" ? "background:#CDEBB6;color:#3D6B1C;" : (q[4] === "#2" ? "background:#F0A15C;color:#5E3208;" : (q[4] === "—" ? "background:transparent;color:#9AA7B8;" : "background:#EDF1F6;color:#4A5B70;"))),
+        statusStyle: "display:inline-flex;padding:4px 11px;border-radius:11px;font-size:11px;font-weight:600;" + (q[7] === "Submitted" ? "background:#7CC756;color:#1F4A0C;" : "background:#4AA3E8;color:#0B2E4A;") })),
+      apiRows: this.APIRATES.map((r) => ({ ...r,
+        row: "display:grid;grid-template-columns:220px 170px 105px 140px 145px 85px 140px 120px;gap:8px;align-items:center;padding:13px 18px;border-bottom:1px solid #EDF1F6;background:#fff;" })),
+      rowIcons: "display:grid;grid-template-columns:26px 26px 26px;gap:14px;justify-items:center;align-items:center;justify-content:end;",
+      docView: "position:absolute;left:" + (a.docZoom ? 700 : 290) + "px;right:0;top:57px;bottom:0;background:#3A3D42;padding:14px;transition:left .8s ease,opacity .8s ease;opacity:" + (a.docZoom ? .35 : 1) + ";",
+      docListPane: "position:absolute;left:0;top:57px;bottom:0;width:" + (a.docZoom ? 700 : 290) + "px;border-right:1px solid #E1E7EF;background:#fff;padding:8px 0;overflow:hidden;transition:width .8s ease;z-index:2;",
+      docListInner: "transition:transform .9s ease-in-out;transform-origin:top left;transform:translateY(" + (a.docScroll || 0) + "px) scale(" + (a.docZoom ? 1.5 : 1) + ");",
+      hdrBtn: "display:flex;align-items:center;height:42px;padding:0 16px;border:1px solid #4088CF;border-radius:3px;color:#4088CF;font-size:11.5px;font-weight:700;letter-spacing:.03em;",
+      resultCount: a.bids === 0 ? "1-3 of 3" : "1-6 of 6",
+      spotRows: (a.bids === 0 ? [] : this.SPOT).map((c, i) => {
+        const answered = a.bids === 2 && i === 0;
+        return { carrier: c[0], nick: c[1], svc: answered ? "LTL" : "Spot Quote",
+          days: answered ? "4" : "—", rate: answered ? "$ 3,285.00 USD" : "Pending",
+          list: answered ? "$ 3,285.00 USD" : "", rating: answered ? "100.00%" : "",
+          dot: "width:9px;height:9px;border-radius:5px;flex:none;background:" + (answered ? "#28A05C" : "#9AA7B8") + ";",
+          rateStyle: "font-size:12.5px;" + (answered ? "font-weight:700;color:#24354A;" : "color:#8A97A8;"),
+          row: "display:grid;grid-template-columns:220px 170px 105px 140px 145px 85px 140px 120px;gap:8px;align-items:center;padding:13px 18px;border-bottom:1px solid #EDF1F6;background:" + (answered && a.selected === 0 ? "#EAF3FF" : "#fff") + ";",
+          icons: answered ? "display:grid;grid-template-columns:26px 26px 26px;gap:14px;justify-items:center;align-items:center;justify-content:end;" : "display:none;",
+          noteIcon: "display:flex;padding:4px;border-radius:4px;background:" + (answered && a.noteHot ? "#EAF3FF" : "transparent") + ";",
+          truckIcon: "display:flex;padding:4px;border-radius:4px;background:" + (answered && a.truckHot ? "#EAF3FF" : "transparent") + ";" };
+      }),
+      gridSpotBtn: "margin-left:auto;border:1px solid #4088CF;border-radius:4px;padding:9px 14px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:" + (a.spotHot ? "#EAF3FF" : "#fff") + ";",
+      bidRow: (a.bids > 0 ? "display:grid;" : "display:none;") + "grid-template-columns:220px 170px 105px 140px 145px 85px 140px 120px;gap:8px;align-items:center;padding:13px 18px;border-bottom:1px solid #EDF1F6;background:" + (a.selected === 0 ? "#EAF3FF" : "#fff") + ";",
+      noteIcon: "display:flex;padding:4px;border-radius:4px;background:" + (a.noteHot ? "#EAF3FF" : "transparent") + ";",
+      truckIcon: "display:flex;padding:4px;border-radius:4px;background:" + (a.truckHot ? "#EAF3FF" : "transparent") + ";",
+      bolBtn: "border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:" + (a.bolHot ? "#EAF3FF" : "#fff") + ";",
+      schedBtn: "margin-left:auto;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;padding:4px 8px;border-radius:4px;background:" + (a.schedHot ? "#DCEAFB" : "transparent") + ";",
+      pickupStatusStyle: "color:#0F8A6D;font-weight:600;",
+      confirmStatusStyle: "color:" + (a.vConfirmStatus === "Confirmed" ? "#0F8A6D" : "#C0392B") + ";font-weight:600;",
+      acceptBtn: "border-radius:4px;padding:10px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:" + (a.acceptHot ? "#1557B0" : "#4088CF") + ";",
+      trkField: this._field(a.trkFocus),
+      docRows: this.DOCS.map((d, i) => ({ name: d,
+        row: "display:flex;align-items:center;padding:9px 18px;font-size:12.5px;color:" + (i < 4 ? "#24354A" : "#B4BCC6") + ";",
+        box: "margin-left:auto;width:14px;height:14px;border:1.5px solid " + (i < 4 ? "#6B7280" : "#D2D8DF") + ";border-radius:2px;display:block;" })),
+      scrollY: a.scrollY + "px",
+      cardHead: "background:#EFEFEF;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;padding:13px 20px;font-size:15px;font-weight:600;color:#24354A;",
+      cardLoc: "position:absolute;box-sizing:border-box;left:0;top:0;width:670px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;",
+      cardShip: "position:absolute;box-sizing:border-box;left:0;top:270px;width:670px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;",
+      cardAdd: "position:absolute;box-sizing:border-box;left:0;top:690px;width:670px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;",
+      cardPickup: "position:absolute;box-sizing:border-box;left:0;top:0;width:670px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;",
+      cardCarrier: "position:absolute;box-sizing:border-box;left:0;top:392px;width:670px;background:#fff;border:1px solid #E1E7EF;border-radius:6px;",
+      fPlain: this._field(false),
+      roField: "position:relative;height:44px;border:1px solid #DDE3EA;border-radius:4px;background:#fff;", fvMuted: "padding:14px 0 0 12px;font-size:13px;color:#9AA7B8;",
+      fShipFrom: this._field(false), fShipTo: this._field(a.qFocus === 1),
+      verifyStyle: "font-size:13px;font-weight:700;letter-spacing:.04em;color:" + (a.verified ? "#0F8A6D" : "#4088CF") + ";",
+      q1: this._field(a.qFocus === 2), q2: this._field(a.qFocus === 3), q3: this._field(false),
+      q4: this._field(a.qFocus === 4), q5: this._field(a.qFocus === 5), q6: this._field(a.qFocus === 6),
+      q7: this._field(a.qFocus === 7), q8: this._field(false), q9: this._field(a.qFocus === 8),
+      q10: this._field(a.qFocus === 10),
+      fSo: this._field(a.qFocus === 11), fPo: this._field(a.qFocus === 12),
+      fvClass: "padding:14px 0 0 12px;font-size:13px;font-weight:700;color:" + (a.vClass ? "#0F8A6D" : "#2A3B50") + ";",
+      unitSummary: a.vQty ? (a.vQty + " PALLET · 48x40x48 @ 400 lb") : "0 · 0x0x0 @ 0 lb",
+      tUnits: a.totalsOn ? "3" : "0", tWeight: a.totalsOn ? "1,200 LB" : "0 LB", tFeet: a.totalsOn ? "5" : "0",
+      totalStyle: "font-size:12.5px;color:" + (a.totalsOn ? "#14263C" : "#3A4B60") + ";font-weight:" + (a.totalsOn ? "700" : "400") + ";",
+      spotBtnStyle: "border:1px solid #4088CF;border-radius:4px;padding:9px 13px;font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:all .2s;background:" + (a.spotHot ? "#EAF3FF" : "#fff") + ";color:#4088CF;",
+      mPlain: this._field(false),
+      mBidDate: this._field(a.mFocus === 1, "width:150px;"), mBidTime: this._field(a.mFocus === 2, "width:150px;"),
+      mShipDate: this._field(a.mFocus === 3), mArrive: this._field(a.mFocus === 4),
+      mInstr: (a.mFocus === 5 ? "position:relative;height:62px;border:1.5px solid #4088CF;border-radius:4px;background:#fff;" : "position:relative;height:62px;border:1px solid #C6D0DC;border-radius:4px;background:#fff;"),
+      mPickIns: this._field(a.mFocus === 6), mCarriers: this._field(a.mFocus === 8),
+      awardAccept: "white-space:nowrap;font-size:14px;font-weight:700;color:#8B2FD6;text-decoration:underline;" + (a.awardHot ? "background:#FFF3A8;padding:2px 8px;border-radius:3px;" : ""),
+      awardDecline: "white-space:nowrap;font-size:13.5px;font-weight:700;color:#7FB2F2;text-decoration:underline;",
+      linkAdd: "font-size:14px;font-weight:700;color:#8B2FD6;text-decoration:underline;background:#FFF3A8;padding:2px 6px;border-radius:3px;",
+      linkDecline: "font-size:13.5px;font-weight:700;color:#8B2FD6;text-decoration:underline;background:#FFF3A8;padding:2px 6px;border-radius:3px;",
+      navOrders: sc === 7 ? "color:#fff;font-weight:600;" : navBase, navQuote: sc === 3 ? "color:#fff;font-weight:600;" : navBase, navSettings: (sc === 1 || sc === 2) ? "color:#fff;font-weight:600;" : navBase,
+      portalTab1: "color:#fff;font-weight:600;", portalTab2: "", portalTab3: "",
+      noContact: a.contacts === 0, contactRows,
+      tabIsGeneral: a.ctab === 0, tabIsContacts: a.ctab === 1, drawerOpen: a.drawer,
+      vStreet: a.vStreet, dFirst: a.dFirst, dLast: a.dLast, dMail: a.dMail, dPhone: a.dPhone, dType: a.dType,
+      d1: this._field(a.dFocus === 1), d2: this._field(a.dFocus === 2), d3: this._field(a.dFocus === 3), d4: this._field(a.dFocus === 4), d5: this._field(a.dFocus === 5),
+      udcHead: "background:#EFEFEF;border-bottom:1px solid #E1E7EF;padding:12px 18px;font-size:15px;font-weight:600;color:#24354A;",
+      tabGeneral: a.ctab === 0 ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;" : "", tabManage: "", tabContacts: a.ctab === 1 ? "color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;" : "",
+      portalTog: this._toggle(a.portalOn), portalKnob: this._knob(a.portalOn),
+      lbl: "position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;",
+      fv: "padding:14px 0 0 12px;font-size:13px;color:#2A3B50;",
+      f1: this._field(a.focus === 1), f2: this._field(a.focus === 2), f3: this._field(a.focus === 3), f4: this._field(a.focus === 4), f5: this._field(a.focus === 5),
+      c1: this._field(a.cFocus === 1), c2: this._field(a.cFocus === 2), c3: this._field(a.cFocus === 3),
+      b1: this._field(a.bFocus === 1), b2: this._field(a.bFocus === 2), b3: this._field(a.bFocus === 3),
+      cTog: this._toggle(false), cKnob: this._knob(false),
+      addContactStyle: "border:1px solid #4088CF;border-radius:4px;padding:8px 13px;color:#4088CF;font-size:10.5px;font-weight:700;letter-spacing:.04em;",
+      fBid: this._field(a.mFocus === 1, "position:absolute;left:24px;top:196px;width:440px;"),
+      fArr: this._field(a.mFocus === 2, "position:absolute;left:24px;top:266px;width:440px;"),
+      fIns: (a.mFocus === 3 ? "position:absolute;left:24px;top:336px;width:440px;height:96px;border:1.5px solid #4088CF;border-radius:4px;background:#fff;" : "position:absolute;left:24px;top:336px;width:440px;height:96px;border:1px solid #C6D0DC;border-radius:4px;background:#fff;"),
+      vBidTotal: a.vBid3 ? "$3,340.00" : (a.vBid2 ? "$3,215.00" : (a.vBid1 ? "$2,750.00" : "$0.00")),
+      processStyle: "border:1px solid " + (a.processOn ? "#4088CF" : "#C6D0DC") + ";background:" + (a.processOn ? "#4088CF" : "#F3F6FA") + ";border-radius:4px;padding:8px 13px;color:" + (a.processOn ? "#fff" : "#9AA7B8") + ";font-size:10.5px;font-weight:700;letter-spacing:.04em;transition:all .2s;",
+      orderRows: this.ORDERS.map((o) => ({ num: o[0], cons: o[1], quote: o[2], ship: o[3], type: o[4],
+        tint: o[5] ? "#4088CF" : "#C6D0DC",
+        numStyle: "font-size:12.5px;font-weight:" + (o[5] ? "700" : "400") + ";color:" + (o[5] ? "#4088CF" : "#24354A") + ";text-decoration:underline;",
+        row: "display:grid;grid-template-columns:200px 200px 160px 170px 160px 150px 1fr 130px;gap:8px;align-items:center;padding:13px 18px;border-bottom:1px solid #EDF1F6;background:" + (o[5] ? "#F7FAFF" : "#fff") + ";",
+        viewIcon: "display:flex;padding:3px;border-radius:4px;background:" + (o[5] && a.viewHot ? "#EAF3FF" : "transparent") + ";" })),
+      rateRows, grpOpts, settingRows, levelRows, notifs, portalBids,
+      loadFacts: this.FACTS.map((f) => ({ k: f[0], v: f[1] })),
+      waitTop: (72 + list.length * 46 + 10) + "px",
+      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
+      paused: !a.playing,
+      curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
+      togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };
+  }
+}
+</script>
+</body>
+</html>
