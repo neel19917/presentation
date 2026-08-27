@@ -1055,9 +1055,9 @@ window.fpStaggerIn = function (grid) {
     { name: "Oracle NetSuite", category: "ERP", tags: ["ERP","Finance","Inventory"], logoDomain: "netsuite.com" },
     { name: "QuickBooks Desktop (Pro/Premier/Enterprise)", category: "ERP", tags: ["Accounting"], logoDomain: "intuit.com" },
     { name: "QuickBooks Online", category: "ERP", tags: ["Accounting","Cloud"], logoDomain: "intuit.com" },
-    { name: "ERP One", category: "ERP", tags: ["ERP"], logoCandidates: ["https://logo.clearbit.com/erp-one.com"] },
+    { name: "ERP One", category: "ERP", tags: ["ERP"], logoDomain: "erp-one.com" },
     { name: "Direct Response", category: "ERP", tags: ["ERP"] },
-    { name: "Lighthouse SyteLine", category: "ERP", tags: ["ERP","Infor"], logoCandidates: ["https://logo.clearbit.com/lighthousesystems.com"] },
+    { name: "Lighthouse SyteLine", category: "ERP", tags: ["ERP","Infor"], logoDomain: "lighthousesystems.com" },
     { name: "Tharstern", category: "ERP", tags: ["ERP","Print"], logoDomain: "tharstern.com" },
     { name: "Infoplus WMS", category: "WMS", tags: ["WMS"], logoDomain: "infopluscommerce.com" },
     { name: "Logiwa", category: "WMS", tags: ["WMS"], logoDomain: "logiwa.com" },
@@ -1114,7 +1114,7 @@ window.fpStaggerIn = function (grid) {
 
   function buildLogo(item) {
     var initial = (item.name || "?").trim().charAt(0).toUpperCase();
-    var clearbit = item.logoDomain ? ("https://logo.clearbit.com/" + item.logoDomain) : "";
+    var clearbit = ""; // logo.clearbit.com no longer resolves (service retired) — go straight to the favicon service
     var favicon = item.logoDomain ? ("https://www.google.com/s2/favicons?sz=128&domain=" + item.logoDomain) : "";
     var primary = item.logo || (item.logoCandidates && item.logoCandidates[0]) || clearbit || favicon;
     var box = document.createElement("div");
@@ -1453,7 +1453,7 @@ window.fpStaggerIn = function (grid) {
 
   function buildLogo(item) {
     var initial = (item.name || "?").trim().charAt(0).toUpperCase();
-    var clearbit = item.logoDomain ? ("https://logo.clearbit.com/" + item.logoDomain) : "";
+    var clearbit = ""; // logo.clearbit.com no longer resolves (service retired) — go straight to the favicon service
     var favicon = item.logoDomain ? ("https://www.google.com/s2/favicons?sz=128&domain=" + item.logoDomain) : "";
     var primary = clearbit || favicon;
     var box = document.createElement("div");
@@ -2247,6 +2247,8 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    this._portalBack();
+    if (this._libMsg) window.removeEventListener("message", this._libMsg);
     if (this._onKey) window.removeEventListener("keydown", this._onKey);
     if (this.ro) this.ro.disconnect();
     if (this._onResize) window.removeEventListener("resize", this._onResize);
@@ -2432,7 +2434,6 @@ class Component extends DCLogic {
     this.setState({ demoExpanded: false }, this._nudgeResize);
   };
   componentDidUpdate() { if (!this.state.demoExpanded && this._placeholder) this._portalBack(); }
-  componentWillUnmount() { this._portalBack(); }
   _setAnimBox = (el) => { this._animBox = el; };
   _fsScale = () => {
     const w = this.state.fsW || window.innerWidth || 1440;
@@ -2621,7 +2622,7 @@ class Component extends DCLogic {
       roadmapAI: this.roadmapAI, roadmapPlatform: this.roadmapPlatform, onboardingSteps: this.onboardingSteps,
       goRoadmap: this.goRoadmap, goOnboarding: this.goOnboarding,
       wfCards, wfSrc: wf.src ? wf.src + "?theme=deck" : "", wfTitle: wf.title || "",
-      setRoot: this.setRoot, setHeroWrap: this.setHeroWrap, setHeroFrame: this.setHeroFrame,
+      setRoot: this.setRoot, setHeroWrap: this.setHeroWrap, setHeroFrame: this.setHeroFrame, setHotWrap: this.setHotWrap,
       introStyle, startUrl, showMarquee,
       hotWrapStyle: "position:absolute;left:0;right:0;top:53px;bottom:0;z-index:120;pointer-events:none;",
       hotspots: hsList.map((h, i) => ({
