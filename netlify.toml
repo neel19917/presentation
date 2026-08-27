@@ -1,0 +1,10 @@
+# beta branch = the Claude Design source folder. Pure static files — no build step.
+# This file overrides the site's UI build settings (which target the `main` presentation kit).
+[build]
+  command = ""
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
