@@ -1,0 +1,1567 @@
+{
+  "settings": {
+    "startUrl": "https://tubular-flan-14267b.netlify.app/embed.html",
+    "showMarquee": true,
+    "mainMenuUrl": "https://idyllic-elf-b22a7e.netlify.app/",
+    "aiUrl": "https://genuine-conkies-86b264.netlify.app/",
+    "liveSiteUrl": "https://app.freightpop.com/app/#/quote-ship",
+    "roiUrl": "https://freightpopsales.com/freightpop-intake-form?link=MGER4f9Y",
+    "liveUrls": {
+      "tms": "https://app.freightpop.com/app/#/quote-ship",
+      "oms": "https://app.freightpop.com/app/#/order-management",
+      "wms": "https://app.freightpop.com/app/#/wms"
+    },
+    "intro": {
+      "headline": "AI Supply Chain Software",
+      "subtitle": "Intelligence that moves your supply chain",
+      "cta": "Get Started",
+      "urlCaption": "www.freightpop.com"
+    }
+  },
+  "systems": {
+    "tms": {
+      "name": "Transportation Management",
+      "kicker": "Module Library",
+      "intro": "Eighteen capabilities, one platform — rated 4.8/5 on G2 and 4.7/5 on Capterra. Open a module to see the problem it kills, the payoff, a live demo, and the proof.",
+      "modules": [
+        {
+          "num": "01",
+          "name": "Shipping Rules Engine",
+          "t1": "Shipping",
+          "t2": "Rules Engine",
+          "tag": "Codify shipping logic — and let qualifying orders book themselves",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Every rep ships by their own playbook.",
+            "body": "Which carrier for hazmat, when a guaranteed service is required, which account to bill — that logic lives in people's heads. New hires guess, veterans improvise, and every routine order still waits on a human to click ship."
+          },
+          "benefit": {
+            "heading": "Turn tribal knowledge into rules that fire automatically.",
+            "bullets": [
+              "Route by weight, value, destination, hazmat, customer or SLA",
+              "Big-box and collect freight route to the customer's carrier and account automatically",
+              "Force guaranteed service on critical lanes; block non-compliant carriers",
+              "Auto dispatch: orders that satisfy a rule quote, book and label with no human touch",
+              "Crawl-walk-run — automate the low-hanging lanes first, then widen the rules"
+            ]
+          },
+          "demo": {
+            "caption": "A routing rule is defined once — then quotes, books and dispatches every qualifying shipment on its own.",
+            "anim": "rules",
+            "ai": "copilot",
+            "liveUrl": "https://app.freightpop.com/app/#/company/rules?tab=shipping-approval-rule",
+            "progress": "28%"
+          },
+          "roi": {
+            "stat": "100%",
+            "statLabel": "rule compliance, every site",
+            "proof": "Policy is enforced on every shipment automatically — and the orders that qualify never wait on a person.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Rules engine — platform capability. Anchor Distributing target: 80–90% hands-off auto-ship.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "02",
+          "name": "Carrier Management",
+          "t1": "Carrier",
+          "t2": "Management",
+          "tag": "Every carrier and account, centrally controlled",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Your carrier network lives in a spreadsheet — and someone's inbox.",
+            "body": "Accounts, credentials, contracted rates and service rules are scattered across files and people. Onboarding a carrier is a project, and auditing who got used and why is nearly impossible."
+          },
+          "benefit": {
+            "heading": "Run every carrier and account from one place.",
+            "bullets": [
+              "1,500+ in-house carrier integrations — parcel, LTL, FTL, ocean and air",
+              "Load contracted rates, fuel surcharges and rate sheets for carriers without an API",
+              "Add or swap carriers without an EDI project or IT ticket",
+              "Carrier ratings on claims and on-time so cheapest isn't automatically best",
+              "Control which carriers each site, user or lane can use"
+            ]
+          },
+          "demo": {
+            "caption": "Add a regional LTL carrier and turn it live across every site in minutes.",
+            "anim": "carrier",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/carrier-management",
+            "progress": "44%"
+          },
+          "roi": {
+            "stat": "1,500+",
+            "statLabel": "carrier and system connections, built in-house",
+            "proof": "No aggregator in the middle — faster data, fewer failures, and no per-transaction toll.",
+            "ev": {
+              "grade": "Platform",
+              "src": "1,500+ connections built in-house, no aggregator. Verifiable in the integrations catalog.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "03",
+          "name": "Rate Shopping",
+          "t1": "Rate",
+          "t2": "Shopping",
+          "tag": "Compare every carrier and mode in one screen",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Nobody knows what the cheapest option was.",
+            "body": "Rating means portals, phone calls and PDFs. Under time pressure the team ships with whoever answered first, and the savings are invisible because no one ever saw the alternatives."
+          },
+          "benefit": {
+            "heading": "Every rate, every mode, side by side — in one screen.",
+            "bullets": [
+              "Parcel, LTL, truckload and international rated from the same page",
+              "Contracted, negotiated and program rates all compared together",
+              "Transit days, guaranteed options and accessorials shown with the price",
+              "Adjust weight or dims and re-rate in place — no going back a screen",
+              "The system tells you which carriers didn't rate, and why"
+            ]
+          },
+          "demo": {
+            "caption": "One order rated across every connected carrier and mode at once.",
+            "anim": "rate",
+            "ai": "clipRate",
+            "liveUrl": "https://app.freightpop.com/app/#/quote-ship",
+            "progress": "36%"
+          },
+          "roi": {
+            "stat": "Every rate",
+            "statLabel": "on one screen, every time",
+            "proof": "Rate shopping and invoice audit are the two largest line items in customer savings models.",
+            "ev": {
+              "grade": "Reported",
+              "src": "G2 review · Francisco A.",
+              "quote": "Saved us a TON of money in both shipment costs and payroll costs due to the saved time.",
+              "who": "— G2 review, Francisco A."
+            }
+          }
+        },
+        {
+          "num": "04",
+          "name": "Spot Quoting & Bid Portal",
+          "t1": "Spot Quoting",
+          "t2": "& Bid Portal",
+          "tag": "One request out, every bid back in one place",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Finding a truck means emailing ten carriers.",
+            "body": "Every spot load starts a round of individual emails, then a scramble to compare replies buried in an inbox. Nothing is apples-to-apples, nothing is auditable, and the load waits."
+          },
+          "benefit": {
+            "heading": "Bid one load to a whole network in a single click.",
+            "bullets": [
+              "Spot quote groups by region, equipment or lane — ping the network, not one rep",
+              "Requests can go out automatically the moment an order lands, based on its destination",
+              "Carriers bid in a scoped portal — no login, only the details you choose to share",
+              "Require a quote number and a cost breakdown: freight, fuel, accessorials",
+              "Bids land beside your API and contracted rates for a true side-by-side"
+            ]
+          },
+          "demo": {
+            "caption": "One load bid to an East Coast group — responses land next to the API rates.",
+            "anim": "spot",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "40%"
+          },
+          "roi": {
+            "stat": "1 request",
+            "statLabel": "to bid an entire carrier network",
+            "proof": "Spot bids stop living in an inbox and become a comparable, auditable record.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Spot quote module — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "05",
+          "name": "Address Validator & Accessorials",
+          "t1": "Address Validator",
+          "t2": "& Accessorials",
+          "tag": "Catch the surcharge before the carrier does",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "The accessorial shows up on the invoice.",
+            "body": "A residential delivery quoted as commercial. A liftgate nobody flagged. The quote looked right, the invoice didn't, and by then the margin on that shipment is gone."
+          },
+          "benefit": {
+            "heading": "Validate the stop and the service before you rate it.",
+            "bullets": [
+              "Addresses validated at entry — origin and destination, US, Canada and Mexico",
+              "Residential and liftgate flagged automatically, and only when the freight warrants it",
+              "Dock, appointment and inside-delivery conditions surfaced before booking",
+              "Accessorials priced into the quote so the invoice matches what you approved",
+              "Defaults per customer or location for the exceptions you already know about"
+            ]
+          },
+          "demo": {
+            "caption": "A pallet to a residential stop auto-flags residential and liftgate before rating.",
+            "anim": "accessorial",
+            "ai": "accessorial",
+            "liveUrl": "https://app.freightpop.com/app/#/quote-ship",
+            "progress": "34%"
+          },
+          "roi": {
+            "stat": "Priced upfront",
+            "statLabel": "not discovered on the invoice",
+            "proof": "Accessorials caught at quote time are the difference between a quoted rate and a real one.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No customer metric yet. Modeled from your LTL count × surprise-charge rate.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "06",
+          "name": "Shipment Consolidation",
+          "t1": "Shipment",
+          "t2": "Consolidation",
+          "tag": "Combine orders into fewer, fuller loads",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Orders ship the moment they drop — one box at a time.",
+            "body": "Same-day, same-destination orders leave as separate parcels or half-empty LTL loads. You pay minimums and per-shipment fees over and over for freight that could have moved together."
+          },
+          "benefit": {
+            "heading": "The system finds the loads that belong together.",
+            "bullets": [
+              "Same-destination and same-customer orders surfaced as consolidation candidates",
+              "Hypothetical consolidation: hold and combine until a weight or capacity target is hit",
+              "Multi-stop opportunities flagged during order entry, not after booking",
+              "Consolidated freight rated and booked as one shipment, one BOL",
+              "Each original order keeps its own tracking and writeback"
+            ]
+          },
+          "demo": {
+            "caption": "Four same-city orders combine into one LTL load — and one bill.",
+            "anim": "consol",
+            "ai": "consol",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "52%"
+          },
+          "roi": {
+            "stat": "Fewer loads",
+            "statLabel": "for the same freight",
+            "proof": "One shipment instead of three means one minimum, one booking and one invoice to audit.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No customer metric yet. Modeled from consolidatable pairs × your LTL minimum.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "07",
+          "name": "Pooling & Cross-Dock",
+          "t1": "Pooling",
+          "t2": "& Cross-Dock",
+          "tag": "Truckload the long haul, LTL the last mile",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Every small order pays for its own long haul.",
+            "body": "Twenty LTL shipments to the same region each buy their own linehaul. The freight is going to the same place — you're just paying twenty times to get it there."
+          },
+          "benefit": {
+            "heading": "Pool the region, break it down locally.",
+            "bullets": [
+              "Group regional orders onto one truckload to a cross-dock or pool point",
+              "Final mile released as LTL or local delivery from the pool",
+              "Every child shipment tracked under the parent move — no hand-off blind spots",
+              "Works for two-leg flows where a partner warehouse reworks freight",
+              "Compare pooled cost against shipping each order direct"
+            ]
+          },
+          "demo": {
+            "caption": "Twenty Northeast orders pool onto one linehaul, then break to LTL final mile.",
+            "anim": "pool",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "56%"
+          },
+          "roi": {
+            "stat": "1 linehaul",
+            "statLabel": "instead of twenty",
+            "proof": "Pooling converts a pile of LTL minimums into one truckload rate plus short local moves.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No customer metric yet. Modeled as linehaul + final mile vs. n × LTL.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "08",
+          "name": "Multi-Leg Shipments",
+          "t1": "Multi-Leg",
+          "t2": "Shipments",
+          "tag": "Plan and track door-to-door, every leg",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "One shipment becomes three disconnected records.",
+            "body": "Drayage, linehaul and final mile each live in a different system with a different reference number. Nobody can answer where the freight is without opening three screens and doing math."
+          },
+          "benefit": {
+            "heading": "One record spans every leg and every carrier.",
+            "bullets": [
+              "Build ocean, drayage, linehaul and final mile as legs of one move",
+              "Each leg gets its own movement ID, carrier, rate and documents",
+              "Status rolls up to one shipment timeline",
+              "Handoffs are visible — you see the gap before the customer does",
+              "Total landed cost accumulates across legs"
+            ]
+          },
+          "demo": {
+            "caption": "Track a port-to-door move across three carriers on one timeline.",
+            "anim": "multileg",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "60%"
+          },
+          "roi": {
+            "stat": "1 record",
+            "statLabel": "for every leg, every carrier",
+            "proof": "One shipment record spans drayage, linehaul and final mile — no hand-off blind spots.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Ocean, air and drayage on one shipment record — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "09",
+          "name": "Batch Shipping",
+          "t1": "Batch",
+          "t2": "Shipping",
+          "tag": "Rate, label and book hundreds at once",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Peak days mean one label at a time.",
+            "body": "When volume spikes, your team rate-shops, labels and books orders individually — the same clicks, hundreds of times. Throughput is capped by headcount, and errors climb with fatigue."
+          },
+          "benefit": {
+            "heading": "Process the whole queue in one pass.",
+            "bullets": [
+              "Select hundreds of orders and rate-shop, label and book them together",
+              "Labels print in the order you selected them — no re-sorting at the printer",
+              "Large batches supported without the print-count errors of legacy tools",
+              "Exceptions pulled out for review instead of stopping the batch",
+              "Throughput scales with volume, not with headcount"
+            ]
+          },
+          "demo": {
+            "caption": "An entire batch rate-shopped, labeled and booked in a single pass.",
+            "anim": "batch",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "66%"
+          },
+          "roi": {
+            "stat": "1 click",
+            "statLabel": "to book and dispatch an entire batch",
+            "proof": "Throughput scales with order volume, not headcount. One G2 reviewer bulk-quotes hundreds of locations from a single screen.",
+            "ev": {
+              "grade": "Reported",
+              "src": "G2 review · Catherine C.",
+              "quote": "I spend many many hours quoting customers with hundreds or thousands of locations… This feature alone has saved me days of work in the last couple of months.",
+              "who": "— G2 review, Catherine C."
+            }
+          }
+        },
+        {
+          "num": "10",
+          "name": "Parcel Shipping",
+          "t1": "Parcel",
+          "t2": "Shipping",
+          "tag": "Every parcel carrier rated on the same screen as freight",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Parcel lives in its own system.",
+            "body": "A separate tool for parcel means a separate login, separate rates and no way to ask the only question that matters on a borderline order: should this go parcel or LTL? Dimensional rules quietly decide it for you."
+          },
+          "benefit": {
+            "heading": "One screen for parcel, LTL and truckload.",
+            "bullets": [
+              "Rate parcel against LTL on the same order and pick the cheaper mode",
+              "Dimensional weight applied per carrier so the gray-area orders price honestly",
+              "Multi-carrier parcel accounts, labels and manifests from one place",
+              "Return labels and default return processing built in",
+              "Batch parcel days handled from the same queue as freight"
+            ]
+          },
+          "demo": {
+            "caption": "A 23 lb order rated parcel and LTL side by side — DIM rules included.",
+            "anim": "parcel",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/quote-ship",
+            "progress": "38%"
+          },
+          "roi": {
+            "stat": "One screen",
+            "statLabel": "for parcel and freight",
+            "proof": "Mode choice becomes a priced comparison instead of a habit.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Parcel included at no additional cost — verifiable in any quote.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "11",
+          "name": "Documents & BOL Control",
+          "t1": "Documents",
+          "t2": "& BOL",
+          "tag": "Every document generated, printed and correctable",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "The paperwork is assembled by hand.",
+            "body": "BOLs, packing lists, pallet labels and manifests get built in separate places, printed from separate screens, and corrected with a pen. When a weight changes after pickup, the document and the invoice disagree."
+          },
+          "benefit": {
+            "heading": "Generate it all at ship time — and fix it after.",
+            "bullets": [
+              "BOL, packing list, pallet labels and manifests produced on booking",
+              "Customer-specific and third-party BOL formats for big-box routing requirements",
+              "Documents route to the right printer by user or station",
+              "Edit a BOL after the fact — weight, class, mode — with permissioned, tracked changes",
+              "PRO number blocks assigned electronically instead of from a sticker sheet"
+            ]
+          },
+          "demo": {
+            "caption": "A variable-weight load re-weighed after pickup — BOL corrected, record updated.",
+            "anim": "docs",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/quote-ship",
+            "progress": "62%"
+          },
+          "roi": {
+            "stat": "One booking",
+            "statLabel": "produces every document",
+            "proof": "Reconciled weights on the BOL are what make the invoice audit defensible.",
+            "ev": {
+              "grade": "Platform",
+              "src": "BOL, labels and paperwork from one booking — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "12",
+          "name": "Fleet & Dispatch",
+          "t1": "Fleet",
+          "t2": "& Dispatch",
+          "tag": "Your trucks and your carriers on one board",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "The dispatch plan is a whiteboard and a phone.",
+            "body": "Assets, drivers and daily trips are tracked by hand. When a customer closes early or a load moves to tomorrow, someone re-plans on the fly and calls everyone affected — if they remember."
+          },
+          "benefit": {
+            "heading": "Plan the day by dragging loads onto trucks.",
+            "bullets": [
+              "Equipment profiles with weight and capacity tolerances and max daily trips",
+              "Assign a truck, driver, tracking device or warehouse to any asset",
+              "Drag a load between trucks or to another day — the carrier is notified",
+              "Same board for owned assets and third-party carriers",
+              "ELD and telematics feeds push assignments to the driver's phone"
+            ]
+          },
+          "demo": {
+            "caption": "A Monday load drags to Tuesday — the truck and the carrier both update.",
+            "anim": "fleet",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "58%"
+          },
+          "roi": {
+            "stat": "One board",
+            "statLabel": "for assets and carriers",
+            "proof": "Re-planning a day is a drag-and-drop, not a round of phone calls.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No customer metric yet. Alley-Cassetty ran 15 locations on separate spreadsheets and pegboards pre-FreightPOP.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "13",
+          "name": "Route Optimization",
+          "t1": "Route",
+          "t2": "Optimization",
+          "tag": "Fewer miles, tighter windows, lower cost",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Routes are built from memory.",
+            "body": "A dispatcher sequences stops by instinct. Trucks backtrack, windows get missed, and nobody can prove whether a different order of stops would have been cheaper."
+          },
+          "benefit": {
+            "heading": "Optimize the sequence, then adjust by hand.",
+            "bullets": [
+              "Sequence multi-stop routes for minimum miles and time",
+              "Respect delivery windows, vehicle capacity and driver availability",
+              "Balance loads across available equipment; overflow rolls to the next truck",
+              "Drag a stop to re-order it — manual adjustments are recorded",
+              "Compare optimized vs. manual plans side by side"
+            ]
+          },
+          "demo": {
+            "caption": "A 12-stop day re-sequences to cut total drive time.",
+            "anim": "route",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/route-optimization",
+            "progress": "48%"
+          },
+          "roi": {
+            "stat": "Fewer miles",
+            "statLabel": "for the same stops",
+            "proof": "Sequencing happens before the day starts, not during it. The saving is drive time and fuel, computed from your own stop counts.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No customer metric yet. Modeled from your stop counts and cost per mile.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "14",
+          "name": "Driver App & POD",
+          "t1": "Driver App",
+          "t2": "& POD",
+          "tag": "Weights, status and proof from the driver's phone",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Proof of delivery arrives days later.",
+            "body": "Signed paperwork rides back in a cab, gets scanned when someone has time, and a weight captured at pickup is relayed by text or not at all. Billing and claims wait on paper."
+          },
+          "benefit": {
+            "heading": "The driver closes the loop from the dock.",
+            "bullets": [
+              "Free mobile app for your drivers and your carriers' drivers",
+              "Actual picked weight entered at pickup and fed straight to the record",
+              "Status updates — picked up, in transit, delivered — with comments",
+              "Photo and signature POD uploaded from the phone, instantly on the shipment",
+              "POD can be required before a driver is allowed to mark delivered"
+            ]
+          },
+          "demo": {
+            "caption": "A driver marks delivered — photo POD and signature land on the shipment.",
+            "anim": "driver",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "64%"
+          },
+          "roi": {
+            "stat": "At the dock",
+            "statLabel": "not days later",
+            "proof": "Weight and proof captured at the stop are what make same-day billing and fast claims possible.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No customer metric yet. Modeled as days saved between delivery and invoice.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "15",
+          "name": "Tracking & Notifications",
+          "t1": "Tracking &",
+          "t2": "Notifications",
+          "tag": "One screen for every shipment, and customers who stop asking",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "“Where's my order?” lands on the shipping desk.",
+            "body": "Tracking lives in carrier portals and the ERP, so customer service asks the shipping team, who look it up by hand. Every status question costs two people time, and exceptions are found by the customer first."
+          },
+          "benefit": {
+            "heading": "Every shipment, every carrier, one live view.",
+            "bullets": [
+              "All in-transit freight and parcel on one screen with a calendar view",
+              "Late and at-risk shipments flagged before the customer calls",
+              "Branded, Amazon-style tracking emails to your customers, automatically",
+              "Trigger notifications on real events — only once the carrier has picked up",
+              "Give CSRs, sales and customers scoped tracking access so they self-serve"
+            ]
+          },
+          "demo": {
+            "caption": "A late shipment flags on the board and the customer is already notified.",
+            "anim": "tracknote",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "70%"
+          },
+          "roi": {
+            "stat": "Self-service",
+            "statLabel": "status for everyone who asks",
+            "proof": "Proactive notification removes the highest-volume interruption on the shipping desk.",
+            "ev": {
+              "grade": "Reported",
+              "src": "Alley-Cassetty intake: the coordinator fields status calls all day. Callaway Blue had once-daily visibility only.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "16",
+          "name": "Freight Invoice Audit",
+          "t1": "Freight",
+          "t2": "Invoice Audit",
+          "tag": "Every invoice checked against what you approved",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Freight invoices get paid, not checked.",
+            "body": "Auditing means comparing a carrier bill to a quote nobody saved, line by line, across hundreds of invoices. So bills get approved on faith — and reweighs, reclasses and phantom accessorials are paid in full."
+          },
+          "benefit": {
+            "heading": "Automatic variance detection on every bill.",
+            "bullets": [
+              "Invoices matched to the original quote line by line, automatically",
+              "Reweighs, reclasses and unapproved accessorials flagged for dispute",
+              "EDI invoices ingested from connected carriers; broker bills uploaded",
+              "Approved invoices export to AP as bills or vendor bills",
+              "Nothing auto-pays — approval stays with your team"
+            ]
+          },
+          "demo": {
+            "caption": "A reweigh on a carrier invoice is caught against the quoted rate and queued for dispute.",
+            "anim": "audit",
+            "ai": "clipAudit",
+            "liveUrl": "",
+            "progress": "76%"
+          },
+          "roi": {
+            "stat": "Line by line",
+            "statLabel": "audited automatically",
+            "proof": "Invoice audit and rate shopping are the two largest components of customer savings models.",
+            "ev": {
+              "grade": "Measured",
+              "src": "Buffalo Seal & Gasket, closed won Dec 2025 — a single $225 carrier discrepancy, inside a $140,294 modeled annual savings case.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "17",
+          "name": "Reporting & Analytics",
+          "t1": "Reporting",
+          "t2": "& Analytics",
+          "tag": "Spend, service and carrier performance on demand",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "Reporting means exporting and rebuilding.",
+            "body": "Freight spend by lane, carrier or customer takes a data pull and a spreadsheet. By the time the analysis exists the quarter is over, and no two people build it the same way."
+          },
+          "benefit": {
+            "heading": "The numbers are already in the system.",
+            "bullets": [
+              "Built-in reports for spend, mode mix, carrier performance and on-time",
+              "Filter by site, customer, lane or date and export to Excel when you want to",
+              "Dashboards scoped per role so each team sees its own numbers",
+              "Direct warehouse access for Power BI and your own BI stack",
+              "Quoted vs. actual cost captured on every shipment, ready to analyze"
+            ]
+          },
+          "demo": {
+            "caption": "Spend by carrier and lane, filtered live — no export required.",
+            "anim": "reports",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "82%"
+          },
+          "roi": {
+            "stat": "Quoted vs. actual",
+            "statLabel": "on every shipment",
+            "proof": "Carrier negotiations and mode decisions run on your own data instead of the carrier's.",
+            "ev": {
+              "grade": "Reported",
+              "src": "Software Advice review",
+              "quote": "The reporting allowed us to save considerable money by illuminating which carriers can deliver each kind of product at the lowest cost and highest service levels.",
+              "who": "— Software Advice review"
+            }
+          }
+        },
+        {
+          "num": "18",
+          "name": "Dock Scheduling",
+          "t1": "Dock",
+          "t2": "Scheduling",
+          "tag": "Self-service dock appointments",
+          "cardTag": "",
+          "enabled": true,
+          "problem": {
+            "heading": "The dock runs on phone calls and a whiteboard.",
+            "body": "Carriers arrive whenever, the yard backs up, and detention charges pile on while labor sits idle or scrambles. Nobody upstream knows what's hitting the dock today."
+          },
+          "benefit": {
+            "heading": "Let carriers book their own slots.",
+            "bullets": [
+              "Publish dock availability; carriers pick and confirm their own appointments",
+              "Door and equipment needs captured at booking — forklift, liftgate, dock or drop",
+              "Appointments imported or created in bulk, per door and per site",
+              "Live schedule view for the floor — most customers run it on a screen in the warehouse",
+              "Inbound and outbound on the same calendar"
+            ]
+          },
+          "demo": {
+            "caption": "A carrier books its own dock slot — the warehouse board updates live.",
+            "anim": "dock",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "72%"
+          },
+          "roi": {
+            "stat": "Self-service",
+            "statLabel": "carrier appointments",
+            "proof": "A known arrival schedule is what turns dock labor from reactive into planned.",
+            "ev": {
+              "grade": "Reported",
+              "src": "Callaway Blue intake, Jun 2026: 20 docks run on Excel and clipboards, no no-show tracking. Measured results due at their 90-day review.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        }
+      ]
+    },
+    "wms": {
+      "name": "Warehouse Management",
+      "kicker": "Capability Library",
+      "intro": "A warehouse layer built natively into FreightPOP — one vendor for WMS, TMS and OMS. The floor, the freight and the order share a single record, so stock and shipping never fall out of sync.",
+      "modules": [
+        {
+          "num": "01",
+          "name": "Guided Receiving",
+          "t1": "",
+          "t2": "",
+          "tag": "Scan-based PO receipts, validated at the door",
+          "cardTag": "Scan-based PO receipts with expected-item validation, partial receipts with save-and-resume, and receive-to-bin or receive-to-dock flexibility.",
+          "enabled": true,
+          "problem": {
+            "heading": "Receiving runs on a clipboard and a guess.",
+            "body": "POs get re-keyed at the dock, big containers take days with no way to pause and resume, and over- or short-receipts surface at month-end — long after the truck is gone."
+          },
+          "benefit": {
+            "heading": "Receive against the PO — validated as you scan.",
+            "bullets": [
+              "Import the PO straight from TMS inbound — the truck you tracked is the receipt you work",
+              "Expected-item validation as you scan: under, complete and over flagged live",
+              "Partial receipts save and resume — supplemental receipts continue until the PO closes",
+              "Receive to a put-away bin or to the dock — your flow, either way",
+              "Approval posts a purchase receipt to your ERP automatically"
+            ]
+          },
+          "demo": {
+            "caption": "An inbound PO is scan-received, validated against expected quantities and posted to the ERP.",
+            "anim": "wreceive",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "34%"
+          },
+          "roi": {
+            "stat": "At the door",
+            "statLabel": "discrepancies caught, not at month-end",
+            "proof": "One vendor for TMS and WMS: the shipment you tracked inbound becomes the receipt you post — zero re-keying.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No live WMS customer metric yet — Alley-Cassetty is still in pilot.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "02",
+          "name": "License Plating, Lot, and Serialization",
+          "t1": "",
+          "t2": "",
+          "tag": "Move a pallet, not a serial number",
+          "cardTag": "Associate items, serials and lots to one scannable license plate — move a pallet, not a serial number, with custom LP naming conventions.",
+          "enabled": true,
+          "problem": {
+            "heading": "Serialized and lot-controlled stock moves one scan at a time.",
+            "body": "A pallet of serialized units can't move until someone scans every serial on it, and lot codes live on paper or in a spreadsheet — so expiry, recall and traceability questions turn into a warehouse walk. Multi-section warehouses relocate stock all day, so the scanning never ends, or worse, it just gets skipped."
+          },
+          "benefit": {
+            "heading": "One license plate carries the whole pallet.",
+            "bullets": [
+              "Associate items, serials and lot codes to a single scannable license plate",
+              "One scan moves the pallet — every serial and lot code travels with it",
+              "Lot codes captured at receipt and carried through put-away, picks and shipment",
+              "Custom LP naming conventions: PO number, job number, or an auto-increment schema",
+              "LPs work everywhere — receipts, put-away, transfers, picks and adjustments",
+              "Print barcode labels at receipt so every pallet is scannable from day one"
+            ]
+          },
+          "demo": {
+            "caption": "A pallet of 48 serialized units changes bins with a single license-plate scan.",
+            "anim": "wlp",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "42%"
+          },
+          "roi": {
+            "stat": "1 scan",
+            "statLabel": "moves a pallet — serials, lots and all",
+            "proof": "The pallet is the unit of work. Serialized and lot-controlled handling stops being the reason moves don't get recorded.",
+            "ev": {
+              "grade": "Platform",
+              "src": "License plating, lot and serialization — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "03",
+          "name": "Put-Away & Bin Transfers",
+          "t1": "",
+          "t2": "",
+          "tag": "Directed moves, and bins that fit how you work",
+          "cardTag": "Directed put-away from receiving and QA, single-item splits across bins, and bins flexible enough to be jobs, trucks or a painted line down the warehouse.",
+          "enabled": true,
+          "problem": {
+            "heading": "Stock moves, the system doesn't.",
+            "body": "Put-away is tribal knowledge and bin-to-bin moves happen off the record — a forklift relocates a pallet and the software never hears about it. The next picker walks to a bin that's been empty for a week."
+          },
+          "benefit": {
+            "heading": "Direct every put-away, record every move.",
+            "bullets": [
+              "Directed put-away from receiving and QA to the right bin",
+              "Split a single item across up to ten destination bins in one move",
+              "Consolidate many items into one bin — with live remaining-quantity checks",
+              "Bins are whatever you need: zones, trucks, jobs — even a painted line down the warehouse",
+              "License-plate aware: full pallets keep their plate through the move"
+            ]
+          },
+          "demo": {
+            "caption": "One received item splits across a zone, a truck and a job bin — in a single recorded move.",
+            "anim": "wbins",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "48%"
+          },
+          "roi": {
+            "stat": "0 ghost moves",
+            "statLabel": "every relocation is a scanned transaction",
+            "proof": "The bin the system shows is the bin the forklift finds.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Scan-enforced moves — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "04",
+          "name": "Order Picking & Fulfillment",
+          "t1": "",
+          "t2": "",
+          "tag": "Guided picks on rugged mobile scanners",
+          "cardTag": "Guided sales and transfer order picking on rugged mobile scanners — bin-directed, short-key confirms, optional approval gates before writeback.",
+          "enabled": true,
+          "problem": {
+            "heading": "Pickers walk the aisles with a printout.",
+            "body": "Paper pick lists can't verify anything. Wrong items and short picks surface at packing — or at the customer — and nobody upstream can see what's picked and what's still waiting."
+          },
+          "benefit": {
+            "heading": "Scan-guided picking from sales and transfer orders.",
+            "bullets": [
+              "Open sales orders and transfer orders become picking tickets — no re-keying",
+              "Bin-directed picks on rugged mobile scanners",
+              "Short-key confirms a full bin quantity in one tap",
+              "Live line status as the pick progresses — picked, partial, waiting",
+              "Optional post and approval gates before inventory writes back"
+            ]
+          },
+          "demo": {
+            "caption": "A sales order is scan-picked bin by bin — approved, posted and handed to the TMS to ship.",
+            "anim": "wpick",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "56%"
+          },
+          "roi": {
+            "stat": "Scan-verified",
+            "statLabel": "every pick, before it reaches packing",
+            "proof": "Errors stop at the shelf — and because WMS and TMS are one vendor, the picked order books freight without a handoff.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Scan verification at the shelf — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "05",
+          "name": "Inventory Visibility & Adjustments",
+          "t1": "",
+          "t2": "",
+          "tag": "Live stock across every site — fixable on the spot",
+          "cardTag": "Real-time inventory across every site with lot and expiration tracking, on-the-spot write-offs from the scanner, and photo capture for QA and RMA.",
+          "enabled": true,
+          "problem": {
+            "heading": "Every site keeps its own version of the truth.",
+            "body": "Stock levels differ by system and by site. Sales promises what the warehouse doesn't have, damaged stock sits on the books for months, and nobody has proof of what condition anything arrived in."
+          },
+          "benefit": {
+            "heading": "One live view — correctable where you stand.",
+            "bullets": [
+              "Real-time inventory across every warehouse and site in one view",
+              "Lot and expiration tracking on every unit",
+              "Write off damaged stock from the scanner, on the spot — no back-office ticket",
+              "Photo capture on inbound and outbound for QA and vendor RMA documentation",
+              "Every adjustment is a recorded transaction that posts to your ERP"
+            ]
+          },
+          "demo": {
+            "caption": "Water-damaged stock is written off at the bin — photo attached, adjustment posted to the ERP.",
+            "anim": "winv",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "62%"
+          },
+          "roi": {
+            "stat": "All sites",
+            "statLabel": "in one live inventory view",
+            "proof": "One vendor for WMS and TMS means the stock you see is net of everything picked, packed and already on a truck.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Multi-site inventory — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "06",
+          "name": "Cycle Counting",
+          "t1": "",
+          "t2": "",
+          "tag": "Count continuously, not catastrophically",
+          "cardTag": "Scheduled ABC or full-warehouse counts, blind counting, variance review with approve-or-recount, and automatic ERP adjustment writeback.",
+          "enabled": true,
+          "problem": {
+            "heading": "The annual count shuts the building down.",
+            "body": "Counting means stopping — so it happens once a year, variances pile up unseen for months, and the write-off lands all at once with no way to say where accuracy went wrong."
+          },
+          "benefit": {
+            "heading": "Scheduled, blind, scan-driven counts.",
+            "bullets": [
+              "Scheduled counts — ABC by velocity, or full-warehouse annual",
+              "Blind counts: the counter sees the shelf, not the expected number",
+              "Variances surface immediately with approve-or-recount review",
+              "Approved adjustments write back to NetSuite automatically",
+              "No shutdown — counts run alongside daily operations"
+            ]
+          },
+          "demo": {
+            "caption": "A blind count surfaces one variance — reviewed, approved and posted to NetSuite.",
+            "anim": "wcount",
+            "ai": "",
+            "liveUrl": "",
+            "progress": "68%"
+          },
+          "roi": {
+            "stat": "0 shutdowns",
+            "statLabel": "counting runs alongside operations",
+            "proof": "Small, continuous counts keep accuracy high and turn the year-end write-off into a non-event.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "No live WMS customer metric yet.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        }
+      ]
+    },
+    "oms": {
+      "name": "Order Management",
+      "kicker": "Capability Library",
+      "intro": "The workspace where every order arrives, gets its freight detail and is prepared — then handed to warehouse picking and to the TMS for rating and booking, with no re-entry.",
+      "modules": [
+        {
+          "num": "01",
+          "name": "Order Management and Intake",
+          "t1": "",
+          "t2": "",
+          "tag": "Orders arrive on their own, and one queue holds them all",
+          "cardTag": "ERP and storefront sync on a schedule, bulk CSV import, or look up a single order by number — no re-keying to start a shipment.",
+          "enabled": true,
+          "problem": {
+            "heading": "Orders can come in from multiple systems. Without the right order management tools, shipping teams rely on spreadsheets, emails, and disconnected systems to figure out what needs to ship, when, and how.",
+            "body": ""
+          },
+          "benefit": {
+            "heading": "Orders arrive on their own, into one workspace.",
+            "bullets": [
+              "For most customers the ERP is integrated, so released orders import automatically",
+              "The integration is configured to your rules — which orders, at which status, to which site",
+              "ERP and storefront sync on a schedule so the queue fills itself",
+              "Bulk import from a CSV template when there's no integration yet",
+              "Look up a single order by number and pull it straight into Quote & Ship",
+              "Filter and pre-set the intake trigger: status, prefix, site, required ship date",
+              "Configure the grid so each team sees only the orders it ships",
+              "One queue for sales orders, outbound, inbound, services and ROI orders",
+              "Select orders in the grid to quote, spot quote, ship, create a delivery or split"
+            ]
+          },
+          "demo": {
+            "caption": "Orders land in the queue on their own — ERP sync, bulk import and single-order lookup.",
+            "anim": "osales",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "20%"
+          },
+          "roi": {
+            "stat": "Zero",
+            "statLabel": "re-keying to start a shipment",
+            "proof": "The order arrives with its addresses, lines and detail already attached.",
+            "ev": {
+              "grade": "Reported",
+              "src": "G2 review + Callaway Blue intake (every PO re-keyed from a printed PDF)",
+              "quote": "An extra number here or there when manually keyed has killed us on shipments in the past. This problem is virtually eliminated now.",
+              "who": "— G2 review"
+            }
+          }
+        },
+        {
+          "num": "02",
+          "name": "Product Detail & Auto Pack",
+          "t1": "",
+          "t2": "",
+          "tag": "Catalog detail in, calculated pallets out",
+          "cardTag": "Items pull from the catalog with dims, weights and ERP serials; auto freight class/NMFC, saved package types, hazmat with DG paperwork — then handling units calculate themselves.",
+          "enabled": true,
+          "problem": {
+            "heading": "Most teams don't know what an order will cost to ship until after it is packed. That means freight decisions get made without one of the biggest pieces of the equation: how the order will actually be packed.",
+            "body": ""
+          },
+          "benefit": {
+            "heading": "Every line arrives quote-ready, and packs itself.",
+            "bullets": [
+              "Items pull from the product catalog with dims, weights and ERP serial numbers",
+              "Freight class and NMFC assigned automatically; saved package types per SKU",
+              "Hazmat from the UN/NA catalog with DG paperwork and BOL language",
+              "That item detail feeds auto-pack: handling units, dims and weight calculated",
+              "Bulk pack rules define what a full case and a full pallet actually are",
+              "Item-level thresholds palletize a SKU on their own once the quantity is hit",
+              "Company-level thresholds palletize the shipment on weight, volume or box count",
+              "The routing guide then reads pallet count and box count to pick carrier and service",
+              "Fulfillment kits for orders that always ship the same way",
+              "International detail — country of origin, values, documentation — captured at entry"
+            ]
+          },
+          "demo": {
+            "caption": "Catalog detail, predefined packages and routing guide rules — then freight cost before anything is packed.",
+            "anim": "opack",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "36%"
+          },
+          "roi": {
+            "stat": "Rated right",
+            "statLabel": "the first time",
+            "proof": "Accurate class, dims and pack math at entry are what stop reclass and reweigh charges downstream.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Catalog-driven class, NMFC and dims feeding calculated pack math — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "03",
+          "name": "Order Consolidation",
+          "t1": "",
+          "t2": "",
+          "tag": "Same destination, one load",
+          "cardTag": "Combine orders heading to the same destination into a single lower-cost shipment — each order keeps its own tracking.",
+          "enabled": true,
+          "problem": {
+            "heading": "Orders headed to the same place ship as separate freight. Each one looks fine on its own, so nobody sees the LTL minimums, labels, BOLs and pickups stacking up.",
+            "body": ""
+          },
+          "benefit": {
+            "heading": "Combine before you book, not after.",
+            "bullets": [
+              "Orders matching on street, city, state and zip group into one shipment automatically",
+              "Several LTL shipments become one FTL, which is where the freight spend drops",
+              "Multi-stop truckloads built by selecting the orders and processing them as one load",
+              "Fewer labels, BOLs and carrier pickups for the warehouse to manage",
+              "Consolidate Selected works from the Order Management grid, even for a single order",
+              "Add or remove orders after the load is saved, up until pickup",
+              "Consolidated orders lock in Order Management, so nothing ships twice",
+              "Each original order keeps its own tracking and ERP writeback"
+            ]
+          },
+          "demo": {
+            "caption": "Same-destination orders selected in the grid, consolidated into one load, rated once.",
+            "anim": "oconsol",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "44%"
+          },
+          "roi": {
+            "stat": "One minimum",
+            "statLabel": "instead of two",
+            "proof": "The saving is invisible per order and material per month.",
+            "ev": {
+              "grade": "Modeled",
+              "src": "Shares the consolidation model — deliberately not counted twice.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "04",
+          "name": "Inbound Order Management",
+          "t1": "",
+          "t2": "",
+          "tag": "Purchase orders tracked like the freight they are",
+          "cardTag": "Purchase orders land in the inbound queue as tracked shipments — rated, booked and visible to the dock before the truck arrives.",
+          "enabled": true,
+          "problem": {
+            "heading": "Inbound freight is a phone call and a guess at an arrival date, so the dock finds out what is coming when the truck shows up.",
+            "body": ""
+          },
+          "benefit": {
+            "heading": "Inbound POs live in the same system as everything else.",
+            "bullets": [
+              "Purchase orders arrive in the Open Inbound Transactions tab from the ERP",
+              "Vendor freight created as a tracked inbound shipment, not an email thread",
+              "Rate and book inbound moves on your own carriers and accounts",
+              "Arrival dates and tracking visible before the truck reaches the dock",
+              "The inbound record becomes the receipt the warehouse works against"
+            ]
+          },
+          "demo": {
+            "caption": "Inbound POs in one queue, rated, booked and tracked to the dock.",
+            "anim": "othird",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "62%"
+          },
+          "roi": {
+            "stat": "One queue",
+            "statLabel": "for inbound as well as outbound",
+            "proof": "Inbound is often the least visible half of the freight spend.",
+            "ev": {
+              "grade": "Platform",
+              "src": "Inbound purchase orders as tracked shipments — platform capability.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        },
+        {
+          "num": "05",
+          "name": "Order-to-Fulfillment Handoff",
+          "t1": "",
+          "t2": "",
+          "tag": "One record from capture to carrier",
+          "cardTag": "Open orders flow into WMS picking and into the TMS for rating, booking and tracking — one record, no re-keying.",
+          "enabled": true,
+          "problem": {
+            "heading": "Three vendors own three pieces of the same order.",
+            "body": "The order system, the warehouse system and the freight system come from different vendors, so the order is entered once, re-entered to pick it and re-entered to ship it. Every copy drifts, the integrations between them are somebody's side job, and when the handoff breaks nobody owns it."
+          },
+          "benefit": {
+            "heading": "One vendor, one record, capture to fulfillment.",
+            "bullets": [
+              "Open orders flow into WMS picking with no re-keying",
+              "Picked and packed orders return to the TMS quote-ready",
+              "Tracking, carrier, freight cost and ship date write back to the ERP record",
+              "Partial ships and backorders stay tied to the parent order",
+              "OMS, WMS and TMS are one system, so there is no middleware to build or re-sync",
+              "One contract, one login and one team accountable for the whole handoff"
+            ]
+          },
+          "demo": {
+            "caption": "OMS, WMS and TMS on one record — and what one vendor for all three buys you.",
+            "anim": "ohandoff",
+            "ai": "",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "progress": "72%"
+          },
+          "roi": {
+            "stat": "1 record",
+            "statLabel": "from capture to carrier",
+            "proof": "No re-entry between order, warehouse and freight means no reconciliation between them.",
+            "ev": {
+              "grade": "Reported",
+              "src": "Buffalo Seal & Gasket — the owner called freight cost written back to the ERP order 'a big deal' for invoicing.",
+              "quote": "",
+              "who": ""
+            }
+          }
+        }
+      ]
+    }
+  },
+  "nav": [
+    {
+      "key": "explore",
+      "label": "Walkthrough",
+      "sub": "Live product experience",
+      "enabled": true
+    },
+    {
+      "key": "mainmenu",
+      "label": "Main Menu",
+      "sub": "Platform · 4 systems",
+      "enabled": true
+    },
+    {
+      "key": "tms",
+      "label": "TMS",
+      "sub": "Module hub · 18 capabilities",
+      "enabled": true
+    },
+    {
+      "key": "wms",
+      "label": "WMS",
+      "sub": "Warehouse capability library",
+      "enabled": true
+    },
+    {
+      "key": "oms",
+      "label": "OMS",
+      "sub": "Order capability library",
+      "enabled": true
+    },
+    {
+      "key": "workflows",
+      "label": "Workflows",
+      "sub": "8 common customer flows",
+      "enabled": true
+    },
+    {
+      "key": "carriers",
+      "label": "Carriers",
+      "sub": "Every mode · one network",
+      "enabled": true
+    },
+    {
+      "key": "erp",
+      "label": "Integrations",
+      "sub": "54 connected systems",
+      "enabled": true
+    },
+    {
+      "key": "roadmap",
+      "label": "Roadmap",
+      "sub": "AI · platform direction",
+      "enabled": true
+    },
+    {
+      "key": "onboarding",
+      "label": "Onboarding",
+      "sub": "What to expect",
+      "enabled": true
+    },
+    {
+      "key": "ai",
+      "label": "FreightPOP AI",
+      "sub": "Intelligence layer",
+      "enabled": true
+    },
+    {
+      "key": "roi",
+      "label": "ROI",
+      "sub": "Intake form · opens in a new tab",
+      "enabled": true
+    }
+  ],
+  "labels": {
+    "back": "Back",
+    "menu": "Menu",
+    "liveSite": "Live Site",
+    "backToModule": "Back to module",
+    "allModules": "← All modules",
+    "nextModule": "Next module",
+    "backToModules": "Back to modules",
+    "steps": [
+      "Problem",
+      "Benefit",
+      "Live Demo",
+      "Validation"
+    ],
+    "stepEyebrows": [
+      "The Problem",
+      "The Benefit",
+      "Live Demo",
+      "Validation & ROI"
+    ],
+    "demoTabs": {
+      "walkthrough": "Walkthrough",
+      "ai": "✦ AI Demo",
+      "live": "Live Site ↗",
+      "expand": "⛶ Expand"
+    },
+    "openCard": "Open",
+    "watchCard": "Watch"
+  },
+  "pages": {
+    "tms": {
+      "eyebrow": "FreightPOP TMS · Module Library"
+    },
+    "workflows": {
+      "eyebrow": "FreightPOP Platform · Workflows",
+      "h1": "Common customer workflows.",
+      "lede": "{count} flows we set up for customers every week. Open one to watch it run end to end, step by step."
+    },
+    "roadmap": {
+      "eyebrow": "FreightPOP Platform · Roadmap",
+      "h1": "Where the product is headed.",
+      "lede": "Two tracks of investment: agentic AI across the shipping lifecycle, and platform depth across the warehouse and the yard. Directional — sequence and scope evolve with customer input.",
+      "aiTitle": "AI Product Roadmap",
+      "platformTitle": "Platform Product Roadmap"
+    },
+    "onboarding": {
+      "eyebrow": "Onboarding · What to expect",
+      "h1": "From kickoff to production.",
+      "lede": "A dedicated customer success team runs the implementation with you. Milestones are set together at kickoff around your requirements."
+    }
+  },
+  "ui": {
+    "uiScale": 1,
+    "navScale": 1,
+    "hubScale": 1,
+    "hubColumns": 3,
+    "featureScale": 1,
+    "demoMaxWidth": 1020,
+    "demoScale": 1,
+    "statSize": 84,
+    "introHeadlineSize": 108,
+    "introSubtitleSize": 36,
+    "cardMinHeight": 190
+  },
+  "controls": {
+    "startView": "intro",
+    "keyboardNav": true,
+    "showStepDots": true,
+    "showPagingArrows": true,
+    "showFullscreenPills": true,
+    "showLiveSitePill": true,
+    "showMenuButton": true,
+    "showBreadcrumb": true,
+    "showAiDemoTab": true,
+    "showLiveSiteTab": true,
+    "showExpandTab": true,
+    "demoAutoPlay": true,
+    "demoSpeed": 1,
+    "showValidationLibrary": true
+  },
+  "roadmap": {
+    "ai": [
+      {
+        "label": "Copilot v.1",
+        "body": "AI-powered shipment execution assistant"
+      },
+      {
+        "label": "Accessorial Agent",
+        "body": "Smarter, automated accessorial cost control"
+      },
+      {
+        "label": "Load Planning Agent",
+        "body": "Automated load consolidation and planning"
+      },
+      {
+        "label": "MCP",
+        "body": "Scalable AI infrastructure for reliability and integrations"
+      },
+      {
+        "label": "Copilot v.2",
+        "body": "End-to-end AI operations and decision automation"
+      },
+      {
+        "label": "Tracking & Invoice Agent",
+        "body": "Proactive tracking and exception resolution"
+      },
+      {
+        "label": "Claims Agent",
+        "body": "Automated claims handling and recovery"
+      },
+      {
+        "label": "Customer Agent Builder",
+        "body": "Build and deploy your own AI agents"
+      },
+      {
+        "label": "Control Tower",
+        "body": "Real-time, AI-driven supply chain visibility"
+      }
+    ],
+    "platform": [
+      {
+        "label": "WMS Expansion",
+        "body": "Advanced warehouse workflows and scalability"
+      },
+      {
+        "label": "Yard Management",
+        "body": "End-to-end yard visibility and asset control"
+      },
+      {
+        "label": "RFP",
+        "body": "Streamlined carrier sourcing and rate management"
+      },
+      {
+        "label": "Text Support",
+        "body": "Real-time SMS communication for shipments and appointments"
+      }
+    ]
+  },
+  "onboarding": [
+    {
+      "num": "01",
+      "label": "Kickoff",
+      "lines": [
+        "Introduce the CS team for implementation",
+        "Discuss unique requirements"
+      ]
+    },
+    {
+      "num": "02",
+      "label": "Milestones",
+      "lines": [
+        "Establish milestones for onboarding with FreightPOP",
+        "Agree on the training, testing and go-live plan"
+      ]
+    },
+    {
+      "num": "03",
+      "label": "Setup",
+      "lines": [
+        "Set preferences for your workflow",
+        "Add carriers and rates",
+        "Finish any development and connect to ERP or WMS"
+      ]
+    },
+    {
+      "num": "04",
+      "label": "Training",
+      "lines": [
+        "Train key personnel on admin setup, shipping, reports and dashboards",
+        "All shippers attend the training sessions"
+      ]
+    },
+    {
+      "num": "05",
+      "label": "Testing",
+      "lines": [
+        "Validate the setup against your shipping requirements with test data"
+      ]
+    },
+    {
+      "num": "06",
+      "label": "Production",
+      "lines": [
+        "Users adopt FreightPOP as their primary supply chain solution",
+        "You see the value of the system as expected"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "num": "01",
+      "title": "Standard Outbound",
+      "tag": "Order in, rates shopped, label printed, tracking back to the ERP — the everyday outbound flow end to end.",
+      "src": "uploads/01-freightpop-outbound.html",
+      "enabled": true
+    },
+    {
+      "num": "02",
+      "title": "Inbound Receiving",
+      "tag": "POs become tracked inbound shipments — visibility from vendor dock to your receiving door.",
+      "src": "uploads/02-freightpop-inbound.html",
+      "enabled": true
+    },
+    {
+      "num": "03",
+      "title": "Parcel Shipping",
+      "tag": "High-volume small package: rate shop across parcel accounts, print, manifest and track in one pass.",
+      "src": "uploads/03-parcel-shipping.html",
+      "enabled": true
+    },
+    {
+      "num": "04",
+      "title": "LTL Freight",
+      "tag": "Quote, book, BOL and pickup for palletized freight — contracted and broker rates side by side.",
+      "src": "uploads/04-ltl-workflow.html",
+      "enabled": true
+    },
+    {
+      "num": "05",
+      "title": "Ocean Freight",
+      "tag": "Container-level international visibility — bookings, milestones and documents on one timeline.",
+      "src": "uploads/05-ocean-freight.html",
+      "enabled": true
+    },
+    {
+      "num": "06",
+      "title": "Returns & Reverse Logistics",
+      "tag": "Customer-initiated returns with pre-approved labels — reverse moves as controlled as outbound.",
+      "src": "uploads/06-returns-workflow.html",
+      "enabled": true
+    },
+    {
+      "num": "07",
+      "title": "Spot Quote & Truckload",
+      "tag": "Blast a load to your broker network, compare responses and award — no email chains.",
+      "src": "uploads/07-spot-quote.html",
+      "enabled": true
+    },
+    {
+      "num": "08",
+      "title": "Standard Route Optimization",
+      "tag": "Fleet and driver records, orders staged for own-fleet delivery, optimized and reviewed, dispatched to the driver and confirmed back in FreightPOP.",
+      "src": "uploads/08-route-optimization.html",
+      "enabled": true
+    }
+  ]
+}

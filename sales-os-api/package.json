@@ -1,0 +1,12 @@
+{
+  "name": "deck-config-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Config API + admin panel for the FreightPOP sales deck (Sales OS)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "defaults": "node scripts/extract-defaults.js"
+  },
+  "engines": { "node": ">=20" }
+}
