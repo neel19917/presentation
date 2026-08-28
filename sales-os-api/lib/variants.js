@@ -35,7 +35,7 @@ function sanitizeSlides(slides) {
     while (seen.has(id)) id += '-2'; seen.add(id);
     return { id, label: String(d.label || 'Custom').slice(0, 60), sub: String(d.sub || '').slice(0, 120), enabled: d.enabled !== false,
       pages: (Array.isArray(d.pages) ? d.pages : []).map(p => ({ eyebrow: String(p.eyebrow || '').slice(0, 120), h1: String(p.h1 || '').slice(0, 200), lede: String(p.lede || '').slice(0, 1200),
-        bullets: (Array.isArray(p.bullets) ? p.bullets : []).map(b => String(b).slice(0, 400)).filter(Boolean).slice(0, 12), image: String(p.image || '').slice(0, 2000), embed: String(p.embed || '').slice(0, 2000) })) };
+        bullets: (Array.isArray(p.bullets) ? p.bullets : []).map(b => String(b).slice(0, 400)).filter(Boolean).slice(0, 12), image: String(p.image || '').slice(0, 2000), embed: String(p.embed || '').slice(0, 2000), layout: ['right', 'left', 'below'].includes(p.layout) ? p.layout : 'right' })) };
   });
 }
 function save(slug, body, by) {

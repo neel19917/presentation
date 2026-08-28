@@ -8,3 +8,17 @@
   for = "/*"
   [headers.values]
     X-Frame-Options = "SAMEORIGIN"
+
+# Short deck URL: /deck?v=…&go=… serves the deck file in place (200 rewrite, query passes through).
+# Kept at the root (no trailing segment) so the deck's relative assets (extracted/, uploads/, ai-clips/) still resolve.
+[[redirects]]
+  from = "/deck"
+  to = "/FreightPOP%20TMS%20Sales%20Deck%20v17.dc.html"
+  status = 200
+
+# Short tracked links: fpdeck.netlify.app/l/<code> → deck-config-api (gate page / redirect into the deck with tracking).
+[[redirects]]
+  from = "/l/*"
+  to = "https://deck-config-api-production.up.railway.app/l/:splat"
+  status = 200
+  force = true

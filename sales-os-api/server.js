@@ -18,6 +18,8 @@ const http = require('http'), fs = require('fs'), path = require('path'), crypto
 const { merge, clone } = require('./lib/merge');
 const store = require('./lib/store');
 const variants = require('./lib/variants');
+const links = require('./lib/links');
+const DECK_URL = (process.env.DECK_URL || 'https://beta--fpdeck.netlify.app/deck').replace(/\/$/, '');
 
 const PORT = Number(process.env.PORT || 8080);
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
@@ -82,7 +84,7 @@ function cors(req, res) {
   const origin = req.headers.origin;
   const allow = ALLOWED_ORIGINS.includes('*') ? '*' : (origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]);
   res.setHeader('Access-Control-Allow-Origin', allow);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, If-None-Match');
   res.setHeader('Access-Control-Expose-Headers', 'ETag, X-Config-Version');
   if (allow !== '*') res.setHeader('Vary', 'Origin');
@@ -93,6 +95,10 @@ function send(res, code, body, headers = {}) {
   res.writeHead(code, Object.assign({ 'Content-Type': isObj ? 'application/json; charset=utf-8' : 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }, headers));
   res.end(payload);
 }
+function readRaw(req, limit = 64 * 1024) {
+  return new Promise((resolve, reject) => { let size = 0; const chunks = []; req.on('data', c => { size += c.length; if (size > limit) { reject(new Error('payload too large')); req.destroy(); } else chunks.push(c); }); req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8'))); req.on('error', reject); });
+}
+const clientIp = req => String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
 function readJson(req, limit = 4 * 1024 * 1024) {
   return new Promise((resolve, reject) => { let size = 0; const chunks = []; req.on('data', c => { size += c.length; if (size > limit) { reject(new Error('payload too large')); req.destroy(); } else chunks.push(c); }); req.on('end', () => { try { resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {}); } catch (e) { reject(new Error('invalid JSON')); } }); req.on('error', reject); });
 }
@@ -130,6 +136,28 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, body, { 'Content-Type': 'application/json; charset=utf-8', ETag: etag, 'X-Config-Version': String(doc.version), 'Cache-Control': 'no-cache' });
     }
     if (p === '/api/defaults' && m === 'GET') return send(res, 200, { data: DEFAULTS });
+    // ---- tracked share links (public) ----
+    if (p === '/deck') { const q = (url.search || '').slice(1); res.writeHead(302, { Location: q ? DECK_URL + (DECK_URL.includes('?') ? '&' : '?') + q : DECK_URL }); return res.end(); }
+    let lm = p.match(/^\/l\/([A-Za-z0-9]{5,12})\/?$/);
+    if (lm && (m === 'GET' || m === 'POST')) {
+      const code = lm[1].toLowerCase(); const doc = links.read(code);
+      const html = (h, code_ = 200) => send(res, code_, h, { 'Content-Type': 'text/html; charset=utf-8' });
+      if (!doc || doc.disabled || links.isExpired(doc)) return html(links.gatePage(doc || { name: 'FreightPOP sales deck' }, { unavailable: !doc ? 'This link does not exist. Check it was copied completely, or ask your FreightPOP contact for a new one.' : doc.disabled ? 'This link has been turned off by its owner.' : 'This link has expired. Ask your FreightPOP contact for a new one.' }), 404);
+      const go = () => { const sid = links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }); res.writeHead(302, { Location: links.deckHref(DECK_URL, doc, { t: doc.code, k: sid }), 'Cache-Control': 'no-store' }); res.end(); };
+      if (!doc.passwordHash) return go();
+      if (m === 'GET') return html(links.gatePage(doc, { action: '/l/' + doc.code }));
+      const form = new URLSearchParams(await readRaw(req)); if (links.checkPassword(doc, form.get('password'))) return go();
+      await new Promise(r => setTimeout(r, 500)); return html(links.gatePage(doc, { action: '/l/' + doc.code, error: 'That password is not right. Try again.' }), 401);
+    }
+    lm = p.match(/^\/api\/t\/([A-Za-z0-9]{5,12})\/(check|unlock|event)$/);
+    if (lm) {
+      const doc = links.read(lm[1].toLowerCase()); const what = lm[2];
+      if (!doc) return send(res, 404, { ok: false, error: 'no such link' });
+      const dead = doc.disabled || links.isExpired(doc);
+      if (what === 'check' && m === 'GET') { const k = url.searchParams.get('k') || ''; return send(res, 200, { ok: !dead && !!doc.sessions.find(x => x.sid === k), protected: !!doc.passwordHash, name: doc.name, recipient: doc.recipient || '', dead }); }
+      if (what === 'unlock' && m === 'POST') { if (dead) return send(res, 410, { ok: false, error: 'link unavailable' }); const body = await readJson(req); if (!links.checkPassword(doc, body.password)) { await new Promise(r => setTimeout(r, 500)); return send(res, 401, { ok: false, error: 'wrong password' }); } return send(res, 200, { ok: true, k: links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }) }); }
+      if (what === 'event' && m === 'POST') { const body = await readJson(req, 64 * 1024); return send(res, links.event(doc, String(body.k || ''), body) ? 200 : 403, { ok: true }); }
+    }
     if (p === '/api/login' && m === 'POST') {
       const body = await readJson(req);
       if (!ADMIN_PASSWORD || !safeEq(body.password || '', ADMIN_PASSWORD)) { await new Promise(r => setTimeout(r, 400)); return send(res, 401, { error: 'invalid password' }); }
@@ -161,6 +189,15 @@ const server = http.createServer(async (req, res) => {
         if (m === 'GET') { const v = variants.read(slug); return v ? send(res, 200, Object.assign({}, v, { resolved: variants.resolve(published().data, v) })) : send(res, 404, { error: 'no such version' }); }
         if (m === 'PUT') { const body = await readJson(req); try { const v = variants.save(slug, body, req.adminEmail || body.by || 'admin'); return send(res, 200, { ok: true, variant: v }); } catch (e) { return send(res, e.status || 500, { error: e.message }); } }
         if (m === 'DELETE') return variants.remove(slug) ? send(res, 200, { ok: true }) : send(res, 404, { error: 'no such version' });
+      }
+      // ---- tracked share links (admin) ----
+      if (p === '/api/links' && m === 'GET') return send(res, 200, { links: links.list(), deckUrl: DECK_URL, shortBase: (process.env.SHORT_BASE || DECK_URL.replace(/\/deck$/, '')) + '/l/' });
+      if (p === '/api/links' && m === 'POST') { const body = await readJson(req); const doc = links.create(body, req.adminEmail || 'admin'); return send(res, 200, { ok: true, link: links.summary(doc), shortUrl: (process.env.SHORT_BASE || DECK_URL.replace(/\/deck$/, '')) + '/l/' + doc.code, deckUrl: links.deckHref(DECK_URL, doc) }); }
+      let km = p.match(/^\/api\/links\/([a-z0-9]{5,12})$/);
+      if (km) {
+        if (m === 'GET') { const d = links.read(km[1]); return d ? send(res, 200, links.detail(d)) : send(res, 404, { error: 'no such link' }); }
+        if (m === 'PATCH' || m === 'PUT') { const body = await readJson(req); const d = links.update(km[1], body); return d ? send(res, 200, { ok: true, link: links.summary(d) }) : send(res, 404, { error: 'no such link' }); }
+        if (m === 'DELETE') return links.remove(km[1]) ? send(res, 200, { ok: true }) : send(res, 404, { error: 'no such link' });
       }
       vm = p.match(/^\/api\/variants\/([a-z0-9-]+)\/clone$/);
       if (vm && m === 'POST') { const body = await readJson(req); const to = variants.slugify(body.slug || body.name || ''); if (!variants.isSlug(to)) return send(res, 400, { error: 'new slug must be 2-49 chars: a-z 0-9 -' }); if (variants.read(to)) return send(res, 409, { error: 'a version with that slug already exists' }); const v = variants.cloneTo(vm[1], to, body.name, req.adminEmail || 'admin'); return v ? send(res, 200, { ok: true, variant: v }) : send(res, 404, { error: 'no such version' }); }

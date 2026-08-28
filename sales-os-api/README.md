@@ -40,6 +40,12 @@ Every screen has a URL. The deck keeps the address bar in sync as you present (s
 
 The same params work after `#`, and the site root (`/?go=…`) forwards them to the deck file.
 
+## Tracked share links (`/l/<code>`)
+
+**Share & track links** in either admin builds a link from a filterable picker (tab, module step, workflow, a version's slide) plus what the viewer may see (tabs, lock, chrome flags), then either copies the plain deep link or creates a **tracked short link**: `https://<deck host>/l/<code>` (Netlify proxies `/l/*` to this API). Optional password. Opening it shows a branded gate page, then redirects into the deck with `t=<code>&k=<session>`; the deck reports `screen`, `play` (Live Demo step, AI tab, workflow player, walkthrough) and `beat` (time) events. Per link: views, unique viewers, plays, time, last viewed, top screens; per viewer: the screens in order, device, IP. Links can be turned off, deleted, or given an expiry. Stored at `DATA_DIR/links/<code>.json` (scrypt password hash; sessions capped at 500).
+
+Short deck URL: `/deck?…` is a Netlify 200-rewrite of the deck file (the API's `GET /deck` 302s there too; `DECK_URL` env, default `https://beta--fpdeck.netlify.app/deck`).
+
 ## Deck versions (one base, many decks)
 
 A version is a thin overlay an AE keeps on top of the published base: tabs on/off and their order, start screen and chrome, plus **custom slide decks** (headline, body, bullets, image or embed per page; each deck becomes a tab). The deck opens it with `?v=<slug>`; the API merges base ⊕ overlay at read time, so publishing a new base flows into every version — nobody regenerates anything. Create, edit, clone and delete versions under **Deck versions** in the admin; the **Share a link** card there builds `?v=…&go=…&lock=1` links.
@@ -63,6 +69,13 @@ Stored at `DATA_DIR/variants/<slug>.json` as `{ slug, name, owner, note, overlay
 | GET | `/api/variants` | Bearer | list versions |
 | GET · PUT · DELETE | `/api/variants/:slug` | Bearer | read (with `resolved`), create/update `{ name, owner, note, overlay, slides }`, delete |
 | POST | `/api/variants/:slug/clone` | Bearer | `{ name, slug? }` → copy |
+| GET · POST | `/l/:code` | – | gate page (password) → 302 into the deck with `t`/`k` |
+| GET | `/deck?…` | – | 302 to `DECK_URL` with the same query |
+| GET | `/api/t/:code/check?k=` | – | `{ ok, protected, name, recipient, dead }` — the deck decides whether to show its lock screen |
+| POST | `/api/t/:code/unlock` | – | `{ password }` → `{ k }` (deck lock screen) |
+| POST | `/api/t/:code/event` | – | `{ k, type: screen|play|beat, go?, seconds? }` |
+| GET · POST | `/api/links` | Bearer | list (with stats) · create `{ name, recipient, note, password?, expiresAt?, params: { v, go, tabs, hide, lock, c } }` → `{ link, shortUrl, deckUrl }` |
+| GET · PATCH · DELETE | `/api/links/:code` | Bearer | detail with sessions · update (`disabled`, `password`, `params`, …) · delete |
 
 ## Environment
 
@@ -72,6 +85,8 @@ Stored at `DATA_DIR/variants/<slug>.json` as `{ slug, name, owner, note, overlay
 | `DATA_DIR` | `/data` (Railway volume). Falls back to `./data` locally |
 | `SUPABASE_URL`, `SUPABASE_ANON_KEY` | enables **Sales OS (CPQ) single sign-on**: the CPQ's admin tab sends the user's Supabase access token as the Bearer; the API verifies it with the project, requires `@ADMIN_EMAIL_DOMAIN` and, when readable, an Admin / Super Admin `user_profiles.user_type` |
 | `ADMIN_EMAIL_DOMAIN` | default `freightpop.com` |
+| `DECK_URL` | where tracked links land; default `https://beta--fpdeck.netlify.app/deck` |
+| `SHORT_BASE` | base for short links shown in the admin; default `DECK_URL` minus `/deck` + `/l/` |
 | `ALLOWED_ORIGINS` | comma-separated origins for CORS; default `*` (config is public read-only) |
 | `PORT` | provided by Railway |
 
