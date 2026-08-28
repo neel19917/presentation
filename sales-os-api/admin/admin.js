@@ -224,9 +224,10 @@ function renderSection() {
   el.innerHTML = k === 'settings' ? sectionSettings() : k === 'nav' ? sectionNav() : k === 'ui' ? sectionUi() : k === 'controls' ? sectionControls() : k === 'labels' ? sectionLabels() : k === 'pages' ? sectionPages() : ['tms', 'wms', 'oms'].includes(k) ? sectionModules(k) : k === 'roadmap' ? sectionRoadmap() : k === 'versions' ? sectionVersions() : k === 'onboarding' ? sectionOnboarding() : k === 'workflows' ? sectionWorkflows() : sectionHistory();
   if (k === 'history') loadRevisions();
   if (k === 'versions' && S.variants === null) loadVariants();
+  renderStatus();
   document.querySelectorAll('.rail button[data-sec]').forEach(b => b.classList.toggle('active', b.dataset.sec === k));
 }
-function renderStatus() { const s = $('#status'); if (!s) return; s.className = 'status' + (S.dirty ? ' dirty' : ''); s.innerHTML = `<span class="dot"></span><span class="msg">${S.dirty ? 'Unsaved changes — publish to update the deck.' : 'All changes published. The deck picks up the published version on its next load.'}</span><button class="btn" data-action="discard" ${S.dirty ? '' : 'disabled'}>Discard</button><button class="btn primary" data-action="publish" ${S.dirty ? '' : 'disabled'}>Save & publish</button>`; }
+function renderStatus() { const s = $('#status'); if (!s) return; s.style.display = S.v ? 'none' : ''; /* a version has its own save bar */ s.className = 'status' + (S.dirty ? ' dirty' : ''); s.innerHTML = `<span class="dot"></span><span class="msg">${S.dirty ? 'Unsaved changes — publish to update the deck.' : 'All changes published. The deck picks up the published version on its next load.'}</span><button class="btn" data-action="discard" ${S.dirty ? '' : 'disabled'}>Discard</button><button class="btn primary" data-action="publish" ${S.dirty ? '' : 'disabled'}>Save & publish</button>`; }
 
 // ---------- events (delegated) ----------
 app.addEventListener('input', e => {
