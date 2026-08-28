@@ -287,7 +287,7 @@ function renderSection() {
   renderStatus();
   document.querySelectorAll('.rail button[data-sec]').forEach(b => b.classList.toggle('active', b.dataset.sec === k));
 }
-function renderStatus() { const s = $('#status'); if (!s) return; s.style.display = S.v ? 'none' : ''; /* a version has its own save bar */ s.className = 'status' + (S.dirty ? ' dirty' : ''); s.innerHTML = `<span class="dot"></span><span class="msg">${S.dirty ? 'Unsaved changes — publish to update the deck.' : 'All changes published. The deck picks up the published version on its next load.'}</span><button class="btn" data-action="discard" ${S.dirty ? '' : 'disabled'}>Discard</button><button class="btn primary" data-action="publish" ${S.dirty ? '' : 'disabled'}>Save & publish</button>`; }
+function renderStatus() { const s = $('#status'); if (!s) return; s.style.display = (S.v || S.section === 'links') ? 'none' : ''; /* a version has its own save bar; links publish nothing */ s.className = 'status' + (S.dirty ? ' dirty' : ''); s.innerHTML = `<span class="dot"></span><span class="msg">${S.dirty ? 'Unsaved changes — publish to update the deck.' : 'All changes published. The deck picks up the published version on its next load.'}</span><button class="btn" data-action="discard" ${S.dirty ? '' : 'disabled'}>Discard</button><button class="btn primary" data-action="publish" ${S.dirty ? '' : 'disabled'}>Save & publish</button>`; }
 
 // ---------- events (delegated) ----------
 app.addEventListener('input', e => {
@@ -303,7 +303,7 @@ app.addEventListener('input', e => {
 app.addEventListener('change', e => { const t = e.target; if (t.tagName === 'SELECT' && t.dataset.root === 'v') { set(S.v, t.dataset.path, t.value); S.vDirty = true; renderVStatus(); return; } if (t.tagName === 'SELECT' && t.dataset.root === 'share') { S.share[t.dataset.path] = t.value; const out = $('#share-url'); if (out) out.value = shareUrl(); return; } if (t.tagName === 'SELECT' && t.dataset.path) { let v = t.value; if (t.dataset.path.startsWith('ui.')) v = Number(v); set(S.cfg, t.dataset.path, v); markDirty(); } });
 app.addEventListener('click', async e => {
   const b = e.target.closest('button,a'); if (!b) return;
-  if (b.dataset.sec) { S.section = b.dataset.sec; localStorage.setItem('fp_admin_section', S.section); renderSection(); return; }
+  if (b.dataset.sec) { S.section = b.dataset.sec; localStorage.setItem('fp_admin_section', S.section); if (S.section === 'links') S.share = { go: '', lock: false, flags: [], tabs: null, filter: '' }; renderSection(); return; }
   const a = b.dataset.action; if (!a) return;
   const onV = b.dataset.root === 'v'; const root = onV ? S.v : S.cfg; const dirty = onV ? () => { S.vDirty = true; renderVStatus(); } : markDirty;
   const list = b.dataset.list ? get(root, b.dataset.list) : null; const i = Number(b.dataset.i);
