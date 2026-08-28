@@ -5,7 +5,7 @@
  *   GET  /health
  *   GET  /api/config            published config (defaults ⊕ stored), ETag, no-cache
  *   GET  /api/defaults          the deck's built-in defaults
- *   POST /api/login             { password } → { token }
+ *   POST /api/login             { password } → { token }   (or send a Supabase access token as Bearer — see verifySupabase)
  *   GET  /api/session           (auth) validates a token
  *   PUT  /api/config            (auth) { data, note } → publish new revision
  *   POST /api/config/reset      (auth) { section? } → reset all or one top-level section to defaults
@@ -17,6 +17,7 @@
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 const { merge, clone } = require('./lib/merge');
 const store = require('./lib/store');
+const variants = require('./lib/variants');
 
 const PORT = Number(process.env.PORT || 8080);
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
@@ -29,16 +30,59 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; cha
 if (!ADMIN_PASSWORD) console.warn('[deck-config-api] ADMIN_PASSWORD is not set — admin writes are disabled');
 if (!store.readCurrent()) { store.publish(clone(DEFAULTS), { by: 'system', note: 'Seeded from deck defaults' }); console.log('[deck-config-api] seeded config from defaults.json'); }
 
+// ---- Supabase session verification (Sales OS / CPQ admins) ----
+// The CPQ app sends the user's Supabase access token; we verify it against the project, require the
+// allowed email domain, and (when readable) an Admin / Super Admin user_profiles.user_type.
+const SUPABASE_URL = (process.env.SUPABASE_URL || '').replace(/\/$/, '');
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
+const ADMIN_EMAIL_DOMAIN = (process.env.ADMIN_EMAIL_DOMAIN || 'freightpop.com').toLowerCase();
+const sbCache = new Map(); // jwt -> { ok, email, until }
+// Returns { ok, email, reason }. `reason` is a short machine string surfaced in 401 bodies + logs so a
+// rejected admin can be diagnosed without guessing (no token material is ever logged).
+async function verifySupabase(jwt) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return { ok: false, reason: 'supabase_not_configured' };
+  if (!jwt) return { ok: false, reason: 'no_token' };
+  if (jwt.split('.').length !== 3) return { ok: false, reason: 'not_a_jwt' };
+  const hit = sbCache.get(jwt); if (hit && hit.until > Date.now()) return hit;
+  let rec;
+  try {
+    const r = await fetch(SUPABASE_URL + '/auth/v1/user', { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + jwt } });
+    if (!r.ok) { let body = ''; try { body = JSON.stringify(await r.json()).slice(0, 160); } catch (e) {} rec = { ok: false, reason: 'gotrue_' + r.status + (body ? ' ' + body : ''), until: Date.now() + 30e3 }; }
+    else {
+      const u = await r.json(); const email = String(u.email || '').toLowerCase();
+      if (!email.endsWith('@' + ADMIN_EMAIL_DOMAIN)) rec = { ok: false, email, reason: 'domain:' + (email.split('@')[1] || '?'), until: Date.now() + 5 * 60e3 };
+      else {
+        let ok = true, reason = 'domain_only';
+        try {
+          const pr = await fetch(SUPABASE_URL + '/rest/v1/user_profiles?id=eq.' + encodeURIComponent(u.id) + '&select=user_type', { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + jwt } });
+          if (pr.ok) { const rows = await pr.json(); if (Array.isArray(rows) && rows.length) { ok = ['Admin', 'Super Admin'].includes(rows[0].user_type); reason = ok ? 'role:' + rows[0].user_type : 'role_denied:' + rows[0].user_type; } else reason = 'profile_not_visible'; }
+          else reason = 'profile_http_' + pr.status;
+        } catch (e) { reason = 'profile_error'; }
+        rec = { ok, email, reason, until: Date.now() + 5 * 60e3 };
+      }
+    }
+  } catch (e) { rec = { ok: false, reason: 'gotrue_unreachable', until: Date.now() + 15e3 }; }
+  sbCache.set(jwt, rec);
+  if (!rec.ok) console.warn('[deck-config-api] supabase auth rejected:', rec.reason, rec.email ? '(' + rec.email + ')' : '');
+  return rec;
+}
+if (SUPABASE_URL) console.log('[deck-config-api] Supabase session auth enabled for @' + ADMIN_EMAIL_DOMAIN);
+
 const sessions = new Map(); // token -> expiry
 function newToken() { const t = crypto.randomBytes(24).toString('base64url'); sessions.set(t, Date.now() + SESSION_TTL_MS); return t; }
-function authed(req) { const h = req.headers.authorization || ''; const t = h.startsWith('Bearer ') ? h.slice(7) : ''; const exp = sessions.get(t); if (!exp) return false; if (exp < Date.now()) { sessions.delete(t); return false; } sessions.set(t, Date.now() + SESSION_TTL_MS); return true; }
+async function authed(req) {
+  const h = req.headers.authorization || ''; const t = h.startsWith('Bearer ') ? h.slice(7) : '';
+  const exp = sessions.get(t); if (exp) { if (exp < Date.now()) { sessions.delete(t); return false; } sessions.set(t, Date.now() + SESSION_TTL_MS); return true; }
+  const sb = await verifySupabase(t); if (sb.ok) { req.adminEmail = sb.email; req.authReason = sb.reason; return true; }
+  req.authReason = sb.reason; return false;
+}
 function safeEq(a, b) { const A = Buffer.from(String(a)), B = Buffer.from(String(b)); return A.length === B.length && crypto.timingSafeEqual(A, B); }
 
 function cors(req, res) {
   const origin = req.headers.origin;
   const allow = ALLOWED_ORIGINS.includes('*') ? '*' : (origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]);
   res.setHeader('Access-Control-Allow-Origin', allow);
-  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, If-None-Match');
   res.setHeader('Access-Control-Expose-Headers', 'ETag, X-Config-Version');
   if (allow !== '*') res.setHeader('Vary', 'Origin');
@@ -78,7 +122,10 @@ const server = http.createServer(async (req, res) => {
     if (p.startsWith('/admin/')) return serveStatic(res, p.slice('/admin/'.length));
 
     if (p === '/api/config' && m === 'GET') {
-      const doc = published(); const body = JSON.stringify(doc); const etag = '"' + crypto.createHash('sha1').update(body).digest('hex').slice(0, 16) + '"';
+      const doc = published();
+      const vslug = (url.searchParams.get('v') || url.searchParams.get('variant') || '').trim().toLowerCase();
+      if (vslug) { const v = variants.read(vslug); if (v) { doc.data = variants.resolve(doc.data, v); doc.variant = { slug: v.slug, name: v.name, owner: v.owner || '', updatedAt: v.updatedAt }; } else doc.variant = null; }
+      const body = JSON.stringify(doc); const etag = '"' + crypto.createHash('sha1').update(body).digest('hex').slice(0, 16) + '"';
       if (req.headers['if-none-match'] === etag) return send(res, 304, '', { ETag: etag });
       return send(res, 200, body, { 'Content-Type': 'application/json; charset=utf-8', ETag: etag, 'X-Config-Version': String(doc.version), 'Cache-Control': 'no-cache' });
     }
@@ -90,24 +137,35 @@ const server = http.createServer(async (req, res) => {
     }
     // ---- authenticated ----
     if (p.startsWith('/api/')) {
-      if (!authed(req)) return send(res, 401, { error: 'unauthorized' });
-      if (p === '/api/session' && m === 'GET') return send(res, 200, { ok: true });
+      if (!(await authed(req))) return send(res, 401, { error: 'unauthorized (' + (req.authReason || 'bad_session') + ')', reason: req.authReason || 'bad_session' });
+      if (p === '/api/session' && m === 'GET') return send(res, 200, { ok: true, email: req.adminEmail || null, via: req.authReason || 'password' });
       if (p === '/api/config' && m === 'PUT') {
         const body = await readJson(req); const errs = validate(body.data);
         if (errs.length) return send(res, 400, { error: 'validation failed', details: errs });
-        const doc = store.publish(body.data, { by: body.by || 'admin', note: body.note || '' });
+        const doc = store.publish(body.data, { by: req.adminEmail || body.by || 'admin', note: body.note || '' });
         return send(res, 200, { ok: true, version: doc.version, updatedAt: doc.updatedAt });
       }
       if (p === '/api/config/reset' && m === 'POST') {
         const body = await readJson(req); const cur = published().data;
         const data = body.section ? Object.assign({}, cur, { [body.section]: clone(DEFAULTS[body.section]) }) : clone(DEFAULTS);
         if (body.section && DEFAULTS[body.section] === undefined) return send(res, 400, { error: 'unknown section' });
-        const doc = store.publish(data, { by: body.by || 'admin', note: body.section ? `Reset ${body.section} to defaults` : 'Reset everything to defaults' });
+        const doc = store.publish(data, { by: req.adminEmail || body.by || 'admin', note: body.section ? `Reset ${body.section} to defaults` : 'Reset everything to defaults' });
         return send(res, 200, { ok: true, version: doc.version, data });
       }
       if (p === '/api/revisions' && m === 'GET') return send(res, 200, { revisions: store.listRevisions() });
+      // ---- deck versions (variants) ----
+      if (p === '/api/variants' && m === 'GET') return send(res, 200, { variants: variants.list() });
+      let vm = p.match(/^\/api\/variants\/([a-z0-9-]+)$/);
+      if (vm) {
+        const slug = vm[1];
+        if (m === 'GET') { const v = variants.read(slug); return v ? send(res, 200, Object.assign({}, v, { resolved: variants.resolve(published().data, v) })) : send(res, 404, { error: 'no such version' }); }
+        if (m === 'PUT') { const body = await readJson(req); try { const v = variants.save(slug, body, req.adminEmail || body.by || 'admin'); return send(res, 200, { ok: true, variant: v }); } catch (e) { return send(res, e.status || 500, { error: e.message }); } }
+        if (m === 'DELETE') return variants.remove(slug) ? send(res, 200, { ok: true }) : send(res, 404, { error: 'no such version' });
+      }
+      vm = p.match(/^\/api\/variants\/([a-z0-9-]+)\/clone$/);
+      if (vm && m === 'POST') { const body = await readJson(req); const to = variants.slugify(body.slug || body.name || ''); if (!variants.isSlug(to)) return send(res, 400, { error: 'new slug must be 2-49 chars: a-z 0-9 -' }); if (variants.read(to)) return send(res, 409, { error: 'a version with that slug already exists' }); const v = variants.cloneTo(vm[1], to, body.name, req.adminEmail || 'admin'); return v ? send(res, 200, { ok: true, variant: v }) : send(res, 404, { error: 'no such version' }); }
       let rm = p.match(/^\/api\/revisions\/(\d+)$/); if (rm && m === 'GET') { const d = store.readRevision(rm[1]); return d ? send(res, 200, d) : send(res, 404, { error: 'no such revision' }); }
-      rm = p.match(/^\/api\/revisions\/(\d+)\/restore$/); if (rm && m === 'POST') { const d = store.readRevision(rm[1]); if (!d) return send(res, 404, { error: 'no such revision' }); const doc = store.publish(d.data, { by: 'admin', note: `Restored revision ${d.version}` }); return send(res, 200, { ok: true, version: doc.version, data: doc.data }); }
+      rm = p.match(/^\/api\/revisions\/(\d+)\/restore$/); if (rm && m === 'POST') { const d = store.readRevision(rm[1]); if (!d) return send(res, 404, { error: 'no such revision' }); const doc = store.publish(d.data, { by: req.adminEmail || 'admin', note: `Restored revision ${d.version}` }); return send(res, 200, { ok: true, version: doc.version, data: doc.data }); }
     }
     send(res, 404, { error: 'not found' });
   } catch (e) { console.error(e); send(res, e.message === 'invalid JSON' || e.message === 'payload too large' ? 400 : 500, { error: e.message }); }

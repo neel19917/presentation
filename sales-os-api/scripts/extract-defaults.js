@@ -56,7 +56,7 @@ const defaults = {
     steps: ['Problem', 'Benefit', 'Live Demo', 'Validation'],
     stepEyebrows: ['The Problem', 'The Benefit', 'Live Demo', 'Validation & ROI'],
     demoTabs: { walkthrough: 'Walkthrough', ai: '✦ AI Demo', live: 'Live Site ↗', expand: '⛶ Expand' },
-    openCard: 'Open', watchCard: 'Watch'
+    openCard: 'Open', watchCard: 'Watch', copyLink: 'Link', linkCopied: 'Copied ✓'
   },
   pages: {
     tms: { eyebrow: 'FreightPOP TMS · Module Library' },
@@ -69,7 +69,7 @@ const defaults = {
   },
   controls: {
     startView: 'intro', keyboardNav: true, showStepDots: true, showPagingArrows: true, showFullscreenPills: true, showLiveSitePill: true, showMenuButton: true, showBreadcrumb: true,
-    showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true
+    showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true
   },
   roadmap: { ai: c.roadmapAI.map(r => ({ ...r })), platform: c.roadmapPlatform.map(r => ({ ...r })) },
   onboarding: c.onboardingSteps.map(s => ({ num: s.num, label: s.label, lines: s.lines.slice() })),

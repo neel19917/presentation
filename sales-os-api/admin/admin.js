@@ -4,7 +4,7 @@ const API = '';
 const DECK_PREVIEW = 'https://beta--fpdeck.netlify.app/FreightPOP%20TMS%20Sales%20Deck%20v17.dc.html';
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const S = { token: localStorage.getItem('fp_admin_token') || '', cfg: null, meta: null, defaults: null, dirty: false, section: localStorage.getItem('fp_admin_section') || 'settings', open: {}, revisions: [] };
+const S = { token: localStorage.getItem('fp_admin_token') || '', cfg: null, meta: null, defaults: null, dirty: false, section: localStorage.getItem('fp_admin_section') || 'settings', open: {}, revisions: [], variants: null, v: null, vDirty: false, share: { go: '', lock: false, flags: [] } };
 const app = $('#app');
 
 // ---------- api ----------
@@ -52,9 +52,10 @@ const SECTIONS = [
   ['grp', 'Deck'], ['settings', 'Settings & links'], ['nav', 'Tabs & navigation'], ['ui', 'Appearance & size'], ['controls', 'Presentation controls'], ['labels', 'Labels & text'], ['pages', 'Page headings'],
   ['grp', 'Modules'], ['tms', 'TMS modules'], ['wms', 'WMS modules'], ['oms', 'OMS modules'],
   ['grp', 'Sections'], ['roadmap', 'Roadmap'], ['onboarding', 'Onboarding'], ['workflows', 'Workflows'],
+  ['grp', 'Versions'], ['versions', 'Deck versions'],
   ['grp', 'System'], ['history', 'History & reset']
 ];
-const counts = () => ({ tms: S.cfg.systems.tms.modules.filter(m => m.enabled).length + '/' + S.cfg.systems.tms.modules.length, wms: S.cfg.systems.wms.modules.filter(m => m.enabled).length + '/' + S.cfg.systems.wms.modules.length, oms: S.cfg.systems.oms.modules.filter(m => m.enabled).length + '/' + S.cfg.systems.oms.modules.length, nav: S.cfg.nav.filter(n => n.enabled).length + '/' + S.cfg.nav.length, workflows: S.cfg.workflows.filter(w => w.enabled).length + '/' + S.cfg.workflows.length });
+const counts = () => ({ versions: S.variants ? String(S.variants.length) : '', tms: S.cfg.systems.tms.modules.filter(m => m.enabled).length + '/' + S.cfg.systems.tms.modules.length, wms: S.cfg.systems.wms.modules.filter(m => m.enabled).length + '/' + S.cfg.systems.wms.modules.length, oms: S.cfg.systems.oms.modules.filter(m => m.enabled).length + '/' + S.cfg.systems.oms.modules.length, nav: S.cfg.nav.filter(n => n.enabled).length + '/' + S.cfg.nav.length, workflows: S.cfg.workflows.filter(w => w.enabled).length + '/' + S.cfg.workflows.length });
 
 function sectionSettings() {
   return `<div class="eyebrow">Settings & links</div><h1>Where the deck points</h1>
@@ -132,6 +133,80 @@ function sectionHistory() {
 }
 async function loadRevisions() { try { const r = await api('/api/revisions'); const el = $('#revs'); if (!el) return; el.innerHTML = r.revisions.map(v => `<div class="hist"><span class="v">v${v.version}</span><span>${esc(v.note || '—')} <span style="color:var(--txt3)">· ${esc(v.updatedBy)}</span></span><span style="color:var(--txt3);font-size:12px">${new Date(v.updatedAt).toLocaleString()}</span><button class="btn sm" data-action="restore" data-v="${v.version}" ${S.meta && v.version === S.meta.version ? 'disabled' : ''}>${S.meta && v.version === S.meta.version ? 'Current' : 'Restore'}</button></div>`).join('') || 'No revisions yet.'; } catch (e) { toast(e.message, true); } }
 
+// ---------- deck versions (variants) ----------
+// A version = the published base ⊕ a small overlay (tabs on/off + order, start screen, chrome) + custom slide decks.
+// The deck opens it with ?v=<slug>; the merge happens on the API at read time, so republishing the base never breaks a version.
+const DECK_FILE = DECK_PREVIEW;
+const slugify = s => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50);
+const vtext = (p, label, help, opts = {}) => `<div class="field"><label>${esc(label)}</label>${opts.multi ? `<textarea data-root="v" data-path="${p}" rows="${opts.rows || 3}">${esc(get(S.v, p))}</textarea>` : `<input type="text" data-root="v" data-path="${p}" value="${esc(get(S.v, p))}" ${opts.ph ? `placeholder="${esc(opts.ph)}"` : ''}>`}${help ? `<div class="hint">${esc(help)}</div>` : ''}</div>`;
+const vtoggle = (p, label, help) => `<div class="field"><label class="toggle"><input type="checkbox" data-root="v" data-path="${p}" data-type="bool" ${get(S.v, p) !== false ? 'checked' : ''}><span class="sw"></span><span>${esc(label)}</span></label>${help ? `<div class="hint">${esc(help)}</div>` : ''}</div>`;
+const vselect = (p, label, options) => `<div class="field"><label>${esc(label)}</label><select data-root="v" data-path="${p}">${options.map(o => `<option value="${esc(o[0])}" ${String(get(S.v, p)) === String(o[0]) ? 'selected' : ''}>${esc(o[1])}</option>`).join('')}</select></div>`;
+const vacts = (listPath, i, len) => `<button data-root="v" data-action="up" data-list="${listPath}" data-i="${i}" ${i === 0 ? 'disabled' : ''} title="Move up">↑</button><button data-root="v" data-action="down" data-list="${listPath}" data-i="${i}" ${i === len - 1 ? 'disabled' : ''} title="Move down">↓</button>`;
+const vbullets = (p, label) => { const arr = get(S.v, p) || []; return `<div class="field"><label>${esc(label)}</label><div class="bullets">${arr.map((b, i) => `<div class="b"><input type="text" data-root="v" data-path="${p}.${i}" value="${esc(b)}"><button data-root="v" data-action="rm" data-list="${p}" data-i="${i}" title="Remove">×</button></div>`).join('')}<button class="btn sm" data-root="v" data-action="add" data-list="${p}">+ Add bullet</button></div></div>`; };
+async function loadVariants() { try { S.variants = (await api('/api/variants')).variants; } catch (e) { S.variants = []; toast(e.message, true); } renderSection(); renderRailCounts(); }
+function baseNav() { return S.cfg.nav.map(n => ({ key: n.key, label: n.label, sub: n.sub || '', enabled: n.enabled !== false })); }
+// materialise the overlay's nav so every tab (base + this version's slide decks) has a row to toggle / reorder
+function ensureVNav() {
+  const ov = S.v.overlay = S.v.overlay || {}; const cur = Array.isArray(ov.nav) ? ov.nav : []; const out = [];
+  for (const n of cur) if (!String(n.key).startsWith('s:') || S.v.slides.some(d => 's:' + d.id === n.key)) out.push(n);
+  for (const b of baseNav()) if (!out.some(n => n.key === b.key)) out.push(b);
+  for (const d of S.v.slides) if (!out.some(n => n.key === 's:' + d.id)) out.push({ key: 's:' + d.id, label: d.label, sub: d.sub || '', enabled: d.enabled !== false });
+  ov.nav = out; ov.controls = Object.assign({ startView: S.cfg.controls.startView, showMenuButton: S.cfg.controls.showMenuButton, keyboardNav: S.cfg.controls.keyboardNav, showBreadcrumb: S.cfg.controls.showBreadcrumb, showLiveSitePill: S.cfg.controls.showLiveSitePill, showCopyLink: S.cfg.controls.showCopyLink !== false }, ov.controls || {});
+}
+function sectionVersions() {
+  if (S.v) return variantEditor();
+  const rows = S.variants === null ? '<p class="hint">Loading…</p>' : !S.variants.length ? '<p class="hint">No versions yet. Create one above — it starts as an exact copy of the published deck.</p>'
+    : S.variants.map(v => `<div class="row"><span class="num">v</span><div><div class="title">${esc(v.name)} <span class="pill">?v=${esc(v.slug)}</span></div><div class="sub">${esc(v.owner || '—')} · ${v.slideDecks} slide deck${v.slideDecks === 1 ? '' : 's'} (${v.slidePages} page${v.slidePages === 1 ? '' : 's'}) · ${v.tabsOff} tab${v.tabsOff === 1 ? '' : 's'} off · updated ${new Date(v.updatedAt).toLocaleString()} by ${esc(v.updatedBy || '—')}</div></div><div class="acts"><a class="btn sm" target="_blank" rel="noopener" href="${DECK_FILE}?v=${encodeURIComponent(v.slug)}">Open ↗</a><button class="btn sm" data-action="var-edit" data-slug="${esc(v.slug)}">Edit</button><button class="btn sm" data-action="var-clone" data-slug="${esc(v.slug)}">Clone</button><button class="btn sm" data-action="var-del" data-slug="${esc(v.slug)}" title="Delete">🗑</button></div></div>`).join('');
+  return `<div class="eyebrow">Deck versions</div><h1>One base deck, many versions</h1><p class="hint" style="color:var(--txt3);margin:10px 0 18px">A version sits on top of the published deck: turn tabs on or off, reorder them, pick a start screen and add your own slide decks. Publishing the base later flows into every version automatically — nothing is regenerated. Send a version with its link (<code>?v=slug</code>); deep links, tab gating and <code>lock=1</code> all work on top.</p>
+  <div class="card"><h3>New version</h3><div class="grid3"><div class="field"><label>Name</label><input type="text" id="nv-name" placeholder="e.g. Acme Foods · LTL + NetSuite"></div><div class="field"><label>Owner (AE)</label><input type="text" id="nv-owner" placeholder="name or email"></div><div class="field"><label>&nbsp;</label><button class="btn primary" data-action="var-new">Create version</button></div></div></div>
+  <div class="card"><h3>Versions ${S.variants ? `<span class="pill">${S.variants.length}</span>` : ''}</h3><div class="list">${rows}</div></div>`;
+}
+function variantEditor() {
+  const v = S.v; ensureVNav(); const nav = v.overlay.nav;
+  const tabRows = nav.map((n, i) => `<div class="row ${n.enabled === false ? 'off' : ''}"><span class="num">${String(i + 1).padStart(2, '0')}</span><div class="grid2" style="gap:8px 12px"><div class="field"><label>Tab label · <span style="color:var(--teal)">${esc(n.key)}</span></label><input type="text" data-root="v" data-path="overlay.nav.${i}.label" value="${esc(n.label)}"></div><div class="field"><label>Jump-to subtitle</label><input type="text" data-root="v" data-path="overlay.nav.${i}.sub" value="${esc(n.sub || '')}"></div></div><div class="acts"><label class="toggle" title="Show / hide"><input type="checkbox" data-root="v" data-path="overlay.nav.${i}.enabled" data-type="bool" ${n.enabled !== false ? 'checked' : ''}><span class="sw"></span></label>${vacts('overlay.nav', i, nav.length)}</div></div>`).join('');
+  const decks = v.slides.map((d, di) => { const dp = `slides.${di}`; const key = 'sd:' + di; return `<div class="row ${d.enabled === false ? 'off' : ''}"><span class="num">${String(di + 1).padStart(2, '0')}</span><div class="grid2" style="gap:8px 12px">${vtext(dp + '.label', 'Tab label')}${vtext(dp + '.sub', 'Jump-to subtitle')}</div><div class="acts"><label class="toggle" title="Show / hide"><input type="checkbox" data-root="v" data-path="${dp}.enabled" data-type="bool" ${d.enabled !== false ? 'checked' : ''}><span class="sw"></span></label>${vacts('slides', di, v.slides.length)}<button class="btn sm primary" data-action="toggle-edit" data-key="${key}">${S.open[key] ? 'Close' : 'Edit pages'} (${(d.pages || []).length})</button><button class="btn sm" data-root="v" data-action="rm" data-list="slides" data-i="${di}" title="Remove deck">🗑</button></div></div>
+    ${S.open[key] ? `<div class="editor">${(d.pages || []).map((p, pi) => { const pp = `${dp}.pages.${pi}`; return `<div class="card" style="margin-bottom:12px"><h3 style="display:flex;justify-content:space-between;align-items:center"><span><span class="pill teal">${String(pi + 1).padStart(2, '0')}</span> Page</span><span class="acts">${vacts(dp + '.pages', pi, d.pages.length)}<button class="btn sm" data-root="v" data-action="rm" data-list="${dp}.pages" data-i="${pi}" title="Remove page">🗑</button></span></h3>
+      <div class="grid2">${vtext(pp + '.eyebrow', 'Eyebrow (small teal line)', '', { ph: d.label })}${vtext(pp + '.h1', 'Headline')}</div>
+      <div style="margin-top:8px">${vtext(pp + '.lede', 'Body text', 'Blank line = new paragraph', { multi: true, rows: 3 })}</div>
+      <div style="margin-top:8px">${vbullets(pp + '.bullets', 'Bullets')}</div>
+      <div class="grid2" style="margin-top:8px">${vtext(pp + '.image', 'Image URL', 'Shown on the right (PNG/JPG/SVG/GIF)')}${vtext(pp + '.embed', 'Embed URL', 'Video or page in a 16:9 frame when there is no image — must allow framing')}</div></div>`; }).join('')}
+      <button class="btn sm" data-root="v" data-action="add-obj" data-list="${dp}.pages" data-tpl='${esc(JSON.stringify({ eyebrow: '', h1: 'New slide', lede: '', bullets: [], image: '', embed: '' }))}'>+ Add page</button></div>` : ''}`; }).join('');
+  return `<div class="eyebrow">Deck versions · ${esc(v.slug)}</div><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap"><h1 style="margin:0">${esc(v.name)}</h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" data-action="var-back">← All versions</button><a class="btn sm" target="_blank" rel="noopener" href="${DECK_FILE}?v=${encodeURIComponent(v.slug)}">Open this version ↗</a><button class="btn sm primary" data-action="var-save">Save version</button></div></div>
+  <p class="hint" style="color:var(--txt3);margin:10px 0 18px">Link for this version: <code>${esc(DECK_FILE)}?v=${esc(v.slug)}</code> · Everything not changed here follows the published base.</p>
+  <div class="card"><h3>About</h3><div class="grid3">${vtext('name', 'Name')}${vtext('owner', 'Owner (AE)')}${vtext('note', 'Note', 'Who it is for, what is different')}</div></div>
+  <div class="card"><h3>Tabs in this version</h3><p class="hint">Toggle off what this prospect should not see; drag order with the arrows. Your slide decks appear here as tabs too.</p><div class="list">${tabRows}</div></div>
+  <div class="card"><h3>Your slide decks <span class="pill">${v.slides.length}</span></h3><p class="hint">Each deck is a tab in the top bar and the Jump-to menu; its pages step with the arrow keys. Headline + body + bullets, with an optional image or embed on the right.</p><div class="list">${decks}</div><button class="btn sm" data-root="v" data-action="add-obj" data-list="slides" data-tpl='${esc(JSON.stringify({ id: '', label: 'Custom', sub: '', enabled: true, pages: [{ eyebrow: '', h1: 'New slide', lede: '', bullets: [], image: '', embed: '' }] }))}'>+ Add slide deck</button></div>
+  <div class="card"><h3>Presentation</h3><div class="grid3">${vselect('overlay.controls.startView', 'Start screen', [['intro', 'Intro (animated hero)'], ['explore', 'Interactive walkthrough'], ['mainmenu', 'Main menu'], ['hub', 'TMS module hub']])}${vtoggle('overlay.controls.showMenuButton', '“Menu” (Jump-to) button')}${vtoggle('overlay.controls.keyboardNav', 'Arrow-key / Esc navigation')}${vtoggle('overlay.controls.showBreadcrumb', 'Breadcrumb')}${vtoggle('overlay.controls.showLiveSitePill', '“Live Site” pill')}${vtoggle('overlay.controls.showCopyLink', '“Link” (copy deep link) button')}</div></div>
+  ${shareCard()}
+  <div class="status ${S.vDirty ? 'dirty' : ''}" id="vstatus"><span class="dot"></span><span class="msg">${S.vDirty ? 'Unsaved changes to this version.' : 'Version saved. Opens live at ?v=' + esc(v.slug) + '.'}</span><button class="btn" data-action="var-back">Back</button><button class="btn primary" data-action="var-save" ${S.vDirty ? '' : 'disabled'}>Save version</button></div>`;
+}
+function renderVStatus() { const el = $('#vstatus'); if (!el) return; el.className = 'status' + (S.vDirty ? ' dirty' : ''); el.querySelector('.msg').textContent = S.vDirty ? 'Unsaved changes to this version.' : 'Version saved.'; el.querySelector('[data-action="var-save"]').disabled = !S.vDirty; }
+// share link builder: where the link opens + what the viewer may see
+function shareTargets() {
+  const t = [['', 'Start screen (as configured)'], ['explore', 'Interactive walkthrough'], ['menu', 'Main menu'], ['tms', 'TMS hub'], ['wms', 'WMS hub'], ['oms', 'OMS hub'], ['workflows', 'Workflows'], ['carriers', 'Carriers'], ['erp', 'Integrations'], ['roadmap', 'Roadmap'], ['onboarding', 'Onboarding'], ['ai', 'FreightPOP AI']];
+  for (const sys of ['tms', 'wms', 'oms']) for (const m of S.cfg.systems[sys].modules.filter(m => m.enabled !== false)) t.push([`${sys}/${m.num}-${slugify(m.name)}/demo`, `${sys.toUpperCase()} ${m.num} · ${m.name} → Live Demo`]);
+  for (const w of S.cfg.workflows.filter(w => w.enabled !== false)) t.push([`workflows/${w.num}-${slugify(w.title)}`, `Workflow ${w.num} · ${w.title}`]);
+  if (S.v) for (const d of S.v.slides) t.push([slugify(d.id || d.label), `Slides · ${d.label}`]);
+  return t;
+}
+function shareUrl() { const p = new URLSearchParams(); if (S.v) p.set('v', S.v.slug); if (S.share.go) p.set('go', S.share.go); if (S.share.lock) p.set('lock', '1'); if (S.share.flags.length) p.set('c', S.share.flags.join(',')); const q = p.toString(); return DECK_FILE + (q ? '?' + q : ''); }
+function shareCard() {
+  const flags = [['nomenu', 'No Menu button'], ['nokeys', 'No arrow keys'], ['nocrumbs', 'No breadcrumb'], ['nolivepill', 'No Live Site pill'], ['nolink', 'No Link button'], ['noai', 'No AI demo tab'], ['nolive', 'No Live Site tab']];
+  return `<div class="card"><h3>Share a link</h3><p class="hint">Opens ${S.v ? 'this version' : 'the deck'} at a specific screen. <b>Lock</b> keeps the viewer inside that tab (no Menu, no other tabs).</p>
+  <div class="grid2"><div class="field"><label>Open at</label><select data-root="share" data-path="go">${shareTargets().map(o => `<option value="${esc(o[0])}" ${S.share.go === o[0] ? 'selected' : ''}>${esc(o[1])}</option>`).join('')}</select></div>
+  <div class="field"><label>Options</label><div style="display:flex;flex-wrap:wrap;gap:8px 16px;padding-top:6px"><label class="toggle"><input type="checkbox" data-root="share" data-path="lock" ${S.share.lock ? 'checked' : ''}><span class="sw"></span><span>Lock to this tab</span></label>${flags.map(f => `<label class="toggle"><input type="checkbox" data-root="share" data-path="${f[0]}" ${S.share.flags.includes(f[0]) ? 'checked' : ''}><span class="sw"></span><span>${f[1]}</span></label>`).join('')}</div></div></div>
+  <div class="field" style="margin-top:8px"><label>Link</label><div style="display:flex;gap:8px"><input type="text" id="share-url" readonly value="${esc(shareUrl())}" style="flex:1;font-family:'DM Mono',monospace;font-size:12px"><button class="btn sm primary" data-action="share-copy">Copy</button></div></div></div>`;
+}
+async function variantAction(a, b) {
+  if (a === 'var-new') { const name = ($('#nv-name').value || '').trim(); const owner = ($('#nv-owner').value || '').trim(); const slug = slugify(name); if (!slug || slug.length < 2) return toast('Give the version a name first', true); if (S.variants.some(v => v.slug === slug)) return toast('A version with that name already exists', true);
+    try { const r = await api('/api/variants/' + slug, { method: 'PUT', body: JSON.stringify({ name, owner, overlay: {}, slides: [] }) }); toast('Created ' + r.variant.name); await loadVariants(); S.v = r.variant; S.vDirty = false; S.share = { go: '', lock: false, flags: [] }; renderSection(); } catch (e) { toast(e.message, true); } }
+  else if (a === 'var-edit') { try { const v = await api('/api/variants/' + b.dataset.slug); delete v.resolved; S.v = v; S.vDirty = false; S.share = { go: '', lock: false, flags: [] }; renderSection(); } catch (e) { toast(e.message, true); } }
+  else if (a === 'var-back') { if (S.vDirty && !confirm('Discard unsaved changes to this version?')) return; S.v = null; S.vDirty = false; await loadVariants(); }
+  else if (a === 'var-save') { for (const d of S.v.slides) if (!d.id) d.id = slugify(d.label); try { const r = await api('/api/variants/' + S.v.slug, { method: 'PUT', body: JSON.stringify(S.v) }); S.v = r.variant; S.vDirty = false; toast('Saved · opens at ?v=' + r.variant.slug); renderSection(); } catch (e) { toast(e.message, true); } }
+  else if (a === 'var-clone') { const name = prompt('Name for the copy', ''); if (!name) return; try { const r = await api('/api/variants/' + b.dataset.slug + '/clone', { method: 'POST', body: JSON.stringify({ name, slug: slugify(name) }) }); toast('Cloned as ' + r.variant.name); await loadVariants(); } catch (e) { toast(e.message, true); } }
+  else if (a === 'var-del') { if (!confirm('Delete this version? Links to ?v=' + b.dataset.slug + ' will fall back to the base deck.')) return; try { await api('/api/variants/' + b.dataset.slug, { method: 'DELETE' }); toast('Deleted'); await loadVariants(); } catch (e) { toast(e.message, true); } }
+}
+
 // ---------- render ----------
 function render() {
   if (!S.token) { app.innerHTML = `<div class="login"><form id="login"><div class="eyebrow">Sales OS</div><h1>Deck Admin</h1><p style="color:var(--txt2);margin:0">Edit the FreightPOP sales deck — settings, tabs, sizing, copy and presentation controls — without touching the files.</p><div class="field"><label>Admin password</label><input type="password" id="pw" autofocus autocomplete="current-password"></div><button class="btn primary" type="submit">Sign in</button><div id="lerr" style="color:var(--red);font-size:12.5px"></div></form></div>`; $('#login').onsubmit = async e => { e.preventDefault(); try { const r = await api('/api/login', { method: 'POST', body: JSON.stringify({ password: $('#pw').value }) }); S.token = r.token; localStorage.setItem('fp_admin_token', r.token); await load(); } catch (err) { $('#lerr').textContent = err.message; } }; return; }
@@ -146,8 +221,9 @@ function render() {
 }
 function renderSection() {
   const el = $('#sec'); const k = S.section;
-  el.innerHTML = k === 'settings' ? sectionSettings() : k === 'nav' ? sectionNav() : k === 'ui' ? sectionUi() : k === 'controls' ? sectionControls() : k === 'labels' ? sectionLabels() : k === 'pages' ? sectionPages() : ['tms', 'wms', 'oms'].includes(k) ? sectionModules(k) : k === 'roadmap' ? sectionRoadmap() : k === 'onboarding' ? sectionOnboarding() : k === 'workflows' ? sectionWorkflows() : sectionHistory();
+  el.innerHTML = k === 'settings' ? sectionSettings() : k === 'nav' ? sectionNav() : k === 'ui' ? sectionUi() : k === 'controls' ? sectionControls() : k === 'labels' ? sectionLabels() : k === 'pages' ? sectionPages() : ['tms', 'wms', 'oms'].includes(k) ? sectionModules(k) : k === 'roadmap' ? sectionRoadmap() : k === 'versions' ? sectionVersions() : k === 'onboarding' ? sectionOnboarding() : k === 'workflows' ? sectionWorkflows() : sectionHistory();
   if (k === 'history') loadRevisions();
+  if (k === 'versions' && S.variants === null) loadVariants();
   document.querySelectorAll('.rail button[data-sec]').forEach(b => b.classList.toggle('active', b.dataset.sec === k));
 }
 function renderStatus() { const s = $('#status'); if (!s) return; s.className = 'status' + (S.dirty ? ' dirty' : ''); s.innerHTML = `<span class="dot"></span><span class="msg">${S.dirty ? 'Unsaved changes — publish to update the deck.' : 'All changes published. The deck picks up the published version on its next load.'}</span><button class="btn" data-action="discard" ${S.dirty ? '' : 'disabled'}>Discard</button><button class="btn primary" data-action="publish" ${S.dirty ? '' : 'disabled'}>Save & publish</button>`; }
@@ -156,21 +232,26 @@ function renderStatus() { const s = $('#status'); if (!s) return; s.className = 
 app.addEventListener('input', e => {
   const t = e.target; const p = t.dataset.path; if (!p) return;
   let v = t.type === 'checkbox' ? t.checked : t.value;
+  if (t.dataset.root === 'v') { set(S.v, p, t.dataset.type === 'number' ? Number(v) : v); S.vDirty = true; if (t.type === 'checkbox') { const row = t.closest('.row'); if (row) row.classList.toggle('off', !t.checked); } renderVStatus(); return; }
+  if (t.dataset.root === 'share') { if (t.type === 'checkbox') { if (p === 'lock') S.share.lock = t.checked; else S.share.flags = S.share.flags.filter(f => f !== p).concat(t.checked ? [p] : []); } else S.share[p] = v; const out = $('#share-url'); if (out) out.value = shareUrl(); return; }
   if (t.dataset.type === 'number') { v = Number(v); const vs = document.querySelector(`[data-val="${p}"]`); if (vs) vs.textContent = v; }
   if (t.tagName === 'SELECT' && t.dataset.path.startsWith('ui.')) v = Number(v);
   set(S.cfg, p, v); markDirty();
   if (t.type === 'checkbox') { const row = t.closest('.row'); if (row) row.classList.toggle('off', !t.checked); renderRailCounts(); }
 });
-app.addEventListener('change', e => { const t = e.target; if (t.tagName === 'SELECT' && t.dataset.path) { let v = t.value; if (t.dataset.path.startsWith('ui.')) v = Number(v); set(S.cfg, t.dataset.path, v); markDirty(); } });
+app.addEventListener('change', e => { const t = e.target; if (t.tagName === 'SELECT' && t.dataset.root === 'v') { set(S.v, t.dataset.path, t.value); S.vDirty = true; renderVStatus(); return; } if (t.tagName === 'SELECT' && t.dataset.root === 'share') { S.share[t.dataset.path] = t.value; const out = $('#share-url'); if (out) out.value = shareUrl(); return; } if (t.tagName === 'SELECT' && t.dataset.path) { let v = t.value; if (t.dataset.path.startsWith('ui.')) v = Number(v); set(S.cfg, t.dataset.path, v); markDirty(); } });
 app.addEventListener('click', async e => {
   const b = e.target.closest('button,a'); if (!b) return;
   if (b.dataset.sec) { S.section = b.dataset.sec; localStorage.setItem('fp_admin_section', S.section); renderSection(); return; }
   const a = b.dataset.action; if (!a) return;
-  const list = b.dataset.list ? get(S.cfg, b.dataset.list) : null; const i = Number(b.dataset.i);
-  if (a === 'up' || a === 'down') { const j = a === 'up' ? i - 1 : i + 1; if (j < 0 || j >= list.length) return; [list[i], list[j]] = [list[j], list[i]]; markDirty(); renderSection(); }
-  else if (a === 'rm') { list.splice(i, 1); markDirty(); renderSection(); }
-  else if (a === 'add') { list.push(''); markDirty(); renderSection(); }
-  else if (a === 'add-obj') { list.push(JSON.parse(b.dataset.tpl)); markDirty(); renderSection(); }
+  const onV = b.dataset.root === 'v'; const root = onV ? S.v : S.cfg; const dirty = onV ? () => { S.vDirty = true; renderVStatus(); } : markDirty;
+  const list = b.dataset.list ? get(root, b.dataset.list) : null; const i = Number(b.dataset.i);
+  if (a === 'up' || a === 'down') { const j = a === 'up' ? i - 1 : i + 1; if (j < 0 || j >= list.length) return; [list[i], list[j]] = [list[j], list[i]]; dirty(); renderSection(); }
+  else if (a === 'rm') { list.splice(i, 1); dirty(); renderSection(); }
+  else if (a === 'add') { list.push(''); dirty(); renderSection(); }
+  else if (a === 'add-obj') { list.push(JSON.parse(b.dataset.tpl)); dirty(); renderSection(); }
+  else if (a.startsWith('var-')) { await variantAction(a, b); }
+  else if (a === 'share-copy') { const out = $('#share-url'); try { await navigator.clipboard.writeText(out.value); toast('Link copied'); } catch (err) { out.select(); toast('Select and copy the link', true); } }
   else if (a === 'toggle-edit') { S.open[b.dataset.key] = !S.open[b.dataset.key]; renderSection(); }
   else if (a === 'publish') publish();
   else if (a === 'discard') { if (confirm('Discard unsaved changes?')) load(); }
