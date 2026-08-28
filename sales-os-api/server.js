@@ -145,16 +145,17 @@ const server = http.createServer(async (req, res) => {
       if (!doc || doc.disabled || links.isExpired(doc)) return html(links.gatePage(doc || { name: 'FreightPOP sales deck' }, { unavailable: !doc ? 'This link does not exist. Check it was copied completely, or ask your FreightPOP contact for a new one.' : doc.disabled ? 'This link has been turned off by its owner.' : 'This link has expired. Ask your FreightPOP contact for a new one.' }), 404);
       const go = () => { const sid = links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }); res.writeHead(302, { Location: links.deckHref(DECK_URL, doc, { t: doc.code, k: sid }), 'Cache-Control': 'no-store' }); res.end(); };
       if (!doc.passwordHash) return go();
-      if (m === 'GET') return html(links.gatePage(doc, { action: '/l/' + doc.code }));
+      const tk = url.searchParams.get('tk'); if (tk && links.checkPassword(doc, tk)) return go(); // one-click link carrying the token
+      if (m === 'GET') return html(links.gatePage(doc, { action: '/l/' + doc.code, error: tk ? 'That access token is not valid for this link.' : '' }), tk ? 401 : 200);
       const form = new URLSearchParams(await readRaw(req)); if (links.checkPassword(doc, form.get('password'))) return go();
-      await new Promise(r => setTimeout(r, 500)); return html(links.gatePage(doc, { action: '/l/' + doc.code, error: 'That password is not right. Try again.' }), 401);
+      await new Promise(r => setTimeout(r, 500)); return html(links.gatePage(doc, { action: '/l/' + doc.code, error: links.accessOf(doc) === 'token' ? 'That access token is not right. Check it and try again.' : 'That password is not right. Try again.' }), 401);
     }
     lm = p.match(/^\/api\/t\/([A-Za-z0-9]{5,12})\/(check|unlock|event)$/);
     if (lm) {
       const doc = links.read(lm[1].toLowerCase()); const what = lm[2];
       if (!doc) return send(res, 404, { ok: false, error: 'no such link' });
       const dead = doc.disabled || links.isExpired(doc);
-      if (what === 'check' && m === 'GET') { const k = url.searchParams.get('k') || ''; return send(res, 200, { ok: !dead && !!doc.sessions.find(x => x.sid === k), protected: !!doc.passwordHash, name: doc.name, recipient: doc.recipient || '', dead }); }
+      if (what === 'check' && m === 'GET') { const k = url.searchParams.get('k') || ''; return send(res, 200, { ok: !dead && !!doc.sessions.find(x => x.sid === k), protected: !!doc.passwordHash, access: links.accessOf(doc), name: doc.name, recipient: doc.recipient || '', dead }); }
       if (what === 'unlock' && m === 'POST') { if (dead) return send(res, 410, { ok: false, error: 'link unavailable' }); const body = await readJson(req); if (!links.checkPassword(doc, body.password)) { await new Promise(r => setTimeout(r, 500)); return send(res, 401, { ok: false, error: 'wrong password' }); } return send(res, 200, { ok: true, k: links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }) }); }
       if (what === 'event' && m === 'POST') { const body = await readJson(req, 64 * 1024); return send(res, links.event(doc, String(body.k || ''), body) ? 200 : 403, { ok: true }); }
     }
@@ -192,11 +193,12 @@ const server = http.createServer(async (req, res) => {
       }
       // ---- tracked share links (admin) ----
       if (p === '/api/links' && m === 'GET') return send(res, 200, { links: links.list(), deckUrl: DECK_URL, shortBase: (process.env.SHORT_BASE || DECK_URL.replace(/\/deck$/, '')) + '/l/' });
-      if (p === '/api/links' && m === 'POST') { const body = await readJson(req); const doc = links.create(body, req.adminEmail || 'admin'); return send(res, 200, { ok: true, link: links.summary(doc), shortUrl: (process.env.SHORT_BASE || DECK_URL.replace(/\/deck$/, '')) + '/l/' + doc.code, deckUrl: links.deckHref(DECK_URL, doc) }); }
+      const shortBase = () => (process.env.SHORT_BASE || DECK_URL.replace(/\/deck$/, '')) + '/l/';
+      if (p === '/api/links' && m === 'POST') { const body = await readJson(req); const { doc, token } = links.create(body, req.adminEmail || 'admin'); return send(res, 200, { ok: true, link: links.summary(doc), shortUrl: shortBase() + doc.code, deckUrl: links.deckHref(DECK_URL, doc), token, tokenUrl: token ? shortBase() + doc.code + '?tk=' + encodeURIComponent(token) : null }); }
       let km = p.match(/^\/api\/links\/([a-z0-9]{5,12})$/);
       if (km) {
         if (m === 'GET') { const d = links.read(km[1]); return d ? send(res, 200, links.detail(d)) : send(res, 404, { error: 'no such link' }); }
-        if (m === 'PATCH' || m === 'PUT') { const body = await readJson(req); const d = links.update(km[1], body); return d ? send(res, 200, { ok: true, link: links.summary(d) }) : send(res, 404, { error: 'no such link' }); }
+        if (m === 'PATCH' || m === 'PUT') { const body = await readJson(req); const r = links.update(km[1], body); return r ? send(res, 200, { ok: true, link: links.summary(r.doc), token: r.token, tokenUrl: r.token ? shortBase() + r.doc.code + '?tk=' + encodeURIComponent(r.token) : null }) : send(res, 404, { error: 'no such link' }); }
         if (m === 'DELETE') return links.remove(km[1]) ? send(res, 200, { ok: true }) : send(res, 404, { error: 'no such link' });
       }
       vm = p.match(/^\/api\/variants\/([a-z0-9-]+)\/clone$/);

@@ -42,7 +42,7 @@ The same params work after `#`, and the site root (`/?go=…`) forwards them to 
 
 ## Tracked share links (`/l/<code>`)
 
-**Share & track links** in either admin builds a link from a filterable picker (tab, module step, workflow, a version's slide) plus what the viewer may see (tabs, lock, chrome flags), then either copies the plain deep link or creates a **tracked short link**: `https://<deck host>/l/<code>` (Netlify proxies `/l/*` to this API). Optional password. Opening it shows a branded gate page, then redirects into the deck with `t=<code>&k=<session>`; the deck reports `screen`, `play` (Live Demo step, AI tab, workflow player, walkthrough) and `beat` (time) events. Per link: views, unique viewers, plays, time, last viewed, top screens; per viewer: the screens in order, device, IP. Links can be turned off, deleted, or given an expiry. Stored at `DATA_DIR/links/<code>.json` (scrypt password hash; sessions capped at 500).
+**Share & track links** in either admin builds a link from a filterable picker (tab, module step, workflow, a version's slide) plus what the viewer may see (tabs, lock, chrome flags), then either copies the plain deep link or creates a **tracked short link**: `https://<deck host>/l/<code>` (Netlify proxies `/l/*` to this API). Access is **open**, a **generated access token** (default — `XXXX-XXXX`, shown once, stored hashed, case/dash-insensitive, rotatable with *New token*; a one-click `…/l/<code>?tk=<token>` variant is offered too) or a **password you choose**. Opening it shows a branded gate page, then redirects into the deck with `t=<code>&k=<session>`; the deck reports `screen`, `play` (Live Demo step, AI tab, workflow player, walkthrough) and `beat` (time) events. Per link: views, unique viewers, plays, time, last viewed, top screens; per viewer: the screens in order, device, IP. Links can be turned off, deleted, or given an expiry. Stored at `DATA_DIR/links/<code>.json` (scrypt password hash; sessions capped at 500).
 
 Short deck URL: `/deck?…` is a Netlify 200-rewrite of the deck file (the API's `GET /deck` 302s there too; `DECK_URL` env, default `https://beta--fpdeck.netlify.app/deck`).
 
@@ -74,8 +74,8 @@ Stored at `DATA_DIR/variants/<slug>.json` as `{ slug, name, owner, note, overlay
 | GET | `/api/t/:code/check?k=` | – | `{ ok, protected, name, recipient, dead }` — the deck decides whether to show its lock screen |
 | POST | `/api/t/:code/unlock` | – | `{ password }` → `{ k }` (deck lock screen) |
 | POST | `/api/t/:code/event` | – | `{ k, type: screen|play|beat, go?, seconds? }` |
-| GET · POST | `/api/links` | Bearer | list (with stats) · create `{ name, recipient, note, password?, expiresAt?, params: { v, go, tabs, hide, lock, c } }` → `{ link, shortUrl, deckUrl }` |
-| GET · PATCH · DELETE | `/api/links/:code` | Bearer | detail with sessions · update (`disabled`, `password`, `params`, …) · delete |
+| GET · POST | `/api/links` | Bearer | list (with stats) · create `{ name, recipient, note, access: token|password|open, password?, expiresAt?, params: { v, go, tabs, hide, lock, c } }` → `{ link, shortUrl, deckUrl, token, tokenUrl }` (token only returned here) |
+| GET · PATCH · DELETE | `/api/links/:code` | Bearer | detail with sessions · update (`disabled`, `rotateToken`, `access`, `password`, `params`, …) · delete |
 
 ## Environment
 

@@ -18,6 +18,13 @@ const writeAtomic = (f, obj) => { const tmp = f + '.tmp'; fs.writeFileSync(tmp, 
 const ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789'; // no 0/o/1/l/i — codes get read out loud
 function newCode(len = 6) { const b = crypto.randomBytes(len); let s = ''; for (let i = 0; i < len; i++) s += ALPHABET[b[i] % ALPHABET.length]; return s; }
 function hash(pw, salt) { return crypto.scryptSync(String(pw), salt, 32).toString('hex'); }
+// Access tokens: generated here, shown to the AE once, stored hashed like a password. Readable format (XXXX-XXXX, no 0/O/1/I/L)
+// so they can be sent over chat or read out loud; compared case- and dash-insensitively.
+const TOKEN_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function newToken() { const b = crypto.randomBytes(8); let t = ''; for (let i = 0; i < 8; i++) t += TOKEN_ALPHABET[b[i] % TOKEN_ALPHABET.length]; return t.slice(0, 4) + '-' + t.slice(4); }
+const normToken = t => String(t || '').replace(/[\s-]/g, '').toUpperCase();
+function setSecret(doc, secret, access) { doc.access = access; doc.salt = crypto.randomBytes(8).toString('hex'); doc.passwordHash = hash(access === 'token' ? normToken(secret) : secret, doc.salt); }
+function clearSecret(doc) { doc.access = 'open'; delete doc.salt; delete doc.passwordHash; }
 
 function read(code) { code = String(code || '').toLowerCase(); if (!CODE_RE.test(code)) return null; try { return JSON.parse(fs.readFileSync(file(code), 'utf8')); } catch { return null; } }
 function save(doc) { writeAtomic(file(doc.code), doc); return doc; }
@@ -30,8 +37,11 @@ function create(body, by) {
   const doc = { code, name: String(body.name || 'Shared deck').slice(0, 120), recipient: String(body.recipient || '').slice(0, 200), note: String(body.note || '').slice(0, 400),
     createdAt: now(), createdBy: by || 'admin', disabled: false, expiresAt: body.expiresAt ? String(body.expiresAt).slice(0, 40) : null,
     params: cleanParams(body.params), sessions: [] };
-  if (body.password) { doc.salt = crypto.randomBytes(8).toString('hex'); doc.passwordHash = hash(body.password, doc.salt); }
-  return save(doc);
+  let token = null;
+  if (body.access === 'token' || body.generateToken) { token = newToken(); setSecret(doc, token, 'token'); }
+  else if (body.password) setSecret(doc, body.password, 'password');
+  else doc.access = 'open';
+  save(doc); return { doc, token };
 }
 function update(code, body) {
   const doc = read(code); if (!doc) return null;
@@ -41,11 +51,15 @@ function update(code, body) {
   if (body.disabled !== undefined) doc.disabled = !!body.disabled;
   if (body.expiresAt !== undefined) doc.expiresAt = body.expiresAt ? String(body.expiresAt).slice(0, 40) : null;
   if (body.params !== undefined) doc.params = cleanParams(body.params);
-  if (body.password !== undefined) { if (body.password) { doc.salt = crypto.randomBytes(8).toString('hex'); doc.passwordHash = hash(body.password, doc.salt); } else { delete doc.salt; delete doc.passwordHash; } }
-  return save(doc);
+  let token = null;
+  if (body.rotateToken || body.access === 'token') { token = newToken(); setSecret(doc, token, 'token'); }
+  else if (body.access === 'open') clearSecret(doc);
+  else if (body.password !== undefined) { if (body.password) setSecret(doc, body.password, 'password'); else clearSecret(doc); }
+  save(doc); return { doc, token };
 }
 function isExpired(doc) { return !!(doc.expiresAt && Date.parse(doc.expiresAt) < Date.now()); }
-function checkPassword(doc, pw) { if (!doc.passwordHash) return true; if (!pw) return false; const a = Buffer.from(hash(pw, doc.salt)), b = Buffer.from(doc.passwordHash); return a.length === b.length && crypto.timingSafeEqual(a, b); }
+function checkPassword(doc, pw) { if (!doc.passwordHash) return true; if (!pw) return false; const a = Buffer.from(hash(doc.access === 'token' ? normToken(pw) : String(pw), doc.salt)), b = Buffer.from(doc.passwordHash); return a.length === b.length && crypto.timingSafeEqual(a, b); }
+const accessOf = doc => doc.access || (doc.passwordHash ? 'password' : 'open');
 
 // ---- sessions & events ----
 const MAX_SESSIONS = 500, MAX_SCREENS = 400;
@@ -69,7 +83,7 @@ function summary(doc) {
   const seconds = ss.reduce((n, s) => n + (s.seconds || 0), 0), plays = ss.reduce((n, s) => n + (s.plays || 0), 0);
   const screenCounts = {}; for (const s of ss) for (const sc of s.screens) screenCounts[sc.go || '(start)'] = (screenCounts[sc.go || '(start)'] || 0) + 1;
   const top = Object.entries(screenCounts).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([go, n]) => ({ go, n }));
-  return { code: doc.code, name: doc.name, recipient: doc.recipient, note: doc.note, createdAt: doc.createdAt, createdBy: doc.createdBy, disabled: !!doc.disabled, expiresAt: doc.expiresAt || null, expired: isExpired(doc), protected: !!doc.passwordHash, params: doc.params,
+  return { code: doc.code, name: doc.name, recipient: doc.recipient, note: doc.note, createdAt: doc.createdAt, createdBy: doc.createdBy, disabled: !!doc.disabled, expiresAt: doc.expiresAt || null, expired: isExpired(doc), protected: !!doc.passwordHash, access: accessOf(doc), params: doc.params,
     views: ss.length, uniqueViewers: new Set(ss.map(s => s.ip + '|' + s.ua)).size, plays, seconds, lastViewed: ss.length ? ss[ss.length - 1].lastSeen : null, topScreens: top };
 }
 function detail(doc) { return Object.assign(summary(doc), { sessions: (doc.sessions || []).slice().reverse().map(s => ({ sid: s.sid, startedAt: s.startedAt, lastSeen: s.lastSeen, ua: s.ua, ip: s.ip, seconds: s.seconds, plays: s.plays, screens: s.screens, lastPlay: s.lastPlay || null })) }); }
@@ -89,8 +103,8 @@ function gatePage(doc, opts) {
   const msg = opts.error ? `<p style="color:#FF8A80;font-size:13px;margin:0 0 12px">${esc(opts.error)}</p>` : '';
   const body = opts.unavailable
     ? `<h1>This link isn't available</h1><p>${esc(opts.unavailable)}</p>`
-    : `<h1>${esc(doc.name || 'FreightPOP sales deck')}</h1><p>${doc.recipient ? 'Prepared for ' + esc(doc.recipient) + '. ' : ''}Enter the password you were given to open the deck.</p>${msg}
-       <form method="post" action="${esc(opts.action)}"><input type="password" name="password" placeholder="Password" autofocus required autocomplete="current-password"><button type="submit">Open the deck →</button></form>`;
+    : `<h1>${esc(doc.name || 'FreightPOP sales deck')}</h1><p>${doc.recipient ? 'Prepared for ' + esc(doc.recipient) + '. ' : ''}Enter the ${accessOf(doc) === 'token' ? 'access token' : 'password'} you were given to open the deck.</p>${msg}
+       <form method="post" action="${esc(opts.action)}"><input type="${accessOf(doc) === 'token' ? 'text' : 'password'}" name="password" placeholder="${accessOf(doc) === 'token' ? 'Access token · e.g. Q7KM-4XPT' : 'Password'}" autofocus required autocomplete="${accessOf(doc) === 'token' ? 'off' : 'current-password'}" ${accessOf(doc) === 'token' ? 'style="font-family:\'DM Mono\',monospace;letter-spacing:.08em;text-transform:uppercase"' : ''}><button type="submit">Open the deck →</button></form>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(doc.name || 'FreightPOP')} · FreightPOP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>html,body{margin:0;min-height:100%;background:#051729;color:#B5CDE0;font:15px/1.5 'DM Sans',system-ui,sans-serif}body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(700px 700px at 88% 0%,rgba(64,136,207,.34),rgba(64,136,207,.12) 44%,transparent 72%),radial-gradient(560px 560px at 4% 110%,rgba(61,214,181,.12),transparent 65%),#051729}
@@ -99,4 +113,4 @@ h1{font:400 30px/1.1 'Manrope',sans-serif;letter-spacing:-.02em;color:#fff;margi
 button{margin-top:12px;width:100%;padding:13px 16px;border:0;border-radius:8px;background:#3DD6B5;color:#051729;font:500 15px 'DM Sans',sans-serif;cursor:pointer}button:hover{filter:brightness(1.06)}.foot{margin-top:26px;font:11px 'DM Mono',monospace;letter-spacing:.08em;color:#7A96B0}</style></head>
 <body><div class="card"><div class="eyebrow">FreightPOP · Private link</div>${body}<div class="foot">www.freightpop.com</div></div></body></html>`;
 }
-module.exports = { DIR, CODE_RE, read, list, create, update, remove, isExpired, checkPassword, openSession, event, summary, detail, deckQuery, deckHref, gatePage };
+module.exports = { DIR, CODE_RE, read, list, create, update, remove, isExpired, checkPassword, accessOf, openSession, event, summary, detail, deckQuery, deckHref, gatePage };

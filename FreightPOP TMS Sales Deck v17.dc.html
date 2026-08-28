@@ -796,7 +796,8 @@
         <sc-if value="{{ isLockForm }}" hint-placeholder-val="{{ true }}">
           <p style="margin:0 0 22px;color:#B5CDE0;font-weight:300;line-height:1.5;">{{ lockSub }}</p>
           <sc-if value="{{ hasLockMsg }}" hint-placeholder-val="{{ false }}"><p style="color:#FF8A80;font-size:13px;margin:0 0 12px;">{{ lockMsg }}</p></sc-if>
-          <input ref="{{ setPwInput }}" type="password" placeholder="Password" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding:13px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#fff;font:15px 'DM Sans',sans-serif;outline:none;">
+          <sc-if value="{{ lockIsToken }}" hint-placeholder-val="{{ false }}"><input ref="{{ setPwInput }}" type="text" placeholder="{{ lockPlaceholder }}" autocomplete="off" spellcheck="false" style="{{ lockInputStyle }}"></sc-if>
+          <sc-if value="{{ lockIsPassword }}" hint-placeholder-val="{{ true }}"><input ref="{{ setPwInput }}" type="password" placeholder="Password" autocomplete="current-password" style="{{ lockInputStyle }}"></sc-if>
           <div onclick="{{ unlockClick }}" style="margin-top:12px;width:100%;box-sizing:border-box;padding:13px 16px;border-radius:8px;background:#3DD6B5;color:#051729;font:500 15px 'DM Sans',sans-serif;cursor:pointer;text-align:center;">{{ lockBtn }}</div>
         </sc-if>
         <div style="margin-top:26px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;color:#7A96B0;">www.freightpop.com</div>
@@ -1790,7 +1791,7 @@ class Component extends DCLogic {
     if (!this.track.api) return;
     this.setState({ locked: true, lockBusy: true, lockMsg: "" });
     fetch(this.track.api + "/api/t/" + t + "/check?k=" + encodeURIComponent(this.track.k), { cache: "no-store" }).then(r => r.json()).then(j => {
-      this.track.name = j.name || ""; this.track.recipient = j.recipient || "";
+      this.track.name = j.name || ""; this.track.recipient = j.recipient || ""; this.track.access = j.access || (j.protected ? "password" : "open");
       if (j.dead) return this.setState({ locked: true, lockBusy: false, lockDead: true, lockMsg: "This link is no longer available. Ask your FreightPOP contact for a new one." });
       if (j.ok) return this._trackStart();
       if (!j.protected) return this._unlock(""); // open link that was shared without its session → mint one
@@ -3001,7 +3002,9 @@ class Component extends DCLogic {
       goRoadmap: this.goRoadmap, goOnboarding: this.goOnboarding,
       wfCards, wfSrc: wf.src ? wf.src + "?theme=deck" : "", wfTitle: wf.title || "",
       isLocked: !!this.state.locked, lockBusy: !!this.state.lockBusy, lockDead: !!this.state.lockDead, lockMsg: this.state.lockMsg || "", hasLockMsg: !!this.state.lockMsg,
-      lockTitle: (this.track && this.track.name) || "FreightPOP sales deck", lockSub: this.track && this.track.recipient ? "Prepared for " + this.track.recipient + ". Enter the password you were given to open the deck." : "Enter the password you were given to open the deck.",
+      lockTitle: (this.track && this.track.name) || "FreightPOP sales deck", lockSub: (this.track && this.track.recipient ? "Prepared for " + this.track.recipient + ". " : "") + "Enter the " + (this.track && this.track.access === "token" ? "access token" : "password") + " you were given to open the deck.",
+      lockIsToken: !!(this.track && this.track.access === "token"), lockIsPassword: !(this.track && this.track.access === "token"), lockPlaceholder: this.track && this.track.access === "token" ? "Access token · e.g. Q7KM-4XPT" : "Password",
+      lockInputStyle: "width:100%;box-sizing:border-box;padding:13px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#fff;outline:none;" + (this.track && this.track.access === "token" ? "font:15px 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;" : "font:15px 'DM Sans',sans-serif;"),
       lockBtn: this.state.lockBusy ? "Opening…" : "Open the deck →", isLockForm: !!this.state.locked && !this.state.lockDead && !this.state.lockBusy, setPwInput: this._setPwInput, unlockClick: this.unlockClick,
       isSlides: view === "slides" && !!sd, slEyebrow: spg.eyebrow || (sd ? sd.label : ""), slH1: spg.h1 || "", slLede: spg.lede || "", hasSlLede: !!spg.lede,
       slBullets: (spg.bullets || []).map(b => ({ t: b })), hasSlBullets: !!(spg.bullets && spg.bullets.length),
