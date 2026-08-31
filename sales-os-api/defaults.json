@@ -2,7 +2,7 @@
   "settings": {
     "startUrl": "https://tubular-flan-14267b.netlify.app/embed.html",
     "showMarquee": true,
-    "mainMenuUrl": "https://idyllic-elf-b22a7e.netlify.app/",
+    "mainMenuUrl": "",
     "aiUrl": "https://genuine-conkies-86b264.netlify.app/",
     "liveSiteUrl": "https://app.freightpop.com/app/#/quote-ship",
     "roiUrl": "https://freightpopsales.com/freightpop-intake-form?link=MGER4f9Y",
@@ -22,7 +22,7 @@
     "tms": {
       "name": "Transportation Management",
       "kicker": "Module Library",
-      "intro": "Eighteen capabilities, one platform — rated 4.8/5 on G2 and 4.7/5 on Capterra. Open a module to see the problem it kills, the payoff, a live demo, and the proof.",
+      "intro": "",
       "modules": [
         {
           "num": "01",
@@ -1345,7 +1345,9 @@
       "expand": "⛶ Expand"
     },
     "openCard": "Open",
-    "watchCard": "Watch"
+    "watchCard": "Watch",
+    "copyLink": "Link",
+    "linkCopied": "Copied ✓"
   },
   "pages": {
     "tms": {
@@ -1396,7 +1398,8 @@
     "showExpandTab": true,
     "demoAutoPlay": true,
     "demoSpeed": 1,
-    "showValidationLibrary": true
+    "showValidationLibrary": true,
+    "showCopyLink": true
   },
   "roadmap": {
     "ai": [
