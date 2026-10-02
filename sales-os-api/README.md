@@ -98,6 +98,13 @@ ADMIN_PASSWORD=dev node server.js          # http://localhost:8080/admin
 #   .../FreightPOP%20TMS%20Sales%20Deck%20v17.dc.html?configUrl=http://localhost:8080/api/config
 ```
 
+## Check the deck before pushing
+
+```bash
+npm run check      # parses the deck, type-checks all 29 modules' fields, confirms defaults.json is current and the published config matches
+```
+Route-level verification (does `#/wms/receipts` exist in the app?) is `npm run crosscheck` in the kit repo — see `../docs/LIVE-SITE-LINKS.md`.
+
 ## Refresh defaults after editing the deck
 
 ```bash

@@ -6,7 +6,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "defaults": "node scripts/extract-defaults.js"
+    "defaults": "node scripts/extract-defaults.js",
+    "check": "node scripts/check-deck.js"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

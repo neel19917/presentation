@@ -70,6 +70,20 @@ Unchanged from before: 11 modules already had the right URL. Changed: 18 (15 wer
   whether a signed-in session is visible inside the deck's iframe (third-party storage partitioning). Reps should
   be signed in to the demo tenant in the same browser.
 
+## Checks
+
+- **`cd sales-os-api && npm run check`** (`scripts/check-deck.js`): the deck script parses and constructs; all 29 modules
+  have the fields the admin/deck/kit rely on with the right types (`num`, `name`, `tag`, `problem.heading`,
+  `benefit.bullets`, `demo.caption`, unique `demo.anim`, `demo.liveUrl` as an `https://app.freightpop.com/app/#/…` URL,
+  `roi.stat`/`statLabel`, known `roi.ev.grade`); `defaults.json` is what `npm run defaults` would write; the published
+  config carries the same module `liveUrl`s (drift = warning, empty = failure). Exit 1 on failure. Run it before pushing.
+- **`npm run crosscheck -- --deck "<path to the deck file>"`** in the kit repo (`~/Projects/freightpop-deck-kit`,
+  `crosscheck.mjs`): resolves every Live Site URL against the production app's own route table (read from
+  `app.freightpop.com/app/assets/index-*.js`), checks `?tab=` values against the bundle's tab enums, pings the external
+  links, and compares the packed offline kit file-by-file with the deck site. This is the check that says "that page
+  exists in the app"; `npm run check` here cannot know that.
+- Known warning: `tab=shipping-approval-rule` on Shipping Rules is not an enum value in the bundle (see table).
+
 ## Changing a link
 
 - One module, now: SalesOS → admin → Sales Deck → module → live URL → publish (new revision, live on next deck load).
