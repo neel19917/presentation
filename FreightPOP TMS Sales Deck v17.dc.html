@@ -975,7 +975,7 @@
 <script>
 (function () {
   // ---- background orb (Rive) — same loader as the approved reference page ----
-  var RIVE_URL = (window.__resources && (window.__resources.riveHero || window.__resources.riveOrb)) || "https://info.freightpop.com/hubfs/FP%20Sales%20Assets/2026%20Assets/Rive%20-%20Marketing%20Use%20Only/fp_hero-background.riv";
+  var RIVE_URL = (window.__resources && (window.__resources.riveHero || window.__resources.riveOrb)) || "assets/fp_hero-background.riv" /* same file as info.freightpop.com/hubfs/FP Sales Assets/2026 Assets/Rive - Marketing Use Only/fp_hero-background.riv, self-hosted so it works offline */;
   var riveInst = null;
   function startRive() {
     var canvas = document.getElementById('fpHeroCanvas');
@@ -983,7 +983,7 @@
     if (canvas.__fpInit) return;
     canvas.__fpInit = true;
     var runtime = window.rive;
-    try { if (window.__resources && window.__resources.riveWasm && runtime.RuntimeLoader && runtime.RuntimeLoader.setWasmUrl) runtime.RuntimeLoader.setWasmUrl(window.__resources.riveWasm); } catch (e) {}
+    try { if (runtime.RuntimeLoader && runtime.RuntimeLoader.setWasmUrl) runtime.RuntimeLoader.setWasmUrl((window.__resources && window.__resources.riveWasm) || "assets/rive.wasm"); } catch (e) {}
     riveInst = new runtime.Rive({
       src: RIVE_URL, canvas: canvas, artboard: "Main", stateMachines: "State Machine 1",
       autoplay: true, autoBind: true,

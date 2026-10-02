@@ -3,3 +3,6 @@ Homepage Hero/.git-local-backup/
 
 # Local Netlify folder
 .netlify
+
+# Local exports (PDF/PPTX renders, CSV pulls) — not part of the site
+exports/
