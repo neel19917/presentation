@@ -70,6 +70,22 @@ Unchanged from before: 11 modules already had the right URL. Changed: 18 (15 wer
   whether a signed-in session is visible inside the deck's iframe (third-party storage partitioning). Reps should
   be signed in to the demo tenant in the same browser.
 
+## ROI tab — in the deck, not a browser tab (2026-10-02)
+
+The **ROI** top-bar tab used to `window.open` the intake form in a new browser tab — the only thing in the deck that did.
+It now opens a full-screen in-deck view like Live Site (iframe + "← Back to deck", "⛶ Fullscreen" and "Open in new tab ↗"
+pills), deep-linkable as `?go=roi`, tracked as screen `roi`.
+
+`settings.roiMode` (admin → Settings & links → "ROI tab opens"):
+
+| Value | Behaviour |
+|---|---|
+| `auto` (default) | In the deck when the form can be framed from the deck's origin, else a new browser tab. The form's CSP is `frame-ancestors 'self' …` (freightpopsales.com `netlify.toml`), so "can be framed" means same origin. When the deck is served by SalesOS (`/deck/view` — freightpopsales.com, or `localhost:8888` in dev) and the form is on freightpopsales.com, the form's origin is swapped for the deck's: the same SalesOS app serves both routes, so prod and the dev server both embed. On `fpdeck.netlify.app` (deck served at `/deck`, different origin) it still opens a browser tab. |
+| `embed` | Always in the deck. Only correct after the deck's origin is added to the form's `frame-ancestors`. |
+| `tab` | Always a new browser tab (the behaviour before 2026-10-02). |
+
+The offline kit hides the ROI tab (`data-hide=…,roi` in the boot script), so none of this applies there.
+
 ## Checks
 
 - **`cd sales-os-api && npm run check`** (`scripts/check-deck.js`): the deck script parses and constructs; all 29 modules

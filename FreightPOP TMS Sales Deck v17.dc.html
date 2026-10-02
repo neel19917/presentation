@@ -867,6 +867,15 @@
     </section>
   </sc-if>
 
+  <sc-if value="{{ isRoi }}" hint-placeholder-val="{{ false }}">
+    <section data-screen-label="ROI" ref="{{ setSectionFs }}" style="position:absolute;inset:0;z-index:20;background:#051729;padding-top:53px;">
+      <iframe src="{{ roiEmbedUrl }}" title="FreightPOP ROI intake form" allow="fullscreen; clipboard-write" style="width:100%;height:100%;border:0;display:block;background:#fff;"></iframe>
+      <div onclick="{{ closeRoi }}" style="position:absolute;bottom:26px;left:26px;z-index:150;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(5,23,41,.82);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;">← Back to deck</div>
+      <sc-if value="{{ showFsPills }}" hint-placeholder-val="{{ true }}"><div onclick="{{ sectionFs }}" style="position:absolute;bottom:26px;left:196px;z-index:150;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(5,23,41,.82);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;">⛶ Fullscreen</div></sc-if>
+      <div onclick="{{ openRoiTab }}" style="position:absolute;bottom:26px;right:26px;z-index:150;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(5,23,41,.82);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;">Open in new tab ↗</div>
+    </section>
+  </sc-if>
+
   <!-- ═══════════ FREIGHTPOP AI (embedded) ═══════════ -->
   <sc-if value="{{ isAi }}" hint-placeholder-val="{{ false }}">
     <section data-screen-label="FreightPOP AI" style="position:absolute;inset:0;z-index:20;background:#051729;padding-top:53px;display:flex;flex-direction:column;">
@@ -1644,7 +1653,7 @@ class Component extends DCLogic {
       { key: "explore", label: "Walkthrough", sub: "Live product experience", enabled: true }, { key: "mainmenu", label: "Main Menu", sub: "Platform · 4 systems", enabled: true },
       { key: "tms", label: "TMS", sub: "Module hub · 18 capabilities", enabled: true }, { key: "wms", label: "WMS", sub: "Warehouse capability library", enabled: true }, { key: "oms", label: "OMS", sub: "Order capability library", enabled: true },
       { key: "workflows", label: "Workflows", sub: "8 common customer flows", enabled: true }, { key: "carriers", label: "Carriers", sub: "Every mode · one network", enabled: true }, { key: "erp", label: "Integrations", sub: "54 connected systems", enabled: true },
-      { key: "roadmap", label: "Roadmap", sub: "AI · platform direction", enabled: true }, { key: "onboarding", label: "Onboarding", sub: "What to expect", enabled: true }, { key: "ai", label: "FreightPOP AI", sub: "Intelligence layer", enabled: true }, { key: "roi", label: "ROI", sub: "Intake form · opens in a new tab", enabled: true }
+      { key: "roadmap", label: "Roadmap", sub: "AI · platform direction", enabled: true }, { key: "onboarding", label: "Onboarding", sub: "What to expect", enabled: true }, { key: "ai", label: "FreightPOP AI", sub: "Intelligence layer", enabled: true }, { key: "roi", label: "ROI", sub: "Intake form · in-deck tab", enabled: true }
     ],
     labels: { back: "Back", menu: "Menu", liveSite: "Live Site", backToModule: "Back to module", allModules: "← All modules", nextModule: "Next module", backToModules: "Back to modules", steps: ["Problem", "Benefit", "Live Demo", "Validation"], stepEyebrows: ["The Problem", "The Benefit", "Live Demo", "Validation & ROI"], demoTabs: { walkthrough: "Walkthrough", ai: "✦ AI Demo", live: "Live Site ↗", expand: "⛶ Expand" }, openCard: "Open", watchCard: "Watch", copyLink: "Link", linkCopied: "Copied ✓" },
     pages: { tms: { eyebrow: "FreightPOP TMS · Module Library" }, workflows: { eyebrow: "FreightPOP Platform · Workflows", h1: "Common customer workflows.", lede: "{count} flows we set up for customers every week. Open one to watch it run end to end, step by step." }, roadmap: { eyebrow: "FreightPOP Platform · Roadmap", h1: "Where the product is headed.", lede: "Two tracks of investment: agentic AI across the shipping lifecycle, and platform depth across the warehouse and the yard. Directional — sequence and scope evolve with customer input.", aiTitle: "AI Product Roadmap", platformTitle: "Platform Product Roadmap" }, onboarding: { eyebrow: "Onboarding · What to expect", h1: "From kickoff to production.", lede: "A dedicated customer success team runs the implementation with you. Milestones are set together at kickoff around your requirements." } },
@@ -1665,8 +1674,8 @@ class Component extends DCLogic {
   //   The address bar is kept in sync while presenting (replaceState), so any screen can be copied and sent. Same params work after "#".
   LINK_CTRL = { menu: "showMenuButton", keys: "keyboardNav", crumbs: "showBreadcrumb", livepill: "showLiveSitePill", live: "showLiveSiteTab", ai: "showAiDemoTab", expand: "showExpandTab", dots: "showStepDots", arrows: "showPagingArrows", fs: "showFullscreenPills", lib: "showValidationLibrary", autoplay: "demoAutoPlay", link: "showCopyLink" };
   STEP_NAMES = ["problem", "benefit", "demo", "validation"];
-  VIEW_TAB = { intro: "intro", explore: "explore", mainmenu: "mainmenu", hub: "tms", wms: "wms", oms: "oms", erp: "erp", carriers: "carriers", workflows: "workflows", roadmap: "roadmap", onboarding: "onboarding", ai: "ai", livesite: null };
-  GO_ALIAS = { menu: "mainmenu", main: "mainmenu", mainmenu: "mainmenu", home: "intro", intro: "intro", start: "explore", explore: "explore", walkthrough: "explore", hub: "hub", tms: "hub", wms: "wms", oms: "oms", erp: "erp", integrations: "erp", carriers: "carriers", workflows: "workflows", workflow: "workflows", roadmap: "roadmap", onboarding: "onboarding", ai: "ai", live: "livesite", livesite: "livesite" };
+  VIEW_TAB = { intro: "intro", explore: "explore", mainmenu: "mainmenu", hub: "tms", wms: "wms", oms: "oms", erp: "erp", carriers: "carriers", workflows: "workflows", roadmap: "roadmap", onboarding: "onboarding", ai: "ai", livesite: null, roi: "roi" };
+  GO_ALIAS = { menu: "mainmenu", main: "mainmenu", mainmenu: "mainmenu", home: "intro", intro: "intro", start: "explore", explore: "explore", walkthrough: "explore", hub: "hub", tms: "hub", wms: "wms", oms: "oms", erp: "erp", integrations: "erp", carriers: "carriers", workflows: "workflows", workflow: "workflows", roadmap: "roadmap", onboarding: "onboarding", ai: "ai", live: "livesite", livesite: "livesite", roi: "roi" };
   _slug = (t) => String(t || "").toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   _params() {
     const p = new URLSearchParams(window.location.search);
@@ -1715,6 +1724,7 @@ class Component extends DCLogic {
     }
     if (view === "workflows") return Object.assign(base, { view, wfi: this._findIdx(this.workflows, seg[1], w => w.title) });
     if (view === "livesite") return Object.assign(base, { view, preLiveView: "hub" });
+    if (view === "roi") return Object.assign(base, { view, preRoiView: "hub" });
     return Object.assign(base, { view });
   }
   _tabOf(patchOrState) { const v = patchOrState.view; if (v === "slides") return "s:" + patchOrState.sid; return v === "feature" ? ({ tms: "tms", wms: "wms", oms: "oms" })[patchOrState.sysKey] || "tms" : this.VIEW_TAB[v]; }
@@ -2692,7 +2702,27 @@ class Component extends DCLogic {
   slideNext = () => { const d = this.curSlides(); const n = d ? d.pages.length : 0; if ((this.state.sp || 0) < n - 1) { this._userNav = true; this.setState({ sp: (this.state.sp || 0) + 1 }); } };
   slidePrev = () => { if ((this.state.sp || 0) > 0) { this._userNav = true; this.setState({ sp: this.state.sp - 1 }); } else this.goMainMenu(); };
   ROI_URL = "https://freightpopsales.com/freightpop-intake-form?link=MGER4f9Y";
-  openRoi = () => { if (!this._allowed("roi")) return; this.setState({ menuOpen: false }); window.open(this.ROI_URL, "_blank", "noopener"); };
+  // ROI tab. settings.roiMode: "auto" (default) | "embed" | "tab".
+  //   auto  → opens IN the deck (full-screen tab with Back / Fullscreen / Open-in-new-tab pills, like Live Site) when the
+  //           intake form can be framed from this origin, else a new browser tab (the pre-2026-10-02 behaviour).
+  //           The form's CSP is frame-ancestors 'self' (+ a few partner sites), so "can be framed" = same origin. When this
+  //           deck is served by SalesOS (/deck/view, any origin: freightpopsales.com, localhost:8888) and the form lives on
+  //           freightpopsales.com, the form's origin is swapped for ours — the same SalesOS app serves both routes.
+  //   embed → always in-deck (set it after adding this deck's origin to the form's frame-ancestors).   tab → always a new browser tab.
+  _roiTarget = () => {
+    const raw = this.ROI_URL, mode = (this.cfg.settings || {}).roiMode || "auto", here = window.location;
+    let u; try { u = new URL(raw, here.href); } catch (e) { return { url: raw, embed: mode === "embed" }; }
+    if (/(^|\.)freightpopsales\.com$/.test(u.hostname) && /^\/deck\/./.test(here.pathname) && u.origin !== here.origin) u = new URL(u.pathname + u.search + u.hash, here.origin);
+    return { url: u.toString(), embed: mode === "embed" ? true : mode === "tab" ? false : u.origin === here.origin };
+  };
+  openRoi = () => {
+    if (!this._allowed("roi")) return;
+    const tg = this._roiTarget();
+    if (tg.embed) this.setState((s) => ({ preRoiView: s.view === "roi" ? s.preRoiView : s.view, view: "roi", menuOpen: false }));
+    else { this.setState({ menuOpen: false }); window.open(tg.url, "_blank", "noopener"); }
+  };
+  closeRoi = () => this.setState((s) => ({ view: s.preRoiView || "hub" }));
+  openRoiTab = () => { try { window.open(this._roiTarget().url, "_blank", "noopener"); } catch (e) {} };
   roadmapAI = [
     { label: "Copilot v.1", body: "AI-powered shipment execution assistant" },
     { label: "Accessorial Agent", body: "Smarter, automated accessorial cost control" },
@@ -2908,7 +2938,7 @@ class Component extends DCLogic {
       explore: { onClick: this.goExplore, active: view === "explore" }, mainmenu: { onClick: this.goMainMenu, active: view === "mainmenu" },
       tms: { onClick: this.goTms, active: view === "hub" || (view === "feature" && this.state.sysKey === "tms") }, wms: { onClick: this.goWms, active: view === "wms" || (view === "feature" && this.state.sysKey === "wms") }, oms: { onClick: this.goOms, active: view === "oms" || (view === "feature" && this.state.sysKey === "oms") },
       workflows: { onClick: this.goWorkflows, active: view === "workflows" }, carriers: { onClick: this.goCarriers, active: view === "carriers" }, erp: { onClick: this.goErp, active: view === "erp" },
-      roadmap: { onClick: this.goRoadmap, active: view === "roadmap" }, onboarding: { onClick: this.goOnboarding, active: view === "onboarding" }, ai: { onClick: this.goAi, active: view === "ai" }, roi: { onClick: this.openRoi, active: false }
+      roadmap: { onClick: this.goRoadmap, active: view === "roadmap" }, onboarding: { onClick: this.goOnboarding, active: view === "onboarding" }, ai: { onClick: this.goAi, active: view === "ai" }, roi: { onClick: this.openRoi, active: view === "roi" }
     };
     for (const x of (this.slides || [])) NAV_DEF["s:" + x.id] = { onClick: () => this.goSlides(x.id), active: view === "slides" && this.state.sid === x.id };
     const navItems = this.cfg.nav.filter(n => n.enabled !== false && NAV_DEF[n.key] && this._allowed(n.key)).map(n => ({ key: n.key, label: n.label, sub: n.sub || "", ...NAV_DEF[n.key] }));
@@ -2972,6 +3002,7 @@ class Component extends DCLogic {
 
     return {
       navLinks, openLiveSite: this.openLiveSite, closeLiveSite: this.closeLiveSite,
+      isRoi: view === "roi", roiEmbedUrl: view === "roi" ? this._roiTarget().url : "about:blank", closeRoi: this.closeRoi, openRoiTab: this.openRoiTab,
       isLiveSite: view === "livesite", liveSiteUrl: ((view === "feature" || (view === "livesite" && this.state.preLiveView === "feature")) && feat && feat.demo && feat.demo.liveUrl) || CS.liveSiteUrl || this.props.liveSiteUrl || "https://app.freightpop.com/app/#/quote-ship", /* module open → that module's page; else the configured Live Site URL */
       libOpen: view === "feature" && step === 3, closeLib: this.closeLib,
       libTag: this.libTagFor(feat),

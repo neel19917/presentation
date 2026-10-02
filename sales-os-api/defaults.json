@@ -6,6 +6,7 @@
     "aiUrl": "https://genuine-conkies-86b264.netlify.app/",
     "liveSiteUrl": "https://app.freightpop.com/app/#/quote-ship",
     "roiUrl": "https://freightpopsales.com/freightpop-intake-form?link=MGER4f9Y",
+    "roiMode": "auto",
     "liveUrls": {
       "tms": "https://app.freightpop.com/app/#/quote-ship",
       "oms": "https://app.freightpop.com/app/#/order-management",
@@ -1314,7 +1315,7 @@
     {
       "key": "roi",
       "label": "ROI",
-      "sub": "Intake form · opens in a new tab",
+      "sub": "Intake form · in-deck tab",
       "enabled": true
     }
   ],

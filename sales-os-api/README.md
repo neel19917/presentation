@@ -10,7 +10,7 @@ Config API + admin panel for the FreightPOP sales deck. Runs on Railway (project
 
 | Section | Controls |
 |---|---|
-| Settings & links | Walkthrough / Main-menu / FreightPOP AI / Live Site / ROI URLs, per-system live deep links, intro headline/subtitle/CTA/caption, logo marquee on/off |
+| Settings & links | Walkthrough / Main-menu / FreightPOP AI / Live Site / ROI URLs, ROI tab mode (in-deck / new browser tab / auto), per-system live deep links, intro headline/subtitle/CTA/caption, logo marquee on/off |
 | Tabs & navigation | Enable/disable, reorder and rename the 12 top-bar tabs (also drives the Jump-to menu tiles and their subtitles) |
 | Deck versions | Per-AE / per-prospect overlays on the base: tabs, start screen, chrome, custom slide decks; share-link builder |
 | Appearance & size | Whole-deck scale, top-bar scale, hub scale + card columns + card min-height, module-page scale, demo stage width + scale, validation stat size, intro headline/subtitle size |

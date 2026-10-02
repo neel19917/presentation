@@ -29,6 +29,7 @@ const defaults = {
     aiUrl: (src.match(/this\.props\.aiUrl \|\| "([^"]+)"/) || [])[1] || '',
     liveSiteUrl: (src.match(/this\.props\.liveSiteUrl \|\| "([^"]+)"/) || [])[1] || '',
     roiUrl: c.ROI_URL,
+    roiMode: 'auto',
     liveUrls: c.LIVE_URLS,
     intro: { headline: 'AI Supply Chain Software', subtitle: 'Intelligence that moves your supply chain', cta: 'Get Started', urlCaption: 'www.freightpop.com' }
   },
@@ -49,7 +50,7 @@ const defaults = {
     { key: 'roadmap', label: 'Roadmap', sub: 'AI · platform direction', enabled: true },
     { key: 'onboarding', label: 'Onboarding', sub: 'What to expect', enabled: true },
     { key: 'ai', label: 'FreightPOP AI', sub: 'Intelligence layer', enabled: true },
-    { key: 'roi', label: 'ROI', sub: 'Intake form · opens in a new tab', enabled: true }
+    { key: 'roi', label: 'ROI', sub: 'Intake form · in-deck tab', enabled: true }
   ],
   labels: {
     back: 'Back', menu: 'Menu', liveSite: 'Live Site', backToModule: 'Back to module', allModules: '← All modules', nextModule: 'Next module', backToModules: 'Back to modules',
