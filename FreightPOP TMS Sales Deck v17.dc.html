@@ -2036,7 +2036,7 @@ class Component extends DCLogic {
           "Bids land beside your API and contracted rates for a true side-by-side"
         ]
       },
-      demo: { caption: "One load bid to an East Coast group \u2014 responses land next to the API rates.", progress: "40%", anim: "spot" },
+      demo: { caption: "One load bid to an East Coast group \u2014 responses land next to the API rates.", progress: "40%", anim: "spot", liveUrl: "https://app.freightpop.com/app/#/quote-ship" },
       roi: { stat: "1 request", statLabel: "to bid an entire carrier network", ev: { grade: "Platform", src: "Spot quote module — platform capability." }, proof: "Spot bids stop living in an inbox and become a comparable, auditable record." }
     },
     {
@@ -2096,7 +2096,7 @@ class Component extends DCLogic {
           "Compare pooled cost against shipping each order direct"
         ]
       },
-      demo: { caption: "Twenty Northeast orders pool onto one linehaul, then break to LTL final mile.", progress: "56%", anim: "pool" },
+      demo: { caption: "Twenty Northeast orders pool onto one linehaul, then break to LTL final mile.", progress: "56%", anim: "pool", liveUrl: "https://app.freightpop.com/app/#/pooling" },
       roi: { stat: "1 linehaul", statLabel: "instead of twenty", ev: { grade: "Modeled", src: "No customer metric yet. Modeled as linehaul + final mile vs. n × LTL." }, proof: "Pooling converts a pile of LTL minimums into one truckload rate plus short local moves." }
     },
     {
@@ -2116,7 +2116,7 @@ class Component extends DCLogic {
           "Total landed cost accumulates across legs"
         ]
       },
-      demo: { caption: "Track a port-to-door move across three carriers on one timeline.", progress: "60%", anim: "multileg" },
+      demo: { caption: "Track a port-to-door move across three carriers on one timeline.", progress: "60%", anim: "multileg", liveUrl: "https://app.freightpop.com/app/#/multileg-consolidation/create" },
       roi: { stat: "1 record", statLabel: "for every leg, every carrier", ev: { grade: "Platform", src: "Ocean, air and drayage on one shipment record — platform capability." }, proof: "One shipment record spans drayage, linehaul and final mile \u2014 no hand-off blind spots." }
     },
     {
@@ -2176,7 +2176,7 @@ class Component extends DCLogic {
           "PRO number blocks assigned electronically instead of from a sticker sheet"
         ]
       },
-      demo: { caption: "A variable-weight load re-weighed after pickup \u2014 BOL corrected, record updated.", progress: "62%", anim: "docs", liveUrl: "https://app.freightpop.com/app/#/quote-ship" },
+      demo: { caption: "A variable-weight load re-weighed after pickup \u2014 BOL corrected, record updated.", progress: "62%", anim: "docs", liveUrl: "https://app.freightpop.com/app/#/history" },
       roi: { stat: "One booking", statLabel: "produces every document", ev: { grade: "Platform", src: "BOL, labels and paperwork from one booking — platform capability." }, proof: "Reconciled weights on the BOL are what make the invoice audit defensible." }
     },
     {
@@ -2196,7 +2196,7 @@ class Component extends DCLogic {
           "ELD and telematics feeds push assignments to the driver's phone"
         ]
       },
-      demo: { caption: "A Monday load drags to Tuesday \u2014 the truck and the carrier both update.", progress: "58%", anim: "fleet" },
+      demo: { caption: "A Monday load drags to Tuesday \u2014 the truck and the carrier both update.", progress: "58%", anim: "fleet", liveUrl: "https://app.freightpop.com/app/#/fleet" },
       roi: { stat: "One board", statLabel: "for assets and carriers", ev: { grade: "Modeled", src: "No customer metric yet. Alley-Cassetty ran 15 locations on separate spreadsheets and pegboards pre-FreightPOP." }, proof: "Re-planning a day is a drag-and-drop, not a round of phone calls." }
     },
     {
@@ -2236,7 +2236,7 @@ class Component extends DCLogic {
           "POD can be required before a driver is allowed to mark delivered"
         ]
       },
-      demo: { caption: "A driver marks delivered \u2014 photo POD and signature land on the shipment.", progress: "64%", anim: "driver" },
+      demo: { caption: "A driver marks delivered \u2014 photo POD and signature land on the shipment.", progress: "64%", anim: "driver", liveUrl: "https://app.freightpop.com/app/#/track" },
       roi: { stat: "At the dock", statLabel: "not days later", ev: { grade: "Modeled", src: "No customer metric yet. Modeled as days saved between delivery and invoice." }, proof: "Weight and proof captured at the stop are what make same-day billing and fast claims possible." }
     },
     {
@@ -2256,7 +2256,7 @@ class Component extends DCLogic {
           "Give CSRs, sales and customers scoped tracking access so they self-serve"
         ]
       },
-      demo: { caption: "A late shipment flags on the board and the customer is already notified.", progress: "70%", anim: "tracknote" },
+      demo: { caption: "A late shipment flags on the board and the customer is already notified.", progress: "70%", anim: "tracknote", liveUrl: "https://app.freightpop.com/app/#/track" },
       roi: { stat: "Self-service", statLabel: "status for everyone who asks", ev: { grade: "Reported", src: "Alley-Cassetty intake: the coordinator fields status calls all day. Callaway Blue had once-daily visibility only." }, proof: "Proactive notification removes the highest-volume interruption on the shipping desk." }
     },
     {
@@ -2276,7 +2276,7 @@ class Component extends DCLogic {
           "Nothing auto-pays \u2014 approval stays with your team"
         ]
       },
-      demo: { caption: "A reweigh on a carrier invoice is caught against the quoted rate and queued for dispute.", progress: "76%", anim: "audit", ai: "clipAudit" },
+      demo: { caption: "A reweigh on a carrier invoice is caught against the quoted rate and queued for dispute.", progress: "76%", anim: "audit", ai: "clipAudit", liveUrl: "https://app.freightpop.com/app/#/audit" },
       roi: { stat: "Line by line", statLabel: "audited automatically", ev: { grade: "Measured", src: "Buffalo Seal & Gasket, closed won Dec 2025 — a single $225 carrier discrepancy, inside a $140,294 modeled annual savings case." }, proof: "Invoice audit and rate shopping are the two largest components of customer savings models." }
     },
     {
@@ -2296,7 +2296,7 @@ class Component extends DCLogic {
           "Quoted vs. actual cost captured on every shipment, ready to analyze"
         ]
       },
-      demo: { caption: "Spend by carrier and lane, filtered live \u2014 no export required.", progress: "82%", anim: "reports" },
+      demo: { caption: "Spend by carrier and lane, filtered live \u2014 no export required.", progress: "82%", anim: "reports", liveUrl: "https://app.freightpop.com/app/#/analytics" },
       roi: { stat: "Quoted vs. actual", statLabel: "on every shipment", ev: { grade: "Reported", src: "Software Advice review", quote: "The reporting allowed us to save considerable money by illuminating which carriers can deliver each kind of product at the lowest cost and highest service levels.", who: "— Software Advice review" }, proof: "Carrier negotiations and mode decisions run on your own data instead of the carrier's." }
     },
     {
@@ -2316,7 +2316,7 @@ class Component extends DCLogic {
           "Inbound and outbound on the same calendar"
         ]
       },
-      demo: { caption: "A carrier books its own dock slot \u2014 the warehouse board updates live.", progress: "72%", anim: "dock" },
+      demo: { caption: "A carrier books its own dock slot \u2014 the warehouse board updates live.", progress: "72%", anim: "dock", liveUrl: "https://app.freightpop.com/app/#/dock-scheduling/docks" },
       roi: { stat: "Self-service", statLabel: "carrier appointments", ev: { grade: "Reported", src: "Callaway Blue intake, Jun 2026: 20 docks run on Excel and clipboards, no no-show tracking. Measured results due at their 90-day review." }, proof: "A known arrival schedule is what turns dock labor from reactive into planned." }
     }
   ];
@@ -2340,7 +2340,7 @@ class Component extends DCLogic {
           "Approval posts a purchase receipt to your ERP automatically"
         ]
       },
-      demo: { caption: "An inbound PO is scan-received, validated against expected quantities and posted to the ERP.", progress: "34%", anim: "wreceive" },
+      demo: { caption: "An inbound PO is scan-received, validated against expected quantities and posted to the ERP.", progress: "34%", anim: "wreceive", liveUrl: "https://app.freightpop.com/app/#/wms/receipts" },
       roi: { stat: "At the door", statLabel: "discrepancies caught, not at month-end", ev: { grade: "Modeled", src: "No live WMS customer metric yet — Alley-Cassetty is still in pilot." }, proof: "One vendor for TMS and WMS: the shipment you tracked inbound becomes the receipt you post — zero re-keying." }
     },
     {
@@ -2360,7 +2360,7 @@ class Component extends DCLogic {
           "Print barcode labels at receipt so every pallet is scannable from day one"
         ]
       },
-      demo: { caption: "A pallet of 48 serialized units changes bins with a single license-plate scan.", progress: "42%", anim: "wlp" },
+      demo: { caption: "A pallet of 48 serialized units changes bins with a single license-plate scan.", progress: "42%", anim: "wlp", liveUrl: "https://app.freightpop.com/app/#/wms/company" },
       roi: { stat: "1 scan", statLabel: "moves a pallet — serials, lots and all", ev: { grade: "Platform", src: "License plating, lot and serialization — platform capability." }, proof: "The pallet is the unit of work. Serialized and lot-controlled handling stops being the reason moves don't get recorded." }
     },
     {
@@ -2379,7 +2379,7 @@ class Component extends DCLogic {
           "License-plate aware: full pallets keep their plate through the move"
         ]
       },
-      demo: { caption: "One received item splits across a zone, a truck and a job bin — in a single recorded move.", progress: "48%", anim: "wbins" },
+      demo: { caption: "One received item splits across a zone, a truck and a job bin — in a single recorded move.", progress: "48%", anim: "wbins", liveUrl: "https://app.freightpop.com/app/#/wms/bin-transfers" },
       roi: { stat: "0 ghost moves", statLabel: "every relocation is a scanned transaction", ev: { grade: "Platform", src: "Scan-enforced moves — platform capability." }, proof: "The bin the system shows is the bin the forklift finds." }
     },
     {
@@ -2398,7 +2398,7 @@ class Component extends DCLogic {
           "Optional post and approval gates before inventory writes back"
         ]
       },
-      demo: { caption: "A sales order is scan-picked bin by bin — approved, posted and handed to the TMS to ship.", progress: "56%", anim: "wpick" },
+      demo: { caption: "A sales order is scan-picked bin by bin — approved, posted and handed to the TMS to ship.", progress: "56%", anim: "wpick", liveUrl: "https://app.freightpop.com/app/#/wms/picking" },
       roi: { stat: "Scan-verified", statLabel: "every pick, before it reaches packing", ev: { grade: "Platform", src: "Scan verification at the shelf — platform capability." }, proof: "Errors stop at the shelf — and because WMS and TMS are one vendor, the picked order books freight without a handoff." }
     },
     {
@@ -2417,7 +2417,7 @@ class Component extends DCLogic {
           "Every adjustment is a recorded transaction that posts to your ERP"
         ]
       },
-      demo: { caption: "Water-damaged stock is written off at the bin — photo attached, adjustment posted to the ERP.", progress: "62%", anim: "winv" },
+      demo: { caption: "Water-damaged stock is written off at the bin — photo attached, adjustment posted to the ERP.", progress: "62%", anim: "winv", liveUrl: "https://app.freightpop.com/app/#/wms/inventory-levels" },
       roi: { stat: "All sites", statLabel: "in one live inventory view", ev: { grade: "Platform", src: "Multi-site inventory — platform capability." }, proof: "One vendor for WMS and TMS means the stock you see is net of everything picked, packed and already on a truck." }
     },
     {
@@ -2436,7 +2436,7 @@ class Component extends DCLogic {
           "No shutdown — counts run alongside daily operations"
         ]
       },
-      demo: { caption: "A blind count surfaces one variance — reviewed, approved and posted to NetSuite.", progress: "68%", anim: "wcount" },
+      demo: { caption: "A blind count surfaces one variance — reviewed, approved and posted to NetSuite.", progress: "68%", anim: "wcount", liveUrl: "https://app.freightpop.com/app/#/wms/cycle-counts" },
       roi: { stat: "0 shutdowns", statLabel: "counting runs alongside operations", ev: { grade: "Modeled", src: "No live WMS customer metric yet." }, proof: "Small, continuous counts keep accuracy high and turn the year-end write-off into a non-event." }
     }
   ];
@@ -2486,7 +2486,7 @@ class Component extends DCLogic {
           "International detail \u2014 country of origin, values, documentation \u2014 captured at entry"
         ]
       },
-      demo: { caption: "Catalog detail, predefined packages and routing guide rules \u2014 then freight cost before anything is packed.", progress: "36%", anim: "opack", liveUrl: "https://app.freightpop.com/app/#/order-management" },
+      demo: { caption: "Catalog detail, predefined packages and routing guide rules \u2014 then freight cost before anything is packed.", progress: "36%", anim: "opack", liveUrl: "https://app.freightpop.com/app/#/product-and-packaging" },
       roi: { stat: "Rated right", statLabel: "the first time", ev: { grade: "Platform", src: "Catalog-driven class, NMFC and dims feeding calculated pack math \u2014 platform capability." }, proof: "Accurate class, dims and pack math at entry are what stop reclass and reweigh charges downstream." }
     },
     {
@@ -2527,7 +2527,7 @@ class Component extends DCLogic {
           "The inbound record becomes the receipt the warehouse works against"
         ]
       },
-      demo: { caption: "Inbound POs in one queue, rated, booked and tracked to the dock.", progress: "62%", anim: "othird", liveUrl: "https://app.freightpop.com/app/#/order-management" },
+      demo: { caption: "Inbound POs in one queue, rated, booked and tracked to the dock.", progress: "62%", anim: "othird", liveUrl: "https://app.freightpop.com/app/#/order-management?tab=inbound-transactions" },
       roi: { stat: "One queue", statLabel: "for inbound as well as outbound", ev: { grade: "Platform", src: "Inbound purchase orders as tracked shipments — platform capability." }, proof: "Inbound is often the least visible half of the freight spend." }
     },
     {
@@ -2972,7 +2972,7 @@ class Component extends DCLogic {
 
     return {
       navLinks, openLiveSite: this.openLiveSite, closeLiveSite: this.closeLiveSite,
-      isLiveSite: view === "livesite", liveSiteUrl: CS.liveSiteUrl || this.props.liveSiteUrl || "https://app.freightpop.com/app/#/quote-ship",
+      isLiveSite: view === "livesite", liveSiteUrl: ((view === "feature" || (view === "livesite" && this.state.preLiveView === "feature")) && feat && feat.demo && feat.demo.liveUrl) || CS.liveSiteUrl || this.props.liveSiteUrl || "https://app.freightpop.com/app/#/quote-ship", /* module open → that module's page; else the configured Live Site URL */
       libOpen: view === "feature" && step === 3, closeLib: this.closeLib,
       libTag: this.libTagFor(feat),
       libUrl: "Validation Library.dc.html?feature=" + encodeURIComponent(this.libTagFor(feat)),

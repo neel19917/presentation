@@ -173,7 +173,7 @@
             "caption": "One load bid to an East Coast group — responses land next to the API rates.",
             "anim": "spot",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/quote-ship",
             "progress": "40%"
           },
           "roi": {
@@ -296,7 +296,7 @@
             "caption": "Twenty Northeast orders pool onto one linehaul, then break to LTL final mile.",
             "anim": "pool",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/pooling",
             "progress": "56%"
           },
           "roi": {
@@ -337,7 +337,7 @@
             "caption": "Track a port-to-door move across three carriers on one timeline.",
             "anim": "multileg",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/multileg-consolidation/create",
             "progress": "60%"
           },
           "roi": {
@@ -460,7 +460,7 @@
             "caption": "A variable-weight load re-weighed after pickup — BOL corrected, record updated.",
             "anim": "docs",
             "ai": "",
-            "liveUrl": "https://app.freightpop.com/app/#/quote-ship",
+            "liveUrl": "https://app.freightpop.com/app/#/history",
             "progress": "62%"
           },
           "roi": {
@@ -501,7 +501,7 @@
             "caption": "A Monday load drags to Tuesday — the truck and the carrier both update.",
             "anim": "fleet",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/fleet",
             "progress": "58%"
           },
           "roi": {
@@ -583,7 +583,7 @@
             "caption": "A driver marks delivered — photo POD and signature land on the shipment.",
             "anim": "driver",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/track",
             "progress": "64%"
           },
           "roi": {
@@ -624,7 +624,7 @@
             "caption": "A late shipment flags on the board and the customer is already notified.",
             "anim": "tracknote",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/track",
             "progress": "70%"
           },
           "roi": {
@@ -665,7 +665,7 @@
             "caption": "A reweigh on a carrier invoice is caught against the quoted rate and queued for dispute.",
             "anim": "audit",
             "ai": "clipAudit",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/audit",
             "progress": "76%"
           },
           "roi": {
@@ -706,7 +706,7 @@
             "caption": "Spend by carrier and lane, filtered live — no export required.",
             "anim": "reports",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/analytics",
             "progress": "82%"
           },
           "roi": {
@@ -747,7 +747,7 @@
             "caption": "A carrier books its own dock slot — the warehouse board updates live.",
             "anim": "dock",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/dock-scheduling/docks",
             "progress": "72%"
           },
           "roi": {
@@ -795,7 +795,7 @@
             "caption": "An inbound PO is scan-received, validated against expected quantities and posted to the ERP.",
             "anim": "wreceive",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/wms/receipts",
             "progress": "34%"
           },
           "roi": {
@@ -837,7 +837,7 @@
             "caption": "A pallet of 48 serialized units changes bins with a single license-plate scan.",
             "anim": "wlp",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/wms/company",
             "progress": "42%"
           },
           "roi": {
@@ -878,7 +878,7 @@
             "caption": "One received item splits across a zone, a truck and a job bin — in a single recorded move.",
             "anim": "wbins",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/wms/bin-transfers",
             "progress": "48%"
           },
           "roi": {
@@ -919,7 +919,7 @@
             "caption": "A sales order is scan-picked bin by bin — approved, posted and handed to the TMS to ship.",
             "anim": "wpick",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/wms/picking",
             "progress": "56%"
           },
           "roi": {
@@ -960,7 +960,7 @@
             "caption": "Water-damaged stock is written off at the bin — photo attached, adjustment posted to the ERP.",
             "anim": "winv",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/wms/inventory-levels",
             "progress": "62%"
           },
           "roi": {
@@ -1001,7 +1001,7 @@
             "caption": "A blind count surfaces one variance — reviewed, approved and posted to NetSuite.",
             "anim": "wcount",
             "ai": "",
-            "liveUrl": "",
+            "liveUrl": "https://app.freightpop.com/app/#/wms/cycle-counts",
             "progress": "68%"
           },
           "roi": {
@@ -1099,7 +1099,7 @@
             "caption": "Catalog detail, predefined packages and routing guide rules — then freight cost before anything is packed.",
             "anim": "opack",
             "ai": "",
-            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "liveUrl": "https://app.freightpop.com/app/#/product-and-packaging",
             "progress": "36%"
           },
           "roi": {
@@ -1184,7 +1184,7 @@
             "caption": "Inbound POs in one queue, rated, booked and tracked to the dock.",
             "anim": "othird",
             "ai": "",
-            "liveUrl": "https://app.freightpop.com/app/#/order-management",
+            "liveUrl": "https://app.freightpop.com/app/#/order-management?tab=inbound-transactions",
             "progress": "62%"
           },
           "roi": {
