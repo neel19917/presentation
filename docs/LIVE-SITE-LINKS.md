@@ -70,6 +70,33 @@ Unchanged from before: 11 modules already had the right URL. Changed: 18 (15 wer
   whether a signed-in session is visible inside the deck's iframe (third-party storage partitioning). Reps should
   be signed in to the demo tenant in the same browser.
 
+## Tabs inside the live embed (2026-10-02)
+
+Both live views — the module's **Live Demo → Live Site** tab and the full-screen **Live Site** pill view — now carry a
+browser-style tab strip, so several FreightPOP pages can be open side by side *inside the deck* instead of in separate
+browser tabs.
+
+- The first tab is the context page (the module's `liveUrl`, or the pill's URL). **＋ New tab** lists every page the deck
+  knows (the 29 module pages de-duplicated to 23 app pages, labelled by app page name — "Order Management", "WMS · Receipts" —
+  not by module name, because several modules share a page) plus **Paste a URL…** for anything else.
+- Up to 6 tabs (`LIVE_SLOTS`). Each tab is a fixed iframe slot that stays mounted while hidden, so switching tabs keeps the
+  page where you left it. Closing a tab frees its slot (later tabs shift down and reload). The tab list is shared by both
+  views and persists for the session; opening a different module's Live Site adds/activates that module's page.
+- **↗** on the right of the strip opens the active tab in a real browser tab when that is what you want.
+- Page names live in `LIVE_PAGE_NAMES` (keyed by the route after `#/`); unknown routes are humanised from the path.
+
+What the deck cannot do: catch a page the *app itself* opens with `target="_blank"` / `window.open` — the frame is
+cross-origin. Checked 2026-10-02 against the production bundle plus all 582 lazy chunks (2.6 MB): the React app has **no
+`window.open`** and only two `target="_blank"` links (footer marketing links, the OpenStreetMap attribution). So pages do
+not pop out on their own; what reps had were separate browser tabs they opened themselves — which is what the strip
+replaces. Login inside the frame: the email/password form renders framed (checked headless); the **OIDC Login** button
+redirects to an identity provider that refuses framing, so SSO users should sign in to app.freightpop.com in the same
+browser first.
+
+Verified headless (Playwright, Chromium 1234): open module 02 live → strip shows "Carrier Management"; ＋ New tab → menu
+of 23 pages; add Order Management and WMS · Receipts → 3 iframes, only the active one displayed; switch back; close one;
+Live Site pill shows the same tabs; Back to deck. No page errors.
+
 ## ROI tab — in the deck, not a browser tab (2026-10-02)
 
 The **ROI** top-bar tab used to `window.open` the intake form in a new browser tab — the only thing in the deck that did.

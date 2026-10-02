@@ -551,8 +551,27 @@
               <div ref="{{ setDemoBox }}" style="{{ fsWrapStyle }}">
               <sc-if value="{{ showLive }}" hint-placeholder-val="{{ false }}">
                 <div style="{{ liveBoxStyle }}">
-                  <iframe src="{{ liveUrl }}" title="FreightPOP Live" allow="fullscreen" style="width:100%;height:{{ liveFrameH }};border:0;display:block;background:#fff;"></iframe>
-                  <div style="position:absolute;left:16px;bottom:14px;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;padding:7px 13px;border-radius:8px;pointer-events:none;">app.freightpop.com · {{ feat.name }}</div>
+                  <div style="display:flex;flex-direction:column;height:{{ liveFrameH }};">
+                  <div style="display:flex;align-items:flex-end;gap:4px;padding:6px 8px 0;background:#071E33;border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:5;flex:none;">
+                    <sc-for list="{{ liveTabs }}" as="t" hint-placeholder-count="1"><div onclick="{{ t.onClick }}" style="{{ t.style }}" title="{{ t.label }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;">{{ t.label }}</span><sc-if value="{{ liveTabsMany }}" hint-placeholder-val="{{ false }}"><span onclick="{{ t.onClose }}" title="Close tab" style="margin-left:4px;opacity:.6;cursor:pointer;font-size:11px;">✕</span></sc-if></div></sc-for>
+                    <sc-if value="{{ liveCanAdd }}" hint-placeholder-val="{{ true }}"><div onclick="{{ liveMenuToggle }}" title="Open another FreightPOP page in a new deck tab" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:2px;border-radius:8px;border:1px dashed rgba(61,214,181,.5);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">＋ New tab</div></sc-if>
+                    <div onclick="{{ liveOpenInBrowser }}" title="Open this page in a browser tab" style="margin-left:auto;display:inline-flex;align-items:center;padding:7px 10px;margin-bottom:2px;border-radius:8px;color:#7E97AC;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;" style-hover="color:#3DD6B5;">↗</div>
+                    <sc-if value="{{ liveMenuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;left:8px;z-index:60;min-width:300px;max-height:380px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
+                      <div style="padding:6px 12px 8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7E97AC;">Open in a new deck tab</div>
+                      <sc-for list="{{ livePages }}" as="p" hint-placeholder-count="8"><div onclick="{{ p.onClick }}" style="{{ p.style }}" style-hover="background:rgba(255,255,255,.08);">{{ p.label }}</div></sc-for>
+                      <div onclick="{{ liveTabPrompt }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#B5CDE0;cursor:pointer;">Paste a URL…</div>
+                    </div></sc-if>
+                  </div>
+                  <div style="position:relative;flex:1;min-height:0;background:#fff;">
+                    <sc-if value="{{ ls0 }}" hint-placeholder-val="{{ true }}"><iframe src="{{ lu0 }}" title="FreightPOP Live" allow="fullscreen; clipboard-write" style="{{ lf0 }}"></iframe></sc-if>
+<sc-if value="{{ ls1 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu1 }}" title="FreightPOP Live" allow="fullscreen; clipboard-write" style="{{ lf1 }}"></iframe></sc-if>
+<sc-if value="{{ ls2 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu2 }}" title="FreightPOP Live" allow="fullscreen; clipboard-write" style="{{ lf2 }}"></iframe></sc-if>
+<sc-if value="{{ ls3 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu3 }}" title="FreightPOP Live" allow="fullscreen; clipboard-write" style="{{ lf3 }}"></iframe></sc-if>
+<sc-if value="{{ ls4 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu4 }}" title="FreightPOP Live" allow="fullscreen; clipboard-write" style="{{ lf4 }}"></iframe></sc-if>
+<sc-if value="{{ ls5 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu5 }}" title="FreightPOP Live" allow="fullscreen; clipboard-write" style="{{ lf5 }}"></iframe></sc-if>
+                  </div>
+                  </div>
+                  <div style="position:absolute;left:16px;bottom:14px;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;padding:7px 13px;border-radius:8px;pointer-events:none;">app.freightpop.com · {{ liveActiveLabel }}</div>
                 </div>
               </sc-if>
               <sc-if value="{{ showAiDemo }}" hint-placeholder-val="{{ false }}">
@@ -861,7 +880,26 @@
 
   <sc-if value="{{ isLiveSite }}" hint-placeholder-val="{{ false }}">
     <section data-screen-label="Live Site" ref="{{ setSectionFs }}" style="position:absolute;inset:0;z-index:20;background:#051729;padding-top:53px;">
-      <iframe src="{{ liveSiteUrl }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="width:100%;height:100%;border:0;display:block;background:#fff;"></iframe>
+      <div style="display:flex;flex-direction:column;height:100%;">
+                  <div style="display:flex;align-items:flex-end;gap:4px;padding:6px 8px 0;background:#071E33;border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:5;flex:none;">
+                    <sc-for list="{{ liveTabs }}" as="t" hint-placeholder-count="1"><div onclick="{{ t.onClick }}" style="{{ t.style }}" title="{{ t.label }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;">{{ t.label }}</span><sc-if value="{{ liveTabsMany }}" hint-placeholder-val="{{ false }}"><span onclick="{{ t.onClose }}" title="Close tab" style="margin-left:4px;opacity:.6;cursor:pointer;font-size:11px;">✕</span></sc-if></div></sc-for>
+                    <sc-if value="{{ liveCanAdd }}" hint-placeholder-val="{{ true }}"><div onclick="{{ liveMenuToggle }}" title="Open another FreightPOP page in a new deck tab" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:2px;border-radius:8px;border:1px dashed rgba(61,214,181,.5);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">＋ New tab</div></sc-if>
+                    <div onclick="{{ liveOpenInBrowser }}" title="Open this page in a browser tab" style="margin-left:auto;display:inline-flex;align-items:center;padding:7px 10px;margin-bottom:2px;border-radius:8px;color:#7E97AC;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;" style-hover="color:#3DD6B5;">↗</div>
+                    <sc-if value="{{ liveMenuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;left:8px;z-index:60;min-width:300px;max-height:380px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
+                      <div style="padding:6px 12px 8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#7E97AC;">Open in a new deck tab</div>
+                      <sc-for list="{{ livePages }}" as="p" hint-placeholder-count="8"><div onclick="{{ p.onClick }}" style="{{ p.style }}" style-hover="background:rgba(255,255,255,.08);">{{ p.label }}</div></sc-for>
+                      <div onclick="{{ liveTabPrompt }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#B5CDE0;cursor:pointer;">Paste a URL…</div>
+                    </div></sc-if>
+                  </div>
+                  <div style="position:relative;flex:1;min-height:0;background:#fff;">
+                    <sc-if value="{{ ls0 }}" hint-placeholder-val="{{ true }}"><iframe src="{{ lu0 }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="{{ lf0 }}"></iframe></sc-if>
+<sc-if value="{{ ls1 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu1 }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="{{ lf1 }}"></iframe></sc-if>
+<sc-if value="{{ ls2 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu2 }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="{{ lf2 }}"></iframe></sc-if>
+<sc-if value="{{ ls3 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu3 }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="{{ lf3 }}"></iframe></sc-if>
+<sc-if value="{{ ls4 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu4 }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="{{ lf4 }}"></iframe></sc-if>
+<sc-if value="{{ ls5 }}" hint-placeholder-val="{{ false }}"><iframe src="{{ lu5 }}" title="FreightPOP Live Site" allow="fullscreen; clipboard-write" style="{{ lf5 }}"></iframe></sc-if>
+                  </div>
+                  </div>
       <div onclick="{{ closeLiveSite }}" style="position:absolute;bottom:26px;left:26px;z-index:150;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(5,23,41,.82);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;">← Back to deck</div>
       <sc-if value="{{ showFsPills }}" hint-placeholder-val="{{ true }}"><div onclick="{{ sectionFs }}" style="position:absolute;bottom:26px;left:196px;z-index:150;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(5,23,41,.82);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;">⛶ Fullscreen</div></sc-if>
     </section>
@@ -2677,7 +2715,46 @@ class Component extends DCLogic {
     return this.LIB_TAG_MAP[n] || n;
   };
   closeLib = () => this.setState({ step: 2 });
-  openLiveSite = () => this.setState((s) => ({ preLiveView: s.view === "livesite" ? s.preLiveView : s.view, view: "livesite", menuOpen: false }));
+  // ── Live Site tabs ──────────────────────────────────────────────────────────────────────────────────
+  // Several FreightPOP pages open side by side INSIDE the embed (browser-style tab strip) instead of in separate
+  // browser tabs. The module Live Demo → Live Site tab and the full-screen Live Site view share one tab list; the
+  // first tab is always the context page (the module's liveUrl, or the Live Site pill's URL). Up to LIVE_SLOTS tabs;
+  // each tab is a fixed iframe slot that stays mounted while hidden, so switching tabs keeps the page's state.
+  LIVE_SLOTS = 6;
+  // Tab labels are the APP page names (not module names — several modules share one page).
+  LIVE_PAGE_NAMES = { "quote-ship": "Quote / Ship", "order-management": "Order Management", "order-management?tab=inbound-transactions": "Order Management · Inbound", "carrier-management": "Carrier Management", "company/rules?tab=shipping-approval-rule": "Company · Shipping Rules", "pooling": "Pooling", "multileg-consolidation/create": "Multi-Leg Consolidation", "history": "History", "track": "Track", "fleet": "Fleet", "route-optimization": "Route Optimization", "audit": "Freight Invoice Audit", "analytics": "Analytics", "dock-scheduling/docks": "Dock Scheduling", "product-and-packaging": "Product & Packaging", "wms": "WMS", "wms/receipts": "WMS · Receipts", "wms/picking": "WMS · Picking", "wms/bin-transfers": "WMS · Bin Transfers", "wms/inventory-levels": "WMS · Inventory", "wms/cycle-counts": "WMS · Cycle Counts", "wms/company": "WMS · Settings" };
+  _liveKey = (url) => { try { return (new URL(url).hash || "").replace(/^#\/?/, "").replace(/\/$/, ""); } catch (e) { return ""; } };
+  _liveLabel = (url) => {
+    const k = this._liveKey(url); if (this.LIVE_PAGE_NAMES[k]) return this.LIVE_PAGE_NAMES[k];
+    const path = k.split("?")[0]; if (path) return path.split("/").filter(Boolean).map(s => s.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())).join(" · ");
+    try { return new URL(url).host; } catch (e) { return String(url); }
+  };
+  _livePages = () => {
+    const urls = new Set();
+    for (const sys of ["tms", "oms", "wms"]) for (const f of (this.featureSets[sys] || [])) if (f.demo && f.demo.liveUrl) urls.add(f.demo.liveUrl);
+    for (const k of ["tms", "oms", "wms"]) if (this.LIVE_URLS[k]) urls.add(this.LIVE_URLS[k]);
+    const order = Object.keys(this.LIVE_PAGE_NAMES);
+    return [...urls].map(url => ({ url, label: this._liveLabel(url), o: (i => i < 0 ? 999 : i)(order.indexOf(this._liveKey(url))) })).sort((a, b) => a.o - b.o || a.label.localeCompare(b.label)).map(({ url, label }) => ({ url, label }));
+  };
+  _liveCtxUrl = () => {
+    const CS = this.cfg.settings || {}; const feats = this.curFeats(); const feat = feats[this.state.fi] || feats[0];
+    const mod = feat && feat.demo && feat.demo.liveUrl;
+    if (this.state.view === "feature") return mod || this.LIVE_URLS[this.state.sysKey] || this.LIVE_URL_DEFAULT;
+    return ((this.state.view === "livesite" && this.state.preLiveView === "feature") && mod) || CS.liveSiteUrl || this.props.liveSiteUrl || this.LIVE_URL_DEFAULT;
+  };
+  _liveTabs = () => { const tabs = this.state.liveTabs || []; if (tabs.length) return tabs; const c = this._liveCtxUrl(); return [{ url: c, label: this._liveLabel(c) }]; };
+  _liveOpen = (url, activate = true) => this.setState((s) => {
+    const tabs = (s.liveTabs && s.liveTabs.length ? s.liveTabs : this._liveTabs()).slice();
+    let i = tabs.findIndex(x => x.url === url);
+    if (i < 0) { if (tabs.length >= this.LIVE_SLOTS) return { liveMenu: false }; tabs.push({ url, label: this._liveLabel(url) }); i = tabs.length - 1; }
+    return { liveTabs: tabs, liveTab: activate ? i : Math.min(s.liveTab || 0, tabs.length - 1), liveMenu: false };
+  });
+  liveTabSelect = (i) => this.setState({ liveTab: i, liveMenu: false });
+  liveTabClose = (i) => this.setState((s) => { const all = this._liveTabs(); const tabs = all.filter((_, j) => j !== i); const cur = s.liveTab || 0; return { liveTabs: tabs, liveTab: Math.max(0, Math.min(cur > i ? cur - 1 : cur, tabs.length - 1)), liveMenu: false }; });
+  liveMenuToggle = () => this.setState((s) => ({ liveMenu: !s.liveMenu }));
+  liveTabPrompt = () => { let u = ""; try { u = window.prompt("Open in a new deck tab — paste a FreightPOP page URL", "https://app.freightpop.com/app/#/") || ""; } catch (e) {} u = u.trim(); if (/^https?:\/\//i.test(u)) this._liveOpen(u); else this.setState({ liveMenu: false }); };
+  liveOpenInBrowser = () => { try { const tabs = this._liveTabs(); const cur = tabs[Math.min(this.state.liveTab || 0, tabs.length - 1)]; if (cur) window.open(cur.url, "_blank", "noopener"); } catch (e) {} };
+  openLiveSite = () => { this.setState((s) => ({ preLiveView: s.view === "livesite" ? s.preLiveView : s.view, view: "livesite", menuOpen: false })); setTimeout(() => this._liveOpen(this._liveCtxUrl()), 0); };
   closeLiveSite = () => this.setState((s) => ({ view: s.preLiveView || "hub" }));
   goIntro = () => this._nav("intro", { view: "intro", menuOpen: false });
   goExplore = () => { this._navigated = true; this._nav("explore", { view: "explore", menuOpen: false }); };
@@ -3002,6 +3079,19 @@ class Component extends DCLogic {
 
     return {
       navLinks, openLiveSite: this.openLiveSite, closeLiveSite: this.closeLiveSite,
+      ...(() => {
+        const tabs = this._liveTabs(); const cur = Math.min(this.state.liveTab || 0, tabs.length - 1);
+        const TAB = "display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px 8px 0 0;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;max-width:240px;white-space:nowrap;";
+        const PAGE = "padding:8px 12px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;";
+        const o = {
+          liveTabs: tabs.map((x, i) => ({ label: x.label, style: TAB + (i === cur ? "background:#fff;color:#0A2540;" : "background:rgba(255,255,255,.06);color:#B5CDE0;"), onClick: () => this.liveTabSelect(i), onClose: (e) => { try { e.stopPropagation(); } catch (err) {} this.liveTabClose(i); } })),
+          liveTabsMany: tabs.length > 1, liveCanAdd: tabs.length < this.LIVE_SLOTS, liveActiveLabel: (tabs[cur] || {}).label || "", liveActiveUrl: (tabs[cur] || {}).url || "",
+          liveMenuOpen: !!this.state.liveMenu, liveMenuToggle: this.liveMenuToggle, liveTabPrompt: this.liveTabPrompt, liveOpenInBrowser: this.liveOpenInBrowser,
+          livePages: this._livePages().map(p => ({ label: p.label, onClick: () => this._liveOpen(p.url), style: PAGE + (tabs.some(x => x.url === p.url) ? "color:#3DD6B5;background:rgba(61,214,181,.08);" : "color:#E6F0F7;") })),
+        };
+        for (let i = 0; i < this.LIVE_SLOTS; i++) { const x = tabs[i]; o["ls" + i] = !!x; o["lu" + i] = x ? x.url : "about:blank"; o["lf" + i] = "position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;display:" + (i === cur ? "block" : "none") + ";"; }
+        return o;
+      })(),
       isRoiView: view === "roi", roiEmbedUrl: view === "roi" ? this._roiTarget().url : "about:blank", closeRoi: this.closeRoi, openRoiTab: this.openRoiTab,
       isLiveSite: view === "livesite", liveSiteUrl: ((view === "feature" || (view === "livesite" && this.state.preLiveView === "feature")) && feat && feat.demo && feat.demo.liveUrl) || CS.liveSiteUrl || this.props.liveSiteUrl || "https://app.freightpop.com/app/#/quote-ship", /* module open → that module's page; else the configured Live Site URL */
       libOpen: view === "feature" && step === 3, closeLib: this.closeLib,
@@ -3074,7 +3164,7 @@ class Component extends DCLogic {
       aiOnFn: () => this.setState({ liveOn: false, aiOn: true }),
       btnAiBg: aiShown ? "rgba(61,214,181,.14)" : "rgba(255,255,255,.03)", btnAiColor: aiShown ? "#3DD6B5" : "#7E97AC", btnAiBorder: aiShown ? "rgba(61,214,181,.45)" : "rgba(255,255,255,.14)",
       showLive: this.state.liveOn, liveUrl: (feat.demo && feat.demo.liveUrl) || this.LIVE_URLS[this.state.sysKey] || this.LIVE_URL_DEFAULT,
-      liveOff: () => this.setState({ liveOn: false, aiOn: false }), liveOnFn: () => this.setState({ liveOn: true, aiOn: false }),
+      liveOff: () => this.setState({ liveOn: false, aiOn: false }), liveOnFn: () => { this.setState({ liveOn: true, aiOn: false }); this._liveOpen((feat.demo && feat.demo.liveUrl) || this.LIVE_URLS[this.state.sysKey] || this.LIVE_URL_DEFAULT); },
       expanded: !!this.state.demoExpanded,
       setDemoBox: this._setDemoBox,
       toggleExpand: this._toggleExpand,
