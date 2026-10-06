@@ -1,5 +1,7 @@
 # Live Site deep links
 
+> **Hosting moved (2026-10-05):** the deck is served by SalesOS from `FPPricer/public/deck/` (see `docs/DEPLOYMENT.md`). Paths below that say "the deck site" now mean `freightpopsales.com/deck/`.
+
 Status 2026-10-02. Every module's **Live Site ↗** tab (Live Demo step) and the top-bar **Live Site** pill
 open a specific page of `app.freightpop.com` instead of the generic Quote/Ship screen.
 
@@ -23,7 +25,7 @@ Base: `https://app.freightpop.com/app/#/`
 
 | System | # | Module | Route | Evidence |
 |---|---|---|---|---|
-| TMS | 01 | Shipping Rules Engine | `company/rules?tab=shipping-approval-rule` | `CompanyRules` route constant; `/company/rules` 109 sessions. **The `tab` value is not in the React route table** (kept from the previous author; harmless if ignored) |
+| TMS | 01 | Shipping Rules Engine | `company/rules?tab=shipping-approval-rule` | `CompanyRules` route constant; `/company/rules` 109 sessions. `tab` value = `ShippingApprovalRule="shipping-approval-rule"` in the lazy chunk `types-*.js` (not the main bundle); `FormRules-*.js` navigates to `CompanyRules?tab=<that>` (verified 2026-10-05) |
 | TMS | 02 | Carrier Management | `carrier-management` | route constant; 963 sessions |
 | TMS | 03 | Rate Shopping | `quote-ship` | route constant; 128,554 sessions |
 | TMS | 04 | Spot Quoting & Bid Portal | `quote-ship` | shipper side starts a spot quote from Quote/Ship; the bid portal is per-UUID (`spot-quote/:id`) and carrier-facing |
@@ -85,17 +87,136 @@ browser tabs.
 - **↗** on the right of the strip opens the active tab in a real browser tab when that is what you want.
 - Page names live in `LIVE_PAGE_NAMES` (keyed by the route after `#/`); unknown routes are humanised from the path.
 
-What the deck cannot do: catch a page the *app itself* opens with `target="_blank"` / `window.open` — the frame is
-cross-origin. Checked 2026-10-02 against the production bundle plus all 582 lazy chunks (2.6 MB): the React app has **no
-`window.open`** and only two `target="_blank"` links (footer marketing links, the OpenStreetMap attribution). So pages do
-not pop out on their own; what reps had were separate browser tabs they opened themselves — which is what the strip
-replaces. Login inside the frame: the email/password form renders framed (checked headless); the **OIDC Login** button
+What the deck cannot do on its own: catch a page the *app itself* opens with `window.open` / `target="_blank"` — the frame is
+cross-origin, so the popup lands in a real browser tab (with its own, unpartitioned login). **Correction 2026-10-05:** the 2026-10-02 note
+here said the app had no `window.open`; that grep missed React's `target:"_blank"` props and the lazy chunks. The History page's
+transactions section (`SectionTransactionsHistory-*.js`) does `window.open(${origin}/app/#${route}, "_blank")` for the **truck icon**
+("open transaction") and `window.open(…TransactionsHistoryListExcel…)` for the Excel export. That is what pops a rep out of the embed.
+
+**The fix is a one-line change in the app, plus a listener the deck already has.** When framed, the app should hand the URL to its
+parent instead of opening a tab:
+
+```js
+const url = `${window.location.origin}/app/#${route}`;
+if (window.top !== window.self) window.parent.postMessage({ type: "freightpop:open", url }, "*");
+else window.open(url, "_blank");
+```
+
+The deck listens for `message` events **from `https://app.freightpop.com` only**, accepts `{ type: "freightpop:open", url }` where `url`
+starts with `https://app.freightpop.com/`, and opens it as a new deck tab (an already-open URL is activated; with all 6 slots taken the
+active tab is replaced). Verified headless with a stub app page: truck → new "Track" tab; a foreign URL, a duplicate, and a message
+from the deck's own window are ignored. Until the app change ships, the **↗** button in the toolbar is the way back into a browser tab.
+
+### Working around it without the product team (2026-10-05)
+
+Ranked by how well they work:
+
+1. **Browser extension — built and verified: `deck-embed-extension/`** (install page + zip served by SalesOS at `freightpopsales.com/deck/deck-embed-extension/`).
+   A 20-line MV3 content script runs in every `app.freightpop.com` frame before the app boots (`world: "MAIN"`, `all_frames`).
+   When the app is framed it rewrites `window.open` and `target="_blank"` links that point at the app itself into the
+   `freightpop:open` message above; external links and file exports keep the native behaviour, and top-level app tabs are
+   untouched. Verified in Chromium with the deck: truck click → "Shipment Details · 47851298" deck tab, no popup; `_blank`
+   link → deck tab; external `window.open` → real tab; top-level app page → native new tab. One-time install per rep:
+   `chrome://extensions` → Developer mode → Load unpacked (README in the folder). Chrome 137+ no longer honours
+   `--load-extension` from the command line, so the offline kit cannot auto-load it; it is a manual 30-second step.
+2. **Serve the deck from a `*.freightpop.com` host** (e.g. `deck.freightpop.com` → the fpdeck Netlify site). Does not stop the
+   popup, but makes the frame *same-site* with the app, so the rep's normal browser login works inside the deck and the popup
+   tab no longer asks to sign in again. DNS + Netlify custom domain; pairs well with (1).
+3. **Same-origin mirror proxy** (deck host proxies `/app/*` → `app.freightpop.com`): would make the frame same-origin, letting the
+   deck override `contentWindow.open`, read the real in-app route for the address bar and use native back/forward. **Not viable
+   as-is:** the app derives its API host from the page hostname (`xie()` in the bundle: `app` → `appbe.freightpop.com`;
+   `localhost` → `http://localhost:26264`), so under another host it calls the wrong backend, and even with a rewritten bundle the
+   API would need CORS for the deck origin or a second proxy. Only worth it if the API team cooperates — which defeats the premise.
+4. **`sandbox` without `allow-popups` on the frames:** the browser blocks the popup silently, so the rep stays in the deck but
+   the truck icon does nothing. Kept out of the deck on purpose; a dead click in a demo is worse than a stray tab.
+Login inside the frame: the email/password form renders framed (checked headless); the **OIDC Login** button
 redirects to an identity provider that refuses framing, so SSO users should sign in to app.freightpop.com in the same
 browser first.
 
 Verified headless (Playwright, Chromium 1234): open module 02 live → strip shows "Carrier Management"; ＋ New tab → menu
 of 23 pages; add Order Management and WMS · Receipts → 3 iframes, only the active one displayed; switch back; close one;
 Live Site pill shows the same tabs; Back to deck. No page errors.
+
+### Browser chrome: address bar, ← → ⟳ (2026-10-05)
+
+Under the tab strip both live views now carry a browser toolbar: **←** / **→**, **⟳**, an **address bar**, **Go** and **↗**.
+
+- **Address bar.** Shows the active tab's URL and follows tab switches. Type and press **Enter** (or **Go**) to open the
+  address as a **new tab**, which becomes active — the page you were on stays in its tab. An address that is already open
+  activates that tab instead of duplicating it; when all 6 slots are taken the active tab is replaced. **⇧Enter** (or
+  ⌘/Ctrl+Enter) replaces the active tab in place; **Esc** reverts. Accepted forms: a route
+  (`wms/receipts`, `/track`, `#/audit`, `order-management?tab=inbound-transactions` → `https://app.freightpop.com/app/#/…`),
+  a bare host (`app.freightpop.com/app/#/audit` → `https://…`), or any full `http(s)://` URL. Any site can be typed, but a site
+  that sends `X-Frame-Options` / `frame-ancestors` will refuse to render inside the frame — the ↗ button opens it in a real tab.
+  Keys typed in the address bar never reach the deck's keyboard navigation (arrow keys, Esc, …).
+- **← / →** walk the pages the *deck* sent that tab to (⇧Enter replacements, the module's page). The badge at the bottom-left names the active tab's real host and page. The frames are
+  cross-origin, so the deck cannot see where the rep clicked *inside* the app; the address bar therefore shows the last
+  URL the deck navigated the tab to, not the app's current in-app route. **⟳** remounts the active frame and reloads that URL.
+- **Shared sign-in across tabs.** Every tab is an `app.freightpop.com` frame under the same top-level page, so all of them
+  share one cookie jar and `localStorage` (browsers partition third-party storage *by top-level site*, and all our frames
+  sit under the same one). Sign in once in any tab and every tab — and every tab opened later — is signed in. The frames
+  carry `allow="… storage-access"` so the app could call the Storage Access API if it ever does.
+- **Not shared: the rep's normal browser login.** When the deck is served from `fpdeck.netlify.app` or `freightpopsales.com`,
+  `app.freightpop.com` is a *cross-site* frame, so Chrome/Safari/Firefox give it a separate, partitioned cookie jar — being
+  signed in to the app in a regular tab does not sign the deck's frames in (reps sign in once inside the deck instead, which
+  then covers every tab). To make the browser login carry into the deck, serve the deck from a `*.freightpop.com` host
+  (e.g. `deck.freightpop.com` → the fpdeck Netlify site): same site as the app means no partitioning, one login everywhere.
+  That is a DNS + Netlify custom-domain change, not a deck change.
+
+Verified headless (Playwright, Chromium 1234, app stubbed): module 02 live → bar shows `#/carrier-management`; type
+`wms/receipts` + Enter → frame navigates, tab relabels "WMS · Receipts", deck `?go=` unchanged; ← / → move between the two;
+⇧Enter `track` → second tab; bare-host and full-URL forms; arrows/Esc inside the bar leave the deck where it is; ⟳ keeps
+2 frames; clicking a tab updates the bar; Live Site pill view shows the same tabs plus the module's page, one address bar.
+
+## Hotkeys · hero video · helper notice (2026-10-05)
+
+**Hotkeys.** Press **?** anywhere in the deck for the list. Letters are gated by `controls.hotkeys` (admin → Presentation controls →
+"Letter hotkeys"; per link `?c=nohotkeys`); arrow keys stay under the existing "Arrow-key / Esc navigation" toggle. Keys typed into an
+input (the Live Site address bar) never trigger them.
+
+| Key | Does |
+|---|---|
+| `?` | Show / hide the hotkey list |
+| `← →` | Previous / next screen or step (as before) |
+| `1`–`4` | In a module: Problem · Benefit · Live Demo · Validation |
+| `V` | Intro hero video (the Rive animation) on / off for this session |
+| `M` | Jump-to menu |
+| `H` | Main menu |
+| `B` | Back |
+| `L` | Live Site, full screen |
+| `F` | On the Live Demo step: Expand the demo (Esc collapses). On Live Site / ROI / Walkthrough / Main menu: browser fullscreen |
+| `T` or `/` | Focus the Live Site address bar (then type a route, Enter opens a new tab) |
+| `[` `]` | Previous / next Live Site tab |
+| `K` | Copy a link to this screen |
+| `Esc` | Close the list / menu / Live Site / ROI view, or step back |
+
+**Hero video.** `controls.heroVideo` (default on; admin toggle "Intro hero video"; per link `?c=novideo`) and the `V` hotkey. Off
+pauses both Rive instances (the static intro overlay's and the deck's) and hides their canvases, leaving the navy intro with the
+headline. Deck versions can override it (Deck versions → Presentation → "Intro hero video").
+
+**Live Site helper notice.** When the deck loads it shows a bottom-right card — "Keep FreightPOP inside the deck." — with **Get the
+helper ↗** (→ `settings.helperUrl`, default `https://freightpopsales.com/deck/deck-embed-extension/`, the extension's install page that
+serves the zip) and **Not now** (hides it for 7 days, `localStorage fp.helperDismissed`). The extension announces itself from inside
+every framed app page (`{ type: "freightpop:helper", version }`), which hides the notice for good and turns the Live Site toolbar
+pill from "Install helper ↗" into a green "Helper on". Admin: Presentation controls → "Show the install notice"; per link `?c=nohelper`.
+
+## Host-page deep links (2026-10-05)
+
+When the deck is framed by a host page on the same origin (SalesOS `/deck/freightpop-supply-chain` → `/deck/view`), two messages
+keep the deep link in the host's address bar: the deck posts `{ type: "freightpop:go", go, search }` from `_syncUrl` on every screen
+change, and the host may post `{ type: "freightpop:host", base }` (same origin only), after which the deck's **Link** button copies
+`base + ?go=…` instead of its own frame URL. Hosts that do not speak the protocol are unaffected.
+
+## Typography pass (2026-10-05)
+
+The deck and every companion page were brought onto the FreightPOP brand type system (brand guidelines v20 §2, §8, §12, §13):
+DM Sans 500 for eyebrows (11px, .08em, uppercase), buttons/pills (14px, sentence case, no tracking), badges and labels; Manrope 500
+tabular numerals for step/module numbers; Manrope 500 for the ROI stat; body copy ≤ 15px at weight 400. DM Mono now appears only
+where it is code or a URL: the address bar, the host badge, the access-token field. Companion pages load
+`Manrope 400/500 · DM Sans 300/400/500 (+italic) · DM Mono 400/500` from Google Fonts (no 700 — the browser would fake it), the
+42 demo screens dropped the `Segoe UI` stack for DM Sans, and every `font-weight 600–900` outside `@font-face` became 500.
+Demos still mirror the app's layout and copy; only the typeface changed (user decision, a deliberate departure from CLAUDE.md's
+"mirror the app" rule for fonts). Nav items stay 12px: with 12 tabs the top bar already overflows at 1280px, and 13px hid two more.
 
 ## ROI tab — in the deck, not a browser tab (2026-10-02)
 
@@ -125,7 +246,7 @@ The offline kit hides the ROI tab (`data-hide=…,roi` in the boot script), so n
   `app.freightpop.com/app/assets/index-*.js`), checks `?tab=` values against the bundle's tab enums, pings the external
   links, and compares the packed offline kit file-by-file with the deck site. This is the check that says "that page
   exists in the app"; `npm run check` here cannot know that.
-- Known warning: `tab=shipping-approval-rule` on Shipping Rules is not an enum value in the bundle (see table).
+- `tab=shipping-approval-rule` on Shipping Rules used to warn: the enum is in a lazy `types-*.js` chunk, not the main bundle. Since 2026-10-05 `crosscheck.mjs` looks unknown tab values up in those chunks (fetched once, on first miss), so the check is clean.
 
 ## Changing a link
 

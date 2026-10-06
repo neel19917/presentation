@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -19,33 +19,33 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
 <div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#DCE7F5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#DCE7F5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#0B1A2E;display:flex;align-items:center;gap:14px;padding:0 20px;z-index:5;">
     <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
-    <span style="margin-left:22px;color:#8FB9EC;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
-    <span style="background:#4088CF;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;padding:7px 13px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
-    <span style="color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <span style="margin-left:22px;color:#8FB9EC;font-size:10.5px;font-weight:500;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:11px;font-weight:500;letter-spacing:.04em;padding:7px 13px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11.5px;font-weight:500;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
     <span style="width:1px;height:22px;background:rgba(255,255,255,.18);flex-shrink:0;"></span>
-    <div style="display:flex;align-items:center;gap:17px;font-size:12.5px;color:#DCE7F5;white-space:nowrap;"><span>Orders</span><span style="color:#fff;font-weight:600;">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+    <div style="display:flex;align-items:center;gap:17px;font-size:12.5px;color:#DCE7F5;white-space:nowrap;"><span>Orders</span><span style="color:#fff;font-weight:500;">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
     <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
   </div>
 
   <div style="position:absolute;top:56px;left:0;right:0;height:74px;background:#fff;padding:12px 34px 0;z-index:4;">
-    <div style="font-size:20px;font-weight:700;color:#14263C;">{{ pageTitle }}</div>
-    <div style="display:flex;gap:26px;margin-top:9px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+    <div style="font-size:20px;font-weight:500;color:#14263C;">{{ pageTitle }}</div>
+    <div style="display:flex;gap:26px;margin-top:9px;font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:7px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
   </div>
 
   <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;left:34px;top:150px;width:600px;height:190px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
-      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;"><span style="font-size:16px;font-weight:600;color:#24354A;">Locations</span><span style="font-size:12px;color:#5E7186;">Search by Zip</span></div>
+      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;"><span style="font-size:16px;font-weight:500;color:#24354A;">Locations</span><span style="font-size:12px;color:#5E7186;">Search by Zip</span></div>
       <div style="position:absolute;left:18px;top:52px;width:564px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Ship From</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">FreightPOP Demo, 1 Rancho Cir, Lake Forest, CA, 92630</div></div>
       <div style="position:absolute;left:18px;top:114px;width:564px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Ship To</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">Disneyland Park, 1313 S Harbor Blvd, Anaheim, CA, 92802</div></div>
     </div>
 
     <div style="position:absolute;left:34px;top:358px;width:600px;height:342px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
-      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;"><span style="font-size:16px;font-weight:600;color:#24354A;">Shipment Details</span><span style="font-size:12px;color:#5E7186;">CUBISCAN</span></div>
-      <div style="position:absolute;left:18px;top:50px;right:18px;height:34px;border-top:1px solid #EDF1F6;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;"><span style="font-size:13px;font-weight:600;color:#24354A;">{{ pkgLine }}</span><span style="font-size:11.5px;color:#8A97A8;">Generic Product</span></div>
+      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;"><span style="font-size:16px;font-weight:500;color:#24354A;">Shipment Details</span><span style="font-size:12px;color:#5E7186;">CUBISCAN</span></div>
+      <div style="position:absolute;left:18px;top:50px;right:18px;height:34px;border-top:1px solid #EDF1F6;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;"><span style="font-size:13px;font-weight:500;color:#24354A;">{{ pkgLine }}</span><span style="font-size:11.5px;color:#8A97A8;">Generic Product</span></div>
       <div style="position:absolute;left:18px;top:100px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Quantity</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ qty }}</div></div>
       <div style="position:absolute;left:200px;top:100px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Type</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ pkgType }}</div></div>
       <div style="position:absolute;left:382px;top:100px;width:200px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Container Type</span><div style="padding:13px 0 0 12px;font-size:13px;color:#8A97A8;">—</div></div>
@@ -54,7 +54,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="position:absolute;left:382px;top:164px;width:200px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Height</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ dimH }}</div></div>
       <div style="position:absolute;left:18px;top:228px;width:170px;height:44px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10.5px;color:#5E7186;">Weight (per piece)</span><div style="padding:13px 0 0 12px;font-size:13px;color:#2A3B50;">{{ wt }}</div></div>
       <div style="position:absolute;left:18px;top:280px;right:18px;">
-        <div style="font-size:12.5px;font-weight:600;color:#24354A;margin-bottom:10px;">Accessorials</div>
+        <div style="font-size:12.5px;font-weight:500;color:#24354A;margin-bottom:10px;">Accessorials</div>
         <sc-if value="{{ liftGate }}" hint-placeholder-val="{{ false }}">
           <span style="display:inline-flex;align-items:center;gap:8px;background:#EAF1FB;border:1px solid #C3D8F3;color:#4088CF;font-size:12.5px;padding:7px 12px;border-radius:16px;animation:rsFadeUp .3s both;">Destination Lift Gate<span style="color:#7EA3D2;">✕</span></span>
         </sc-if>
@@ -67,8 +67,8 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
   <sc-if value="{{ showRates }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:34px;top:150px;width:855px;height:550px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);overflow:hidden;animation:rsFadeUp .35s both;">
-      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #EDF1F6;"><span style="font-size:15px;font-weight:600;color:#24354A;">Rate results · Quote Id 44268596</span><span style="font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:6px 12px;">SPOT QUOTE</span></div>
-      <div style="position:absolute;left:0;right:0;top:44px;height:34px;background:#F8FAFD;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#5E7186;">
+      <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #EDF1F6;"><span style="font-size:15px;font-weight:500;color:#24354A;">Rate results · Quote Id 44268596</span><span style="font-size:11.5px;font-weight:500;letter-spacing:.05em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:6px 12px;">SPOT QUOTE</span></div>
+      <div style="position:absolute;left:0;right:0;top:44px;height:34px;background:#F8FAFD;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:500;color:#5E7186;">
         <span style="position:absolute;left:18px;top:10px;">Service</span><span style="position:absolute;left:250px;top:10px;">Delivery Days</span><span style="position:absolute;left:390px;top:10px;">Discounted Rate</span><span style="position:absolute;left:550px;top:10px;">Marked Up Rate</span><span style="position:absolute;left:700px;top:10px;">Carrier</span>
       </div>
       <div style="position:absolute;left:0;right:0;top:78px;">
@@ -87,8 +87,8 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
   <div style="position:absolute;left:938px;top:150px;width:472px;height:550px;background:#fff;border-radius:8px;box-shadow:0 12px 44px rgba(10,30,55,.28);border:1px solid #DDE4EC;overflow:hidden;z-index:20;">
     <div style="height:52px;border-bottom:1px solid #EDF1F6;display:flex;align-items:center;gap:12px;padding:0 16px;">
-      <span style="font-size:15px;font-weight:600;color:#14263C;">FreightPOP AI</span>
-      <span style="display:inline-flex;align-items:center;gap:7px;background:#EAF1FB;color:#4088CF;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:5px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 6h11M4 12h8M4 18h13" stroke="#4088CF" stroke-width="2.4" stroke-linecap="round"></path></svg>New chat</span>
+      <span style="font-size:15px;font-weight:500;color:#14263C;">FreightPOP AI</span>
+      <span style="display:inline-flex;align-items:center;gap:7px;background:#EAF1FB;color:#4088CF;font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:5px;"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M4 6h11M4 12h8M4 18h13" stroke="#4088CF" stroke-width="2.4" stroke-linecap="round"></path></svg>New chat</span>
       <span style="margin-left:auto;display:flex;align-items:center;gap:14px;color:#5E7186;">
         <svg width="17" height="17" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#5E7186" stroke-width="2"></circle><path d="M12 7v5.5l3.5 2" fill="none" stroke="#5E7186" stroke-width="2" stroke-linecap="round"></path></svg>
         <svg width="15" height="15" viewBox="0 0 24 24"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#5E7186" stroke-width="2.2" stroke-linecap="round"></path></svg>
@@ -142,15 +142,15 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <span style="font-size:12.5px;color:#4A5B70;">Total Weight: {{ totalWeight }}</span>
     <span style="font-size:12.5px;color:#4A5B70;">Total Linear Feet: {{ totalFeet }}</span>
     <span style="margin-left:auto;display:flex;gap:10px;">
-      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">CLEAR SHIPMENT</span>
-      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">PREVIEW BOL</span>
-      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">SAVE SHIPMENT</span>
-      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">SPOT QUOTE</span>
-      <span style="font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#fff;background:#4088CF;border-radius:4px;padding:8px 16px;">RATE SHOP</span>
+      <span style="font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">CLEAR SHIPMENT</span>
+      <span style="font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">PREVIEW BOL</span>
+      <span style="font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">SAVE SHIPMENT</span>
+      <span style="font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#4088CF;border:1px solid #C3D8F3;border-radius:4px;padding:8px 14px;">SPOT QUOTE</span>
+      <span style="font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#fff;background:#4088CF;border-radius:4px;padding:8px 16px;">RATE SHOP</span>
     </span>
   </div>
 
-  <div style="position:absolute;left:16px;bottom:66px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div style="position:absolute;left:16px;bottom:66px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
   <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
     <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
   </div>
@@ -165,7 +165,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
   </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #2E7CE4;animation:rsClick .5s ease-out both;"></div></div>

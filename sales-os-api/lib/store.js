@@ -6,6 +6,7 @@ try { fs.mkdirSync(DIR, { recursive: true }); } catch (e) { console.error('[stor
 const REV = path.join(DIR, 'revisions');
 fs.mkdirSync(REV, { recursive: true });
 const CUR = path.join(DIR, 'config.json');
+const KEEP = Math.max(60, Number(process.env.KEEP_REVISIONS || 200)); // revisions kept on the volume (each ~70 KB); admin → History lists them
 function readCurrent() { try { return JSON.parse(fs.readFileSync(CUR, 'utf8')); } catch { return null; } }
 function writeAtomic(file, obj) { const tmp = file + '.tmp'; fs.writeFileSync(tmp, JSON.stringify(obj, null, 2)); fs.renameSync(tmp, file); }
 function publish(data, meta) {
@@ -13,7 +14,8 @@ function publish(data, meta) {
   const doc = { version: (prev ? prev.version : 0) + 1, updatedAt: new Date().toISOString(), updatedBy: meta.by || 'admin', note: meta.note || '', data };
   writeAtomic(CUR, doc);
   writeAtomic(path.join(REV, String(doc.version).padStart(5, '0') + '.json'), doc);
-  prune(60);
+  prune(KEEP);
+  console.log(`[deck-config-api] published revision ${doc.version} by ${doc.updatedBy}${doc.note ? ' — ' + doc.note.slice(0, 120) : ''}`); // Railway log line per publish
   return doc;
 }
 function listRevisions() {

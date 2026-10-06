@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -17,15 +17,15 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
 <div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
     <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
-    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
-    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
-    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
-    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span style="color:#fff;font-weight:600;">Orders</span><span>Quote/Ship</span><span>Track</span><span>WMS</span><span>History</span></div>
+    <span style="color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:500;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span style="color:#fff;font-weight:500;">Orders</span><span>Quote/Ship</span><span>Track</span><span>WMS</span><span>History</span></div>
     <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
   </div>
 
@@ -36,15 +36,15 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <span style="flex:1;background:#fff;border-radius:6px;padding:6px 12px;font-size:11px;color:#5E7186;">portal.freightpop.com/crestline — Customer Portal</span>
     </div>
     <div style="height:52px;background:#0B1A2E;display:flex;align-items:center;justify-content:space-between;padding:0 22px;">
-      <span style="color:#fff;font-size:13px;font-weight:700;">Crestline Medical · Portal</span>
-      <span style="font-family:'DM Mono',monospace;font-size:10px;color:#3DD6B5;letter-spacing:.08em;">SCOPED · YOUR ORDERS ONLY</span>
+      <span style="color:#fff;font-size:13px;font-weight:500;">Crestline Medical · Portal</span>
+      <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;color:#3DD6B5;">SCOPED · YOUR ORDERS ONLY</span>
     </div>
     <div style="padding:16px 20px;">
-      <div style="font-size:13px;font-weight:700;color:#24354A;">Your recent deliveries</div>
+      <div style="font-size:13px;font-weight:500;color:#24354A;">Your recent deliveries</div>
       <div style="margin-top:10px;border:1.5px solid {{ ordBorder }};border-radius:8px;padding:13px 15px;transition:all .3s;background:{{ ordBg }};">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <div><b style="font-size:12.5px;color:#24354A;">SO-99204 · delivered 07/18</b><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">3 lines · Old Dominion · POD on file</div></div>
-          <span style="border:1.5px solid {{ retBtnBorder }};border-radius:6px;padding:9px 16px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:{{ retBtnColor }};background:{{ retBtnBg }};transition:all .3s;">REQUEST RETURN</span>
+          <span style="border:1.5px solid {{ retBtnBorder }};border-radius:6px;padding:9px 16px;font-size:10.5px;font-weight:500;letter-spacing:.05em;color:{{ retBtnColor }};background:{{ retBtnBg }};transition:all .3s;">REQUEST RETURN</span>
         </div>
         <sc-if value="{{ retFormOn }}" hint-placeholder-val="{{ false }}">
           <div style="margin-top:12px;border-top:1px solid #EDF1F6;padding-top:12px;display:flex;gap:14px;align-items:center;font-size:11.5px;animation:srFadeUp .3s both;">
@@ -56,7 +56,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <sc-if value="{{ labelOn }}" hint-placeholder-val="{{ false }}">
         <div style="margin-top:12px;border:1.5px solid #3B9E4E;border-radius:8px;padding:13px 15px;background:#F4FBF3;animation:srFadeUp .35s both;display:flex;justify-content:space-between;align-items:center;">
           <div><b style="font-size:12.5px;color:#2E5E33;">Return label ready — RMA-2214</b><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">UPS Ground · default return processing applied · tracking 1Z 88X 44…</div></div>
-          <span style="border:1px solid #B9CDE8;border-radius:6px;padding:9px 16px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#4088CF;background:#fff;">⤓ DOWNLOAD LABEL</span>
+          <span style="border:1px solid #B9CDE8;border-radius:6px;padding:9px 16px;font-size:10.5px;font-weight:500;letter-spacing:.05em;color:#4088CF;background:#fff;">⤓ DOWNLOAD LABEL</span>
         </div>
       </sc-if>
       <sc-if value="{{ statusOn }}" hint-placeholder-val="{{ false }}">
@@ -68,7 +68,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
   <!-- ═══ OPS SIDE ═══ -->
   <div style="position:absolute;left:874px;top:88px;width:536px;height:640px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);padding:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;font-weight:700;color:#24354A;">Meanwhile, on your side</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:#8A97A8;letter-spacing:.06em;">FREIGHTPOP · ORDERS</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;font-weight:500;color:#24354A;">Meanwhile, on your side</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:#8A97A8;letter-spacing:.06em;">FREIGHTPOP · ORDERS</span></div>
     <div style="margin-top:12px;border:1px solid #E1E7EF;border-radius:8px;padding:13px 15px;font-size:11.5px;">
       <div style="display:flex;justify-content:space-between;"><b style="color:#24354A;">Inbox: return requests</b><span style="color:#8A97A8;">today</span></div>
       <div style="margin-top:9px;color:{{ opsColor }};transition:all .3s;">{{ opsText }}</div>
@@ -85,13 +85,13 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="display:flex;justify-content:space-between;border:1px solid #E1E7EF;border-radius:6px;padding:10px 13px;"><span style="color:#5E7186;">Vendor portal access</span><b style="color:#24354A;">Permission-scoped</b></div>
     </div>
     <sc-if value="{{ bannerOn }}" hint-placeholder-val="{{ false }}">
-      <div style="margin-top:14px;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">No phone call. No forwarded label. No switchboard.</span></div>
+      <div style="margin-top:14px;height:44px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:500;color:#2E5E33;">No phone call. No forwarded label. No switchboard.</span></div>
     </sc-if>
     <div style="position:absolute;left:16px;bottom:14px;right:16px;font-size:11.5px;color:#8A97A8;white-space:normal;">Labels and status live in the portal — not in your inbox.</div>
   </div>
 
   <!-- ═══ OVERLAYS ═══ -->
-  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
   <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
     <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
   </div>
@@ -106,7 +106,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
   </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>

@@ -10,16 +10,16 @@ Config API + admin panel for the FreightPOP sales deck. Runs on Railway (project
 
 | Section | Controls |
 |---|---|
-| Settings & links | Walkthrough / Main-menu / FreightPOP AI / Live Site / ROI URLs, ROI tab mode (in-deck / new browser tab / auto), per-system live deep links, intro headline/subtitle/CTA/caption, logo marquee on/off |
+| Settings & links | Walkthrough / Main-menu / FreightPOP AI / Live Site / ROI URLs, ROI tab mode (in-deck / new browser tab / auto), per-system live deep links, Live Site helper (browser extension) install page URL, intro headline/subtitle/CTA/caption, logo marquee on/off |
 | Tabs & navigation | Enable/disable, reorder and rename the 12 top-bar tabs (also drives the Jump-to menu tiles and their subtitles) |
 | Deck versions | Per-AE / per-prospect overlays on the base: tabs, start screen, chrome, custom slide decks; share-link builder |
 | Appearance & size | Whole-deck scale, top-bar scale, hub scale + card columns + card min-height, module-page scale, demo stage width + scale, validation stat size, intro headline/subtitle size |
-| Presentation controls | Start screen, keyboard navigation, breadcrumb, Live Site pill, Menu button, Link (copy deep link) button, step dots, prev/next arrows, fullscreen pills, AI / Live Site / Expand demo tabs, demo autoplay + speed, Validation Library on step 4 |
+| Presentation controls | Start screen, keyboard navigation, letter hotkeys (? lists them), intro hero video on/off, Live Site helper install notice, breadcrumb, Live Site pill, Menu button, Link (copy deep link) button, step dots, prev/next arrows, fullscreen pills, AI / Live Site / Expand demo tabs, demo autoplay + speed, Validation Library on step 4 |
 | Labels & text | Step tab names + eyebrows, button labels, demo tab labels, card link text |
 | Page headings | Eyebrow / H1 / lede for the TMS, WMS, OMS hubs and the Workflows, Roadmap, Onboarding pages |
 | TMS / WMS / OMS modules | Enable/disable, reorder; every piece of copy per module: name, card title, tagline, problem, benefit bullets, demo caption / key / AI key / live URL, ROI stat, label, grade, proof, quote, source |
 | Roadmap · Onboarding · Workflows | Add / remove / reorder / edit items; enable/disable workflows |
-| History & reset | Every publish is a revision (last 60); restore any; reset a section or everything to the deck defaults |
+| History & reset | Every publish is a revision (last 200, `KEEP_REVISIONS`; each is logged on the server); restore any; reset a section or everything to the deck defaults |
 
 ## How the deck uses it
 
@@ -35,7 +35,7 @@ Every screen has a URL. The deck keeps the address bar in sync as you present (s
 | `tabs` | `?tabs=tms,wms,workflows` | Only these tabs exist for the viewer (top bar, Jump-to, walkthrough hotspots, arrow keys). `intro`, `explore`, `mainmenu` count as tabs. |
 | `hide` | `?hide=roi,ai` | Remove these tabs instead. |
 | `lock` | `?go=tms/03/demo&lock=1` | Gate to the linked tab only and drop the Menu button — the viewer stays where the link put them. |
-| `c` | `?c=nomenu,nokeys,speed=1.5` | Presentation controls for this link only: `menu keys crumbs livepill live ai expand dots arrows fs lib autoplay link` (prefix `no` to turn off), `speed=`. |
+| `c` | `?c=nomenu,nokeys,speed=1.5` | Presentation controls for this link only: `menu keys crumbs livepill live ai expand dots arrows fs lib autoplay link video hotkeys helper` (prefix `no` to turn off), `speed=`. |
 | `v` | `?v=acme-foods` | Open a **deck version** (below). Combines with everything above. |
 
 The same params work after `#`, and the site root (`/?go=…`) forwards them to the deck file.
@@ -77,6 +77,30 @@ Stored at `DATA_DIR/variants/<slug>.json` as `{ slug, name, owner, note, overlay
 | GET · POST | `/api/links` | Bearer | list (with stats) · create `{ name, recipient, note, access: token|password|open, password?, expiresAt?, params: { v, go, tabs, hide, lock, c } }` → `{ link, shortUrl, deckUrl, token, tokenUrl }` (token only returned here) |
 | GET · PATCH · DELETE | `/api/links/:code` | Bearer | detail with sessions · update (`disabled`, `rotateToken`, `access`, `password`, `params`, …) · delete |
 
+## Security
+
+- **Public, by design:** `GET /api/config`, `GET /api/config?v=<slug>` and `GET /api/defaults` — the deck loads them without a login
+  (CORS `*`). They carry deck content and URLs only; the publisher identity and revision note are stripped unless the caller is an
+  admin. Everything typed into the admin ends up here, so no internal notes, pricing or customer contact details in module copy.
+- **Admin:** every write and all of versions / links / revisions need a Bearer token — the admin password (constant-time compare,
+  400 ms delay on failure) or Supabase SSO restricted to `@ADMIN_EMAIL_DOMAIN` with an Admin / Super Admin profile. Sessions are
+  24 random bytes, 12 h sliding, in memory.
+- **Lockout:** 10 failures in 15 minutes lock the client IP for 15 minutes (`429`, `Retry-After`) on `/api/login`, the tracked-link
+  gate (`/l/<code>`, also per link code) and `/api/t/<code>/unlock`. Tune with `LOCK_AFTER`, `LOCK_WINDOW_MIN`, `LOCK_MIN`.
+- **Deck versions:** new versions get a random 6-character slug suffix (`?v=acme-foods-k7m2pq`) because any slug resolves publicly.
+  Versions created before 2026-10-05 keep their short slugs — recreate (clone) the sensitive ones.
+- **Tracked links:** tokens / passwords are scrypt-hashed; wrong guesses wait 500 ms and count toward the lockout.
+- **Headers:** `X-Content-Type-Options`, `Referrer-Policy: no-referrer`, HSTS, `Permissions-Policy`; HTML gets
+  `Content-Security-Policy: frame-ancestors` (default allows SalesOS and localhost; set `FRAME_ANCESTORS`). No `X-Frame-Options: DENY`
+  because SalesOS embeds the admin.
+- **Deck hosting:** since 2026-10-05 the deck is static in the SalesOS repo (`FPPricer/public/deck/`, synced by its `scripts/sync-deck.mjs`) and served at `freightpopsales.com/deck/view` behind the `deck-gate` edge function (tracked-link session or signed-in rep). The old separate deck site (fpdeck.netlify.app) is being retired; until then it is still behind Netlify's site-wide password — every file, including this API's source, returns 401 without it.
+  In production nobody types that password: SalesOS (freightpopsales.com) serves the deck at `/deck/view` through its `deck-gate`
+  edge function, which admits a tracked-link session or a signed-in rep and fetches the deck from fpdeck with the password cookie
+  server-side; production `DECK_URL` points there, so `/l/<code>` → gate page → `freightpopsales.com/deck/view`. The password is
+  therefore a server-to-server secret (`DECK_SITE_COOKIE` in SalesOS and in the kit), not something reps or prospects use. Rotate it
+  in both places together; or retire the separate deck site by hosting the deck files inside the SalesOS repo (see
+  `docs/DEPLOYMENT.md`).
+
 ## Environment
 
 | Var | Purpose |
@@ -88,6 +112,8 @@ Stored at `DATA_DIR/variants/<slug>.json` as `{ slug, name, owner, note, overlay
 | `DECK_URL` | where tracked links land; default `https://beta--fpdeck.netlify.app/deck` |
 | `SHORT_BASE` | base for short links shown in the admin; default `DECK_URL` minus `/deck` + `/l/` |
 | `ALLOWED_ORIGINS` | comma-separated origins for CORS; default `*` (config is public read-only) |
+| `LOCK_AFTER` · `LOCK_WINDOW_MIN` · `LOCK_MIN` | brute-force lockout: failures (10) within a window (15 min) lock for (15 min) |
+| `FRAME_ANCESTORS` | CSP `frame-ancestors` for HTML responses; default `'self' https://freightpopsales.com https://*.freightpopsales.com http://localhost:* http://127.0.0.1:*` |
 | `PORT` | provided by Railway |
 
 ## Run locally

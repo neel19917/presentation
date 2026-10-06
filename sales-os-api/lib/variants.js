@@ -16,6 +16,12 @@ const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,48}$/;
 const isSlug = s => SLUG_RE.test(String(s || ''));
 const slugify = s => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 50);
 const file = slug => path.join(DIR, slug + '.json');
+// New versions get a random 6-char suffix (?v=acme-foods-k7m2pq): the public config endpoint resolves any slug, so a guessable
+// slug would expose a prospect's version to anyone who types it. Existing versions keep the slug they have.
+const SUFFIX_ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
+const randomSuffix = () => { const b = require('crypto').randomBytes(6); let s = ''; for (let i = 0; i < 6; i++) s += SUFFIX_ALPHABET[b[i] % SUFFIX_ALPHABET.length]; return s; };
+const hasSuffix = s => /-[a-z2-9]{6}$/.test(s);
+function uniqueSlug(base) { base = String(base).replace(/-+$/, '').slice(0, 42).replace(/-+$/, '') || 'version'; for (let i = 0; i < 20; i++) { const s = base + '-' + randomSuffix(); if (!fs.existsSync(file(s))) return s; } throw new Error('could not allocate a slug'); }
 const now = () => new Date().toISOString();
 
 function read(slug) { if (!isSlug(slug)) return null; try { return JSON.parse(fs.readFileSync(file(slug), 'utf8')); } catch { return null; } }
@@ -40,7 +46,8 @@ function sanitizeSlides(slides) {
 }
 function save(slug, body, by) {
   if (!isSlug(slug)) throw Object.assign(new Error('slug must be 2-49 chars: a-z 0-9 -'), { status: 400 });
-  const prev = read(slug);
+  let prev = read(slug);
+  if (!prev && !hasSuffix(slug) && body.exactSlug !== true) slug = uniqueSlug(slug); // creating: make the link unguessable
   const overlay = body.overlay && typeof body.overlay === 'object' && !Array.isArray(body.overlay) ? clone(body.overlay) : (prev ? prev.overlay : {});
   if (overlay && overlay.slides !== undefined) delete overlay.slides; // slides are top-level on the variant, never in the overlay
   const doc = { slug, name: String(body.name || (prev && prev.name) || slug).slice(0, 80), owner: String(body.owner ?? (prev ? prev.owner : '') ?? '').slice(0, 120), note: String(body.note ?? (prev ? prev.note : '') ?? '').slice(0, 400),
@@ -69,4 +76,4 @@ function resolve(baseData, variant) {
   data.nav = nav.filter(n => !String(n.key).startsWith('s:') || slides.some(d => 's:' + d.id === n.key)); // drop nav rows for slide decks that no longer exist / are off
   return data;
 }
-module.exports = { DIR, isSlug, slugify, read, list, save, remove, cloneTo, resolve };
+module.exports = { DIR, isSlug, slugify, read, list, save, remove, cloneTo, resolve, hasSuffix };

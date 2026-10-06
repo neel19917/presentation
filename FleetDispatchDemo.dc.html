@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -17,22 +17,22 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
 <div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
     <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
     <div style="margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0;">
       <div style="width:170px;height:26px;border-radius:4px;background:#fff;display:flex;align-items:center;gap:7px;padding:0 10px;"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:10.5px;">Search</span></div>
-      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
-      <span style="color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;">DASHBOARD</span>
+      <span style="background:#4088CF;color:#fff;font-size:9.5px;font-weight:500;letter-spacing:.05em;padding:6px 10px;border-radius:3px;">NEW EXPERIENCE</span>
+      <span style="color:#fff;font-size:10px;font-weight:500;letter-spacing:.04em;">DASHBOARD</span>
       <span style="width:1px;height:22px;background:rgba(255,255,255,.2);display:block;"></span>
-      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span style="color:#fff;font-weight:600;">Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
+      <div style="display:flex;align-items:center;gap:14px;font-size:11.5px;color:#DCE6F0;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span style="color:#fff;font-weight:500;">Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
       <div style="width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
     </div>
   </div>
 
-  <div style="position:absolute;left:30px;top:70px;font-size:19px;font-weight:700;color:#1A1A1A;">Track</div>
-  <div style="position:absolute;left:30px;top:104px;display:flex;gap:32px;font-size:11.5px;font-weight:700;letter-spacing:.045em;color:#5E7186;">
+  <div style="position:absolute;left:30px;top:70px;font-size:19px;font-weight:500;color:#1A1A1A;">Track</div>
+  <div style="position:absolute;left:30px;top:104px;display:flex;gap:32px;font-size:11.5px;font-weight:500;letter-spacing:.045em;color:#5E7186;">
     <span>IN TRANSIT</span><span>CONTAINER OCEAN</span><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:9px;">FLEET</span><span>TRACK A SHIPMENT</span>
   </div>
   <div style="position:absolute;left:0;right:0;top:131px;height:1px;background:#E4E9EF;"></div>
@@ -46,20 +46,20 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <span style="position:absolute;right:16px;top:14px;color:#5E7186;font-size:13px;">⌃</span>
       <div style="position:absolute;left:36px;top:20px;font-size:15px;color:#24354A;">Total Shipments</div>
       <div style="position:absolute;left:36px;top:52px;display:flex;flex-direction:column;gap:7px;">
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#4088CF;display:block;"></span>Transfers: 0</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#8A97A8;display:block;"></span>Outbound: 4</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#6E9BE8;display:block;"></span>Inbound: 0</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#111;display:block;"></span>3rd Party: 0</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#DCE6F0;display:block;"></span>Total: 4</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#4088CF;display:block;"></span>Transfers: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#8A97A8;display:block;"></span>Outbound: 4</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#6E9BE8;display:block;"></span>Inbound: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#111;display:block;"></span>3rd Party: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#DCE6F0;display:block;"></span>Total: 4</span>
       </div>
       <div style="position:absolute;left:400px;top:26px;width:132px;height:132px;border-radius:50%;background:#8A97A8;"><span style="position:absolute;left:65px;top:2px;width:1.5px;height:64px;background:#fff;display:block;"></span></div>
       <div style="position:absolute;left:740px;top:20px;font-size:15px;color:#24354A;">Shipments with Delays/Issues</div>
       <div style="position:absolute;left:740px;top:52px;display:flex;flex-direction:column;gap:7px;">
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#4088CF;display:block;"></span>Transfers Delays/Issues: 0</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#8A97A8;display:block;"></span>Outbound Delays/Issues: 4</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#6E9BE8;display:block;"></span>Inbound Delays/Issues: 0</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#111;display:block;"></span>3rd Party Delays/Issues: 0</span>
-        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:700;color:#24354A;"><span style="width:11px;height:11px;background:#DCE6F0;display:block;"></span>Total: 4</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#4088CF;display:block;"></span>Transfers Delays/Issues: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#8A97A8;display:block;"></span>Outbound Delays/Issues: 4</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#6E9BE8;display:block;"></span>Inbound Delays/Issues: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#111;display:block;"></span>3rd Party Delays/Issues: 0</span>
+        <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;color:#24354A;"><span style="width:11px;height:11px;background:#DCE6F0;display:block;"></span>Total: 4</span>
       </div>
       <div style="position:absolute;left:1150px;top:26px;width:132px;height:132px;border-radius:50%;background:#8A97A8;"><span style="position:absolute;left:65px;top:2px;width:1.5px;height:64px;background:#fff;display:block;"></span></div>
     </div>
@@ -67,7 +67,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
     <!-- TOOLBAR -->
     <div style="{{ toolbarStyle }}">
-      <div style="position:absolute;left:20px;top:14px;width:230px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
+      <div style="position:absolute;left:20px;top:14px;width:230px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:500;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
       <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:272px;top:24px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
       <sc-for list="{{ pills }}" as="p" hint-placeholder-count="5"><span style="{{ p.style }}">{{ p.label }}</span></sc-for>
       <div style="position:absolute;left:1004px;top:14px;width:238px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Locations</span><span style="position:absolute;left:12px;top:11px;font-size:12.5px;color:#3A4B60;">16 selected</span><span style="position:absolute;right:30px;top:12px;font-size:9px;color:#8A97A8;">▾</span><span style="position:absolute;right:10px;top:9px;font-size:12px;color:#8A97A8;">ⓘ</span></div>
@@ -80,7 +80,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
     <!-- LIST VIEW -->
     <sc-if value="{{ listView }}" hint-placeholder-val="{{ true }}">
-      <div style="position:absolute;left:0;right:0;top:252px;height:34px;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;background:#fff;font-size:11px;font-weight:700;color:#3A4B60;">
+      <div style="position:absolute;left:0;right:0;top:252px;height:34px;border-top:1px solid #E4E9EF;border-bottom:1px solid #E4E9EF;background:#fff;font-size:11px;font-weight:500;color:#3A4B60;">
         <span style="position:absolute;left:24px;top:10px;width:13px;height:13px;border-radius:2px;border:1.5px solid #B9C3CF;display:inline-block;"></span>
         <span style="position:absolute;left:70px;top:11px;">Notes</span>
         <span style="position:absolute;left:190px;top:11px;">Tracking Status</span>
@@ -127,27 +127,27 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <!-- CALENDAR VIEW -->
     <sc-if value="{{ calView }}" hint-placeholder-val="{{ false }}">
       <div style="position:absolute;left:0;right:0;top:66px;height:56px;border-top:1px solid #E4E9EF;">
-        <span style="position:absolute;left:20px;top:10px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 16px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">TODAY</span>
+        <span style="position:absolute;left:20px;top:10px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 16px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.05em;">TODAY</span>
         <span style="position:absolute;left:560px;top:16px;color:#5E7186;font-size:14px;">‹</span>
-        <span style="position:absolute;left:600px;top:13px;font-size:17px;font-weight:700;color:#1A2634;">August 2026</span>
+        <span style="position:absolute;left:600px;top:13px;font-size:17px;font-weight:500;color:#1A2634;">August 2026</span>
         <span style="position:absolute;left:760px;top:16px;color:#5E7186;font-size:14px;">›</span>
-        <span style="position:absolute;right:246px;top:10px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 18px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.05em;">SAVE</span>
+        <span style="position:absolute;right:246px;top:10px;height:34px;box-sizing:border-box;display:flex;align-items:center;padding:0 18px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.05em;">SAVE</span>
         <div style="position:absolute;right:20px;top:8px;width:210px;height:38px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Display By</span><span style="position:absolute;left:12px;top:11px;font-size:12.5px;color:#3A4B60;">Detailed View</span><span style="position:absolute;right:12px;top:12px;font-size:9px;color:#8A97A8;">▾</span></div>
       </div>
       <div style="position:absolute;left:0;right:0;top:122px;bottom:42px;border-top:1px solid #E4E9EF;overflow:hidden;">
         <sc-for list="{{ dayCols }}" as="d" hint-placeholder-count="7">
           <div style="{{ d.col }}">
-            <div style="height:32px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#24354A;border-bottom:1px solid #EFF2F6;">{{ d.name }}</div>
+            <div style="height:32px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#24354A;border-bottom:1px solid #EFF2F6;">{{ d.name }}</div>
             <div style="height:26px;display:flex;align-items:center;gap:8px;padding:0 8px;">
               <span style="flex:1;height:5px;border-radius:2px;background:#E4E9EF;display:block;position:relative;overflow:hidden;"><span style="{{ d.fill }}"></span></span>
               <span style="font-size:10.5px;color:#5E7186;">{{ d.count }}</span>
-              <span style="font-size:12px;font-weight:700;color:#1A2634;">{{ d.num }}</span>
+              <span style="font-size:12px;font-weight:500;color:#1A2634;">{{ d.num }}</span>
             </div>
             <div style="position:absolute;left:6px;right:6px;top:60px;display:flex;flex-direction:column;gap:5px;">
               <sc-for list="{{ d.items }}" as="c" hint-placeholder-count="1">
                 <div style="{{ c.wrap }}">
                   <sc-if value="{{ c.isHdr }}" hint-placeholder-val="{{ false }}">
-                    <span style="font-size:10.5px;font-weight:700;color:#1A2634;">{{ c.label }}</span>
+                    <span style="font-size:10.5px;font-weight:500;color:#1A2634;">{{ c.label }}</span>
                   </sc-if>
                   <sc-if value="{{ c.isChip }}" hint-placeholder-val="{{ true }}">
                     <div style="{{ c.style }}">
@@ -179,7 +179,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </sc-if>
         <sc-if value="{{ capOpen }}" hint-placeholder-val="{{ false }}">
           <div style="position:absolute;left:800px;top:64px;width:236px;max-height:470px;overflow:hidden;background:#fff;border-radius:4px;box-shadow:0 10px 26px rgba(10,30,55,.26);padding:12px 0 10px;z-index:8;animation:rsFadeUp .2s both;">
-            <div style="text-align:center;font-size:13px;font-weight:700;color:#1A2634;">Load Capacity</div>
+            <div style="text-align:center;font-size:13px;font-weight:500;color:#1A2634;">Load Capacity</div>
             <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;padding:0 16px;">
               <sc-for list="{{ capRows }}" as="r" hint-placeholder-count="12">
                 <span style="display:flex;align-items:center;gap:9px;font-size:11.5px;color:#24354A;white-space:nowrap;"><span style="{{ r.dot }}"></span>{{ r.label }}</span>
@@ -189,7 +189,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </sc-if>
         <sc-if value="{{ infoOpen }}" hint-placeholder-val="{{ false }}">
           <div style="position:absolute;left:900px;top:96px;width:260px;background:#58595B;border-radius:3px;padding:12px 16px 14px;z-index:9;animation:rsFadeUp .18s both;box-shadow:0 10px 24px rgba(10,30,55,.3);">
-            <div style="text-align:center;font-size:13px;font-weight:700;color:#fff;">Shipment Info</div>
+            <div style="text-align:center;font-size:13px;font-weight:500;color:#fff;">Shipment Info</div>
             <div style="margin-top:8px;display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:#fff;white-space:nowrap;">
               <span>Company: SUPERIOR CAPITAL LLC</span>
               <span>Order Number: FPD45795433</span>
@@ -209,7 +209,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </sc-if>
   </div>
 
-  <div style="position:absolute;left:16px;bottom:60px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div style="position:absolute;left:16px;bottom:60px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
   <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
     <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
   </div>
@@ -224,7 +224,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
   </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:102px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;left:16px;bottom:102px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
@@ -371,7 +371,7 @@ class Component extends DCLogic {
         date: isMoved ? "08/13/2026" : r.date,
         dateColor: isMoved ? "#1F5FBF" : "#3A4B60", dateWeight: isMoved ? "700" : "400",
         late: isMoved ? "ON TIME" : r.late,
-        lateStyle: "position:absolute;left:360px;top:11px;border-radius:3px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.04em;color:" + (isMoved ? "#3D5A0F" : "#fff") + ";background:" + (isMoved ? "#C7DE6A" : "#D4483B") + ";",
+        lateStyle: "position:absolute;left:360px;top:11px;border-radius:3px;padding:4px 10px;font-size:10px;font-weight:500;letter-spacing:.04em;color:" + (isMoved ? "#3D5A0F" : "#fff") + ";background:" + (isMoved ? "#C7DE6A" : "#D4483B") + ";",
         rowStyle: "position:relative;height:42px;border-bottom:1px solid #EFF2F6;background:" + (i % 2 ? "#FCFDFE" : "#fff") + ";",
         st1: "width:26px;height:24px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:4px 0 0 4px;display:flex;align-items:center;justify-content:center;background:" + (r.issue && !isMoved ? "#C7362B" : "#4A90D9") + ";",
         issueIcon: !!(r.issue && !isMoved), clipIcon: !(r.issue && !isMoved),

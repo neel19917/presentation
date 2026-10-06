@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deck Embed Helper</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#051729;--raised:#0A2540;--mint:#3DD6B5;--txt:#FFFFFF;--txt2:#B5CDE0;--muted:#7A96B0}
+  html,body{margin:0;background:var(--navy);color:var(--txt);font:15px/1.5 'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+  main{max-width:720px;margin:0 auto;padding:64px 24px 80px}
+  .eyebrow{font:500 11px 'DM Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mint);margin:0 0 6px}
+  h1{font:400 40px/1.1 'Manrope',sans-serif;letter-spacing:-.02em;margin:0 0 12px}
+  h2{font:500 18px/1.2 'Manrope',sans-serif;margin:0 0 8px}
+  p{margin:0 0 16px;color:var(--txt2)}
+  .card{background:var(--raised);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:24px;margin:24px 0}
+  ol{margin:0;padding:0;list-style:none;counter-reset:s}
+  ol li{position:relative;padding:0 0 14px 44px;counter-increment:s}
+  ol li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:0;font:500 15px 'Manrope',sans-serif;color:var(--mint);font-variant-numeric:tabular-nums}
+  code{font:13px 'DM Mono',monospace;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;color:var(--txt)}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--mint);color:var(--navy);font:500 14px 'DM Sans',sans-serif;padding:10px 20px;border-radius:6px;text-decoration:none;transition:background-color .2s,box-shadow .2s,transform .2s}
+  .btn:hover{background:#2EB89A;box-shadow:0 4px 12px rgba(5,23,41,.14);transform:translateY(-1px)}
+  .ghost{display:inline-flex;align-items:center;gap:8px;color:var(--mint);border:1.5px solid var(--mint);font:500 14px 'DM Sans',sans-serif;padding:9px 18px;border-radius:6px;text-decoration:none;margin-left:10px}
+  .muted{color:var(--muted);font-size:13px}
+  footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  footer .a{font:500 17px 'Manrope',sans-serif}footer .b{color:var(--mint);font-size:13px;margin-top:4px}footer .c{font-size:13px;display:flex;gap:12px;align-items:center}footer .c span{color:rgba(255,255,255,.3)}
+</style></head>
+<body><main>
+  <p class="eyebrow">Sales deck · Live Site</p>
+  <h1>Keep FreightPOP inside the deck.</h1>
+  <p>Some actions in the live app — the truck icon on History, exports — open a new browser tab and pull you out of the presentation. This small browser extension keeps them inside the deck: they open as a new tab in the deck's Live Site strip instead. It only runs when the app is framed by the deck; normal use of app.freightpop.com is unchanged, and nothing is read or sent anywhere.</p>
+  <p><a class="btn" href="../deck-embed-extension.zip" download>Download the helper (zip) ↓</a><a class="ghost" href="README.md">Read the notes</a></p>
+  <div class="card">
+    <h2>Install once, about 30 seconds</h2>
+    <ol>
+      <li>Unzip the download. You get a folder named <code>deck-embed-extension</code>.</li>
+      <li>In Chrome, Edge or Brave open <code>chrome://extensions</code> and turn on <strong>Developer mode</strong> (top right).</li>
+      <li>Click <strong>Load unpacked</strong> and pick that folder.</li>
+      <li>Reload the deck. In a module's Live Site tab open History and click a truck icon: it opens as a new deck tab, and the Live Site toolbar shows <em>Helper on</em>.</li>
+    </ol>
+    <p class="muted">Keep the folder where it is; the browser loads the extension from there. If the FreightPOP app later ships the in-deck change natively, remove the extension.</p>
+  </div>
+  <footer><div><div class="a">See FreightPOP in action.</div><div class="b">Book a custom demo today.</div></div><div class="c"><span style="color:#fff">www.freightpop.com</span><span>|</span><span style="color:#fff">info@freightpop.com</span><span>|</span><span style="color:#fff">(949) 454-4602</span></div></footer>
+</main></body></html>

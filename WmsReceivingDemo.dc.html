@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -17,11 +17,11 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
 <div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div ref="{{ setCanvas }}" onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setCanvas }}" onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#16324E;display:flex;align-items:center;padding:0 18px;z-index:6;">
     <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:20px;width:auto;display:block;">
-    <span style="color:#fff;font-size:20px;font-weight:700;letter-spacing:.02em;margin-left:14px;">WMS</span>
+    <span style="color:#fff;font-size:20px;font-weight:500;letter-spacing:.02em;margin-left:14px;">WMS</span>
     <div style="margin-left:auto;display:flex;align-items:center;gap:22px;font-size:12.5px;color:#DCE6F1;">
       <svg width="16" height="16" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="6" fill="#DCE6F1"></rect><rect x="3" y="9" width="18" height="8" rx="1.5" fill="#DCE6F1"></rect><rect x="6" y="14" width="12" height="7" fill="#fff"></rect></svg>
       <span>Picking</span><span>Receipts</span><span>History</span><span>Bin Transfers</span><span>Transactions</span><span>Inventory</span><span>Cycle Counts</span><span>Manufacturing</span><span>Analytics</span><span>Settings</span>
@@ -32,7 +32,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <!-- ══════ RECEIPTS TRANSACTIONS GRID ══════ -->
   <sc-if value="{{ gridOn }}" hint-placeholder-val="{{ true }}">
   <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;">
-    <div style="position:absolute;left:14px;top:32px;font-size:24px;font-weight:700;color:#1B2B3D;">Receipts Transactions</div>
+    <div style="position:absolute;left:14px;top:32px;font-size:24px;font-weight:500;color:#1B2B3D;">Receipts Transactions</div>
     <div style="position:absolute;right:26px;top:22px;width:44px;height:44px;border-radius:50%;background:#4088CF;box-shadow:0 2px 8px rgba(64,136,207,.35);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:300;line-height:1;">+</div>
 
     <div style="position:absolute;left:10px;right:10px;top:88px;bottom:20px;border:1px solid #E3E9F0;border-radius:4px;">
@@ -40,7 +40,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         <div style="width:290px;height:44px;border:1px solid #CBD5E1;border-radius:4px;display:flex;align-items:center;padding:0 14px;gap:10px;">
           <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg>
           <span style="color:#9AA7B8;font-size:13px;flex:1;">Search</span>
-          <span style="color:#5E7186;font-size:12px;font-weight:700;letter-spacing:.06em;">GO</span>
+          <span style="color:#5E7186;font-size:12px;font-weight:500;letter-spacing:.06em;">GO</span>
         </div>
         <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.6"></path></svg>
         <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
@@ -52,7 +52,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </div>
       </div>
 
-      <div style="display:flex;align-items:center;height:38px;background:#F5F7FA;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:12.5px;font-weight:700;color:#33465C;padding:0 14px;">
+      <div style="display:flex;align-items:center;height:38px;background:#F5F7FA;border-top:1px solid #E3E9F0;border-bottom:1px solid #E3E9F0;font-size:12.5px;font-weight:500;color:#33465C;padding:0 14px;">
         <span style="width:34px;"><span style="display:inline-block;width:14px;height:14px;border:1.5px solid #93A2B4;border-radius:2px;"></span></span>
         <span style="width:150px;">Transaction ID</span><span style="width:150px;">PO Number</span><span style="width:145px;">Created Date</span><span style="width:150px;">Submitted Date</span><span style="width:140px;">Vendor ID</span><span style="width:145px;">Vendor Name</span><span style="width:155px;">Warehouse Name</span><span style="width:150px;">Created By</span><span style="width:120px;">Status</span>
       </div>
@@ -68,8 +68,8 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       </sc-for>
 
       <div style="position:absolute;left:0;right:0;bottom:12px;display:flex;align-items:center;justify-content:center;gap:26px;font-size:12.5px;color:#3C4B5C;">
-        <span>Results Per Page: <b style="font-weight:600;">50 ▾</b></span><span>1–{{ rowCount }} of {{ rowCount }}</span>
-        <span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <b style="color:#4088CF;border-bottom:1px solid #4088CF;font-weight:600;">1</b> ›</span>
+        <span>Results Per Page: <b style="font-weight:500;">50 ▾</b></span><span>1–{{ rowCount }} of {{ rowCount }}</span>
+        <span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <b style="color:#4088CF;border-bottom:1px solid #4088CF;font-weight:500;">1</b> ›</span>
       </div>
     </div>
   </div>
@@ -79,7 +79,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <sc-if value="{{ modalOn }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;inset:0;background:rgba(120,150,185,.42);z-index:20;"></div>
     <div style="position:absolute;left:415px;top:200px;width:610px;background:#fff;border-radius:6px;box-shadow:0 12px 44px rgba(11,26,46,.28);z-index:21;animation:srFadeUp .28s both;">
-      <div style="height:56px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 22px;font-size:17px;font-weight:600;color:#1B2B3D;">Import Purchase Order<span style="margin-left:auto;font-size:19px;color:#5E7186;">✕</span></div>
+      <div style="height:56px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 22px;font-size:17px;font-weight:500;color:#1B2B3D;">Import Purchase Order<span style="margin-left:auto;font-size:19px;color:#5E7186;">✕</span></div>
       <div style="padding:26px 22px 20px;">
         <div style="font-size:13.5px;color:#3C4B5C;">Enter a Purchase Order Number to import vendor and item details for receiving.</div>
         <div style="position:relative;margin-top:24px;height:48px;border:1.5px solid {{ poFieldBorder }};border-radius:4px;display:flex;align-items:center;padding:0 14px;font-size:14px;color:{{ poTextColor }};transition:border-color .3s;">
@@ -87,8 +87,8 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </div>
       </div>
       <div style="display:flex;gap:14px;padding:0 22px 22px;">
-        <span style="background:{{ importBg }};color:{{ importColor }};border-radius:4px;padding:12px 22px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">IMPORT PO</span>
-        <span style="border:1px solid #CBD5E1;color:#33465C;border-radius:4px;padding:12px 22px;font-size:12.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+        <span style="background:{{ importBg }};color:{{ importColor }};border-radius:4px;padding:12px 22px;font-size:12.5px;font-weight:500;letter-spacing:.05em;transition:all .3s;">IMPORT PO</span>
+        <span style="border:1px solid #CBD5E1;color:#33465C;border-radius:4px;padding:12px 22px;font-size:12.5px;font-weight:500;letter-spacing:.05em;">CANCEL</span>
       </div>
     </div>
   </sc-if>
@@ -96,9 +96,9 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <!-- ══════ NEW RECEIPT TRANSACTION FORM ══════ -->
   <sc-if value="{{ formOn }}" hint-placeholder-val="{{ false }}">
   <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;padding:20px 26px 70px;">
-    <div style="font-size:20px;font-weight:700;color:#1B2B3D;">New Receipt Transaction</div>
+    <div style="font-size:20px;font-weight:500;color:#1B2B3D;">New Receipt Transaction</div>
     <div style="font-size:12.5px;color:#5E7186;margin-top:5px;">PO Number: PO-45131</div>
-    <div style="display:flex;gap:26px;margin-top:16px;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+    <div style="display:flex;gap:26px;margin-top:16px;font-size:12.5px;font-weight:500;letter-spacing:.05em;color:#5E7186;">
       <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">GENERAL</span><span>DOCUMENTS</span>
     </div>
 
@@ -110,7 +110,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
           <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor ID</span>19024690</div>
           <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor Name</span>Avnet</div>
         </div>
-        <span style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:4px;padding:11px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;">VIEW ADDRESS</span>
+        <span style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:4px;padding:11px 18px;font-size:12px;font-weight:500;letter-spacing:.05em;">VIEW ADDRESS</span>
       </div>
     </div>
 
@@ -135,9 +135,9 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <div style="position:absolute;top:56px;left:0;right:0;bottom:0;background:#fff;overflow:hidden;">
     <div ref="{{ setCol }}" style="position:absolute;left:0;right:0;top:0;padding:14px 22px 40px;transform:translateY({{ scrollY }});transition:transform .7s cubic-bezier(.45,.05,.25,1);">
       <div style="font-size:12.5px;color:#5E7186;"><span style="color:#4088CF;border-bottom:1px solid #4088CF;">Receipts</span> / Edit Receipt Transaction</div>
-      <div style="font-size:20px;font-weight:700;color:#1B2B3D;margin-top:10px;">Edit Receipt Transaction</div>
+      <div style="font-size:20px;font-weight:500;color:#1B2B3D;margin-top:10px;">Edit Receipt Transaction</div>
 
-      <div style="margin-top:14px;font-size:12.5px;font-weight:700;color:#33465C;">Approval Status</div>
+      <div style="margin-top:14px;font-size:12.5px;font-weight:500;color:#33465C;">Approval Status</div>
       <div style="position:relative;height:74px;margin-top:6px;">
         <div style="position:absolute;left:380px;right:380px;top:24px;height:2px;background:#C9D4E0;"></div>
         <div style="position:absolute;left:356px;top:0;width:48px;height:48px;border-radius:50%;background:{{ ap1Bg }};display:flex;align-items:center;justify-content:center;transition:background .3s;"><svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2"></circle><path d="M12 7 L12 12 L16 14" stroke="#fff" stroke-width="2" fill="none"></path></svg></div>
@@ -146,7 +146,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         <div style="position:absolute;right:326px;top:54px;width:110px;text-align:center;font-size:10.5px;color:#5E7186;">Approved / Rejected</div>
       </div>
 
-      <div style="display:flex;gap:26px;margin-top:6px;font-size:12.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+      <div style="display:flex;gap:26px;margin-top:6px;font-size:12.5px;font-weight:500;letter-spacing:.05em;color:#5E7186;">
         <span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">GENERAL</span><span>DOCUMENTS</span>
       </div>
 
@@ -158,7 +158,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
             <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor ID</span>19024690</div>
             <div style="position:relative;height:42px;background:#fff;border:1px solid #DDE4EC;border-radius:4px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#3C4B5C;"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Vendor Name</span>Avnet</div>
           </div>
-          <span style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:4px;padding:11px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;">VIEW ADDRESS</span>
+          <span style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:4px;padding:11px 18px;font-size:12px;font-weight:500;letter-spacing:.05em;">VIEW ADDRESS</span>
         </div>
       </div>
 
@@ -179,17 +179,17 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="margin-top:14px;border:1px solid #E3E9F0;border-radius:4px;background:#FAFBFD;padding:14px 18px 18px;">
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="font-size:14.5px;color:#33465C;">Product Details &amp; Bin Allocation</div>
-          <span style="font-size:12px;font-weight:700;letter-spacing:.05em;padding:5px 13px;border-radius:999px;background:{{ statusBg }};color:{{ statusColor }};transition:all .3s;">{{ statusLabel }}</span>
+          <span style="font-size:12px;font-weight:500;letter-spacing:.05em;padding:5px 13px;border-radius:999px;background:{{ statusBg }};color:{{ statusColor }};transition:all .3s;">{{ statusLabel }}</span>
         </div>
         <div style="position:relative;margin-top:12px;height:48px;background:#fff;border:1px solid {{ scanBorder }};border-radius:4px;display:flex;align-items:center;padding:0 14px;font-size:13.5px;color:#9AA7B8;transition:border-color .3s;" data-t="scan"><span style="position:absolute;top:-8px;left:9px;background:#FAFBFD;padding:0 4px;font-size:10.5px;color:#7A8798;">Scan Item</span>Scan or type item number<span style="margin-left:auto;color:#4088CF;font-size:14px;letter-spacing:.3em;">⌕ ▣</span></div>
 
         <div style="margin-top:12px;border:1px solid #E3E9F0;border-radius:4px;background:#fff;">
-          <div style="display:flex;align-items:center;height:40px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#33465C;padding:0 20px;">
+          <div style="display:flex;align-items:center;height:40px;background:#F5F7FA;border-bottom:1px solid #E3E9F0;font-size:11.5px;font-weight:500;letter-spacing:.05em;color:#33465C;padding:0 20px;">
             <span style="width:230px;">ITEM NUMBER</span><span style="width:310px;">DESCRIPTION</span><span style="width:180px;text-align:right;">QTY ORDERED</span><span style="width:200px;text-align:right;">TOTAL RECEIVED</span><span style="width:220px;text-align:right;">BIN ALLOCATIONS</span><span style="margin-left:auto;">ACTIONS</span>
           </div>
           <div style="display:flex;align-items:center;height:44px;font-size:13px;color:#3C4B5C;padding:0 20px;">
-            <span style="width:230px;font-weight:600;color:#1B2B3D;">MFLD-2200 Manifold</span><span style="width:310px;color:#4088CF;">Hydraulic manifold, 2 in</span><span style="width:180px;text-align:right;">998</span><span style="width:200px;text-align:right;font-weight:700;color:#E38A00;">{{ r1Received }}</span><span style="width:220px;text-align:right;color:{{ r1AllocColor }};font-style:{{ r1AllocStyle }};">{{ r1AllocLabel }}</span>
-            <span data-t="r1Add" style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:8px 13px;font-size:11.5px;font-weight:700;letter-spacing:.05em;">+ ADD BIN</span>
+            <span style="width:230px;font-weight:500;color:#1B2B3D;">MFLD-2200 Manifold</span><span style="width:310px;color:#4088CF;">Hydraulic manifold, 2 in</span><span style="width:180px;text-align:right;">998</span><span style="width:200px;text-align:right;font-weight:500;color:#E38A00;">{{ r1Received }}</span><span style="width:220px;text-align:right;color:{{ r1AllocColor }};font-style:{{ r1AllocStyle }};">{{ r1AllocLabel }}</span>
+            <span data-t="r1Add" style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:8px 13px;font-size:11.5px;font-weight:500;letter-spacing:.05em;">+ ADD BIN</span>
           </div>
           <sc-if value="{{ a1On }}" hint-placeholder-val="{{ false }}">
             <div style="margin:0 20px 14px;border:1px solid #E3E9F0;border-radius:4px;animation:srFadeUp .3s both;">
@@ -204,8 +204,8 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
             </div>
           </sc-if>
           <div style="display:flex;align-items:center;height:44px;font-size:13px;color:#3C4B5C;padding:0 20px;border-top:1px solid #EDF1F6;">
-            <span style="width:230px;font-weight:600;color:#1B2B3D;">SEAL-118 Seal Kit</span><span style="width:310px;color:#4088CF;">Seal kit, viton</span><span style="width:180px;text-align:right;">998</span><span style="width:200px;text-align:right;font-weight:700;color:#E38A00;">{{ r2Received }}</span><span style="width:220px;text-align:right;color:{{ r2AllocColor }};font-style:{{ r2AllocStyle }};">{{ r2AllocLabel }}</span>
-            <span data-t="r2Add" style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:8px 13px;font-size:11.5px;font-weight:700;letter-spacing:.05em;">+ ADD BIN</span>
+            <span style="width:230px;font-weight:500;color:#1B2B3D;">SEAL-118 Seal Kit</span><span style="width:310px;color:#4088CF;">Seal kit, viton</span><span style="width:180px;text-align:right;">998</span><span style="width:200px;text-align:right;font-weight:500;color:#E38A00;">{{ r2Received }}</span><span style="width:220px;text-align:right;color:{{ r2AllocColor }};font-style:{{ r2AllocStyle }};">{{ r2AllocLabel }}</span>
+            <span data-t="r2Add" style="margin-left:auto;border:1px solid #B9CDE8;color:#4088CF;border-radius:3px;padding:8px 13px;font-size:11.5px;font-weight:500;letter-spacing:.05em;">+ ADD BIN</span>
           </div>
           <sc-if value="{{ a2On }}" hint-placeholder-val="{{ false }}">
             <div style="margin:0 20px 14px;border:1px solid #E3E9F0;border-radius:4px;animation:srFadeUp .3s both;">
@@ -228,23 +228,23 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <!-- ══════ FOOTER ACTION BAR ══════ -->
   <sc-if value="{{ footerOn }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:#F5F7FA;border-top:1px solid #E3E9F0;display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 300px 0 26px;z-index:12;">
-      <span style="background:{{ postBg }};color:{{ postColor }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">POST</span>
-      <span style="background:{{ submitBg }};color:{{ submitColor }};border:1px solid {{ submitBorder }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">SUBMIT</span>
-      <span style="background:{{ saveBg }};color:{{ saveColor }};border:1px solid {{ saveBorder }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;transition:all .3s;">SAVE</span>
-      <span style="border:1px solid #33465C;color:#1B2B3D;border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
+      <span style="background:{{ postBg }};color:{{ postColor }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:500;letter-spacing:.05em;transition:all .3s;">POST</span>
+      <span style="background:{{ submitBg }};color:{{ submitColor }};border:1px solid {{ submitBorder }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:500;letter-spacing:.05em;transition:all .3s;">SUBMIT</span>
+      <span style="background:{{ saveBg }};color:{{ saveColor }};border:1px solid {{ saveBorder }};border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:500;letter-spacing:.05em;transition:all .3s;">SAVE</span>
+      <span style="border:1px solid #33465C;color:#1B2B3D;border-radius:4px;padding:12px 24px;font-size:12.5px;font-weight:500;letter-spacing:.05em;">CANCEL</span>
     </div>
   </sc-if>
 
   <!-- ══════ NARRATIVE TOAST ══════ -->
   <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;right:26px;top:{{ toastTop }};width:392px;background:#fff;border:1px solid #E3E9F0;border-left:4px solid {{ toastAccent }};border-radius:5px;box-shadow:0 8px 26px rgba(11,26,46,.16);padding:14px 16px;z-index:30;animation:srFadeUp .3s both;white-space:normal;">
-      <div style="font-size:13px;font-weight:700;color:#1B2B3D;">{{ toastTitle }}</div>
+      <div style="font-size:13px;font-weight:500;color:#1B2B3D;">{{ toastTitle }}</div>
       <div style="font-size:12.5px;color:#5E7186;margin-top:5px;line-height:1.45;">{{ toastBody }}</div>
     </div>
   </sc-if>
 
   <!-- ══════ OVERLAYS ══════ -->
-  <div style="position:absolute;left:16px;bottom:78px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div style="position:absolute;left:16px;bottom:78px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
   <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
     <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
   </div>
@@ -259,7 +259,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
   </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:112px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;left:16px;bottom:112px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>

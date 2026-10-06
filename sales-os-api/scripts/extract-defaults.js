@@ -30,6 +30,7 @@ const defaults = {
     liveSiteUrl: (src.match(/this\.props\.liveSiteUrl \|\| "([^"]+)"/) || [])[1] || '',
     roiUrl: c.ROI_URL,
     roiMode: 'auto',
+    helperUrl: c.HELPER_URL,
     liveUrls: c.LIVE_URLS,
     intro: { headline: 'AI Supply Chain Software', subtitle: 'Intelligence that moves your supply chain', cta: 'Get Started', urlCaption: 'www.freightpop.com' }
   },
@@ -70,7 +71,8 @@ const defaults = {
   },
   controls: {
     startView: 'intro', keyboardNav: true, showStepDots: true, showPagingArrows: true, showFullscreenPills: true, showLiveSitePill: true, showMenuButton: true, showBreadcrumb: true,
-    showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true
+    showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true,
+    hotkeys: true, heroVideo: true, showHelperNotice: true
   },
   roadmap: { ai: c.roadmapAI.map(r => ({ ...r })), platform: c.roadmapPlatform.map(r => ({ ...r })) },
   onboarding: c.onboardingSteps.map(s => ({ num: s.num, label: s.label, lines: s.lines.slice() })),

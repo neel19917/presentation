@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "FreightPOP Deck Embed Helper",
+  "version": "1.0.0",
+  "description": "When app.freightpop.com runs inside the FreightPOP sales deck, 'open in new tab' actions (History → truck icon, exports) open as a new deck tab instead of leaving the deck.",
+  "content_scripts": [
+    {
+      "matches": ["https://app.freightpop.com/*"],
+      "js": ["embed.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    }
+  ]
+}

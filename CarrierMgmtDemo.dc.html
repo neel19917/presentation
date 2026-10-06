@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -19,21 +19,21 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
 <div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
     <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
-    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
-    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
-    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
-    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span style="color:#fff;font-weight:600;">Carrier Management</span></div>
+    <span style="color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:500;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span>Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Batch Ship</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span style="color:#fff;font-weight:500;">Carrier Management</span></div>
     <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
   </div>
 
   <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;">
-    <div style="font-size:20px;font-weight:700;color:#14263C;">Carrier Management</div>
-    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.05em;color:#5E7186;">
+    <div style="font-size:20px;font-weight:500;color:#14263C;">Carrier Management</div>
+    <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:500;letter-spacing:.05em;color:#5E7186;">
       <span style="color:{{ tabCarColor }};border-bottom:{{ tabCarLine }};padding-bottom:6px;">CARRIERS</span><span style="color:{{ tabConColor }};border-bottom:{{ tabConLine }};padding-bottom:6px;">CONNECTIONS</span><span>FLEET</span><span>RATE TABLES</span>
     </div>
   </div>
@@ -41,18 +41,18 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <!-- ═══ CARRIERS GRID ═══ -->
   <sc-if value="{{ showGrid }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;left:30px;top:132px;width:1380px;height:560px;background:#fff;border-radius:6px;box-shadow:0 1px 3px rgba(16,42,67,.10);">
-      <div style="height:44px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:600;color:#24354A;">Registered Carriers</span><span style="background:{{ addBg }};border-radius:4px;padding:9px 14px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">+ ADD CARRIER</span></div>
-      <div style="position:absolute;left:0;right:0;top:44px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:700;color:#4A5B70;">
+      <div style="height:44px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;"><span style="font-size:14px;font-weight:500;color:#24354A;">Registered Carriers</span><span style="background:{{ addBg }};border-radius:4px;padding:9px 14px;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;transition:background .2s;">+ ADD CARRIER</span></div>
+      <div style="position:absolute;left:0;right:0;top:44px;height:32px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;font-size:11.5px;font-weight:500;color:#4A5B70;">
         <span style="position:absolute;left:20px;top:8px;">Carrier</span><span style="position:absolute;left:330px;top:8px;">Mode</span><span style="position:absolute;left:480px;top:8px;">Account / Nickname</span><span style="position:absolute;left:780px;top:8px;">Sites</span><span style="position:absolute;left:950px;top:8px;">Connection</span><span style="position:absolute;left:1160px;top:8px;">Enabled</span>
       </div>
       <div style="position:absolute;left:0;right:0;top:76px;">
         <sc-for list="{{ carrierRows }}" as="c" hint-placeholder-count="4">
           <div style="{{ c.rowStyle }}">
-            <span style="position:absolute;left:20px;top:16px;font-size:12.5px;font-weight:600;color:#24354A;">{{ c.name }}</span>
+            <span style="position:absolute;left:20px;top:16px;font-size:12.5px;font-weight:500;color:#24354A;">{{ c.name }}</span>
             <span style="position:absolute;left:330px;top:16px;font-size:12px;color:#3A4B60;">{{ c.mode }}</span>
             <span style="position:absolute;left:480px;top:16px;font-size:12px;color:#3A4B60;">{{ c.acct }}</span>
             <span style="position:absolute;left:780px;top:16px;font-size:12px;color:#3A4B60;">{{ c.sites }}</span>
-            <span style="position:absolute;left:950px;top:13px;display:inline-flex;align-items:center;gap:7px;border-radius:12px;padding:4px 11px;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:{{ c.connBg }};color:{{ c.connColor }};">{{ c.connIcon }} {{ c.conn }}</span>
+            <span style="position:absolute;left:950px;top:13px;display:inline-flex;align-items:center;gap:7px;border-radius:12px;padding:4px 11px;font-size:10.5px;font-weight:500;letter-spacing:.04em;background:{{ c.connBg }};color:{{ c.connColor }};">{{ c.connIcon }} {{ c.conn }}</span>
             <span style="position:absolute;left:1160px;top:16px;width:28px;height:15px;border-radius:8px;background:#4088CF;"><span style="position:absolute;right:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;"></span></span>
           </div>
         </sc-for>
@@ -65,15 +65,15 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <sc-if value="{{ showModal }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:0;right:0;top:52px;bottom:0;background:rgba(10,25,45,.45);z-index:10;"></div>
     <div style="position:absolute;left:390px;top:120px;width:660px;height:520px;background:#fff;border-radius:8px;box-shadow:0 18px 50px rgba(5,20,40,.4);z-index:11;animation:srFadeUp .3s ease both;">
-      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:600;color:#14263C;">Add Carrier — LTL</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
+      <div style="height:48px;border-bottom:1px solid #E1E7EF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;"><span style="font-size:16px;font-weight:500;color:#14263C;">Add Carrier — LTL</span><span style="font-size:16px;color:#5E7186;">✕</span></div>
       <div style="position:absolute;left:24px;top:70px;width:380px;height:42px;border:1.5px solid {{ carBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Carrier</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ carName }}<sc-if value="{{ carFocus }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;width:1.5px;height:13px;background:#4088CF;margin-left:1px;vertical-align:-2px;animation:srBlink 1s infinite;"></span></sc-if></div><svg width="13" height="13" viewBox="0 0 24 24" style="position:absolute;right:10px;top:14px;"><circle cx="10" cy="10" r="7" fill="none" stroke="#4088CF" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#4088CF" stroke-width="2.5"></path></svg></div>
       <div style="position:absolute;left:424px;top:70px;width:212px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Mode</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">LTL</div><svg width="10" height="10" viewBox="0 0 24 24" style="position:absolute;right:10px;top:17px;"><path d="M5 9 L12 16 L19 9" fill="none" stroke="#5E7186" stroke-width="3"></path></svg></div>
-      <div style="position:absolute;left:24px;top:138px;font-size:12px;font-weight:700;color:#24354A;letter-spacing:.03em;">ACCOUNT CREDENTIALS</div>
+      <div style="position:absolute;left:24px;top:138px;font-size:12px;font-weight:500;color:#24354A;letter-spacing:.03em;">ACCOUNT CREDENTIALS</div>
       <div style="position:absolute;left:24px;top:164px;width:300px;height:42px;border:1.5px solid {{ acctBorder }};border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Account Number</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ acctNum }}</div></div>
       <div style="position:absolute;left:336px;top:164px;width:300px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">API Key</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ apiKey }}</div></div>
       <div style="position:absolute;left:24px;top:228px;width:300px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Nickname</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">{{ nick }}</div></div>
       <div style="position:absolute;left:336px;top:228px;width:300px;height:42px;border:1px solid #C6D0DC;border-radius:4px;"><span style="position:absolute;top:-7px;left:10px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Payment Type</span><div style="padding:12px 0 0 12px;font-size:13px;color:#2A3B50;">Prepaid</div></div>
-      <div style="position:absolute;left:24px;top:296px;font-size:12px;font-weight:700;color:#24354A;letter-spacing:.03em;">USE AT SITES</div>
+      <div style="position:absolute;left:24px;top:296px;font-size:12px;font-weight:500;color:#24354A;letter-spacing:.03em;">USE AT SITES</div>
       <div style="position:absolute;left:24px;top:322px;width:612px;height:52px;border:1px solid #C6D0DC;border-radius:4px;display:flex;align-items:center;gap:8px;padding:0 12px;">
         <sc-if value="{{ sitesOn }}" hint-placeholder-val="{{ false }}">
           <span style="background:#EAF3FF;border:1px solid #B9CDE8;border-radius:14px;padding:5px 12px;font-size:12px;color:#1F5FBF;animation:srFadeUp .3s both;">Lake Forest, CA ✕</span>
@@ -84,17 +84,17 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       </div>
       <div style="position:absolute;left:24px;top:396px;right:24px;font-size:11.5px;color:#8A97A8;white-space:normal;">Contracted rates, service rules and package types configure on the next step. No EDI project, no IT ticket.</div>
       <div style="position:absolute;right:24px;bottom:22px;display:flex;gap:10px;">
-        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 16px;color:#5E7186;font-size:10.5px;font-weight:700;letter-spacing:.05em;">CANCEL</span>
-        <span style="background:{{ saveBg }};border-radius:4px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;transition:background .2s;">SAVE CARRIER</span>
+        <span style="border:1px solid #C6D0DC;border-radius:4px;padding:11px 16px;color:#5E7186;font-size:10.5px;font-weight:500;letter-spacing:.05em;">CANCEL</span>
+        <span style="background:{{ saveBg }};border-radius:4px;padding:11px 20px;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;transition:background .2s;">SAVE CARRIER</span>
       </div>
     </div>
   </sc-if>
 
   <!-- ═══ OVERLAYS ═══ -->
   <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:30px;top:80px;width:1380px;height:42px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;z-index:8;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:600;color:#2E5E33;">SAIA LTL Freight is live — returning rates at 3 sites on the next quote. Connection verified.</span></div>
+    <div style="position:absolute;left:30px;top:80px;width:1380px;height:42px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;z-index:8;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:500;color:#2E5E33;">SAIA LTL Freight is live — returning rates at 3 sites on the next quote. Connection verified.</span></div>
   </sc-if>
-  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
+  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
   <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
     <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
   </div>
@@ -109,7 +109,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
   </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>

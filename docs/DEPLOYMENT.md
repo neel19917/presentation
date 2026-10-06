@@ -30,6 +30,13 @@ Total: ~150 files. Every internal link and asset reference has been verified to
 resolve on disk (see `KNOWN-ISSUES.md` for the four files the design API
 truncated and how they were handled).
 
+> **Hosting moved (2026-10-05).** The deck is now served by SalesOS from its own repo: `FPPricer/public/deck/` at
+> `https://freightpopsales.com/deck/view`, copied from this folder by `FPPricer/scripts/sync-deck.mjs` (only the files the deck
+> page reaches — 159 files, 14 MB). This repo stays the **authoring** source (deck, demos, media, `sales-os-api`, docs). To ship a
+> file change: commit here → `node scripts/sync-deck.mjs` in FPPricer → commit + push `beta`. The separate fpdeck.netlify.app site
+> and its password cookie are no longer read by anything and can be retired (see `FPPricer/docs/sales-deck-hosting.md`).
+> The Netlify notes below describe the old standalone deployment.
+
 ## URLs after deploy
 
 - `/` → Validation Library (rewrite; deep links `/?feature=...` still work)
@@ -84,6 +91,17 @@ The site is public by default. Options, cheapest first:
 
 Content here is marketing/validation material (public quotes, G2/Capterra
 reviews), so option 1 or 2 is usually enough.
+
+**Status 2026-10-05:** option 2 is on — fpdeck.netlify.app (and the beta branch) answer 401 to everything without the site
+password, including the Sales OS API source that is deployed alongside the deck. In production the password is never typed by a
+person: SalesOS (freightpopsales.com, repo FPPricer) serves the deck at `/deck/view` through its `deck-gate` edge function, which
+admits a tracked-link session (`?t&k`, verified with the API) or a signed-in @freightpop.com rep, and fetches the deck from this
+site with the password cookie (`DECK_SITE_COOKIE`). The API's production `DECK_URL` is `https://freightpopsales.com/deck/view`, so
+`/l/<code>` → gate page → SalesOS, never the raw netlify.app host. Two consequences: (a) the one shared password is a
+server-to-server secret held by SalesOS and the offline-kit builder — rotate it in both when it changes; (b) the separate deck site
+exists only to be proxied, so it can be retired by moving the deck's static files into the SalesOS repo (`public/deck/`), which
+removes the shared password entirely. API-side hardening (lockout, random version slugs, headers) is documented in
+`sales-os-api/README.md` → Security.
 
 ## Custom domain (optional)
 

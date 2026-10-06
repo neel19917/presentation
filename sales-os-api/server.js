@@ -89,16 +89,38 @@ function cors(req, res) {
   res.setHeader('Access-Control-Expose-Headers', 'ETag, X-Config-Version');
   if (allow !== '*') res.setHeader('Vary', 'Origin');
 }
+// ---- security headers ----
+// Who may frame our HTML (admin panel is embedded by SalesOS; the gate page should not be framed by strangers). Override with FRAME_ANCESTORS.
+const FRAME_ANCESTORS = process.env.FRAME_ANCESTORS || "'self' https://freightpopsales.com https://*.freightpopsales.com http://localhost:* http://127.0.0.1:*";
+function secHeaders(h) {
+  const out = Object.assign({ 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains', 'Permissions-Policy': 'camera=(), microphone=(), geolocation=()' }, h);
+  if (/text\/html/.test(String(out['Content-Type'] || ''))) out['Content-Security-Policy'] = 'frame-ancestors ' + FRAME_ANCESTORS;
+  return out;
+}
 function send(res, code, body, headers = {}) {
   const isObj = body !== null && typeof body === 'object' && !Buffer.isBuffer(body);
   const payload = isObj ? JSON.stringify(body) : body;
-  res.writeHead(code, Object.assign({ 'Content-Type': isObj ? 'application/json; charset=utf-8' : 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }, headers));
+  res.writeHead(code, secHeaders(Object.assign({ 'Content-Type': isObj ? 'application/json; charset=utf-8' : 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' }, headers)));
   res.end(payload);
 }
 function readRaw(req, limit = 64 * 1024) {
   return new Promise((resolve, reject) => { let size = 0; const chunks = []; req.on('data', c => { size += c.length; if (size > limit) { reject(new Error('payload too large')); req.destroy(); } else chunks.push(c); }); req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8'))); req.on('error', reject); });
 }
 const clientIp = req => String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+// ---- brute-force lockout (in memory) ----
+// A key (client IP, or a link code) that fails LOCK_AFTER times inside LOCK_WINDOW is locked for LOCK_FOR. Applies to the admin
+// login, the tracked-link gate page and the deck's unlock call. Counters live in memory, so a restart clears them — fine for a
+// throttle whose job is to make guessing slow, not to be an audit log.
+const LOCK_AFTER = Math.max(3, Number(process.env.LOCK_AFTER || 10)), LOCK_WINDOW_MS = Number(process.env.LOCK_WINDOW_MIN || 15) * 60e3, LOCK_FOR_MS = Number(process.env.LOCK_MIN || 15) * 60e3;
+const FAILS = new Map(); // key -> { n, first, until }
+function lockedFor(key) { const f = FAILS.get(key); if (!f) return 0; const now = Date.now(); if (f.until > now) return Math.ceil((f.until - now) / 1000); if (f.first + LOCK_WINDOW_MS < now) FAILS.delete(key); return 0; }
+function noteFailure(...keys) {
+  const now = Date.now();
+  for (const key of keys) { let f = FAILS.get(key); if (!f || (f.first + LOCK_WINDOW_MS < now && f.until <= now)) f = { n: 0, first: now, until: 0 }; f.n++; if (f.n >= LOCK_AFTER) { f.until = now + LOCK_FOR_MS; console.warn('[deck-config-api] lockout', key.split(':')[0], 'after', f.n, 'failures'); } FAILS.set(key, f); }
+  if (FAILS.size > 5000) for (const [k, v] of FAILS) if (v.until <= now && v.first + LOCK_WINDOW_MS < now) FAILS.delete(k);
+}
+function clearFailures(...keys) { for (const k of keys) FAILS.delete(k); }
+const lockMsg = s => 'Too many attempts. Try again in ' + Math.max(1, Math.ceil(s / 60)) + ' minute' + (s > 90 ? 's' : '') + '.';
 function readJson(req, limit = 4 * 1024 * 1024) {
   return new Promise((resolve, reject) => { let size = 0; const chunks = []; req.on('data', c => { size += c.length; if (size > limit) { reject(new Error('payload too large')); req.destroy(); } else chunks.push(c); }); req.on('end', () => { try { resolve(chunks.length ? JSON.parse(Buffer.concat(chunks).toString('utf8')) : {}); } catch (e) { reject(new Error('invalid JSON')); } }); req.on('error', reject); });
 }
@@ -114,7 +136,7 @@ function validate(data) {
 }
 function serveStatic(res, rel) {
   const file = path.normalize(path.join(ADMIN_DIR, rel)); if (!file.startsWith(ADMIN_DIR)) return send(res, 403, 'forbidden');
-  fs.readFile(file, (err, buf) => { if (err) return send(res, 404, 'not found'); res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' }); res.end(buf); });
+  fs.readFile(file, (err, buf) => { if (err) return send(res, 404, 'not found'); res.writeHead(200, secHeaders({ 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-cache' })); res.end(buf); });
 }
 
 const server = http.createServer(async (req, res) => {
@@ -124,11 +146,13 @@ const server = http.createServer(async (req, res) => {
   try {
     if (p === '/health') return send(res, 200, { ok: true, version: published().version, dataDir: store.DIR });
     if (p === '/' ) { res.writeHead(302, { Location: '/admin/' }); return res.end(); }
-    if (p === '/admin' || p === '/admin/') return serveStatic(res, 'index.html');
+    if (p === '/admin') { res.writeHead(302, { Location: '/admin/' + (url.search || '') }); return res.end(); } // index.html loads admin.js/admin.css relatively
+    if (p === '/admin/') return serveStatic(res, 'index.html');
     if (p.startsWith('/admin/')) return serveStatic(res, p.slice('/admin/'.length));
 
     if (p === '/api/config' && m === 'GET') {
       const doc = published();
+      if (!(req.headers.authorization && await authed(req))) { delete doc.updatedBy; delete doc.note; } // the public read is deck content only
       const vslug = (url.searchParams.get('v') || url.searchParams.get('variant') || '').trim().toLowerCase();
       if (vslug) { const v = variants.read(vslug); if (v) { doc.data = variants.resolve(doc.data, v); doc.variant = { slug: v.slug, name: v.name, owner: v.owner || '', updatedAt: v.updatedAt }; } else doc.variant = null; }
       const body = JSON.stringify(doc); const etag = '"' + crypto.createHash('sha1').update(body).digest('hex').slice(0, 16) + '"';
@@ -145,10 +169,13 @@ const server = http.createServer(async (req, res) => {
       if (!doc || doc.disabled || links.isExpired(doc)) return html(links.gatePage(doc || { name: 'FreightPOP sales deck' }, { unavailable: !doc ? 'This link does not exist. Check it was copied completely, or ask your FreightPOP contact for a new one.' : doc.disabled ? 'This link has been turned off by its owner.' : 'This link has expired. Ask your FreightPOP contact for a new one.' }), 404);
       const go = () => { const sid = links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }); res.writeHead(302, { Location: links.deckHref(DECK_URL, doc, { t: doc.code, k: sid }), 'Cache-Control': 'no-store' }); res.end(); };
       if (!doc.passwordHash) return go();
-      const tk = url.searchParams.get('tk'); if (tk && links.checkPassword(doc, tk)) return go(); // one-click link carrying the token
+      const gk = ['gate:' + clientIp(req), 'link:' + doc.code]; const gl = Math.max(...gk.map(lockedFor));
+      if (gl) return html(links.gatePage(doc, { action: '/l/' + doc.code, error: lockMsg(gl) }), 429);
+      const tk = url.searchParams.get('tk'); if (tk && links.checkPassword(doc, tk)) { clearFailures(gk[0]); return go(); } // one-click link carrying the token
+      if (tk) noteFailure(...gk);
       if (m === 'GET') return html(links.gatePage(doc, { action: '/l/' + doc.code, error: tk ? 'That access token is not valid for this link.' : '' }), tk ? 401 : 200);
-      const form = new URLSearchParams(await readRaw(req)); if (links.checkPassword(doc, form.get('password'))) return go();
-      await new Promise(r => setTimeout(r, 500)); return html(links.gatePage(doc, { action: '/l/' + doc.code, error: links.accessOf(doc) === 'token' ? 'That access token is not right. Check it and try again.' : 'That password is not right. Try again.' }), 401);
+      const form = new URLSearchParams(await readRaw(req)); if (links.checkPassword(doc, form.get('password'))) { clearFailures(gk[0]); return go(); }
+      noteFailure(...gk); await new Promise(r => setTimeout(r, 500)); return html(links.gatePage(doc, { action: '/l/' + doc.code, error: links.accessOf(doc) === 'token' ? 'That access token is not right. Check it and try again.' : 'That password is not right. Try again.' }), 401);
     }
     lm = p.match(/^\/api\/t\/([A-Za-z0-9]{5,12})\/(check|unlock|event)$/);
     if (lm) {
@@ -156,13 +183,15 @@ const server = http.createServer(async (req, res) => {
       if (!doc) return send(res, 404, { ok: false, error: 'no such link' });
       const dead = doc.disabled || links.isExpired(doc);
       if (what === 'check' && m === 'GET') { const k = url.searchParams.get('k') || ''; return send(res, 200, { ok: !dead && !!doc.sessions.find(x => x.sid === k), protected: !!doc.passwordHash, access: links.accessOf(doc), name: doc.name, recipient: doc.recipient || '', dead }); }
-      if (what === 'unlock' && m === 'POST') { if (dead) return send(res, 410, { ok: false, error: 'link unavailable' }); const body = await readJson(req); if (!links.checkPassword(doc, body.password)) { await new Promise(r => setTimeout(r, 500)); return send(res, 401, { ok: false, error: 'wrong password' }); } return send(res, 200, { ok: true, k: links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }) }); }
+      if (what === 'unlock' && m === 'POST') { if (dead) return send(res, 410, { ok: false, error: 'link unavailable' }); const uk = ['gate:' + clientIp(req), 'link:' + doc.code]; const ul = Math.max(...uk.map(lockedFor)); if (ul) return send(res, 429, { ok: false, error: 'too many attempts', retryAfterSec: ul, message: lockMsg(ul) }, { 'Retry-After': String(ul) }); const body = await readJson(req); if (!links.checkPassword(doc, body.password)) { noteFailure(...uk); await new Promise(r => setTimeout(r, 500)); return send(res, 401, { ok: false, error: 'wrong password' }); } return send(res, 200, { ok: true, k: links.openSession(doc, { ua: req.headers['user-agent'], ip: clientIp(req) }) }); }
       if (what === 'event' && m === 'POST') { const body = await readJson(req, 64 * 1024); return send(res, links.event(doc, String(body.k || ''), body) ? 200 : 403, { ok: true }); }
     }
     if (p === '/api/login' && m === 'POST') {
+      const lk = 'login:' + clientIp(req); const ls = lockedFor(lk);
+      if (ls) return send(res, 429, { error: 'too many attempts', retryAfterSec: ls, message: lockMsg(ls) }, { 'Retry-After': String(ls) });
       const body = await readJson(req);
-      if (!ADMIN_PASSWORD || !safeEq(body.password || '', ADMIN_PASSWORD)) { await new Promise(r => setTimeout(r, 400)); return send(res, 401, { error: 'invalid password' }); }
-      return send(res, 200, { token: newToken(), ttlMs: SESSION_TTL_MS });
+      if (!ADMIN_PASSWORD || !safeEq(body.password || '', ADMIN_PASSWORD)) { noteFailure(lk); await new Promise(r => setTimeout(r, 400)); return send(res, 401, { error: 'invalid password' }); }
+      clearFailures(lk); return send(res, 200, { token: newToken(), ttlMs: SESSION_TTL_MS });
     }
     // ---- authenticated ----
     if (p.startsWith('/api/')) {

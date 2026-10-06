@@ -70,7 +70,7 @@
 
 This folder is a **self-running, browser-based sales presentation for FreightPOP** — a TMS / WMS / OMS ("AI Supply Chain Software") vendor. It is not a slide deck in the PowerPoint sense. It is a single-page web application, authored in **Claude Design** (`.dc.html` files), that a sales rep drives with the arrow keys or a mouse during a live call. It opens on a full-bleed animated intro ("AI Supply Chain Software — Intelligence that moves your supply chain"), moves to an interactive product walkthrough, then to a platform menu with four systems (TMS, WMS, OMS, ERP), and from there into a **module library**: 18 TMS modules, 6 WMS modules, 5 OMS modules. Every module follows the same four-beat story — **Problem → Benefit → Live Demo → Validation** — where the "Live Demo" beat plays a hand-built, animated replica of the real FreightPOP screen (a "cooking demo"), and the "Validation" beat opens a searchable library of customer proof (G2 quotes, headline stats, case-study PDFs rendered as HTML sheets, and one-page "Why We Won" competitive summaries). Around the module library sit supporting sections: Workflows (8 end-to-end flows), Carrier Integrations (a searchable grid of ~200 carriers across 8 modes), ERP & System Integrations (54 systems with per-integration detail pages), Product Roadmap (9 AI + 4 platform initiatives), Onboarding (6 steps), a FreightPOP AI embed, and a link to a live ROI intake form.
 
-The whole thing is dark-themed (navy `#051729`), uses three Google fonts (**Manrope** for display, **DM Sans** for body, **DM Mono** for labels/eyebrows), and one accent (**teal `#3DD6B5`**) with a secondary blue (`#4088CF`). It is designed for a 16:9 laptop/projector at roughly 1440×810 to 1920×1080.
+The whole thing is dark-themed (navy `#051729`), uses three Google fonts (**Manrope** for display and numerals, **DM Sans** for body, UI, labels and eyebrows, **DM Mono** only for URLs/code — updated 2026-10-05 to the brand type system), and one accent (**teal `#3DD6B5`**) with a secondary blue (`#4088CF`). It is designed for a 16:9 laptop/projector at roughly 1440×810 to 1920×1080.
 
 ## 1.2 The three layers
 
@@ -150,7 +150,7 @@ homepage Hero/                             (174 MB, ~700 files)
 | **Sheet** | A letter-size (8.5×11 in) HTML document — Case Study (multi-page) or Why We Won (one page) — rendered with `<doc-page>` web components. |
 | **Hub / Pillar page** | A grid-of-cards landing (TMS Hub, WMS Hub, OMS Hub, Workflows). |
 | **Static layer** | A section rendered *outside* the React app as plain DOM (Intro, ERP Guide, Carrier Guide), toggled by polling which `<section data-screen-label>` is visible. |
-| **Eyebrow** | The small DM Mono uppercase label with a 26×1.5 px teal dash before it (e.g. "FREIGHTPOP TMS · MODULE LIBRARY"). |
+| **Eyebrow** | The small DM Sans 500 uppercase label (.08em tracking) with a 26×1.5 px teal dash before it (e.g. "FREIGHTPOP TMS · MODULE LIBRARY"). |
 | **Evidence grade** | The colored pill on Step 04: Measured / Reported / Modeled / Platform. |
 | **dc-runtime** | The JS that turns `.dc.html` into a React app (`support.js`). |
 
@@ -227,7 +227,7 @@ radial-gradient(560px 560px at 6% 108%, rgba(61,214,181,.10), transparent 65%)
 1. **Back button** — `display:flex; gap:7px; color:#FFFFFF; font-size:12px; font-weight:500; padding:8px 13px; border:1px solid rgba(255,255,255,.16); border-radius:6px`. Hover: `border-color:rgba(61,214,181,.5); color:#3DD6B5`. Icon: 14 px chevron-left, stroke 2.2. Label "Back". Behaviour is contextual (`goBack`): explore→intro, workflow player→workflows grid, mainmenu→explore, hub→mainmenu, feature→its hub, anything else→mainmenu.
 2. **FreightPOP logo** — `extracted/25e71771-….png`, `height:20px`, click → Intro.
 3. **Divider** — `1×18px rgba(255,255,255,.18)`.
-4. **Breadcrumb** — DM Mono 11 px, `letter-spacing:.05em`, uppercase. Crumb 0 and crumb 1 in `#7A96B0`, separators "/" in `#3D5670`, the leaf in `#3DD6B5` (ellipsised). Examples: `MAIN MENU / TRANSPORTATION MANAGEMENT / Rate Shopping`, `MAIN MENU / WORKFLOWS / Standard Outbound`, `INTERACTIVE WALKTHROUGH`.
+4. **Breadcrumb** — DM Sans 500 11 px, `letter-spacing:.08em`, uppercase. Crumb 0 and crumb 1 in `#7A96B0`, separators "/" in `#3D5670`, the leaf in `#3DD6B5` (ellipsised). Examples: `MAIN MENU / TRANSPORTATION MANAGEMENT / Rate Shopping`, `MAIN MENU / WORKFLOWS / Standard Outbound`, `INTERACTIVE WALKTHROUGH`.
 
 **Centre group** — 12 nav links, horizontally scrollable with hidden scrollbar (`gap:2px`):
 `Walkthrough · Main Menu · TMS · WMS · OMS · Workflows · Carriers · Integrations · Roadmap · Onboarding · FreightPOP AI · ROI`.
@@ -241,12 +241,12 @@ radial-gradient(560px 560px at 6% 108%, rgba(61,214,181,.10), transparent 65%)
 ### 2.2.2 Eyebrow (section label) — used on every pillar page
 
 ```
-font-family:'DM Mono'; font-size:12px; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:#3DD6B5; margin-bottom:16px;
+font-family:'DM Sans'; font-size:12px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:#3DD6B5; margin-bottom:16px;
 display:flex; align-items:center; gap:11px;
   ├─ <span> width:26px; height:1.5px; background:#3DD6B5   (leading dash)
   └─ text, e.g. "FreightPOP TMS · Module Library"
 ```
-Inside a feature, the sub-eyebrow is smaller: `font-size:11px; letter-spacing:.14em; gap:10px`, dash `22×1.5px` ("The Problem", "The Benefit", "Live Demo", "Validation & ROI").
+Inside a feature, the sub-eyebrow is smaller: `font-size:11px; letter-spacing:.08em; gap:10px`, dash `22×1.5px` ("The Problem", "The Benefit", "Live Demo", "Validation & ROI").
 
 ### 2.2.3 Page header block
 
@@ -317,7 +317,7 @@ transition: transform/border-color/background-color/box-shadow 200ms cubic-bezie
 hover: transform:translateY(-4px); border-color:rgba(61,214,181,.85); background:#0E3153;
        box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 0 0 1px rgba(61,214,181,.45), 0 20px 56px rgba(61,214,181,.22)
 
-├─ header row: DM Mono 12px letter-spacing .1em #3DD6B5 "01"  +  1px hairline fading right (linear-gradient(90deg, rgba(61,214,181,.35), rgba(61,214,181,0)))
+├─ header row: Manrope 500 12px tabular-nums #3DD6B5 "01"  +  1px hairline fading right (linear-gradient(90deg, rgba(61,214,181,.35), rgba(61,214,181,0)))
 ├─ title: Manrope 500 22px line-height 1.2 letter-spacing -.01em #fff   (t1 + " " + t2, e.g. "Rate Shopping")
 └─ footer row (margin-top:auto; align-items:flex-end; justify-content:space-between)
      ├─ tag: DM Sans 13px line-height 1.45 #B5CDE0 max-width 185px

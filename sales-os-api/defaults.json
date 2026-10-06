@@ -7,6 +7,7 @@
     "liveSiteUrl": "https://app.freightpop.com/app/#/quote-ship",
     "roiUrl": "https://freightpopsales.com/freightpop-intake-form?link=MGER4f9Y",
     "roiMode": "auto",
+    "helperUrl": "https://freightpopsales.com/deck/deck-embed-extension/",
     "liveUrls": {
       "tms": "https://app.freightpop.com/app/#/quote-ship",
       "oms": "https://app.freightpop.com/app/#/order-management",
@@ -1400,7 +1401,10 @@
     "demoAutoPlay": true,
     "demoSpeed": 1,
     "showValidationLibrary": true,
-    "showCopyLink": true
+    "showCopyLink": true,
+    "hotkeys": true,
+    "heroVideo": true,
+    "showHelperNotice": true
   },
   "roadmap": {
     "ai": [

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -9,7 +9,7 @@
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 body { margin:0; background:#04121F; }
 a { color:#3DD6B5; text-decoration:none; }
@@ -26,7 +26,7 @@ select option { background:#0A2540; color:#fff; }
 <div style="height:100vh;min-height:440px;overflow:hidden;background:#04121F;font-family:'Manrope',sans-serif;color:#fff;display:flex;flex-direction:column;">
 
   <div style="flex:none;border-bottom:1px solid rgba(255,255,255,.08);padding:11px 26px;display:flex;align-items:center;gap:16px;">
-    <div style="flex:none;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#3DD6B5;line-height:1.5;">Validation<br>Library</div>
+    <div style="flex:none;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#3DD6B5;line-height:1.5;">Validation<br>Library</div>
 
     <div style="display:flex;gap:4px;flex:1 1 auto;min-width:0;flex-wrap:wrap;">
       <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="7">
@@ -55,11 +55,11 @@ select option { background:#0A2540; color:#fff; }
           <div style="max-width:700px;animation:vlSlide .28s ease-out;display:flex;flex-direction:column;min-height:0;">
 
             <div style="flex:none;display:flex;align-items:center;gap:10px;margin-bottom:clamp(8px,1.8vh,20px);">
-              <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:{{ cur.gradeBg }};color:{{ cur.gradeColor }};border:1px solid {{ cur.gradeBorder }};white-space:nowrap;">{{ cur.grade }}</span>
-              <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#6E869C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ cur.kind }} · {{ cur.company }}</span>
+              <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:{{ cur.gradeBg }};color:{{ cur.gradeColor }};border:1px solid {{ cur.gradeBorder }};white-space:nowrap;">{{ cur.grade }}</span>
+              <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6E869C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ cur.kind }} · {{ cur.company }}</span>
             </div>
 
-            <div style="flex:none;font-size:clamp(18px,3.5vh,30px);font-weight:700;letter-spacing:-.03em;line-height:1.15;text-wrap:pretty;margin-bottom:clamp(10px,2vh,22px);">{{ cur.title }}</div>
+            <div style="flex:none;font-size:clamp(18px,3.5vh,30px);font-weight:500;letter-spacing:-.03em;line-height:1.15;text-wrap:pretty;margin-bottom:clamp(10px,2vh,22px);">{{ cur.title }}</div>
 
             <sc-if value="{{ cur.hasQuote }}" hint-placeholder-val="{{ false }}">
               <div style="flex:none;margin-bottom:clamp(10px,2vh,22px);">
@@ -72,8 +72,8 @@ select option { background:#0A2540; color:#fff; }
               <div style="flex:none;display:flex;gap:clamp(16px,2.6vw,34px);flex-wrap:wrap;margin-bottom:clamp(10px,2vh,22px);padding:clamp(9px,1.7vh,18px) 0;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);">
                 <sc-for list="{{ cur.figures }}" as="f" hint-placeholder-count="3">
                   <div>
-                    <div style="font-size:clamp(21px,4.4vh,36px);font-weight:700;color:#3DD6B5;letter-spacing:-.035em;line-height:1;">{{ f.v }}</div>
-                    <div style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:#7E97AC;margin-top:clamp(4px,.9vh,8px);max-width:132px;line-height:1.4;">{{ f.k }}</div>
+                    <div style="font-size:clamp(21px,4.4vh,36px);font-weight:500;color:#3DD6B5;letter-spacing:-.035em;line-height:1;">{{ f.v }}</div>
+                    <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;margin-top:clamp(4px,.9vh,8px);max-width:132px;line-height:1.4;">{{ f.k }}</div>
                   </div>
                 </sc-for>
               </div>
@@ -85,12 +85,12 @@ select option { background:#0A2540; color:#fff; }
 
             <div style="flex:none;margin-top:clamp(12px,2.4vh,28px);display:flex;flex-direction:column;gap:clamp(6px,1.2vh,12px);">
               <div style="display:flex;align-items:baseline;gap:9px;">
-                <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:#546F87;flex:none;">Source</span>
+                <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#546F87;flex:none;">Source</span>
                 <span style="font-size:11.5px;color:#8FA9C0;line-height:1.4;">{{ cur.source }}</span>
               </div>
               <sc-if value="{{ cur.hasTags }}" hint-placeholder-val="{{ false }}">
                 <div style="display:flex;align-items:baseline;gap:9px;">
-                  <span style="font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:#546F87;flex:none;">Proves</span>
+                  <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#546F87;flex:none;">Proves</span>
                   <div style="display:flex;gap:5px;flex-wrap:wrap;">
                     <sc-for list="{{ cur.tags }}" as="tg" hint-placeholder-count="3">
                       <span onclick="{{ tg.pick }}" style="font-size:10.5px;cursor:pointer;background:{{ tg.bg }};color:{{ tg.color }};border:1px solid {{ tg.border }};border-radius:999px;padding:3px 10px;white-space:nowrap;">{{ tg.n }}</span>
@@ -110,7 +110,7 @@ select option { background:#0A2540; color:#fff; }
       <div style="flex:none;padding:11px clamp(26px,3.6vw,54px);border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:14px;">
         <span onclick="{{ prev }}" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B5CDE0;font-size:13px;flex:none;">←</span>
         <span onclick="{{ next }}" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#B5CDE0;font-size:13px;flex:none;">→</span>
-        <span style="font-family:'DM Mono',monospace;font-size:10.5px;color:#5E7C96;letter-spacing:.08em;flex:none;">{{ position }}</span>
+        <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;color:#5E7C96;flex:none;">{{ position }}</span>
         <sc-if value="{{ hasFilter }}" hint-placeholder-val="{{ false }}">
           <span onclick="{{ clearAll }}" style="font-size:10.5px;color:#3DD6B5;cursor:pointer;white-space:nowrap;flex:none;">clear filters</span>
         </sc-if>
@@ -121,13 +121,13 @@ select option { background:#0A2540; color:#fff; }
     </div>
 
     <div style="border-left:1px solid rgba(255,255,255,.08);background:#051729;display:flex;flex-direction:column;min-height:0;overflow:hidden;">
-      <div style="flex:none;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#5E7C96;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ railLabel }}</div>
+      <div style="flex:none;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5E7C96;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ railLabel }}</div>
       <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:6px 0;">
         <sc-for list="{{ list }}" as="l" hint-placeholder-count="14">
           <div onclick="{{ l.pick }}" style="padding:9px 18px;cursor:pointer;background:{{ l.bg }};border-left:2px solid {{ l.accent }};display:flex;flex-direction:column;gap:3px;">
             <div style="display:flex;align-items:center;gap:6px;">
               <span style="width:5px;height:5px;border-radius:50%;background:{{ l.dot }};flex:none;"></span>
-              <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:#6E869C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.company }}</span>
+              <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6E869C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.company }}</span>
             </div>
             <div style="font-size:11.5px;font-weight:{{ l.weight }};color:{{ l.color }};line-height:1.35;">{{ l.title }}</div>
           </div>

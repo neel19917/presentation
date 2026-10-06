@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><style>/*fp-brand-base*/h1,h2{font-family:'Manrope',sans-serif;font-weight:400}h3,h4,h5,h6{font-family:'Manrope',sans-serif;font-weight:500}b,strong{font-weight:500}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -19,14 +19,14 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
 <div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 872;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#EEF2F7;font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#EEF2F7;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
     <div style="width:190px;height:30px;border-radius:15px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:11px;">Search</span></div>
-    <span style="color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
-    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
-    <span style="color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
+    <span style="color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;flex-shrink:0;">✦ AI BETA</span>
+    <span style="background:#4088CF;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;padding:7px 12px;border-radius:4px;flex-shrink:0;">NEW EXPERIENCE</span>
+    <span style="color:#fff;font-size:11px;font-weight:500;letter-spacing:.04em;flex-shrink:0;">DASHBOARD</span>
     <div style="display:flex;align-items:center;gap:16px;margin-left:6px;font-size:12px;color:#C7D3E0;white-space:nowrap;"><span>Orders</span><span style="{{ navQuote }}">Quote/Ship</span><span>Route Optimization</span><span>Pooling</span><span>Track</span><span>History</span><span>Analytics</span><span>Reports</span><span>Audit</span></div>
     <div style="margin-left:auto;width:30px;height:30px;border-radius:50%;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="#8A97A8"></circle><path d="M4 21 C4 15 20 15 20 21" fill="#8A97A8"></path></svg></div>
   </div>
@@ -34,11 +34,11 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <!-- ══════════ QUOTE/SHIP ══════════ -->
   <sc-if value="{{ inQuote }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;top:52px;left:0;right:0;height:76px;background:#fff;z-index:4;">
-      <div style="position:absolute;left:20px;top:8px;font-size:19px;font-weight:700;color:#14263C;">Quote/Ship</div>
-      <div style="position:absolute;left:20px;top:42px;display:flex;gap:26px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+      <div style="position:absolute;left:20px;top:8px;font-size:19px;font-weight:500;color:#14263C;">Quote/Ship</div>
+      <div style="position:absolute;left:20px;top:42px;display:flex;gap:26px;font-size:11.5px;font-weight:500;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:8px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
       <div style="position:absolute;left:860px;top:16px;box-sizing:border-box;width:310px;height:44px;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;"><span style="position:absolute;left:11px;top:-7px;background:#fff;padding:0 4px;font-size:10px;color:#5E7186;">Order Import</span><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" fill="none" stroke="#5E7186" stroke-width="2"></circle><path d="M12 3 V6 M12 18 V21 M3 12 H6 M18 12 H21" stroke="#5E7186" stroke-width="2"></path></svg><span style="font-size:12.5px;color:#9AA7B8;">Use a comma to separate</span></div>
-      <span style="position:absolute;left:1182px;top:16px;box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">START CONSOLIDATION</span>
-      <span style="position:absolute;left:1340px;top:16px;box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">TEMPLATES</span>
+      <span style="position:absolute;left:1182px;top:16px;box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">START CONSOLIDATION</span>
+      <span style="position:absolute;left:1340px;top:16px;box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">TEMPLATES</span>
     </div>
 
     <!-- Locations -->
@@ -62,10 +62,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         <div>
           <div style="position:absolute;left:16px;top:62px;width:420px;{{ fld }}"><span style="{{ lbl }}">Ship From</span><span style="{{ val }}">{{ shipFrom }}</span></div>
           <span style="{{ formBtn1 }}">✎ FORM</span><span style="{{ abBtn1 }}">ADDRESS BOOK</span>
-          <span style="position:absolute;left:18px;top:112px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;">⇅ SWAP FROM &amp; TO</span>
+          <span style="position:absolute;left:18px;top:112px;font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#4088CF;">⇅ SWAP FROM &amp; TO</span>
           <div style="position:absolute;left:16px;top:136px;width:420px;{{ fld }}"><span style="{{ lbl }}">Ship To</span><span style="{{ val }}">{{ shipTo }}</span></div>
           <span style="{{ formBtn2 }}">✎ FORM</span><span style="{{ abBtn2 }}">ADDRESS BOOK</span>
-          <span style="position:absolute;left:18px;top:188px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:#4088CF;">✓ VERIFY ADDRESSES</span>
+          <span style="position:absolute;left:18px;top:188px;font-size:11.5px;font-weight:500;letter-spacing:.04em;color:#4088CF;">✓ VERIFY ADDRESSES</span>
         </div>
       </sc-if>
 
@@ -82,25 +82,25 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
               <span style="font-size:11px;color:#5E7186;">⌄</span>
               <span style="font-size:12px;color:#4088CF;letter-spacing:-2px;">⠿</span>
               <div style="{{ s.fieldStyle }}"><span style="{{ lbl }}">Stop {{ s.n }}</span><span style="{{ s.pin }}{{ s.pinVis }}"></span><span style="{{ s.valStyle }}">{{ s.addr }}</span></div>
-              <span style="box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">✎ FORM</span>
-              <span style="box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">ADDRESS BOOK</span>
+              <span style="box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">✎ FORM</span>
+              <span style="box-sizing:border-box;height:44px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">ADDRESS BOOK</span>
               <span style="{{ s.trash }}">🗑</span>
             </div>
           </sc-for>
-          <span style="position:absolute;left:16px;top:{{ addStopTop }}px;box-sizing:border-box;height:40px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">ADD STOP</span>
-          <span style="position:absolute;left:130px;top:{{ addStopTop }}px;height:40px;display:flex;align-items:center;padding:0 8px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">OPTIMIZE STOPS</span>
+          <span style="position:absolute;left:16px;top:{{ addStopTop }}px;box-sizing:border-box;height:40px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">ADD STOP</span>
+          <span style="position:absolute;left:130px;top:{{ addStopTop }}px;height:40px;display:flex;align-items:center;padding:0 8px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">OPTIMIZE STOPS</span>
         </div>
       </sc-if>
     </div>
 
     <!-- Shipment Details -->
     <div style="{{ shipCard }}">
-      <div style="position:absolute;left:0;right:0;top:0;height:46px;background:#F3F5F8;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 16px;"><span style="font-size:15px;color:#24354A;">Shipment Details</span><span style="margin-left:auto;box-sizing:border-box;height:36px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">+ ADD OUTER HANDLING UNIT</span></div>
-      <div style="position:absolute;left:16px;right:16px;top:56px;height:44px;background:#F7F9FB;border:1px solid #EDF1F6;display:flex;align-items:center;gap:10px;padding:0 12px;"><span style="font-size:11px;color:#5E7186;">⌃</span><span style="font-size:12px;color:#4088CF;letter-spacing:-2px;">⠿</span><span style="font-size:13.5px;font-weight:700;color:#24354A;">{{ unitTitle }}</span><span style="font-size:12px;color:#5E7186;">{{ unitSub }}</span><span style="margin-left:auto;font-size:11.5px;color:#8A97A8;letter-spacing:.04em;">CUBISCAN</span></div>
+      <div style="position:absolute;left:0;right:0;top:0;height:46px;background:#F3F5F8;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 16px;"><span style="font-size:15px;color:#24354A;">Shipment Details</span><span style="margin-left:auto;box-sizing:border-box;height:36px;display:flex;align-items:center;border:1px solid #B9CDE8;border-radius:3px;padding:0 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">+ ADD OUTER HANDLING UNIT</span></div>
+      <div style="position:absolute;left:16px;right:16px;top:56px;height:44px;background:#F7F9FB;border:1px solid #EDF1F6;display:flex;align-items:center;gap:10px;padding:0 12px;"><span style="font-size:11px;color:#5E7186;">⌃</span><span style="font-size:12px;color:#4088CF;letter-spacing:-2px;">⠿</span><span style="font-size:13.5px;font-weight:500;color:#24354A;">{{ unitTitle }}</span><span style="font-size:12px;color:#5E7186;">{{ unitSub }}</span><span style="margin-left:auto;font-size:11.5px;color:#8A97A8;letter-spacing:.04em;">CUBISCAN</span></div>
       <div style="position:absolute;left:16px;top:108px;width:150px;{{ fld }}"><span style="{{ lbl }}">Quantity</span><span style="{{ val }}">1</span></div>
       <div style="position:absolute;left:178px;top:108px;width:200px;{{ fld }}"><span style="{{ lbl }}">Type</span><span style="{{ val }}">{{ typeVal }}</span>{{ magIcon }}</div>
       <div style="position:absolute;left:390px;top:108px;width:200px;{{ fldGrey }}"><span style="{{ lbl }}">Container Type</span><span style="position:absolute;right:12px;font-size:11px;color:#5E7186;">▾</span></div>
-      <span style="position:absolute;left:602px;top:108px;box-sizing:border-box;width:150px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">INNER PIECES</span>
+      <span style="position:absolute;left:602px;top:108px;box-sizing:border-box;width:150px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">INNER PIECES</span>
       <div style="position:absolute;left:16px;top:160px;width:150px;{{ fld }}"><span style="{{ lbl }}">Length</span><span style="{{ val }}">{{ dims }}</span><span style="{{ unit }}">in</span></div>
       <div style="position:absolute;left:178px;top:160px;width:200px;{{ fld }}"><span style="{{ lbl }}">Width</span><span style="{{ val }}">{{ dims }}</span><span style="{{ unit }}">in</span></div>
       <div style="position:absolute;left:390px;top:160px;width:200px;{{ fld }}"><span style="{{ lbl }}">Height</span><span style="{{ val }}">{{ dims }}</span><span style="{{ unit }}">in</span></div>
@@ -115,7 +115,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         <span style="display:flex;align-items:center;gap:11px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:12px;color:#3A4B60;">Non Stackable</span></span>
         <span style="display:flex;align-items:center;gap:11px;"><span style="{{ togOff }}"><span style="{{ knobOff }}"></span></span><span style="font-size:12px;color:#3A4B60;">Hazmat</span></span>
       </div>
-      <span style="position:absolute;left:602px;top:318px;box-sizing:border-box;width:150px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">REFERENCES</span>
+      <span style="position:absolute;left:602px;top:318px;box-sizing:border-box;width:150px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">REFERENCES</span>
       </div></sc-if>
     </div>
 
@@ -138,7 +138,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="position:absolute;left:16px;top:110px;width:206px;{{ fld }}"><span style="{{ lbl }}">Payee</span><span style="{{ val }}">Sender</span><span style="position:absolute;right:12px;font-size:11px;color:#5E7186;">▾</span></div>
       <div style="position:absolute;left:238px;top:110px;width:206px;{{ fld }}"><span style="{{ lbl }}">Payment Type</span><span style="{{ val }}">Prepaid (Carrier Account Sel</span></div>
       <div style="position:absolute;left:16px;top:160px;width:300px;{{ fldGrey }}"><span style="{{ lbl }}">Account Details</span><span style="position:absolute;right:12px;display:flex;gap:8px;color:#5E7186;font-size:11px;">✕</span></div>
-      <span style="position:absolute;left:328px;top:160px;box-sizing:border-box;width:116px;height:44px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">✎ DETAILS</span>
+      <span style="position:absolute;left:328px;top:160px;box-sizing:border-box;width:116px;height:44px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">✎ DETAILS</span>
       <div style="position:absolute;left:16px;top:210px;width:300px;{{ fld }}"><span style="{{ lbl }}">Confirmation Email</span><span style="display:flex;align-items:center;gap:6px;background:#EDF1F6;border-radius:12px;padding:4px 9px;font-size:11.5px;color:#24354A;">TEST@freightpop.com<span style="color:#8A97A8;">✕</span></span></div>
       <div style="position:absolute;left:328px;top:210px;width:116px;{{ fld }}"><span style="{{ lbl }}">Send Notification</span><span style="font-size:11.5px;color:#24354A;">08/13/2026</span></div>
       <div style="position:absolute;left:16px;top:266px;right:16px;display:flex;flex-direction:column;gap:12px;">
@@ -155,10 +155,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 0</span>
       <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
         <span style="border:1px solid #C6D0DC;border-radius:3px;padding:10px 14px;font-size:12px;color:#24354A;">···</span>
-        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">CLEAR SHIPMENT</span>
-        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">PREVIEW BOL</span>
-        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">SAVE SHIPMENT</span>
-        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">SPOT QUOTE</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">CLEAR SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">PREVIEW BOL</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">SAVE SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">SPOT QUOTE</span>
         <span style="{{ rateBtn }}">RATE SHOP</span>
       </span>
     </div>
@@ -167,9 +167,9 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <!-- ══════════ SHIPMENT DETAILS ══════════ -->
   <sc-if value="{{ inShipment }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;top:52px;left:0;right:0;height:118px;background:#fff;z-index:4;">
-      <div style="position:absolute;left:20px;top:10px;font-size:19px;font-weight:700;color:#14263C;">Shipment Details (Shipment Id: {{ shipId }})</div>
-      <div style="position:absolute;left:14px;right:14px;top:44px;height:38px;background:#FDF3E0;border-left:3px solid #E0A030;display:flex;align-items:center;gap:10px;padding:0 14px;"><span style="font-size:13px;color:#8A6A20;">⚠</span><span style="font-size:12.5px;font-weight:700;color:#5A4310;">Changes made to the shipment information may cause the carrier to change the quote provided. Each carrier treats this differently.</span></div>
-      <div style="position:absolute;left:20px;top:92px;display:flex;gap:26px;font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
+      <div style="position:absolute;left:20px;top:10px;font-size:19px;font-weight:500;color:#14263C;">Shipment Details (Shipment Id: {{ shipId }})</div>
+      <div style="position:absolute;left:14px;right:14px;top:44px;height:38px;background:#FDF3E0;border-left:3px solid #E0A030;display:flex;align-items:center;gap:10px;padding:0 14px;"><span style="font-size:13px;color:#8A6A20;">⚠</span><span style="font-size:12.5px;font-weight:500;color:#5A4310;">Changes made to the shipment information may cause the carrier to change the quote provided. Each carrier treats this differently.</span></div>
+      <div style="position:absolute;left:20px;top:92px;display:flex;gap:26px;font-size:11.5px;font-weight:500;letter-spacing:.05em;color:#5E7186;"><span style="color:#4088CF;border-bottom:2.5px solid #4088CF;padding-bottom:6px;">GENERAL</span><span>PRODUCT DETAILS</span><span>ADDITIONAL DETAILS</span><span>DOCUMENTS</span></div>
       <span style="{{ addLegBtn }}">ADD A LEG</span>
     </div>
 
@@ -197,7 +197,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
 
     <div style="position:absolute;box-sizing:border-box;left:770px;top:454px;width:520px;height:152px;background:#fff;border:1px solid #E4E9EF;">
-      <div style="position:absolute;left:0;right:0;top:0;height:46px;background:#F3F5F8;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 16px;font-size:15px;color:#24354A;">Pickup Information<span style="margin-left:auto;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">SCHEDULE PICKUP</span></div>
+      <div style="position:absolute;left:0;right:0;top:0;height:46px;background:#F3F5F8;border-bottom:1px solid #E4E9EF;display:flex;align-items:center;padding:0 16px;font-size:15px;color:#24354A;">Pickup Information<span style="margin-left:auto;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">SCHEDULE PICKUP</span></div>
       <div style="position:absolute;left:16px;top:62px;width:230px;{{ fldGrey }}"><span style="{{ lbl }}">Pickup Date</span><span style="{{ ph }}">MM/DD/YYYY</span></div>
       <div style="position:absolute;left:262px;top:62px;width:230px;{{ fldGrey }}"><span style="{{ lbl }}">Delivery Date</span><span style="{{ val }}">08/14/2026</span></div>
     </div>
@@ -209,9 +209,9 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 3.33</span>
       <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
         <span style="border:1px solid #C6D0DC;border-radius:3px;padding:10px 14px;font-size:12px;color:#24354A;">···</span>
-        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">CANCEL SHIPMENT</span>
-        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;">EMAIL SHIPPING LABELS/BOL LINK</span>
-        <span style="border:1px solid #E4E9EF;border-radius:3px;padding:11px 20px;color:#A9B4C0;font-size:11px;font-weight:700;letter-spacing:.04em;">SAVE</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">CANCEL SHIPMENT</span>
+        <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">EMAIL SHIPPING LABELS/BOL LINK</span>
+        <span style="border:1px solid #E4E9EF;border-radius:3px;padding:11px 20px;color:#A9B4C0;font-size:11px;font-weight:500;letter-spacing:.04em;">SAVE</span>
       </span>
     </div>
   </sc-if>
@@ -242,7 +242,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
       <sc-if value="{{ movTable }}" hint-placeholder-val="{{ false }}">
         <div style="padding:22px 22px 0;">
-          <div style="display:grid;grid-template-columns:36px 100px 150px 150px 1fr;align-items:center;gap:12px;padding-bottom:10px;font-size:13.5px;font-weight:700;color:#24354A;"><span></span><span>Sequence</span><span>Quote Id</span><span>Shipment Id</span><span></span></div>
+          <div style="display:grid;grid-template-columns:36px 100px 150px 150px 1fr;align-items:center;gap:12px;padding-bottom:10px;font-size:13.5px;font-weight:500;color:#24354A;"><span></span><span>Sequence</span><span>Quote Id</span><span>Shipment Id</span><span></span></div>
           <sc-for list="{{ movRows }}" as="r" hint-placeholder-count="1">
             <div style="{{ r.row }}"><span style="font-size:12px;color:#4088CF;letter-spacing:-2px;">⠿</span><span style="font-size:13.5px;color:#24354A;">{{ r.seq }}</span><span style="font-size:13.5px;color:#24354A;">{{ r.quote }}</span><span style="font-size:13.5px;color:#24354A;">{{ r.ship }}</span><span style="{{ r.openBtn }}">{{ r.openTxt }}</span></div>
           </sc-for>
@@ -257,14 +257,14 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </div>
       </sc-if>
 
-      <div style="padding:22px 22px 0;"><span style="box-sizing:border-box;display:inline-flex;align-items:center;height:48px;border:1px solid #C6D0DC;border-radius:3px;padding:0 20px;font-size:12.5px;font-weight:700;letter-spacing:.04em;color:#24354A;">CLOSE</span></div>
+      <div style="padding:22px 22px 0;"><span style="box-sizing:border-box;display:inline-flex;align-items:center;height:48px;border:1px solid #C6D0DC;border-radius:3px;padding:0 20px;font-size:12.5px;font-weight:500;letter-spacing:.04em;color:#24354A;">CLOSE</span></div>
     </div>
   </sc-if>
 
   <!-- ══════════ OVERLAYS ══════════ -->
   <sc-if value="{{ titleOn }}" hint-placeholder-val="{{ true }}">
     <div style="position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(10,25,42,.86);z-index:46;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
-      <span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#3DD6B5;">{{ titleKicker }}</span>
+      <span style="font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#3DD6B5;">{{ titleKicker }}</span>
       <span style="font-family:'Manrope',sans-serif;font-size:56px;font-weight:400;line-height:1.05;letter-spacing:-.02em;color:#fff;">{{ titleText }}</span>
       <span style="font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.5;color:#9AB0C6;">{{ titleSub }}</span>
     </div>
@@ -278,9 +278,9 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </div>
 
 <div style="position:absolute;left:0;right:0;bottom:0;height:{{ stripH }};background:#051729;display:flex;align-items:center;gap:14px;padding:0 16px;">
-  <span style="color:#3DD6B5;font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;">{{ cap }}</span>
+  <span style="color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;">{{ cap }}</span>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <span style="flex:none;color:#3DD6B5;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;border:1px solid rgba(61,214,181,.4);border-radius:5px;padding:3px 8px;">PAUSED</span>
+    <span style="flex:none;color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;border:1px solid rgba(61,214,181,.4);border-radius:5px;padding:3px 8px;">PAUSED</span>
   </sc-if>
   <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex:none;">
     <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
@@ -405,7 +405,7 @@ class Component extends DCLogic {
   renderVals() {
     const a = this.anim;
     const fldBase = (bg, bd) => "box-sizing:border-box;height:44px;border:1px solid " + bd + ";border-radius:3px;background:" + bg + ";display:flex;align-items:center;padding:0 12px;";
-    const btn = (x, y, w) => "position:absolute;left:" + x + "px;top:" + y + "px;box-sizing:border-box;width:" + w + "px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:700;letter-spacing:.04em;";
+    const btn = (x, y, w) => "position:absolute;left:" + x + "px;top:" + y + "px;box-sizing:border-box;width:" + w + "px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;";
     const base = (a.stopsSwapped ? this.STOPS_R : this.STOPS).slice();
     if (a.stop4) base.push(["4", a.stop4Filled ? "Harborline DC, 8120 Bright..." : "Find Location", !a.stop4Filled]);
     const stops = base.map((s, i) => ({ n: s[0], addr: (a.stopDrag && i === 2) ? "" : ((i === 2 && !a.stop3) ? "Find Location" : s[1]), lifted: a.stopDrag && i === 2,
@@ -420,7 +420,7 @@ class Component extends DCLogic {
     return { ...a,
       inQuote: a.scene === 0, inShipment: a.scene === 1,
       singleStop: !a.ms, multiStop: a.ms,
-      navQuote: a.scene === 0 ? "color:#fff;font-weight:600;" : "",
+      navQuote: a.scene === 0 ? "color:#fff;font-weight:500;" : "",
       locCard: "position:absolute;box-sizing:border-box;left:30px;top:136px;width:" + (a.ms ? 740 : 900) + "px;height:" + (a.ms ? (a.stop4 ? 418 : 344) : 216) + "px;background:#fff;border:1px solid #E4E9EF;",
       shipCard: "position:absolute;box-sizing:border-box;left:30px;top:" + (a.ms ? (a.stop4 ? 570 : 496) : 368) + "px;width:900px;height:" + (a.ms ? 204 : 382) + "px;overflow:hidden;background:#fff;border:1px solid #E4E9EF;",
       unitTitle: a.typeVal ? "1 " + a.typeVal : "1 HANDLING UNIT",
@@ -449,8 +449,8 @@ class Component extends DCLogic {
       stops,
       ghostAddr: (a.stopsSwapped ? this.STOPS_R : this.STOPS)[2][1],
       stopGhost: "position:absolute;left:16px;top:210px;display:flex;align-items:center;gap:10px;z-index:6;box-shadow:0 14px 30px rgba(5,20,40,.3);background:#fff;transform:translateY(" + a.stopDY + "px) rotate(-1.5deg);transition:transform .5s cubic-bezier(.3,.7,.3,1);",
-      rateBtn: "border-radius:3px;padding:11px 22px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em;background:" + (a.rateHot ? "#1557B0" : "#4088CF") + ";",
-      addLegBtn: "position:absolute;right:20px;top:78px;border-radius:3px;padding:12px 20px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.04em;background:" + (a.addLegHot ? "#1557B0" : "#4088CF") + ";",
+      rateBtn: "border-radius:3px;padding:11px 22px;color:#fff;font-size:11px;font-weight:500;letter-spacing:.04em;background:" + (a.rateHot ? "#1557B0" : "#4088CF") + ";",
+      addLegBtn: "position:absolute;right:20px;top:78px;border-radius:3px;padding:12px 20px;color:#fff;font-size:11.5px;font-weight:500;letter-spacing:.04em;background:" + (a.addLegHot ? "#1557B0" : "#4088CF") + ";",
       shipId: a.leg2 ? "14810220" : "12264567",
       quoteId: a.leg2 ? "46500066" : "38900634",
       orderNum: a.leg2 ? "SO-44821 · leg 2" : "SO-44821 · leg 1",
@@ -464,11 +464,11 @@ class Component extends DCLogic {
       movOpts: ["60798","60812","60833","60847","60861","60874","60889","60902","60918","60927"].map((id, i) => ({ id,
         style: "padding:11px 13px;font-size:13px;color:#24354A;background:" + (a.movPick && i === 0 ? "#EAF3FF" : "transparent") + ";" })),
       movRows: movRows.map((r) => ({ ...r, openTxt: r.pending ? "" : "OPEN",
-        openBtn: r.pending ? "" : "justify-self:end;box-sizing:border-box;width:100%;max-width:150px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11.5px;font-weight:700;letter-spacing:.04em;",
+        openBtn: r.pending ? "" : "justify-self:end;box-sizing:border-box;width:100%;max-width:150px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:11.5px;font-weight:500;letter-spacing:.04em;",
         row: "display:grid;grid-template-columns:36px 100px 150px 150px 1fr;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #EDF1F6;" })),
       noSeq2: !(a.seq2 || a.leg2),
-      addShipBtn: "box-sizing:border-box;height:52px;display:flex;align-items:center;border:1px solid " + (a.addShipHot ? "#1557B0" : "#B9CDE8") + ";border-radius:3px;padding:0 18px;color:#4088CF;font-size:12.5px;font-weight:700;letter-spacing:.04em;",
-      anotherBtn: "justify-self:end;box-sizing:border-box;width:100%;max-width:210px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid " + (a.anotherHot ? "#1557B0" : "#B9CDE8") + ";border-radius:3px;color:#4088CF;font-size:11.5px;font-weight:700;letter-spacing:.04em;",
+      addShipBtn: "box-sizing:border-box;height:52px;display:flex;align-items:center;border:1px solid " + (a.addShipHot ? "#1557B0" : "#B9CDE8") + ";border-radius:3px;padding:0 18px;color:#4088CF;font-size:12.5px;font-weight:500;letter-spacing:.04em;",
+      anotherBtn: "justify-self:end;box-sizing:border-box;width:100%;max-width:210px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid " + (a.anotherHot ? "#1557B0" : "#B9CDE8") + ";border-radius:3px;color:#4088CF;font-size:11.5px;font-weight:500;letter-spacing:.04em;",
       stripH: Math.max(34, Math.round(62 * this.scaleVal)) + "px",
       scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
       paused: !a.playing, playing: a.playing,
