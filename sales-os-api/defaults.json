@@ -1344,6 +1344,7 @@
       "walkthrough": "Walkthrough",
       "ai": "✦ AI Demo",
       "live": "Live Site ↗",
+      "theater": "▭ Theater",
       "expand": "⛶ Expand"
     },
     "openCard": "Open",
@@ -1398,6 +1399,7 @@
     "showAiDemoTab": true,
     "showLiveSiteTab": true,
     "showExpandTab": true,
+    "showTheaterTab": true,
     "demoAutoPlay": true,
     "demoSpeed": 1,
     "showValidationLibrary": true,

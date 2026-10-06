@@ -57,7 +57,7 @@ const defaults = {
     back: 'Back', menu: 'Menu', liveSite: 'Live Site', backToModule: 'Back to module', allModules: '← All modules', nextModule: 'Next module', backToModules: 'Back to modules',
     steps: ['Problem', 'Benefit', 'Live Demo', 'Validation'],
     stepEyebrows: ['The Problem', 'The Benefit', 'Live Demo', 'Validation & ROI'],
-    demoTabs: { walkthrough: 'Walkthrough', ai: '✦ AI Demo', live: 'Live Site ↗', expand: '⛶ Expand' },
+    demoTabs: { walkthrough: 'Walkthrough', ai: '✦ AI Demo', live: 'Live Site ↗', theater: '▭ Theater', expand: '⛶ Expand' },
     openCard: 'Open', watchCard: 'Watch', copyLink: 'Link', linkCopied: 'Copied ✓'
   },
   pages: {
@@ -71,7 +71,7 @@ const defaults = {
   },
   controls: {
     startView: 'intro', keyboardNav: true, showStepDots: true, showPagingArrows: true, showFullscreenPills: true, showLiveSitePill: true, showMenuButton: true, showBreadcrumb: true,
-    showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true,
+    showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, showTheaterTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true,
     hotkeys: true, heroVideo: true, showHelperNotice: true
   },
   roadmap: { ai: c.roadmapAI.map(r => ({ ...r })), platform: c.roadmapPlatform.map(r => ({ ...r })) },

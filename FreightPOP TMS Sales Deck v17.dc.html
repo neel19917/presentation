@@ -543,6 +543,7 @@
                   <span onclick="{{ liveOff }}" style="padding:9px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;background:{{ btnDemoBg }};color:{{ btnDemoColor }};border:1px solid {{ btnDemoBorder }};">{{ lblTabWalk }}</span>
                   <sc-if value="{{ showAiTab }}" hint-placeholder-val="{{ false }}"><span onclick="{{ aiOnFn }}" style="padding:9px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;background:{{ btnAiBg }};color:{{ btnAiColor }};border:1px solid {{ btnAiBorder }};">{{ lblTabAi }}</span></sc-if>
                   <sc-if value="{{ showLiveTab }}" hint-placeholder-val="{{ true }}"><span onclick="{{ liveOnFn }}" style="padding:9px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;background:{{ btnLiveBg }};color:{{ btnLiveColor }};border:1px solid {{ btnLiveBorder }};">{{ lblTabLive }}</span></sc-if>
+                  <sc-if value="{{ showTheaterTab }}" hint-placeholder-val="{{ true }}"><span onclick="{{ toggleTheater }}" title="Theater: fill the window below the top bar (Esc to exit)" style="padding:9px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;background:{{ btnTheaterBg }};color:{{ btnTheaterColor }};border:1px solid {{ btnTheaterBorder }};">{{ lblTabTheater }}</span></sc-if>
                   <sc-if value="{{ showExpandTab }}" hint-placeholder-val="{{ true }}"><span onclick="{{ toggleExpand }}" style="padding:9px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.03);color:#7E97AC;border:1px solid rgba(255,255,255,.14);">{{ lblTabExpand }}</span></sc-if>
                 </div>
               </div>
@@ -632,6 +633,15 @@
                   <sc-if value="{{ demoReports }}" hint-placeholder-val="{{ false }}"><dc-import name="ReportsDemo" dc-props="{{ demoProps }}" hint-size="100%,580px"></dc-import></sc-if>
                   <sc-if value="{{ demoOorders }}" hint-placeholder-val="{{ false }}"><dc-import name="OmsOrderMgmtDemo" dc-props="{{ demoProps }}" hint-size="100%,580px"></dc-import></sc-if>
                   <sc-if value="{{ demoOthird }}" hint-placeholder-val="{{ false }}"><dc-import name="OmsThirdPartyDemo" dc-props="{{ demoProps }}" hint-size="100%,580px"></dc-import></sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{ theater }}" hint-placeholder-val="{{ false }}">
+                <div style="position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:2147483646;display:inline-flex;align-items:center;gap:6px;padding:5px;border-radius:999px;background:rgba(5,23,41,.94);border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 28px rgba(0,0,0,.45);pointer-events:auto;">
+                  <div onclick="{{ liveOff }}" style="display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:10px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;background:{{ btnDemoBg }};color:{{ btnDemoColor }};border:1px solid {{ btnDemoBorder }};">{{ lblTabWalk }}</div>
+                  <sc-if value="{{ showAiTab }}" hint-placeholder-val="{{ true }}"><div onclick="{{ aiOnFn }}" style="display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:10px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;background:{{ btnAiBg }};color:{{ btnAiColor }};border:1px solid {{ btnAiBorder }};">{{ lblTabAi }}</div></sc-if>
+                  <sc-if value="{{ showLiveTab }}" hint-placeholder-val="{{ true }}"><div onclick="{{ liveOnFn }}" style="display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:10px 16px;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;background:{{ btnLiveBg }};color:{{ btnLiveColor }};border:1px solid {{ btnLiveBorder }};">{{ lblTabLive }}</div></sc-if>
+                  <div onclick="{{ exitTheater }}" style="display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;">✕ Exit theater</div>
+                  <div onclick="{{ toggleExpand }}" style="display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;">⛶ Fullscreen</div>
                 </div>
               </sc-if>
               <sc-if value="{{ expanded }}" hint-placeholder-val="{{ false }}">
@@ -1729,7 +1739,7 @@ window.fpStaggerIn = function (grid) {
 
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;configUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://deck-config-api-production.up.railway.app/api/config&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sales OS&quot;},&quot;startUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://tubular-flan-14267b.netlify.app/embed.html&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Flow&quot;},&quot;showMarquee&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;}}">
 class Component extends DCLogic {
-  state = { view: "intro", fi: 0, step: 0, menuOpen: false, sysKey: "tms", liveOn: false, demoExpanded: false, fsW: 0, fsH: 0, hs: null };
+  state = { view: "intro", fi: 0, step: 0, menuOpen: false, sysKey: "tms", liveOn: false, demoExpanded: false, demoTheater: false, theaterTop: 53, fsW: 0, fsH: 0, hs: null };
 
   // ── Sales OS config (deck-config-api on Railway). Overlays the built-in defaults below; silent fallback when unreachable.
   CONFIG_URL = "https://deck-config-api-production.up.railway.app/api/config";
@@ -1740,10 +1750,10 @@ class Component extends DCLogic {
       { key: "workflows", label: "Workflows", sub: "8 common customer flows", enabled: true }, { key: "carriers", label: "Carriers", sub: "Every mode · one network", enabled: true }, { key: "erp", label: "Integrations", sub: "54 connected systems", enabled: true },
       { key: "roadmap", label: "Roadmap", sub: "AI · platform direction", enabled: true }, { key: "onboarding", label: "Onboarding", sub: "What to expect", enabled: true }, { key: "ai", label: "FreightPOP AI", sub: "Intelligence layer", enabled: true }, { key: "roi", label: "ROI", sub: "Intake form · in-deck tab", enabled: true }
     ],
-    labels: { back: "Back", menu: "Menu", liveSite: "Live Site", backToModule: "Back to module", allModules: "← All modules", nextModule: "Next module", backToModules: "Back to modules", steps: ["Problem", "Benefit", "Live Demo", "Validation"], stepEyebrows: ["The Problem", "The Benefit", "Live Demo", "Validation & ROI"], demoTabs: { walkthrough: "Walkthrough", ai: "✦ AI Demo", live: "Live Site ↗", expand: "⛶ Expand" }, openCard: "Open", watchCard: "Watch", copyLink: "Link", linkCopied: "Copied ✓" },
+    labels: { back: "Back", menu: "Menu", liveSite: "Live Site", backToModule: "Back to module", allModules: "← All modules", nextModule: "Next module", backToModules: "Back to modules", steps: ["Problem", "Benefit", "Live Demo", "Validation"], stepEyebrows: ["The Problem", "The Benefit", "Live Demo", "Validation & ROI"], demoTabs: { walkthrough: "Walkthrough", ai: "✦ AI Demo", live: "Live Site ↗", theater: "▭ Theater", expand: "⛶ Expand" }, openCard: "Open", watchCard: "Watch", copyLink: "Link", linkCopied: "Copied ✓" },
     pages: { tms: { eyebrow: "FreightPOP TMS · Module Library" }, workflows: { eyebrow: "FreightPOP Platform · Workflows", h1: "Common customer workflows.", lede: "{count} flows we set up for customers every week. Open one to watch it run end to end, step by step." }, roadmap: { eyebrow: "FreightPOP Platform · Roadmap", h1: "Where the product is headed.", lede: "Two tracks of investment: agentic AI across the shipping lifecycle, and platform depth across the warehouse and the yard. Directional — sequence and scope evolve with customer input.", aiTitle: "AI Product Roadmap", platformTitle: "Platform Product Roadmap" }, onboarding: { eyebrow: "Onboarding · What to expect", h1: "From kickoff to production.", lede: "A dedicated customer success team runs the implementation with you. Milestones are set together at kickoff around your requirements." } },
     ui: { uiScale: 1, navScale: 1, hubScale: 1, hubColumns: 3, featureScale: 1, demoMaxWidth: 1020, demoScale: 1, statSize: 84, introHeadlineSize: 108, introSubtitleSize: 36, cardMinHeight: 190 },
-    controls: { startView: "intro", keyboardNav: true, showStepDots: true, showPagingArrows: true, showFullscreenPills: true, showLiveSitePill: true, showMenuButton: true, showBreadcrumb: true, showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true, heroVideo: true, hotkeys: true, showHelperNotice: true },
+    controls: { startView: "intro", keyboardNav: true, showStepDots: true, showPagingArrows: true, showFullscreenPills: true, showLiveSitePill: true, showMenuButton: true, showBreadcrumb: true, showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, showTheaterTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true, heroVideo: true, hotkeys: true, showHelperNotice: true },
     settings: {}
   };
   tmsMeta = { name: "Transportation Management", intro: "Eighteen capabilities, one platform — rated 4.8/5 on G2 and 4.7/5 on Capterra. Open a module to see the problem it kills, the payoff, a live demo, and the proof." };
@@ -1757,7 +1767,7 @@ class Component extends DCLogic {
   //   ?lock=1             gate to the linked tab only and drop the Menu button — the viewer stays where the link put them
   //   ?c=nomenu,nokeys    controls for this link only: menu keys crumbs livepill live ai expand dots arrows fs lib autoplay link video hotkeys helper · "no" prefix turns off · speed=1.5
   //   The address bar is kept in sync while presenting (replaceState), so any screen can be copied and sent. Same params work after "#".
-  LINK_CTRL = { menu: "showMenuButton", keys: "keyboardNav", crumbs: "showBreadcrumb", livepill: "showLiveSitePill", live: "showLiveSiteTab", ai: "showAiDemoTab", expand: "showExpandTab", dots: "showStepDots", arrows: "showPagingArrows", fs: "showFullscreenPills", lib: "showValidationLibrary", autoplay: "demoAutoPlay", link: "showCopyLink", video: "heroVideo", hotkeys: "hotkeys", helper: "showHelperNotice" };
+  LINK_CTRL = { menu: "showMenuButton", keys: "keyboardNav", crumbs: "showBreadcrumb", livepill: "showLiveSitePill", live: "showLiveSiteTab", ai: "showAiDemoTab", expand: "showExpandTab", theater: "showTheaterTab", dots: "showStepDots", arrows: "showPagingArrows", fs: "showFullscreenPills", lib: "showValidationLibrary", autoplay: "demoAutoPlay", link: "showCopyLink", video: "heroVideo", hotkeys: "hotkeys", helper: "showHelperNotice" };
   STEP_NAMES = ["problem", "benefit", "demo", "validation"];
   VIEW_TAB = { intro: "intro", explore: "explore", mainmenu: "mainmenu", hub: "tms", wms: "wms", oms: "oms", erp: "erp", carriers: "carriers", workflows: "workflows", roadmap: "roadmap", onboarding: "onboarding", ai: "ai", livesite: null, roi: "roi" };
   GO_ALIAS = { menu: "mainmenu", main: "mainmenu", mainmenu: "mainmenu", home: "intro", intro: "intro", start: "explore", explore: "explore", walkthrough: "explore", hub: "hub", tms: "hub", wms: "wms", oms: "oms", erp: "erp", integrations: "erp", carriers: "carriers", workflows: "workflows", workflow: "workflows", roadmap: "roadmap", onboarding: "onboarding", ai: "ai", live: "livesite", livesite: "livesite", roi: "roi" };
@@ -1790,7 +1800,7 @@ class Component extends DCLogic {
   _resolveGo(go) {
     const seg = String(go || "").split("/").map(x => { try { return decodeURIComponent(x).trim(); } catch (e) { return x.trim(); } }).filter(Boolean);
     if (!seg.length) return null;
-    const base = { menuOpen: false, liveOn: false, aiOn: false, demoExpanded: false };
+    const base = { menuOpen: false, liveOn: false, aiOn: false, demoExpanded: false, demoTheater: false };
     const r0 = seg[0].toLowerCase().replace(/^s:/, "");
     const view = seg[0].toLowerCase().startsWith("s:") ? null : this.GO_ALIAS[r0];
     if (!view) {
@@ -2984,9 +2994,9 @@ class Component extends DCLogic {
     if (v === "feature") return this.goHub();
     return this.goMainMenu();
   };
-  openFeature = (i, step, sysKey) => { const k = sysKey || this.state.sysKey; this._nav(k, { view: "feature", fi: i, step: step || 0, sysKey: k, menuOpen: false, liveOn: false, aiOn: false, demoExpanded: false }); };
+  openFeature = (i, step, sysKey) => { const k = sysKey || this.state.sysKey; this._nav(k, { view: "feature", fi: i, step: step || 0, sysKey: k, menuOpen: false, liveOn: false, aiOn: false, demoExpanded: false, demoTheater: false }); };
   toggleMenu = () => this.setState((s) => ({ menuOpen: !s.menuOpen }));
-  setStep = (i) => { this._userNav = true; this.setState({ step: i, liveOn: false, aiOn: false, demoExpanded: false }); };
+  setStep = (i) => { this._userNav = true; this.setState({ step: i, liveOn: false, aiOn: false, demoExpanded: false, demoTheater: false }); };
   _setDemoBox = (el) => {
     this._demoBox = el;
     if (el && !this._fsBound) {
@@ -2998,16 +3008,17 @@ class Component extends DCLogic {
       };
       document.addEventListener("fullscreenchange", this._onFsChange);
       document.addEventListener("webkitfullscreenchange", this._onFsChange);
-      this._onFsResize = () => { if (this.state.demoExpanded) this._measureFs(); };
+      this._onFsResize = () => { if (this.state.demoExpanded || this.state.demoTheater) this._measureFs(); };
       window.addEventListener("resize", this._onFsResize);
-      this._escListener = (e) => { if (e.key === "Escape" && this.state.demoExpanded) { e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation(); this._collapseFs(); } };
+      this._escListener = (e) => { if (e.key === "Escape" && (this.state.demoExpanded || this.state.demoTheater)) { e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation(); if (this.state.demoExpanded) this._collapseFs(); else this._exitTheater(); } };
       window.addEventListener("keydown", this._escListener, true);
     }
   };
   _measureFs = () => {
     const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
-    const w = fsEl ? fsEl.clientWidth : (window.innerWidth || 1440);
-    const h = fsEl ? fsEl.clientHeight : (window.innerHeight || 810);
+    const th = !fsEl && this.state.demoTheater;
+    const w = fsEl ? fsEl.clientWidth : (window.innerWidth || 1440) - (th ? 2 * this.THEATER_PAD : 0);
+    const h = fsEl ? fsEl.clientHeight : (window.innerHeight || 810) - (th ? this._theaterTopPx() + this.THEATER_PAD + this.THEATER_BAR : 0);
     const ab = this._animBox;
     if (ab) {
       const kid = ab.firstElementChild;
@@ -3021,15 +3032,17 @@ class Component extends DCLogic {
     const el = this._demoBox;
     if (!el || this._placeholder || !el.parentNode) return;
     this._placeholder = document.createComment("demo-box");
+    this._portaled = el; // the ref callback nulls _demoBox when the section unmounts; keep the moved node to put back or drop
     el.parentNode.insertBefore(this._placeholder, el);
     let host = el.getRootNode ? el.getRootNode() : document;
     host = (host.getElementById && host.getElementById("dc-root")) || document.getElementById("dc-root") || document.body;
     host.appendChild(el);
   };
   _portalBack = () => {
-    const el = this._demoBox, ph = this._placeholder;
+    const el = this._portaled || this._demoBox, ph = this._placeholder;
+    this._portaled = null;
     if (el && this._nativeClick) { el.removeEventListener("click", this._nativeClick, true); this._nativeClick = null; }
-    if (!el || !ph || !ph.parentNode) { this._placeholder = null; return; }
+    if (!el || !ph || !ph.parentNode) { if (el && ph && el.parentNode) el.parentNode.removeChild(el); this._placeholder = null; return; } // its section was unmounted while portaled (left the step from the top nav): drop the orphan stage
     ph.parentNode.insertBefore(el, ph);
     ph.parentNode.removeChild(ph);
     this._placeholder = null;
@@ -3049,16 +3062,49 @@ class Component extends DCLogic {
     if (document.fullscreenElement || document.webkitFullscreenElement) {
       try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (err) {}
     }
-    this._portalBack();
-    this.setState({ demoExpanded: false }, this._nudgeResize);
+    if (!this.state.demoTheater) this._portalBack();
+    this.setState({ demoExpanded: false }, () => { this._nudgeResize(); if (this.state.demoTheater) [0, 80, 260].forEach((t) => setTimeout(this._measureFs, t)); });
   };
-  componentDidUpdate() { if (!this.state.demoExpanded && this._placeholder) this._portalBack(); this._syncUrl(); this._trackScreen(); this._liveSyncAddr(); this._applyHero(); }
+  // ── Theater mode: the demo stage (Walkthrough, AI Demo or Live Site) fills the window below the deck's top nav, which
+  //    stays visible and usable. No browser fullscreen. The stage never drops below its normal size (THEATER_MIN_*):
+  //    on a small window the stage scrolls instead of shrinking. Esc, the Theater tab or "Exit theater" leave it.
+  THEATER_PAD = 16;
+  THEATER_BAR = 60; // bottom strip for the theater toolbar, so it never covers the demo
+  THEATER_MIN_W = 1020;
+  THEATER_MIN_H = 600;
+  _theaterTopPx = () => {
+    try {
+      let root = this._demoBox && this._demoBox.getRootNode ? this._demoBox.getRootNode() : document;
+      const nav = (root.querySelector && root.querySelector("nav")) || document.querySelector("nav");
+      const b = nav && nav.getBoundingClientRect().bottom;
+      if (b && b > 0 && b < 240) return Math.round(b);
+    } catch (err) {}
+    return 53;
+  };
+  _toggleTheater = () => {
+    if (this.state.demoTheater) { this._exitTheater(); return; }
+    try { window.scrollTo(0, 0); } catch (err) {}
+    this._portalOut();
+    this.setState({ demoTheater: true, theaterTop: this._theaterTopPx() }, () => {
+      this.setState({ theaterTop: this._theaterTopPx() });
+      this._nudgeResize();
+      [0, 80, 260].forEach((t) => setTimeout(this._measureFs, t));
+    });
+  };
+  _exitTheater = () => {
+    if (this.state.demoExpanded) { this._collapseFs(); }
+    this._portalBack();
+    this.setState({ demoTheater: false, demoExpanded: false }, this._nudgeResize);
+  };
+  componentDidUpdate() { if (this.state.demoTheater && !(this.state.view === "feature" && this.state.step === 2)) { this._portalBack(); this.setState({ demoTheater: false, demoExpanded: false }); return; } // left the Live Demo step from the still-visible top nav
+    if (!this.state.demoExpanded && !this.state.demoTheater && this._placeholder) this._portalBack(); this._syncUrl(); this._trackScreen(); this._liveSyncAddr(); this._applyHero(); }
   _setAnimBox = (el) => { this._animBox = el; };
   _fsScale = () => {
     const w = this.state.fsW || window.innerWidth || 1440;
     const h = this.state.fsH || window.innerHeight || 810;
     const natH = this._natH || 580;
-    return Math.max(0.5, Math.min(w / 1020, h / natH)).toFixed(3);
+    const fit = Math.min(w / 1020, h / natH);
+    return (this.state.demoTheater && !this.state.demoExpanded ? Math.max(1, fit) : Math.max(0.5, fit)).toFixed(3);
   };
   _nudgeResize = () => {
     [0, 60, 220, 420].forEach((t) => setTimeout(() => window.dispatchEvent(new Event("resize")), t));
@@ -3258,12 +3304,12 @@ class Component extends DCLogic {
       rootZoomStyle: zoom(UI.uiScale), navZoomStyle: zoom(UI.navScale), hubZoomStyle: zoom(UI.hubScale), featZoomStyle: zoom(UI.featureScale),
       hubGridCols: "repeat(" + (UI.hubColumns || 3) + ",1fr)", cardMinH: (UI.cardMinHeight || 190) + "px", demoMaxW: (UI.demoMaxWidth || 1020) + "px", statSize: (UI.statSize || 84) + "px",
       lblBack: LB.back, lblMenu: LB.menu, lblLiveSite: LB.liveSite, lblBackToModule: LB.backToModule, lblAllModules: LB.allModules, lblOpen: LB.openCard, lblWatch: LB.watchCard,
-      lblTabWalk: LB.demoTabs.walkthrough, lblTabAi: LB.demoTabs.ai, lblTabLive: LB.demoTabs.live, lblTabExpand: LB.demoTabs.expand,
+      lblTabWalk: LB.demoTabs.walkthrough, lblTabAi: LB.demoTabs.ai, lblTabLive: LB.demoTabs.live, lblTabExpand: LB.demoTabs.expand, lblTabTheater: LB.demoTabs.theater || "▭ Theater",
       stepLabel0: LB.steps[0], stepLabel1: LB.steps[1], stepLabel2: LB.steps[2], stepLabel3: LB.steps[3],
       stepEye0: LB.stepEyebrows[0], stepEye1: LB.stepEyebrows[1], stepEye2: LB.stepEyebrows[2], stepEye3: LB.stepEyebrows[3],
       showCrumbs: CT.showBreadcrumb !== false, showLiveSitePill: CT.showLiveSitePill !== false, showMenuBtn: CT.showMenuButton !== false, showFsPills: CT.showFullscreenPills !== false,
       showArrows: CT.showPagingArrows !== false, showDotsBar: step !== 2 && CT.showStepDots !== false,
-      showAiTab: !!aiKey && CT.showAiDemoTab !== false, showLiveTab: CT.showLiveSiteTab !== false, showExpandTab: CT.showExpandTab !== false,
+      showAiTab: !!aiKey && CT.showAiDemoTab !== false, showLiveTab: CT.showLiveSiteTab !== false, showExpandTab: CT.showExpandTab !== false, showTheaterTab: CT.showTheaterTab !== false,
       demoProps: { speed: Number(CT.demoSpeed) || 1, autoPlay: CT.demoAutoPlay !== false },
       libOpenShown: view === "feature" && step === 3 && CT.showValidationLibrary !== false,
       menuTmsHdr: this.tmsMeta.name + " · " + this.features.length + " modules", menuWmsHdr: this.sysData.wms.name + " · " + this.featureSets.wms.length + " modules", menuOmsHdr: this.sysData.oms.name + " · " + this.featureSets.oms.length + " modules",
@@ -3316,19 +3362,28 @@ class Component extends DCLogic {
       showLive: this.state.liveOn, liveUrl: (feat.demo && feat.demo.liveUrl) || this.LIVE_URLS[this.state.sysKey] || this.LIVE_URL_DEFAULT,
       liveOff: () => this.setState({ liveOn: false, aiOn: false }), liveOnFn: () => { this.setState({ liveOn: true, aiOn: false }); this._liveOpen((feat.demo && feat.demo.liveUrl) || this.LIVE_URLS[this.state.sysKey] || this.LIVE_URL_DEFAULT); },
       expanded: !!this.state.demoExpanded,
+      theater: !!this.state.demoTheater && !this.state.demoExpanded,
       setDemoBox: this._setDemoBox,
       toggleExpand: this._toggleExpand,
+      toggleTheater: this._toggleTheater, exitTheater: this._exitTheater,
+      btnTheaterBg: this.state.demoTheater ? "rgba(61,214,181,.14)" : "rgba(255,255,255,.03)", btnTheaterColor: this.state.demoTheater ? "#3DD6B5" : "#7E97AC", btnTheaterBorder: this.state.demoTheater ? "rgba(61,214,181,.45)" : "rgba(255,255,255,.14)",
       collapse: this._collapseFs,
       setSectionFs: this._setSectionFs, sectionFs: this._sectionFs, setAnimBox: this._setAnimBox,
       fsWrapStyle: this.state.demoExpanded
         ? "position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2147483000;margin:0;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#051729;"
+        : this.state.demoTheater
+        ? "position:fixed;top:" + this.state.theaterTop + "px;left:0;right:0;bottom:0;z-index:190;margin:0;padding:" + this.THEATER_PAD + "px " + this.THEATER_PAD + "px " + this.THEATER_BAR + "px;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;display:flex;align-items:safe center;justify-content:safe center;background:#051729;"
         : "width:100%;display:flex;flex-direction:column;align-items:center;",
       liveBoxStyle: this.state.demoExpanded
         ? "width:100%;height:100%;position:relative;border-radius:0;border:0;overflow:hidden;background:#0A2540;"
+        : this.state.demoTheater
+        ? "width:100%;height:100%;min-width:" + this.THEATER_MIN_W + "px;min-height:" + this.THEATER_MIN_H + "px;flex:none;position:relative;border-radius:12px;border:1px solid rgba(255,255,255,.16);overflow:hidden;background:#0A2540;"
         : "width:100%;max-width:" + (UI.demoMaxWidth || 1020) + "px;position:relative;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);overflow:hidden;background:#0A2540;",
-      liveFrameH: this.state.demoExpanded ? "100%" : "640px",
+      liveFrameH: this.state.demoExpanded || this.state.demoTheater ? "100%" : "640px",
       animBoxStyle: this.state.demoExpanded
         ? "width:1020px;height:auto;flex:none;overflow:hidden;transform:scale(" + this._fsScale() + ");transform-origin:center center;"
+        : this.state.demoTheater
+        ? "width:1020px;height:auto;flex:none;overflow:hidden;zoom:" + this._fsScale() + ";"
         : "width:100%;max-width:" + (UI.demoMaxWidth || 1020) + "px;" + zoom(UI.demoScale),
       btnDemoBg: !this.state.liveOn && !aiShown ? "rgba(61,214,181,.14)" : "rgba(255,255,255,.03)", btnDemoColor: !this.state.liveOn && !aiShown ? "#3DD6B5" : "#7E97AC", btnDemoBorder: !this.state.liveOn && !aiShown ? "rgba(61,214,181,.45)" : "rgba(255,255,255,.14)",
       btnLiveBg: this.state.liveOn ? "rgba(61,214,181,.14)" : "rgba(255,255,255,.03)", btnLiveColor: this.state.liveOn ? "#3DD6B5" : "#7E97AC", btnLiveBorder: this.state.liveOn ? "rgba(61,214,181,.45)" : "rgba(255,255,255,.14)",
