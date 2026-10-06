@@ -2733,6 +2733,13 @@ class Component extends DCLogic {
         return;
       }
       if (this.state.view !== "feature") return;
+      // Live Demo step, Walkthrough / AI Demo recording showing: drive its player. Space anywhere; , . previous / next step;
+      // in Expand or Theater the arrows step the recording too (the deck's own steps are hidden there anyway).
+      if (this.state.step === 2 && !this.state.liveOn) {
+        const big = this.state.demoExpanded || this.state.demoTheater;
+        const t = e.key === " " ? "Play / Pause" : (e.key === "," || (big && e.key === "ArrowLeft")) ? "Previous step" : (e.key === "." || (big && e.key === "ArrowRight")) ? "Next step" : (e.key === "0" || (big && e.key === "Home")) ? "Back to start" : null;
+        if (t && this._demoCtl(t)) { e.preventDefault(); return; }
+      }
       if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); this.featNext(); }
       else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); this.featPrev(); }
       else if (e.key === "Escape") this.goHub();
@@ -2894,6 +2901,16 @@ class Component extends DCLogic {
   // Self-hosted copy of the Rive tour (was https://tubular-flan-14267b.netlify.app/embed.html) — same origin, so it can tell
   // the deck when it ends and take keyboard commands. settings.startUrl in the admin still overrides it.
   WALKTHROUGH_URL = "assets/walkthrough/embed.html";
+  // Click a control of the recording on screen (every demo's player strip uses these titles; AI clips are same-origin
+  // iframes with the same strip). Returns false when the recording has no such control (e.g. no steps).
+  _demoCtl = (title) => {
+    const box = this._portaled || this._demoBox; if (!box || !box.isConnected) return false;
+    const sel = '[title="' + title + '"]';
+    let el = box.querySelector(sel);
+    if (!el) for (const f of box.querySelectorAll("iframe")) { try { el = f.contentDocument && f.contentDocument.querySelector(sel); } catch (err) {} if (el) break; }
+    if (!el) return false;
+    el.click(); return true;
+  };
   _wtFrame = () => { // the deck renders inside shadow roots: search them all (only runs on a key press or a message)
     if (this.state.view !== "explore") return null;
     const SEL = 'iframe[title="FreightPOP Interactive"]';
@@ -2905,7 +2922,7 @@ class Component extends DCLogic {
     return null;
   };
   _wtSend = (cmd) => { const f = this._wtFrame(); if (!f || !f.contentWindow) return false; try { if (new URL(f.src, location.href).origin !== location.origin) return false; f.contentWindow.postMessage({ type: "freightpop:walkthrough", cmd }, location.origin); return true; } catch (err) { return false; } };
-  HOTKEYS = [["?", "Show / hide this list"], ["← →", "Previous / next screen or step · Walkthrough: previous / next step"], ["Space", "Walkthrough: pause / play"], ["Home  End", "Walkthrough: back to start / last step"], ["PgDn", "Walkthrough: skip to the Main Menu"], ["1 – 4", "Problem · Benefit · Live Demo · Validation"], ["V", "Intro hero video on / off"], ["M", "Jump-to menu"], ["H", "Main menu"], ["B", "Back"], ["L", "Live Site, full screen"], ["F", "Expand the demo · fullscreen an embedded screen"], ["T  or  /", "Focus the Live Site address bar"], ["[  ]", "Previous / next Live Site tab"], ["K", "Copy a link to this screen"], ["Esc", "Close / back"]];
+  HOTKEYS = [["?", "Show / hide this list"], ["← →", "Previous / next screen or step · Walkthrough: previous / next step"], ["Space", "Pause / play the recording or the Walkthrough"], [",  .", "Recording: previous / next step (arrows in Expand and Theater)"], ["0", "Recording: back to start"], ["Home  End", "Walkthrough: back to start / last step"], ["PgDn", "Walkthrough: skip to the Main Menu"], ["1 – 4", "Problem · Benefit · Live Demo · Validation"], ["V", "Intro hero video on / off"], ["M", "Jump-to menu"], ["H", "Main menu"], ["B", "Back"], ["L", "Live Site, full screen"], ["F", "Expand the demo · fullscreen an embedded screen"], ["T  or  /", "Focus the Live Site address bar"], ["[  ]", "Previous / next Live Site tab"], ["K", "Copy a link to this screen"], ["Esc", "Close / back"]];
   _heroOn = () => ((this.cfg && this.cfg.controls) || {}).heroVideo !== false && !this.state.heroOff;
   _applyHero = () => {
     const show = this._heroOn(); const play = show && this.state.view === "intro";
