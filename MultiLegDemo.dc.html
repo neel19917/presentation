@@ -18,8 +18,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 872;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#EEF2F7;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#EEF2F7;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
     <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:22px;width:auto;display:block;"></div>
@@ -150,9 +151,9 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
     <div style="position:absolute;left:0;right:0;bottom:0;height:52px;background:#fff;border-top:1px solid #E4E9EF;display:flex;align-items:center;gap:22px;padding:0 20px;z-index:6;">
       <span style="font-size:12.5px;color:#3A4B60;">Total Outer Handling Units: 0</span>
-      <span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: 0</span>
-      <span style="font-size:12.5px;color:#3A4B60;">Total Weight: 0 LB</span>
-      <span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: 0</span>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Handling Units: {{ totHU }}</span>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Weight: {{ totWt }} LB</span>
+      <span style="font-size:12.5px;color:#3A4B60;">Total Linear Feet: {{ totLf }}</span>
       <span style="margin-left:auto;display:flex;align-items:center;gap:10px;">
         <span style="border:1px solid #C6D0DC;border-radius:3px;padding:10px 14px;font-size:12px;color:#24354A;">···</span>
         <span style="border:1px solid #B9CDE8;border-radius:3px;padding:11px 14px;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.04em;">CLEAR SHIPMENT</span>
@@ -269,6 +270,11 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <span style="font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.5;color:#9AB0C6;">{{ titleSub }}</span>
     </div>
   </sc-if>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
+  </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
   </sc-if>
@@ -276,25 +282,29 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
   </div>
 </div>
-
-<div style="position:absolute;left:0;right:0;bottom:0;height:{{ stripH }};background:#051729;display:flex;align-items:center;gap:14px;padding:0 16px;">
-  <span style="color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;">{{ cap }}</span>
-  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <span style="flex:none;color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;border:1px solid rgba(61,214,181,.4);border-radius:5px;padding:3px 8px;">PAUSED</span>
-  </sc-if>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex:none;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
     </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
   </div>
 </div>
-<div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(61,214,181,.16);cursor:pointer;">
-  <div style="position:absolute;left:0;bottom:0;height:5px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
 </div>
 </div>
 </x-dc>
@@ -308,7 +318,7 @@ class Component extends DCLogic {
     addShipHot: false, anotherHot: false, leg2: false,
     stopDrag: false, stopDY: 0, stopsSwapped: false, seq2: false, msAvail: true, stop3: true, stop4: false, stop4Filled: false,
     titleOn: true, titleKicker: "Multi-leg shipments", titleText: "Adding a leg after booking", titleSub: "A second leg on a different carrier, tied to the same movement" };
-  DUR = 57;
+  DUR = 65.5;
   KF = [
     { t: 2.4, s: { titleOn: false, cap: "01 · Leg one is processed — the shipment record" } },
     { t: 4.6, s: { curX: 1339, curY: 147, addLegHot: true, cap: "02 · ADD A LEG opens the movement window" } },
@@ -320,42 +330,42 @@ class Component extends DCLogic {
     { t: 10.0, s: { curX: 478, curY: 373, movPick: true } },
     { t: 10.7, s: { ripple: true, ripX: 478, ripY: 373 } },
     { t: 11.1, s: { ripple: false, movDD: false, movPick: false, movId: "60798", movTable: true, cap: "04 · Movement 60798 — leg one sits at sequence 1" } },
-    { t: 13.6, s: { curX: 761, curY: 329, addShipHot: true, cap: "05 · Attach this shipment to the movement" } },
+    { t: 13.6, s: { curX: 761, curY: 329, addShipHot: true, cap: "05 · Add a shipment to the movement" } },
     { t: 14.4, s: { ripple: true, ripX: 761, ripY: 329 } },
     { t: 14.8, s: { ripple: false, addShipHot: false } },
-    { t: 16.6, s: { seq2: true, cap: "06 · This shipment lands on the movement at sequence 2" } },
-    { t: 18.8, s: { curX: 393, curY: 552, cap: "07 · Close the window and quote leg two" } },
-    { t: 19.6, s: { ripple: true, ripX: 393, ripY: 552 } },
-    { t: 20.0, s: { ripple: false, movOn: false, movTable: false, leg2: true, movId: "60798",
-      cap: "09 · Leg two is quoted and processed on its own carrier", curX: 700, curY: 400 } },
-    { t: 23.0, s: { cap: "10 · Old Dominion on leg two — same movement, same references" } },
-    { t: 25.6, s: { cap: "11 · One movement, two carriers, no re-keying" } },
+    { t: 16.6, s: { seq2: true, cap: "06 · The new leg lands on the movement at sequence 2" } },
+    { t: 19.4, s: { curX: 393, curY: 552, cap: "07 · Close the window and quote leg two" } },
+    { t: 21.5, s: { ripple: true, ripX: 393, ripY: 552 } },
+    { t: 21.9, s: { ripple: false, movOn: false, movTable: false, leg2: true, movId: "60798",
+      cap: "08 · Leg two is quoted and processed on its own carrier", curX: 700, curY: 400 } },
+    { t: 24.9, s: { cap: "09 · Old Dominion on leg two — same movement, same references" } },
+    { t: 27.5, s: { cap: "10 · One movement, two carriers, no re-keying" } },
     // ── flow two ──
-    { t: 28.4, s: { titleOn: true, titleKicker: "Also supported", titleText: "One carrier, every stop", titleSub: "Multi-Stop on Quote/Ship, when the whole route is booked at once" } },
-    { t: 31.0, s: { titleOn: false, scene: 0, leg2: false, ms: false, msAvail: false, stop3: false, stopsSwapped: false, stop4: false, stop4Filled: false,
+    { t: 30.3, s: { titleOn: true, titleKicker: "Also supported", titleText: "One carrier, every stop", titleSub: "Multi-Stop on Quote/Ship, when the whole route is booked at once" } },
+    { t: 32.9, s: { titleOn: false, scene: 0, leg2: false, ms: false, msAvail: false, stop3: false, stopsSwapped: false, stop4: false, stop4Filled: false,
       shipFrom: "FreightPOP, 1 Rancho Circle, Lake Forest, CA, 9263...", shipTo: "", typeVal: "",
-      cap: "12 · A fresh Quote/Ship — nothing entered yet", curX: 300, curY: 220 } },
-    { t: 33.0, s: { shipTo: "Sunshine Cleaners, 1442 Franklin Street, Santa Cla...", cap: "13 · Enter the ship-to address — one origin, one destination" } },
-    { t: 35.0, s: { typeVal: "TRUCKLOAD", msAvail: true, curX: 400, curY: 470, cap: "14 · One truckload — and the Multi-Stop toggle appears with it" } },
-    { t: 36.8, s: { curX: 803, curY: 168, cap: "15 · Turn Multi-Stop on" } },
-    { t: 38.0, s: { ripple: true, ripX: 803, ripY: 168 } },
-    { t: 38.4, s: { ripple: false, ms: true, cap: "16 · Locations becomes a stop list — stop 3 is empty" } },
-    { t: 40.4, s: { curX: 138, curY: 369, cap: "17 · Fill in the third stop" } },
-    { t: 41.4, s: { ripple: true, ripX: 138, ripY: 369 } },
-    { t: 41.8, s: { ripple: false, stop3: true } },
-    { t: 43.6, s: { curX: 67, curY: 369, cap: "18 · Stops drag to reorder" } },
-    { t: 44.5, s: { ripple: true, ripX: 67, ripY: 369 } },
-    { t: 44.9, s: { ripple: false, stopDrag: true } },
-    { t: 45.4, s: { stopDY: -74, curX: 67, curY: 295 } },
-    { t: 46.8, s: { stopDrag: false, stopDY: 0, stopsSwapped: true, cap: "19 · The stop list re-sequences itself" } },
-    { t: 48.8, s: { curX: 91, curY: 441, cap: "20 · ADD STOP appends another stop" } },
-    { t: 49.7, s: { ripple: true, ripX: 91, ripY: 441 } },
-    { t: 50.1, s: { ripple: false, stop4: true } },
-    { t: 51.6, s: { curX: 138, curY: 443, cap: "21 · Fill in the fourth stop" } },
-    { t: 52.5, s: { ripple: true, ripX: 138, ripY: 443 } },
-    { t: 52.9, s: { ripple: false, stop4Filled: true } },
-    { t: 54.6, s: { curX: 1337, curY: 767, cap: "22 · One carrier's record houses every stop" } },
-    { t: 57.6, s: {} },
+      cap: "11 · A fresh Quote/Ship — nothing entered yet", curX: 300, curY: 220 } },
+    { t: 35.7, s: { shipTo: "Sunshine Cleaners, 1442 Franklin Street, Santa Cla...", cap: "12 · Enter the ship-to address — one origin, one destination" } },
+    { t: 38.5, s: { typeVal: "TRUCKLOAD", msAvail: true, curX: 400, curY: 470, cap: "13 · One truckload — and the Multi-Stop toggle appears with it" } },
+    { t: 41.3, s: { curX: 803, curY: 168, cap: "14 · Turn Multi-Stop on" } },
+    { t: 43.5, s: { ripple: true, ripX: 803, ripY: 168 } },
+    { t: 43.9, s: { ripple: false, ms: true, cap: "15 · Locations becomes a stop list — stop 3 is empty" } },
+    { t: 46.7, s: { curX: 138, curY: 369, cap: "16 · Fill in the third stop" } },
+    { t: 47.7, s: { ripple: true, ripX: 138, ripY: 369 } },
+    { t: 48.1, s: { ripple: false, stop3: true } },
+    { t: 49.9, s: { curX: 67, curY: 369, cap: "17 · Stops drag to reorder" } },
+    { t: 50.8, s: { ripple: true, ripX: 67, ripY: 369 } },
+    { t: 51.2, s: { ripple: false, stopDrag: true } },
+    { t: 51.7, s: { stopDY: -74, curX: 67, curY: 295 } },
+    { t: 53.1, s: { stopDrag: false, stopDY: 0, stopsSwapped: true, cap: "18 · The stop list re-sequences itself" } },
+    { t: 55.9, s: { curX: 91, curY: 441, cap: "19 · ADD STOP appends another stop" } },
+    { t: 56.8, s: { ripple: true, ripX: 91, ripY: 441 } },
+    { t: 57.2, s: { ripple: false, stop4: true } },
+    { t: 58.7, s: { curX: 138, curY: 443, cap: "20 · Fill in the fourth stop" } },
+    { t: 59.6, s: { ripple: true, ripX: 138, ripY: 443 } },
+    { t: 60.0, s: { ripple: false, stop4Filled: true } },
+    { t: 61.7, s: { curX: 1337, curY: 767, cap: "21 · One carrier's record houses every stop" } },
+    { t: 65.6, s: {} },
   ];
   anim = { ...this.A0 };
   t = 0; _ki = 0; scaleVal = 0.5;
@@ -387,6 +397,16 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -424,7 +444,7 @@ class Component extends DCLogic {
       locCard: "position:absolute;box-sizing:border-box;left:30px;top:136px;width:" + (a.ms ? 740 : 900) + "px;height:" + (a.ms ? (a.stop4 ? 418 : 344) : 216) + "px;background:#fff;border:1px solid #E4E9EF;",
       shipCard: "position:absolute;box-sizing:border-box;left:30px;top:" + (a.ms ? (a.stop4 ? 570 : 496) : 368) + "px;width:900px;height:" + (a.ms ? 204 : 382) + "px;overflow:hidden;background:#fff;border:1px solid #E4E9EF;",
       unitTitle: a.typeVal ? "1 " + a.typeVal : "1 HANDLING UNIT",
-      unitSub: a.typeVal ? "@ 0 lb / 45000 lb (MAX)" : "Add Package(s) to Calculate Volume Metrics",
+      unitSub: a.typeVal ? "@ 1200 lb / 45000 lb (MAX)" : "Add Package(s) to Calculate Volume Metrics",
       magIcon: React.createElement("svg", { width: 16, height: 16, viewBox: "0 0 24 24", style: { position: "absolute", right: 11 } },
         React.createElement("circle", { cx: 10.5, cy: 10.5, r: 6.5, fill: "none", stroke: "#4088CF", strokeWidth: 1.9 }),
         React.createElement("path", { d: "M15.5 15.5 L21 21", stroke: "#4088CF", strokeWidth: 1.9, strokeLinecap: "round" })),
@@ -433,8 +453,9 @@ class Component extends DCLogic {
       knobOff: "position:absolute;left:1px;top:1px;width:13px;height:13px;border-radius:50%;background:#fff;display:block;",
       dims: a.typeVal ? "48" : "0", wt: a.typeVal ? "1200" : "0",
       fclass: a.typeVal ? "70" : "", nmfc: a.typeVal ? "156600" : "",
-      density: a.typeVal ? "8.62" : "", cubic: a.typeVal ? "139.2" : "",
+      density: a.typeVal ? "18.75" : "", cubic: a.typeVal ? "64" : "",
       descVal: a.typeVal ? "Palletized dry goods" : "",
+      totHU: a.typeVal ? "1" : "0", totWt: a.typeVal ? "1200" : "0", totLf: a.typeVal ? "4" : "0",
 
       fullDetails: !a.ms,
       addStopTop: a.stop4 ? 358 : 284,
@@ -469,13 +490,22 @@ class Component extends DCLogic {
       noSeq2: !(a.seq2 || a.leg2),
       addShipBtn: "box-sizing:border-box;height:52px;display:flex;align-items:center;border:1px solid " + (a.addShipHot ? "#1557B0" : "#B9CDE8") + ";border-radius:3px;padding:0 18px;color:#4088CF;font-size:12.5px;font-weight:500;letter-spacing:.04em;",
       anotherBtn: "justify-self:end;box-sizing:border-box;width:100%;max-width:210px;height:48px;display:flex;align-items:center;justify-content:center;border:1px solid " + (a.anotherHot ? "#1557B0" : "#B9CDE8") + ";border-radius:3px;color:#4088CF;font-size:11.5px;font-weight:500;letter-spacing:.04em;",
-      stripH: Math.max(34, Math.round(62 * this.scaleVal)) + "px",
       scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px",
-      paused: !a.playing, playing: a.playing,
+      paused: !a.playing,
       curT: "translate(" + a.curX + "px, " + a.curY + "px)",
       ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
       timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(), playing: this.anim.playing,
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,

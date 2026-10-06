@@ -1737,7 +1737,7 @@ window.fpStaggerIn = function (grid) {
 
 
 
-<script type="text/x-dc" data-dc-script="" data-props="{&quot;configUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://deck-config-api-production.up.railway.app/api/config&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sales OS&quot;},&quot;startUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://tubular-flan-14267b.netlify.app/embed.html&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Flow&quot;},&quot;showMarquee&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;}}">
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;configUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://deck-config-api-production.up.railway.app/api/config&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sales OS&quot;},&quot;startUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/walkthrough/embed.html&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Flow&quot;},&quot;showMarquee&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;}}">
 class Component extends DCLogic {
   state = { view: "intro", fi: 0, step: 0, menuOpen: false, sysKey: "tms", liveOn: false, demoExpanded: false, demoTheater: false, theaterTop: 53, fsW: 0, fsH: 0, hs: null };
 
@@ -2703,6 +2703,8 @@ class Component extends DCLogic {
       }
       if (this.state.view === "intro" && (e.key === "ArrowRight" || e.key === "PageDown")) { e.preventDefault(); this.goExplore(); return; }
       if (this.state.view === "explore") {
+        const wk = { " ": "toggle", ArrowRight: "next", ArrowLeft: "prev", Home: "restart", End: "end" }[e.key];
+        if (wk && this._wtSend(wk)) { e.preventDefault(); return; } // the self-hosted tour: step / pause it from the keyboard
         if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); this.goMainMenu(); }
         else if (e.key === "Escape" || e.key === "ArrowLeft") this.goIntro();
         return;
@@ -2737,6 +2739,14 @@ class Component extends DCLogic {
     };
     this._libMsg = (e) => { if (e && e.data && e.data.fpCloseLib) this.closeLib(); };
     window.addEventListener("message", this._libMsg);
+    // Interactive Walkthrough (assets/walkthrough/embed.html): when the tour finishes, cut to the clickable Main Menu
+    // instead of letting it loop; deck keys pressed while focus is inside the tour frame are replayed here.
+    this._wtMsg = (e) => {
+      const d = e && e.data; if (!d || d.type !== "freightpop:walkthrough" || !this._wtFrame() || e.source !== this._wtFrame().contentWindow) return;
+      if (d.event === "ended" && this.state.view === "explore") this.goMainMenu();
+      else if (d.event === "key" && d.key) { try { this._onKey({ key: d.key, shiftKey: !!d.shift, target: document.body, preventDefault() {}, stopPropagation() {} }); } catch (err) {} }
+    };
+    window.addEventListener("message", this._wtMsg);
     window.addEventListener("keydown", this._onKey);
     window.addEventListener("message", this._onLiveMsg);
     window.addEventListener("message", this._onHostMsg);
@@ -2749,6 +2759,7 @@ class Component extends DCLogic {
     if (this._beatT) clearInterval(this._beatT); if (this._onHide) document.removeEventListener("visibilitychange", this._onHide);
     clearTimeout(this._copiedT);
     if (this._libMsg) window.removeEventListener("message", this._libMsg);
+    if (this._wtMsg) window.removeEventListener("message", this._wtMsg);
     if (this._onKey) window.removeEventListener("keydown", this._onKey);
     window.removeEventListener("message", this._onLiveMsg);
     window.removeEventListener("message", this._onHostMsg);
@@ -2880,7 +2891,21 @@ class Component extends DCLogic {
   liveAddrGo = () => { const el = this._addrEl; if (!el) return; const url = this._liveNorm(el.value); el.__editing = false; if (url) this._liveNav(url, true); el.blur(); this._liveSyncAddr(); };
   // ── Hero video (intro Rive animation) · hotkeys · Live Site helper notice ──────────────────────────────────────────
   HELPER_URL = "https://freightpopsales.com/deck/deck-embed-extension/";
-  HOTKEYS = [["?", "Show / hide this list"], ["← →", "Previous / next screen or step"], ["1 – 4", "Problem · Benefit · Live Demo · Validation"], ["V", "Intro hero video on / off"], ["M", "Jump-to menu"], ["H", "Main menu"], ["B", "Back"], ["L", "Live Site, full screen"], ["F", "Expand the demo · fullscreen an embedded screen"], ["T  or  /", "Focus the Live Site address bar"], ["[  ]", "Previous / next Live Site tab"], ["K", "Copy a link to this screen"], ["Esc", "Close / back"]];
+  // Self-hosted copy of the Rive tour (was https://tubular-flan-14267b.netlify.app/embed.html) — same origin, so it can tell
+  // the deck when it ends and take keyboard commands. settings.startUrl in the admin still overrides it.
+  WALKTHROUGH_URL = "assets/walkthrough/embed.html";
+  _wtFrame = () => { // the deck renders inside shadow roots: search them all (only runs on a key press or a message)
+    if (this.state.view !== "explore") return null;
+    const SEL = 'iframe[title="FreightPOP Interactive"]';
+    const seen = [document];
+    for (let i = 0; i < seen.length && i < 400; i++) {
+      const hit = seen[i].querySelector(SEL); if (hit) return hit;
+      seen[i].querySelectorAll("*").forEach((el) => { if (el.shadowRoot) seen.push(el.shadowRoot); });
+    }
+    return null;
+  };
+  _wtSend = (cmd) => { const f = this._wtFrame(); if (!f || !f.contentWindow) return false; try { if (new URL(f.src, location.href).origin !== location.origin) return false; f.contentWindow.postMessage({ type: "freightpop:walkthrough", cmd }, location.origin); return true; } catch (err) { return false; } };
+  HOTKEYS = [["?", "Show / hide this list"], ["← →", "Previous / next screen or step · Walkthrough: previous / next step"], ["Space", "Walkthrough: pause / play"], ["Home  End", "Walkthrough: back to start / last step"], ["PgDn", "Walkthrough: skip to the Main Menu"], ["1 – 4", "Problem · Benefit · Live Demo · Validation"], ["V", "Intro hero video on / off"], ["M", "Jump-to menu"], ["H", "Main menu"], ["B", "Back"], ["L", "Live Site, full screen"], ["F", "Expand the demo · fullscreen an embedded screen"], ["T  or  /", "Focus the Live Site address bar"], ["[  ]", "Previous / next Live Site tab"], ["K", "Copy a link to this screen"], ["Esc", "Close / back"]];
   _heroOn = () => ((this.cfg && this.cfg.controls) || {}).heroVideo !== false && !this.state.heroOff;
   _applyHero = () => {
     const show = this._heroOn(); const play = show && this.state.view === "intro";
@@ -3165,7 +3190,8 @@ class Component extends DCLogic {
   renderVals() {
     const { view, fi, step, menuOpen } = this.state;
     const CS = this.cfg.settings || {}, UI = this.cfg.ui, CT = this.cfg.controls, LB = this.cfg.labels, PG = this.cfg.pages;
-    const startUrl = CS.startUrl || this.props.startUrl || "https://tubular-flan-14267b.netlify.app/embed.html";
+    const legacyWt = (u) => !u || /tubular-flan-14267b\.netlify\.app/.test(u); // the old external host of the same tour → use the self-hosted copy
+    const startUrl = (!legacyWt(CS.startUrl) && CS.startUrl) || (!legacyWt(this.props.startUrl) && this.props.startUrl) || this.WALKTHROUGH_URL;
     const showMarquee = CS.showMarquee !== undefined ? CS.showMarquee !== false : this.props.showMarquee !== false;
     const hsList = this.state.hs || this._loadHs();
     const feats = this.curFeats();

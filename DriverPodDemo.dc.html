@@ -18,8 +18,9 @@
 </style>
 <script src="./image-slot.js"></script>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#051729;aspect-ratio:1440 / 810;">
-<div style="width:1020px;height:580px;background:#051729;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;overflow:hidden;position:relative;transform:scale({{ scale }});transform-origin:top left;position:absolute;top:0;left:0;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#051729;aspect-ratio:1020 / 584;">
+<div style="position:absolute;top:0;left:0;width:1020px;height:584px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1020px;height:528px;background:#051729;font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;overflow:hidden;cursor:pointer;">
 
   <div style="flex:1;display:flex;gap:0;min-height:0;">
 
@@ -243,13 +244,13 @@
           </div>
         </div>
       </div>
-      <div style="margin:11px 16px 0;display:flex;align-items:center;gap:8px;">
-        <div style="width:132px;height:26px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:#fff;"><span style="font-size:8.5px;color:#9AA8B4;">Search</span><span style="font-size:8px;font-weight:500;color:#5B6B79;">GO</span></div>
+      <div style="margin:11px 16px 0;display:flex;align-items:center;gap:6px;white-space:nowrap;">
+        <div style="width:112px;flex:none;height:26px;box-sizing:border-box;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;background:#fff;"><span style="font-size:8.5px;color:#9AA8B4;">Search</span><span style="font-size:8px;font-weight:500;color:#5B6B79;">GO</span></div>
         <svg width="13" height="13" viewBox="0 0 24 24"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.8"></path></svg>
-        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 9px;background:#fff;">Outbound</span>
-        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 9px;background:#fff;">Inbound</span>
-        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 9px;background:#fff;">3rd Party</span>
-        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 9px;background:#fff;">Return Shipments</span>
+        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap;flex:none;">Outbound</span>
+        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap;flex:none;">Inbound</span>
+        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap;flex:none;">3rd Party</span>
+        <span style="font-size:8px;color:#3A4B60;border:1px solid #C9D4DE;border-radius:999px;padding:4px 8px;background:#fff;white-space:nowrap;flex:none;">Return Shipments</span>
         <span style="margin-left:auto;display:flex;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;background:#fff;">
           <span style="font-size:7.5px;font-weight:500;color:#24354A;background:#EDF1F6;padding:5px 7px;">INTERNAL</span>
           <span style="font-size:7.5px;font-weight:500;color:#7A8CA0;padding:5px 7px;">EXTERNAL</span>
@@ -263,7 +264,7 @@
       </div>
       <div style="margin:9px 16px 0;background:#fff;border:1px solid #E1E8EF;border-radius:4px;overflow:hidden;">
         <div style="display:grid;grid-template-columns:18px 24px 86px 44px 54px 1fr 48px 60px 66px 38px 44px;column-gap:6px;height:26px;align-items:center;padding:0 10px;background:#F7F9FC;border-bottom:1px solid #E4E9EF;font-size:7.5px;font-weight:500;color:#3A4B60;white-space:nowrap;overflow:hidden;">
-          <span></span><span>Notes</span><span>Tracking Status</span><span>Late/On…</span><span>Current Status</span><span>Tracking Comment</span><span>Process Date</span><span>Tracking Number</span><span>Carrier Connection a…</span><span>Carrie…</span><span></span>
+          <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;"></span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Notes</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Tracking Status</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Late/On…</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Current Status</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Tracking Comment</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Process Date</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Tracking Number</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Carrier Connection a…</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;">Carrie…</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;"></span>
         </div>
         <sc-for list="{{ grid }}" as="g" hint-placeholder-count="4">
           <div style="display:grid;grid-template-columns:18px 24px 86px 44px 54px 1fr 48px 60px 66px 38px 44px;column-gap:6px;min-height:32px;align-items:center;padding:5px 10px;border-bottom:1px solid #F0F3F7;background:{{ g.bg }};">
@@ -295,39 +296,52 @@
     </div>
   </div>
 
-  <div style="height:52px;flex:none;border-top:1px solid rgba(255,255,255,.1);background:#04121F;display:flex;align-items:center;gap:14px;padding:0 20px;">
-    <span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#3DD6B5;flex:none;">{{ cap }}</span>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex:none;">
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
+  </sc-if>
+</div>
+<!-- PLAYER (below the app, never over it) -->
+<div style="position:absolute;left:0;top:528px;width:1020px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);box-sizing:border-box;font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
       <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-      <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
       <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
         <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
         <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
       </div>
-      <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
     </div>
   </div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:10px;z-index:41;background:rgba(255,255,255,.14);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:10px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
+</div>
 </div>
 </div>
 
 
-<a href="./FreightPOP TMS Sales Deck v17.dc.html" style="{{ backBtn }}display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:6px;background:#0B1F33;color:#fff;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;box-shadow:0 4px 14px rgba(5,20,40,.25);">← BACK TO DECK</a>
+<a href="./FreightPOP TMS Sales Deck v17.dc.html" style="display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:6px;background:#0B1F33;color:#fff;font-size:12px;font-weight:500;letter-spacing:.04em;text-decoration:none;box-shadow:0 4px 14px rgba(5,20,40,.25);{{ backBtn }}">← BACK TO DECK</a>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:810},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;tsType&quot;:&quot;number&quot;}}">
 const ROWS = [
   { name: "Cascade Hardware Supply", city: "Reno, NV, US", pickup: "08/10/2026", eta: "08/12/2026", sid: "11357034", pro: "391094543069" },
   { name: "Cascade Hardware Supply", city: "Reno, NV, US", pickup: "08/10/2026", eta: "08/12/2026", sid: "11356985", pro: "391094406175" },
-  { name: "Brightline Foods", city: "Fresno, CA, US", pickup: "08/10/2026", eta: "08/13/2026", sid: "11356908", pro: "391094189493" },
+  { name: "Brightline Foods", city: "Fresno, CA, US", pickup: "08/10/2026", eta: "08/13/2026", sid: "11356908", pro: "391094189493", base: "InTransit" },
   { name: "Brightline Foods", city: "Fresno, CA, US", pickup: "08/10/2026", eta: "08/13/2026", sid: "11356884", pro: "391094108011" },
-  { name: "Ironwood Tool & Die", city: "Toledo, OH, US", pickup: "08/10/2026", eta: "08/14/2026", sid: "11355823", pro: "391091010190" }
+  { name: "Ironwood Tool & Die", city: "Toledo, OH, US", pickup: "08/10/2026", eta: "08/14/2026", sid: "11355823", pro: "391091010190", base: "OutForDelivery" }
 ];
 
 class Component extends DCLogic {
-  DUR = 40;
+  DUR = 49.5;
   A0 = { playing: true, cap: "01 · The driver's own app — every load assigned to them",
     tapRow: false, modal: null, comment: "", signed: "", podStep: 0,
     camera: false, flash: false, tapBrowse: false, tapSave: false, tapShutter: false, tapAction: false, delTapped: false,
@@ -335,26 +349,26 @@ class Component extends DCLogic {
   KF = [
     { t: 0.0, s: {} },
     { t: 3.4, s: { cap: "02 · One tap on the load's status icon", tapRow: true } },
-    { t: 5.0, s: { tapRow: false, modal: "pick", cap: "03 · Update Tracking Status — PICKED UP" } },
-    { t: 7.4, s: { comment: "Picked up" } },
-    { t: 9.4, s: { tapSave: true, cap: "04 · Save" } },
-    { t: 10.6, s: { tapSave: false, modal: null, comment: "", picked: true, cap: "05 · The load reads InTransit on the driver's list" } },
-    { t: 13.0, s: { cap: "06 · Same second, on the shipper's shipment record" } },
-    { t: 16.0, s: { cap: "07 · At the dock — DELIVERED", tapRow: true } },
-    { t: 17.2, s: { tapRow: false, modal: "del" } },
-    { t: 18.4, s: { tapAction: true, cap: "08 · Tap DELIVERED" } },
-    { t: 19.6, s: { tapAction: false, delTapped: true, cap: "09 · Comment, then who signed for it" } },
-    { t: 20.8, s: { comment: "Delivered" } },
-    { t: 22.4, s: { signed: "R. Delgado" } },
-    { t: 23.2, s: { cap: "09 · Upload POD — straight from the phone", tapBrowse: true } },
-    { t: 24.4, s: { tapBrowse: false, camera: true, tapShutter: true, cap: "10 · The driver photographs the delivered freight" } },
-    { t: 26.6, s: { flash: true } },
-    { t: 27.6, s: { camera: false, flash: false, tapShutter: false, podStep: 1, cap: "11 · Photo attaches to the shipment" } },
-    { t: 29.4, s: { tapSave: true, cap: "12 · Save" } },
-    { t: 30.6, s: { tapSave: false, modal: null, comment: "", signed: "", podStep: 0, delTapped: false, delivered: true, dropped: true, cap: "13 · Off the driver's In Transit list" } },
-    { t: 32.6, s: { cap: "14 · Shipper side: delivered, POD on file" } },
-    { t: 35.0, s: { toast: true, cap: "15 · Customer notified automatically, POD attached" } },
-    { t: 39.6, s: {} }
+    { t: 6.0, s: { tapRow: false, modal: "pick", cap: "03 · Update Tracking Status — PICKED UP" } },
+    { t: 8.4, s: { comment: "Picked up" } },
+    { t: 10.4, s: { tapSave: true, cap: "04 · Save" } },
+    { t: 13.0, s: { tapSave: false, modal: null, comment: "", picked: true, cap: "05 · The load reads InTransit on the driver's list" } },
+    { t: 16.0, s: { cap: "06 · Same second, on the shipper's shipment record" } },
+    { t: 19.0, s: { cap: "07 · At the dock — DELIVERED", tapRow: true } },
+    { t: 20.2, s: { tapRow: false, modal: "del" } },
+    { t: 21.6, s: { tapAction: true, cap: "08 · Tap DELIVERED" } },
+    { t: 24.2, s: { tapAction: false, delTapped: true, cap: "09 · Comment, then who signed for it" } },
+    { t: 25.4, s: { comment: "Delivered" } },
+    { t: 27.0, s: { signed: "R. Delgado" } },
+    { t: 28.0, s: { cap: "10 · Upload POD — straight from the phone", tapBrowse: true } },
+    { t: 30.6, s: { tapBrowse: false, camera: true, tapShutter: true, cap: "11 · The driver photographs the delivered freight" } },
+    { t: 32.0, s: { flash: true } },
+    { t: 33.8, s: { camera: false, flash: false, tapShutter: false, podStep: 1, cap: "12 · Photo attaches to the shipment" } },
+    { t: 36.4, s: { tapSave: true, cap: "13 · Save" } },
+    { t: 39.0, s: { tapSave: false, modal: null, comment: "", signed: "", podStep: 0, delTapped: false, delivered: true, dropped: true, cap: "14 · Off the driver's In Transit list" } },
+    { t: 41.6, s: { cap: "15 · Shipper side: delivered, POD on file" } },
+    { t: 44.4, s: { toast: true, cap: "16 · Customer notified automatically, POD attached" } },
+    { t: 49.0, s: {} }
   ];
   anim = { ...this.A0 }; t = 0; _ki = 0; scaleVal = 1;
 
@@ -390,17 +404,28 @@ class Component extends DCLogic {
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   scrub = (e) => { if (e) e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); this._seekAbs(((e.clientX - r.left) / r.width) * this.DUR); };
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
+  tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
   _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
 
   renderVals() {
-    const topLevel = (typeof window !== "undefined") && window.self === window.top;
+    const topLevel = (typeof window !== "undefined") && /DriverPodDemo\.dc\.html$/i.test(decodeURIComponent(window.location.pathname)); // opened on its own, not imported into the deck (the deck is often the top window too)
     const backBtn = topLevel ? "position:fixed;left:16px;top:16px;z-index:999;" : "display:none;";
     const a = this.anim;
     const pick = a.modal === "pick", del = a.modal === "del";
     const list = a.dropped ? ROWS.slice(1) : ROWS;
     const rows = list.map((r) => {
       const subject = !a.dropped && r.sid === "11357034";
-      let status = "Booked", statusColor = "#33475B", statusWeight = "400";
+      let status = r.base || "Booked", statusColor = "#33475B", statusWeight = "400";
       if (subject && a.picked) { status = "InTransit"; statusColor = "#33475B"; statusWeight = "600"; }
       return Object.assign({}, r, { status, statusColor, statusWeight,
         bg: subject && (a.tapRow || a.picked) ? "#F2F8FD" : "transparent",
@@ -437,10 +462,20 @@ class Component extends DCLogic {
         return Object.assign({}, g, { s1: box(1), s2: box(2), s3: box(3), s4: box(4), s5: box(5), c1: col(1), c2: col(2), c3: col(3), c4: col(4), c5: col(5) });
       }),
       rows, timeline, cap: a.cap, playing: a.playing, paused: !a.playing,
-      setWrap: this.setWrap, scale: this.scaleVal, wrapH: Math.round(580 * this.scaleVal) + "px",
-      progW: (this.t / this.DUR) * 100 + "%", timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      setWrap: this.setWrap, scale: this.scaleVal, wrapH: Math.round(584 * this.scaleVal) + "px",
+      progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%", timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(),
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
-      back10: this.back10, fwd10: this.fwd10, tPlay: this.togglePlay, restart: this.restart, scrub: this.scrub,
+      back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, togglePlay: this.togglePlay, restart: this.restart, scrub: this.scrub,
 
       showModal: !!a.modal,
       actionLabel: pick ? "PICKED UP" : "DELIVERED",

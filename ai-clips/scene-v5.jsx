@@ -208,9 +208,9 @@ const CHAPTERS_V4 = [
       { at: 15.5, kind: 'agent', content: "Escalation sent to Marcus L. (Ops Lead). Awaiting his call before disputing carrier." },
 
       // Branch 3: within tolerance — auto-approve (matches "If: within 5% tolerance · Auto-approve · AP")
-      { at: 17.0, kind: 'separator', text: 'remaining 44 invoices' },
-      { at: 17.3, kind: 'agent', content: "44 of 47 within ±5% tolerance — auto-approved and forwarded to AP per workflow." },
-      { at: 20.0, kind: 'agent', content: "Done. Weekly run complete — 1 rule saved, 1 escalated to Marcus, 44 auto-approved." },
+      { at: 17.0, kind: 'separator', text: 'remaining 45 invoices' },
+      { at: 17.3, kind: 'agent', content: "The other 45 are within ±5% tolerance — auto-approved and forwarded to AP per workflow." },
+      { at: 20.0, kind: 'agent', content: "Done. Weekly run complete — 1 rule saved, 1 escalated to Marcus, 45 auto-approved." },
     ],
   },
 

@@ -1,6 +1,6 @@
 {
   "settings": {
-    "startUrl": "https://tubular-flan-14267b.netlify.app/embed.html",
+    "startUrl": "assets/walkthrough/embed.html",
     "showMarquee": true,
     "mainMenuUrl": "",
     "aiUrl": "https://genuine-conkies-86b264.netlify.app/",

@@ -1480,7 +1480,7 @@ function ViewRateShop({ localT = 0 }) {
   const rates = [
     { carrier: 'Echo Global', service: 'LTL Standard', transit: '2 days', perf: 94, price: '$1,048.13', best: true, allowed: true },
     { carrier: 'XPO Logistics', service: 'LTL Standard', transit: '2 days', perf: 96, price: '$1,142.40', allowed: true },
-    { carrier: 'FedEx Freight Priority', service: 'LTL Priority', transit: '2 days', perf: 92, price: '$1,218.55', allowed: true },
+    { carrier: 'FedEx Freight', service: 'FedEx Freight Priority', transit: '2 days', perf: 92, price: '$1,218.55', allowed: true },
     { carrier: 'Old Dominion', service: 'LTL Standard', transit: '3 days', perf: 97, price: '$1,283.90', allowed: true },
     { carrier: 'Saia LTL Freight', service: 'LTL Standard', transit: '2 days', perf: 91, price: '$1,341.20', allowed: true },
     { carrier: 'Estes Express', service: 'LTL Standard', transit: '3 days', perf: 88, price: '$1,008.00', allowed: false },
@@ -1517,7 +1517,7 @@ function ViewRateShop({ localT = 0 }) {
               }}>
                 <div style={{ fontSize: 17, fontWeight: 700, color: FP.textDark, fontFamily: fpFont.heading }}>Rate Results</div>
                 <div style={{ width: 1, height: 20, background: FP.borderLight }}/>
-                <div style={{ fontSize: 12.5, color: FP.subtle }}>Lane: <strong style={{ color: FP.textDark }}>LAX → PHX</strong> · 22,400 lb · LTL</div>
+                <div style={{ fontSize: 12.5, color: FP.subtle }}>Lane: <strong style={{ color: FP.textDark }}>Lake Forest, CA → Phoenix, AZ</strong> · 12 pallets · 1,800 lb · LTL</div>
                 <div style={{ flex: 1 }}/>
                 <div style={{ color: FP.subtle, fontSize: 18, lineHeight: 1 }}>×</div>
               </div>
@@ -1623,7 +1623,7 @@ function RateShopBooked({ localT = 0 }) {
   const docs = [
     { name: 'BOL_11252388.pdf', meta: 'Bill of Lading · 1 page' },
     { name: 'PackingList_11252388.pdf', meta: 'Packing List · 1 page' },
-    { name: 'ShippingLabel_11252388.pdf', meta: 'Shipping Label · 4×6' },
+    { name: 'ShippingLabels_11252388.pdf', meta: 'Shipping Labels · 4×6' },
   ];
   return (
     <V3ViewWrap>
@@ -1777,7 +1777,7 @@ function BookedDocPreview() {
           </div>
           {/* mini table */}
           <div style={{ border: `1px solid #D9DEE3`, borderRadius: 2, overflow: 'hidden', marginTop: 2 }}>
-            {['CARRIER · Echo Global · PRO 11252388', 'PIECES 16 · WEIGHT 22,400 lb · CLASS 70', 'PAYMENT Prepaid · TERMS EXW'].map((r, i) => (
+            {['CARRIER · Echo Global · PRO 11252388', 'HU 12 PALLET · WEIGHT 1,800 lb', 'PAYMENT 3rd Party'].map((r, i) => (
               <div key={i} style={{ fontSize: 8, color: '#5A6168', padding: '5px 7px', borderBottom: i < 2 ? '1px solid #EAEDF0' : 'none', fontFamily: fpFont.mono }}>{r}</div>
             ))}
           </div>
@@ -1946,7 +1946,7 @@ function DocPageBOL() {
         <div style={{ textAlign: 'right', paddingTop: 4 }}>
           <div style={{ fontSize: 12.5, fontWeight: 700, color: '#222', fontFamily: fpFont.mono }}>09/08/2025</div>
           <div style={{ fontSize: 15, fontWeight: 800, color: '#222', marginTop: 4, letterSpacing: '0.04em' }}>Echo Global</div>
-          <div style={{ fontSize: 11.5, color: '#222', marginTop: 2 }}>Service: <b>TRUCKLOAD</b></div>
+          <div style={{ fontSize: 11.5, color: '#222', marginTop: 2 }}>Service: <b>LTL STANDARD</b></div>
         </div>
       </div>
       <div style={{ display: 'flex', gap: 18, fontSize: 11.5, marginBottom: 10 }}>
@@ -2803,7 +2803,7 @@ function ViewInvoiceAudit({ localT = 0 }) {
             <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><path d="M2.5 4h15l-6 6.5V17l-3-1.6v-4.9L2.5 4z" stroke="#6B7280" strokeWidth="1.3" strokeLinejoin="round"/></svg>
             <div style={{ display: 'flex', gap: 12 }}>
               {[
-                { t: `${bulkApproved ? 44 : 0} Recently Approved`, on: false },
+                { t: `${bulkApproved ? 46 : ruleSaved ? 1 : 0} Recently Approved`, on: false },
                 { t: '14 Not Approved', on: true },
                 { t: 'History', on: false },
               ].map((p) => (

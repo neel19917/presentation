@@ -18,8 +18,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#F1F4F8;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#F1F4F8;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:44px;background:#0B2039;display:flex;align-items:center;gap:14px;padding:0 16px;z-index:5;">
     <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
@@ -230,26 +231,41 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
   </sc-if>
 
-  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
-  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
     </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
-  </div>
+  </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:apClick .5s ease-out both;"></div></div>
   </sc-if>
   <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
     <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
   </div>
+</div>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 </x-dc>
@@ -344,46 +360,49 @@ class Component extends DCLogic {
     orderImport: "Use a comma to separate", pdOrder: "", pdSo: "", pdPo: "", pdQty: "", pdItem: "", pdDesc: "", pdPpp: "", pdTotal: "0",
     addProductHot: false, rateShopHot: false, totQty: "0", totPrice: "0",
     packed: false };
-  DUR = 62;
+  DUR = 69.4;
   KF = [
-    { t: 2.0, s: { curX: 1399, curY: 125, ripple: true, ripX: 1399, ripY: 125, cap: "02 · Add a product" } },
-    { t: 2.6, s: { ripple: false, fabMenu: true, curX: 1300, curY: 172 } },
-    { t: 3.8, s: { addProdHot: true } },
-    { t: 4.3, s: { ripple: true, ripX: 1300, ripY: 172 } },
-    { t: 4.8, s: { ripple: false, fabMenu: false, addProdHot: false, scene: "create", curX: 700, curY: 300, cap: "03 · Create Product — General" } },
-    { t: 6.2, s: { itemBorder: "#4088CF", fItem: "PUMP-780", cap: "04 · Item number, description, unit of measure" } },
-    { t: 7.6, s: { itemBorder: "#DDE4EC", fMfr: "Delta Hydraulics", fDesc: "Gear pump, 780 series" } },
-    { t: 9.0, s: { fSku: "780-STD", catBorder: "#4088CF", fCat: "Pumps", cap: "05 · Category and pallet-quantity thresholds live on the item" } },
-    { t: 10.6, s: { catBorder: "#DDE4EC", fPrice: "1,480.00", fCoo: "US" } },
-    { t: 11.8, s: { classBorder: "#4088CF", fClass: "70", fNmfc: "133300", cap: "06 · Freight class and NMFC live on the item" } },
-    { t: 13.4, s: { classBorder: "#DDE4EC", saved: true, curX: 1310, curY: 762 } },
-    { t: 14.2, s: { ripple: true, ripX: 1310, ripY: 762 } },
-    { t: 14.8, s: { ripple: false, scene: "catalog", catNew: true, curX: 700, curY: 300, cap: "07 · Saved — the item is quote-ready" } },
-    { t: 17.0, s: { scene: "packages", curX: 320, curY: 108, cap: "08 · Predefined Package Types — the boxes you actually own" } },
-    { t: 19.6, s: { curX: 1399, curY: 125, ripple: true, ripX: 1399, ripY: 125, cap: "09 · Add a package" } },
-    { t: 20.2, s: { ripple: false, pkgDrawer: true, curX: 1240, curY: 300 } },
-    { t: 21.6, s: { pnBorder: "#4088CF", pkgName: "Case 24x18x14", pkgType: "BOX", cap: "10 · Name it and pick the type" } },
-    { t: 23.0, s: { pnBorder: "#DDE4EC", pkgL: "24", pkgW: "18", pkgH: "14", pkgCf: "3.5" } },
-    { t: 24.4, s: { pkgAdd: "1.5", pkgMax: "65", pkgMinVol: "55", pkgSaved: true, cap: "11 · Dimensions, weight caps and fill limits per package" } },
-    { t: 26.0, s: { curX: 1105, curY: 776, ripple: true, ripX: 1105, ripY: 776 } },
-    { t: 26.6, s: { ripple: false, pkgDrawer: false, pkgNew: true, curX: 700, curY: 300, cap: "12 · The calculation only packs into these" } },
-    { t: 29.0, s: { scene: "rules", curX: 700, curY: 300, cap: "13 · Company Rules — Routing Guide" } },
-    { t: 31.4, s: { curX: 1399, curY: 125, ripple: true, ripX: 1399, ripY: 125, cap: "14 · Add a rule for palletized freight" } },
-    { t: 32.0, s: { ripple: false, rgNew: true, cap: "15 · Auto Pack runs first, the routing guide reads its result" } },
-    { t: 35.0, s: { cap: "16 · Pallet count, box count and weight are all rule conditions" } },
-    { t: 38.0, s: { scene: "qs", curX: 700, curY: 400, cap: "17 · Quote/Ship, Product Details — nothing packed yet" } },
-    { t: 39.6, s: { curX: 620, curY: 300, pdOrder: "SO-118402", pdSo: "SO-118402", pdPo: "PO-45118", cap: "18 · The order lines come in from the catalog" } },
-    { t: 41.0, s: { pdQty: "6", pdItem: "PUMP-780", pdDesc: "Gear pump, 780 series" } },
-    { t: 42.2, s: { pdPpp: "1,480.00", pdTotal: "8,880.00", totQty: "6", totPrice: "8,880.00" } },
-    { t: 43.4, s: { curX: 372, curY: 556, addProductHot: true, cap: "19 · Add the rest of the lines" } },
-    { t: 44.0, s: { ripple: true, ripX: 372, ripY: 556 } },
-    { t: 44.6, s: { ripple: false, addProductHot: false, packed: true, cap: "20 · Auto Pack calculates the units behind the scenes" } },
-    { t: 47.4, s: { curX: 1355, curY: 728, rateShopHot: true, cap: "21 · Rate shop the calculated pack" } },
-    { t: 48.0, s: { ripple: true, ripX: 1355, ripY: 728 } },
-    { t: 48.6, s: { ripple: false, rateShopHot: false, scene: "rates", curX: 700, curY: 400, cap: "22 · Rates, off a pack nobody built by hand" } },
-    { t: 52.4, s: { cap: "23 · The routing guide picked carrier and service from the pack" } },
-    { t: 56.0, s: { curX: 700, curY: 620, cap: "24 · Freight cost is known before anyone packs a box" } },
-    { t: 61.6, s: {} }
+    { t: 2.5, s: { curX: 1399, curY: 125, cap: "02 · Add a product" } },
+    { t: 3.15, s: { ripple: true, ripX: 1399, ripY: 125 } },
+    { t: 3.7, s: { ripple: false, fabMenu: true, curX: 1300, curY: 172 } },
+    { t: 4.9, s: { addProdHot: true } },
+    { t: 5.4, s: { ripple: true, ripX: 1300, ripY: 172 } },
+    { t: 5.9, s: { ripple: false, fabMenu: false, addProdHot: false, scene: "create", curX: 700, curY: 300, cap: "03 · Create Product — General" } },
+    { t: 8.4, s: { itemBorder: "#4088CF", fItem: "PUMP-780", cap: "04 · Item number, description, unit of measure" } },
+    { t: 9.8, s: { itemBorder: "#DDE4EC", fMfr: "Delta Hydraulics", fDesc: "Gear pump, 780 series" } },
+    { t: 11.2, s: { fSku: "780-STD", catBorder: "#4088CF", fCat: "Pumps", cap: "05 · SKU, category, price and origin live on the item" } },
+    { t: 12.8, s: { catBorder: "#DDE4EC", fPrice: "1,480.00", fCoo: "US" } },
+    { t: 14.0, s: { classBorder: "#4088CF", fClass: "70", fNmfc: "133300", cap: "06 · Freight class and NMFC live on the item" } },
+    { t: 15.6, s: { classBorder: "#DDE4EC", saved: true, curX: 1310, curY: 762 } },
+    { t: 16.4, s: { ripple: true, ripX: 1310, ripY: 762 } },
+    { t: 17.0, s: { ripple: false, scene: "catalog", catNew: true, curX: 700, curY: 300, cap: "07 · Saved — the item is quote-ready" } },
+    { t: 19.5, s: { scene: "packages", curX: 320, curY: 108, cap: "08 · Predefined Package Types — the boxes you actually own" } },
+    { t: 22.1, s: { curX: 1399, curY: 125, cap: "09 · Add a package" } },
+    { t: 22.65, s: { ripple: true, ripX: 1399, ripY: 125 } },
+    { t: 23.2, s: { ripple: false, pkgDrawer: true, curX: 1240, curY: 300 } },
+    { t: 24.6, s: { pnBorder: "#4088CF", pkgName: "Case 24x18x14", pkgType: "BOX", cap: "10 · Name it and pick the type" } },
+    { t: 26.0, s: { pnBorder: "#DDE4EC", pkgL: "24", pkgW: "18", pkgH: "14", pkgCf: "3.5" } },
+    { t: 27.4, s: { pkgAdd: "1.5", pkgMax: "65", pkgMinVol: "55", pkgSaved: true, cap: "11 · Dimensions, weight caps and fill limits per package" } },
+    { t: 29.3, s: { curX: 1105, curY: 776, ripple: true, ripX: 1105, ripY: 776 } },
+    { t: 29.9, s: { ripple: false, pkgDrawer: false, pkgNew: true, curX: 700, curY: 300, cap: "12 · The calculation only packs into these" } },
+    { t: 32.4, s: { scene: "rules", curX: 700, curY: 300, cap: "13 · Company Rules — Routing Guide" } },
+    { t: 34.9, s: { curX: 1399, curY: 125, cap: "14 · Add a rule for palletized freight" } },
+    { t: 36.85, s: { ripple: true, ripX: 1399, ripY: 125 } },
+    { t: 37.4, s: { ripple: false, rgNew: true, cap: "15 · Auto Pack runs first, the routing guide reads its result" } },
+    { t: 40.4, s: { cap: "16 · Pallet count, box count and weight are all rule conditions" } },
+    { t: 43.4, s: { scene: "qs", curX: 700, curY: 400, cap: "17 · Quote/Ship, Product Details — nothing packed yet" } },
+    { t: 45.9, s: { curX: 620, curY: 300, pdOrder: "SO-118402", pdSo: "SO-118402", pdPo: "PO-45118", cap: "18 · The order lines come in from the catalog" } },
+    { t: 47.3, s: { pdQty: "6", pdItem: "PUMP-780", pdDesc: "Gear pump, 780 series" } },
+    { t: 48.5, s: { pdPpp: "1,480.00", pdTotal: "8,880.00", totQty: "6", totPrice: "8,880.00" } },
+    { t: 49.7, s: { curX: 372, curY: 556, addProductHot: true, cap: "19 · Add the rest of the lines" } },
+    { t: 51.6, s: { ripple: true, ripX: 372, ripY: 556 } },
+    { t: 52.2, s: { ripple: false, addProductHot: false, packed: true, cap: "20 · Auto Pack calculates the units behind the scenes" } },
+    { t: 55.0, s: { curX: 1355, curY: 728, rateShopHot: true, cap: "21 · Rate shop the calculated pack" } },
+    { t: 56.9, s: { ripple: true, ripX: 1355, ripY: 728 } },
+    { t: 57.5, s: { ripple: false, rateShopHot: false, scene: "rates", curX: 700, curY: 400, cap: "22 · Rates, off a pack nobody built by hand" } },
+    { t: 61.3, s: { cap: "23 · The routing guide picked carrier and service from the pack" } },
+    { t: 64.9, s: { curX: 700, curY: 620, cap: "24 · Freight cost is known before anyone packs a box" } },
+    { t: 69.0, s: {} }
   ];
   anim = { ...this.A0 };
   t = 0; _ki = 0; scaleVal = 0.5;
@@ -412,6 +431,16 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -425,10 +454,10 @@ class Component extends DCLogic {
   renderVals() {
     const a = this.anim, sc = a.scene;
     let colsSrc = this.CAT_COLS, rowsSrc = a.catNew ? this.CAT_ROWS_NEW : this.CAT_ROWS, tabs = this._mkTabs(this.PNP_TABS, 0);
-    let title = "Product & Packaging", perPage = "10", pagerText = "1–6 of 6", pagerRest = "", hi = -1;
+    let title = "Product & Packaging", perPage = "10", pagerText = a.catNew ? "1–6 of 6" : "1–5 of 5", pagerRest = "", hi = -1;
     if (sc === "packages") {
       colsSrc = this.PKG_COLS; rowsSrc = a.pkgNew ? this.PKG_ROWS_NEW : this.PKG_ROWS;
-      tabs = this._mkTabs(this.PNP_TABS, 1); pagerText = "1–10 of 25"; pagerRest = "2 3";
+      tabs = this._mkTabs(this.PNP_TABS, 1); pagerText = a.pkgNew ? "1–10 of 26" : "1–10 of 25"; pagerRest = "2 3";
       if (a.pkgNew) hi = 0;
     } else if (sc === "rules") {
       colsSrc = this.RG_COLS; rowsSrc = a.rgNew ? this.RG_ROWS_NEW : this.RG_ROWS;
@@ -463,6 +492,16 @@ class Component extends DCLogic {
       ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
       timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(),
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap

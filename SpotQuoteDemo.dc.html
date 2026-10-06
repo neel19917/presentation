@@ -19,8 +19,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#E9EEF5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <!-- FREIGHTPOP TOP NAV -->
   <sc-if value="{{ inApp }}" hint-placeholder-val="{{ true }}">
@@ -177,7 +178,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
           <div style="{{ cardLoc }}">
             <div style="{{ cardHead }}">Locations</div>
             <div style="padding:20px;display:flex;flex-direction:column;gap:16px;">
-              <div style="{{ fShipFrom }}"><span style="{{ lbl }}">Ship From</span><div style="{{ fv }}">FreightPOP, 1 Rancho Circle, Lake Forest, CA, 9263…</div></div>
+              <div style="{{ fShipFrom }}"><span style="{{ lbl }}">Ship From</span><div style="{{ fv }}">Harborline Industrial, LLC, 4120 Commerce Park…</div></div>
               <div style="color:#4088CF;font-size:12.5px;font-weight:500;letter-spacing:.04em;">↕ SWAP FROM &amp; TO</div>
               <div style="{{ fShipTo }}"><span style="{{ lbl }}">Ship To</span><div style="{{ fv }}">{{ vShipTo }}</div></div>
               <div style="{{ verifyStyle }}">✓ VERIFY ADDRESSES</div>
@@ -392,7 +393,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
               <span style="padding:3px;border-top:1px solid #C6D0DC;">3</span><span style="padding:3px;border-top:1px solid #C6D0DC;">PALLET</span><span style="padding:3px;border-top:1px solid #C6D0DC;"></span><span style="padding:3px;border-top:1px solid #C6D0DC;">Palletized dry goods · 48X40X48 in</span><span style="padding:3px;border-top:1px solid #C6D0DC;">3</span><span style="padding:3px;border-top:1px solid #C6D0DC;">1,200 LB</span><span style="padding:3px;border-top:1px solid #C6D0DC;">125</span><span style="padding:3px;border-top:1px solid #C6D0DC;">156600</span>
             </div>
             <div style="border:1px solid #24354A;border-top:0;height:96px;background:repeating-linear-gradient(#fff 0 15px, #E1E7EF 15px 16px);"></div>
-            <div style="display:grid;grid-template-columns:1fr 60px 90px 90px;border:1px solid #24354A;border-top:0;font-size:9px;color:#24354A;"><span style="padding:3px 6px;font-weight:500;">Total</span><span style="padding:3px;">3</span><span style="padding:3px;">1,200 LB</span><span style="padding:3px;">133.33 CFT</span></div>
+            <div style="display:grid;grid-template-columns:1fr 60px 90px 90px;border:1px solid #24354A;border-top:0;font-size:9px;color:#24354A;"><span style="padding:3px 6px;font-weight:500;">Total</span><span style="padding:3px;">3</span><span style="padding:3px;">1,200 LB</span><span style="padding:3px;">160.00 CFT</span></div>
             <div style="background:#4F8FC9;color:#fff;font-size:9px;text-align:center;padding:2px;">COD Amount</div>
             <div style="border:1px solid #24354A;border-top:0;padding:4px 6px;font-size:9px;color:#24354A;">$ &nbsp;☐ COD Amount &nbsp;&nbsp; Fee Terms: ☐ Prepaid &nbsp;☐ Collect &nbsp;☐ Customer Check Acceptable</div>
             <div style="background:#C0392B;color:#fff;font-size:8px;padding:5px 6px;white-space:normal;line-height:1.45;">NOTE: Liability limitation for loss or damage in this shipment may be applicable. See 49 U.S.C. 14706(c)(1)(A) and (B).</div>
@@ -479,12 +480,12 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </div>
         <div style="margin-top:14px;display:flex;">
           <div style="width:200px;"><div style="background:#EDEDED;padding:3px 6px;">Expected Ship Date</div><div style="padding:3px 6px;">Ready Time</div><div style="background:#EDEDED;padding:3px 6px;">Cutoff Time</div></div>
-          <div style="width:190px;"><div style="background:#EDEDED;padding:3px 6px;">08/10/2026</div><div style="padding:3px 6px;">08:00 AM</div><div style="background:#EDEDED;padding:3px 6px;">05:00 PM</div></div>
+          <div style="width:190px;"><div style="background:#EDEDED;padding:3px 6px;">08/12/2026</div><div style="padding:3px 6px;">08:00 AM</div><div style="background:#EDEDED;padding:3px 6px;">05:00 PM</div></div>
           <div style="flex:1;text-align:right;"><span style="{{ linkDecline }}">Click here to decline</span></div>
         </div>
         <div style="margin-top:14px;display:flex;gap:10px;">
           <div style="width:200px;color:#24354A;"><div style="background:#EDEDED;padding:3px 6px;font-weight:500;">Origin</div><div style="padding:3px 6px;">Company:</div><div style="padding:3px 6px;">Ship From:</div><div style="background:#EDEDED;padding:3px 6px;font-weight:500;margin-top:8px;">Final Destination</div><div style="padding:3px 6px;">Company:</div><div style="padding:3px 6px;">Ship To:</div></div>
-          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;">&nbsp;</div><div style="padding:3px 6px;">Harborline Industrial, LLC</div><div style="padding:3px 6px;">4120 Commerce Park Drive, Columbus, OH, 43219, US</div><div style="padding:3px 6px;margin-top:8px;">&nbsp;</div><div style="padding:3px 6px;">Sunshine Cleaners</div><div style="padding:3px 6px;">1442 Franklin Street, Santa Clara, CA, 95050, US</div></div>
+          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;visibility:hidden;">-</div><div style="padding:3px 6px;">Harborline Industrial, LLC</div><div style="padding:3px 6px;">4120 Commerce Park Drive, Columbus, OH, 43219, US</div><div style="padding:3px 6px;margin-top:8px;visibility:hidden;">-</div><div style="padding:3px 6px;">Sunshine Cleaners</div><div style="padding:3px 6px;">1442 Franklin Street, Santa Clara, CA, 95050, US</div></div>
         </div>
         <div style="margin-top:14px;font-weight:500;color:#24354A;">Shipment Details</div>
         <div style="margin-top:6px;display:flex;gap:10px;">
@@ -493,7 +494,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </div>
         <div style="margin-top:12px;display:flex;gap:10px;">
           <div style="width:200px;color:#24354A;"><div style="background:#EDEDED;padding:3px 6px;font-weight:500;">References</div><div style="padding:3px 6px;">SO Number:</div><div style="background:#EDEDED;padding:3px 6px;">PO Number:</div></div>
-          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;">&nbsp;</div><div style="padding:3px 6px;">SO-88214</div><div style="background:#EDEDED;padding:3px 6px;">PO-44170</div></div>
+          <div style="flex:1;color:#24354A;"><div style="padding:3px 6px;visibility:hidden;">-</div><div style="padding:3px 6px;">SO-88214</div><div style="background:#EDEDED;padding:3px 6px;">PO-44170</div></div>
         </div>
       </div>
     </div>
@@ -522,7 +523,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
           <div style="font-size:13px;font-weight:500;color:#24354A;">3 PALLET &nbsp;·&nbsp; 48x40x48 @ 400 lb &nbsp;·&nbsp; class 125</div>
           <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px 18px;font-size:12px;color:#24354A;">
             <div><div style="font-weight:500;">Quantity</div>3</div><div><div style="font-weight:500;">Type</div>PALLET</div><div><div style="font-weight:500;">Length in</div>48</div><div><div style="font-weight:500;">Width in</div>40</div>
-            <div><div style="font-weight:500;">Height in</div>48</div><div><div style="font-weight:500;">Weight lb (per piece)</div>400</div><div><div style="font-weight:500;">Freight Class</div>125</div><div><div style="font-weight:500;">Cubic Feet</div>133</div>
+            <div><div style="font-weight:500;">Height in</div>48</div><div><div style="font-weight:500;">Weight lb (per piece)</div>400</div><div><div style="font-weight:500;">Freight Class</div>125</div><div><div style="font-weight:500;">Cubic Feet</div>160</div>
           </div>
           <div style="margin-top:14px;font-size:12px;color:#24354A;"><span style="font-weight:500;">Description</span> · Palletized dry goods &nbsp; <span style="font-weight:500;">Non Stackable</span> · Yes &nbsp; <span style="font-weight:500;">Hazmat</span> · No</div>
         </div>
@@ -541,7 +542,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="position:absolute;box-sizing:border-box;left:0;top:176px;width:700px;background:#fff;border:1px solid #E1E7EF;border-radius:4px;">
         <div style="{{ cardHead }}">Pickup Information</div>
         <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;font-size:12px;color:#24354A;">
-          <div><div style="font-weight:500;">Expected Ship Date</div>08/10/2026</div><div><div style="font-weight:500;">Must Arrive By Date</div>08/12/2026</div>
+          <div><div style="font-weight:500;">Expected Ship Date</div>08/12/2026</div><div><div style="font-weight:500;">Must Arrive By Date</div>08/15/2026</div>
           <div><div style="font-weight:500;">Ready Time</div>08:00 AM</div><div><div style="font-weight:500;">Cutoff Time</div>05:00 PM</div>
         </div>
       </div>
@@ -920,28 +921,40 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
   </sc-if>
 
-  <div style="position:absolute;left:16px;bottom:70px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
-  <div style="position:absolute;right:22px;bottom:70px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
-    </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
-  </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
   </sc-if>
   <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
 
+</div>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 </x-dc>
@@ -969,147 +982,147 @@ class Component extends DCLogic {
     vBid1: "", vBid2: "", vBid3: "", bFocus: 0, submitBg: "#8FA6BE", bidDone: false,
     badge: false, badgeN: "3", notifOpen: false, levelsOpen: false, levelOn: [true, true],
     bids: 0, waiting: false, waitMsg: "", selected: -1, processOn: false, tendered: false };
-  DUR = 109;
+  DUR = 112;
   KF = [
     // 01 · carrier setup
     { t: 0.8, s: { curX: 720, curY: 296, focus: 1 } },
     { t: 1.3, s: { vType: "North America Domestics LTL" } },
     { t: 1.9, s: { curX: 720, curY: 424, focus: 2, vName: "Ridgeline Carriers" } },
     { t: 2.5, s: { curX: 720, curY: 484, focus: 3, vNick: "Ridgeline — FTL West" } },
-    { t: 3.0, s: { curX: 720, curY: 614, focus: 4, vStreet: "4120 Commerce Park Dr, Columbus, OH" } },
-    { t: 3.5, s: { curX: 720, curY: 674, focus: 5, vZips: "92630, 91761, 85043", cap: "01 · Ship-from zips live on the General tab" } },
-    { t: 4.1, s: { focus: 0, cap: "02 · Contacts are their own tab", curX: 527, curY: 183 } },
-    { t: 4.5, s: { ripple: true, ripX: 527, ripY: 183, ctab: 1 } },
-    { t: 4.9, s: { ripple: false, curX: 1360, curY: 236 } },
-    { t: 5.2, s: { ripple: true, ripX: 1360, ripY: 236, drawer: true } },
-    { t: 5.6, s: { ripple: false, dFocus: 1, dFirst: "Dana", dLast: "Ruiz", dMail: "quotes@ridgelinecarriers.com", dPhone: "(614) 555-0142", dType: "Quote Request", cap: "02 · Quote request, pickup request, tracking update" } },
-    { t: 6.1, s: { dFocus: 0, drawer: false, contacts: 1, ripple: true, ripX: 1150, ripY: 760 } },
-    { t: 6.4, s: { ripple: false, drawer: true, dFirst: "Marco", dLast: "Silva", dMail: "pickups@ridgelinecarriers.com", dPhone: "(909) 555-0118", dType: "Pickup Request" } },
-    { t: 6.9, s: { drawer: false, contacts: 2 } },
-    { t: 7.2, s: { drawer: true, dFirst: "Ops", dLast: "Desk", dMail: "tracking@ridgelinecarriers.com", dPhone: "(949) 555-0173", dType: "Tracking Update" } },
-    { t: 7.7, s: { drawer: false, contacts: 3, saveBg: "#4088CF", curX: 1330, curY: 782 } },
-    { t: 8.1, s: { ripple: true, ripX: 1330, ripY: 782 } },
-    { t: 8.4, s: { ripple: false } },
+    { t: 3, s: { curX: 720, curY: 614, focus: 4, vStreet: "4120 Commerce Park Dr, Columbus, OH" } },
+    { t: 3.5, s: { curX: 720, curY: 674, focus: 5, vZips: "43219, 43230", cap: "01 · Ship-from zips live on the General tab" } },
+    { t: 4.9, s: { focus: 0, cap: "02 · Contacts are their own tab", curX: 527, curY: 183 } },
+    { t: 5.3, s: { ripple: true, ripX: 527, ripY: 183, ctab: 1 } },
+    { t: 5.7, s: { ripple: false, curX: 1360, curY: 236 } },
+    { t: 6, s: { ripple: true, ripX: 1360, ripY: 236, drawer: true } },
+    { t: 6.4, s: { ripple: false, dFocus: 1, dFirst: "Dana", dLast: "Ruiz", dMail: "quotes@ridgelinecarriers.com", dPhone: "(614) 555-0142", dType: "Quote Request", cap: "02 · Quote request, pickup request, tracking update" } },
+    { t: 6.9, s: { dFocus: 0, drawer: false, contacts: 1, ripple: true, ripX: 1150, ripY: 760 } },
+    { t: 7.2, s: { ripple: false, drawer: true, dFirst: "Marco", dLast: "Silva", dMail: "pickups@ridgelinecarriers.com", dPhone: "(909) 555-0118", dType: "Pickup Request" } },
+    { t: 7.7, s: { drawer: false, contacts: 2 } },
+    { t: 8, s: { drawer: true, dFirst: "Ops", dLast: "Desk", dMail: "tracking@ridgelinecarriers.com", dPhone: "(949) 555-0173", dType: "Tracking Update" } },
+    { t: 8.5, s: { drawer: false, contacts: 3, saveBg: "#4088CF", curX: 1330, curY: 782 } },
+    { t: 8.9, s: { ripple: true, ripX: 1330, ripY: 782 } },
+    { t: 9.2, s: { ripple: false } },
     // 02 · carrier portal settings
-    { t: 9.6, s: { scene: 2, cap: "03 · Carrier Portal — activate it on the carrier", curX: 430, curY: 262 } },
-    { t: 10.2, s: { ripple: true, ripX: 430, ripY: 262, portalOn: true, vAdminMail: "dispatch@ridgelinecarriers.com", vAdminPw: "••••••••••" } },
-    { t: 10.8, s: { ripple: false, curX: 430, curY: 420, cap: "03 · No POD upload, no delivered status" } },
-    { t: 11.4, s: { ripple: true, ripX: 430, ripY: 420, setOn: [true, false, false, false, true], setFocus: 1 } },
-    { t: 12.0, s: { ripple: false, curX: 430, curY: 500, cap: "03 · And invoices have to arrive as PDFs" } },
-    { t: 12.6, s: { ripple: true, ripX: 430, ripY: 500, setOn: [true, false, true, false, true], setFocus: 3 } },
-    { t: 13.2, s: { ripple: false, setFocus: 0 } },
+    { t: 10.4, s: { scene: 2, cap: "03 · Carrier Portal — activate it on the carrier", curX: 430, curY: 262 } },
+    { t: 11, s: { ripple: true, ripX: 430, ripY: 262, portalOn: true, vAdminMail: "dispatch@ridgelinecarriers.com", vAdminPw: "••••••••••" } },
+    { t: 11.6, s: { ripple: false, curX: 430, curY: 420, cap: "03 · No POD upload, no delivered status" } },
+    { t: 12.2, s: { ripple: true, ripX: 430, ripY: 420, setOn: [true, false, false, false, true], setFocus: 1 } },
+    { t: 12.8, s: { ripple: false, curX: 430, curY: 500, cap: "03 · And invoices have to arrive as PDFs" } },
+    { t: 13.4, s: { ripple: true, ripX: 430, ripY: 500, setOn: [true, false, true, false, true], setFocus: 3 } },
+    { t: 14, s: { ripple: false, setFocus: 0 } },
     // 04 · Quote/Ship — build the shipment
-    { t: 14.4, s: { scene: 4, cap: "04 · Ship From is already yours", scrollY: 0, curX: 300, curY: 300 } },
-    { t: 15.2, s: { qFocus: 1, curX: 300, curY: 340 } },
-    { t: 15.7, s: { vShipTo: "Sunshine Cleaners, 1442 Franklin Street, Santa Cla…" } },
-    { t: 16.4, s: { qFocus: 0, verified: true, curX: 200, curY: 400 } },
-    { t: 17.0, s: { scrollY: -180, cap: "04 · Three pallets", curX: 140, curY: 340, qFocus: 2 } },
-    { t: 17.6, s: { vQty: "3", qFocus: 3 } },
-    { t: 18.1, s: { vPkg: "PALLET", qFocus: 4, curX: 140, curY: 400 } },
-    { t: 18.6, s: { vLen: "48", qFocus: 5, curX: 350, curY: 400 } },
-    { t: 19.0, s: { vWid: "40", qFocus: 6, curX: 560, curY: 400 } },
-    { t: 19.4, s: { vHgt: "48", qFocus: 7, curX: 140, curY: 460 } },
-    { t: 19.9, s: { vWgt: "400 lb", vClass: "125", vNmfc: "156600", qFocus: 7, curX: 150, curY: 500, cap: "04 · Freight class and NMFC populate from the dims and weight" } },
-    { t: 20.8, s: { vDesc: "Palletized dry goods", qFocus: 0, curX: 150, curY: 565 } },
-    { t: 21.8, s: { totalsOn: true, cap: "04 · Totals calculate at the bottom", curX: 640, curY: 786 } },
-    { t: 23.8, s: { scrollY: -470, cap: "05 · SO and PO on Additional Information", curX: 200, curY: 470, qFocus: 11 } },
-    { t: 24.5, s: { vSo: "SO-88214", qFocus: 12, curX: 460, curY: 470 } },
-    { t: 25.2, s: { vPo: "PO-44170", qFocus: 0 } },
-    { t: 26.2, s: { scrollY: 0, cap: "05 · Back up to Schedule Pickup", curX: 1000, curY: 260 } },
-    { t: 27.2, s: { cap: "06 · Rate shop it first", curX: 1390, curY: 786 } },
-    { t: 27.9, s: { ripple: true, ripX: 1390, ripY: 786 } },
-    { t: 28.4, s: { ripple: false, scene: 3, bids: 0, cap: "06 · API rates come back — all of them high", curX: 700, curY: 320 } },
-    { t: 30.0, s: { cap: "06 · Spot quote sits on the same grid", curX: 1271, curY: 264, spotHot: true } },
-    { t: 30.7, s: { ripple: true, ripX: 1271, ripY: 264 } },
-    { t: 31.2, s: { ripple: false, modal: true, spotHot: false, curX: 880, curY: 160 } },
+    { t: 15.2, s: { scene: 4, cap: "04 · Ship From is already yours", scrollY: 0, curX: 300, curY: 300 } },
+    { t: 16, s: { qFocus: 1, curX: 300, curY: 340 } },
+    { t: 16.5, s: { vShipTo: "Sunshine Cleaners, 1442 Franklin Street, Santa Cla…" } },
+    { t: 17.2, s: { qFocus: 0, verified: true, curX: 200, curY: 400 } },
+    { t: 17.8, s: { scrollY: -180, cap: "04 · Three pallets", curX: 140, curY: 340, qFocus: 2 } },
+    { t: 18.4, s: { vQty: "3", qFocus: 3 } },
+    { t: 18.9, s: { vPkg: "PALLET", qFocus: 4, curX: 140, curY: 400 } },
+    { t: 19.4, s: { vLen: "48", qFocus: 5, curX: 350, curY: 400 } },
+    { t: 19.8, s: { vWid: "40", qFocus: 6, curX: 560, curY: 400 } },
+    { t: 20.2, s: { vHgt: "48", qFocus: 7, curX: 140, curY: 460 } },
+    { t: 20.7, s: { vWgt: "400 lb", vClass: "125", vNmfc: "156600", qFocus: 7, curX: 150, curY: 500, cap: "04 · Freight class and NMFC populate from the dims and weight" } },
+    { t: 21.6, s: { vDesc: "Palletized dry goods", qFocus: 0, curX: 150, curY: 565 } },
+    { t: 22.6, s: { totalsOn: true, cap: "04 · Totals calculate at the bottom", curX: 640, curY: 786 } },
+    { t: 24.6, s: { scrollY: -470, cap: "05 · SO and PO on Additional Information", curX: 200, curY: 470, qFocus: 11 } },
+    { t: 25.3, s: { vSo: "SO-88214", qFocus: 12, curX: 460, curY: 470 } },
+    { t: 26, s: { vPo: "PO-44170", qFocus: 0 } },
+    { t: 27, s: { scrollY: 0, cap: "05 · Back up to Schedule Pickup", curX: 1000, curY: 260 } },
+    { t: 28.4, s: { cap: "06 · Rate shop it first", curX: 1390, curY: 786 } },
+    { t: 29.1, s: { ripple: true, ripX: 1390, ripY: 786 } },
+    { t: 29.6, s: { ripple: false, scene: 3, bids: 0, cap: "06 · API rates come back — all of them high", curX: 700, curY: 320 } },
+    { t: 31.2, s: { cap: "06 · Spot quote sits on the same grid", curX: 1271, curY: 264, spotHot: true } },
+    { t: 31.9, s: { ripple: true, ripX: 1271, ripY: 264 } },
+    { t: 32.4, s: { ripple: false, modal: true, spotHot: false, curX: 880, curY: 160 } },
     // 07 · spot quote request
-    { t: 31.6, s: { cap: "07 · Bid cutoff date and time", mFocus: 1 } },
-    { t: 32.1, s: { vBidDue: "08/11/2026", mFocus: 2, curX: 1000, curY: 160 } },
-    { t: 32.6, s: { vBidTime: "10:20 AM", mFocus: 3, curX: 500, curY: 240 } },
-    { t: 33.1, s: { vShipDate: "08/10/2026", mFocus: 4, curX: 840, curY: 240, cap: "07 · Ship date and arrive-by" } },
-    { t: 33.6, s: { vArrive: "08/12/2026", mFocus: 5, curX: 500, curY: 320 } },
-    { t: 34.3, s: { vInstr: "Dock 3 check-in. Appointment required. POD upload at delivery.", cap: "07 · Instructions ride with the request", mFocus: 6, curX: 500, curY: 410 } },
-    { t: 35.1, s: { vPickIns: "These are instructions for Pickup. 123122", mFocus: 0, curX: 700, curY: 620 } },
-    { t: 35.9, s: { grpOpen: true, mFocus: 8, cap: "08 · Send to a group, not one carrier at a time" } },
-    { t: 36.7, s: { curX: 620, curY: 672, grpSel: 1 } },
-    { t: 37.2, s: { ripple: true, ripX: 620, ripY: 672 } },
-    { t: 37.7, s: { ripple: false, grpOpen: false, mFocus: 0, grp: "Columbus → West Coast LTL", grpCount: "3" } },
-    { t: 38.2, s: { cap: "07 · Three carriers in one send — not three emails", curX: 470, curY: 726 } },
-    { t: 39.2, s: { ripple: true, ripX: 470, ripY: 726, sendBg: "#1557B0" } },
+    { t: 32.8, s: { cap: "07 · Bid cutoff date and time", mFocus: 1 } },
+    { t: 33.3, s: { vBidDue: "08/11/2026", mFocus: 2, curX: 1000, curY: 160 } },
+    { t: 33.8, s: { vBidTime: "10:20 AM", mFocus: 3, curX: 500, curY: 240 } },
+    { t: 34.3, s: { vShipDate: "08/12/2026", mFocus: 4, curX: 840, curY: 240, cap: "07 · Ship date and arrive-by" } },
+    { t: 34.8, s: { vArrive: "08/15/2026", mFocus: 5, curX: 500, curY: 320 } },
+    { t: 35.5, s: { vInstr: "Dock 3 check-in. Appointment required. POD upload at delivery.", cap: "07 · Instructions ride with the request", mFocus: 6, curX: 500, curY: 410 } },
+    { t: 36.3, s: { vPickIns: "These are instructions for Pickup. 123122", mFocus: 0, curX: 700, curY: 620 } },
+    { t: 37.1, s: { grpOpen: true, mFocus: 8, cap: "07 · Send to a group, not one carrier at a time" } },
+    { t: 37.9, s: { curX: 620, curY: 672, grpSel: 1 } },
+    { t: 38.4, s: { ripple: true, ripX: 620, ripY: 672 } },
+    { t: 38.9, s: { ripple: false, grpOpen: false, mFocus: 0, grp: "Columbus → West Coast LTL", grpCount: "3" } },
+    { t: 39.4, s: { cap: "07 · Three carriers in one send — not three emails", curX: 470, curY: 726 } },
+    { t: 40.4, s: { ripple: true, ripX: 470, ripY: 726, sendBg: "#1557B0" } },
     // 08 · the email the carrier receives
-    { t: 39.8, s: { ripple: false, modal: false, sendBg: "#4088CF", scene: 5, bids: 1, cap: "08 · This is the email every carrier gets", curX: 700, curY: 500 } },
-    { t: 41.4, s: { cap: "08 · Same request, same terms, to all three" } },
-    { t: 43.0, s: { cap: "08 · They answer from the email itself", curX: 560, curY: 300, emailCallout: true } },
-    { t: 44.0, s: { cap: "08 · The carrier clicks the link", emailCallout: false, curX: 451, curY: 320 } },
-    { t: 44.5, s: { ripple: true, ripX: 451, ripY: 320 } },
+    { t: 41, s: { ripple: false, modal: false, sendBg: "#4088CF", scene: 5, bids: 1, cap: "08 · This is the email every carrier gets", curX: 700, curY: 500 } },
+    { t: 42.6, s: { cap: "08 · Same request, same terms, to all three" } },
+    { t: 44.2, s: { cap: "08 · They answer from the email itself", curX: 560, curY: 300, emailCallout: true } },
+    { t: 45.6, s: { cap: "08 · The carrier clicks the link", emailCallout: false, curX: 451, curY: 320 } },
+    { t: 46.5, s: { ripple: true, ripX: 451, ripY: 320 } },
     // 09 · carrier spot quote page
-    { t: 44.9, s: { ripple: false, scene: 6, emailCallout: false, cap: "09 · The link opens their spot quote page", curX: 700, curY: 300 } },
-    { t: 45.6, s: { rFocus: 1, curX: 830, curY: 560, cap: "09 · They enter the rate on the quote card" } },
-    { t: 46.2, s: { vSvc: "LTL", rFocus: 2, curX: 1050, curY: 560 } },
-    { t: 46.8, s: { vDays: "4", rFocus: 3, curX: 1270, curY: 560 } },
-    { t: 47.4, s: { vRate: "3,285", rFocus: 4, curX: 830, curY: 620 } },
-    { t: 48.0, s: { vQuoteNo: "Test123456", rFocus: 5, curX: 1050, curY: 620 } },
-    { t: 48.6, s: { vNotes: "Test Note", rFocus: 0, breakHot: true, curX: 1270, curY: 620, cap: "09 · A cost breakdown, when you require one" } },
-    { t: 49.3, s: { ripple: true, ripX: 1270, ripY: 620 } },
-    { t: 49.8, s: { ripple: false, costModal: true, breakHot: false, cbFocus: 1, curX: 700, curY: 290 } },
-    { t: 50.4, s: { vFreight: "2,650" } },
-    { t: 51.0, s: { cbFocus: 2, vFuel: "560", curX: 700, curY: 390 } },
-    { t: 51.6, s: { cbFocus: 3, vOther: "75", saveCbBg: "#4088CF", curX: 480, curY: 620 } },
-    { t: 52.3, s: { ripple: true, ripX: 480, ripY: 620 } },
-    { t: 52.8, s: { ripple: false, costModal: false, cbFocus: 0, submitBg: "#4088CF", curX: 1330, curY: 786 } },
-    { t: 53.6, s: { ripple: true, ripX: 1330, ripY: 786 } },
-    { t: 54.1, s: { ripple: false, bidDone: true, cap: "09 · Submitted — it goes straight back to the shipper" } },
+    { t: 46.9, s: { ripple: false, scene: 6, emailCallout: false, cap: "09 · The link opens their spot quote page", curX: 700, curY: 300 } },
+    { t: 48.1, s: { rFocus: 1, curX: 830, curY: 560, cap: "09 · They enter the rate on the quote card" } },
+    { t: 48.7, s: { vSvc: "LTL", rFocus: 2, curX: 1050, curY: 560 } },
+    { t: 49.3, s: { vDays: "4", rFocus: 3, curX: 1270, curY: 560 } },
+    { t: 49.9, s: { vRate: "3,285", rFocus: 4, curX: 830, curY: 620 } },
+    { t: 50.5, s: { vQuoteNo: "Test123456", rFocus: 5, curX: 1050, curY: 620 } },
+    { t: 51.1, s: { vNotes: "Test Note", rFocus: 0, breakHot: true, curX: 1270, curY: 620, cap: "09 · A cost breakdown, when you require one" } },
+    { t: 51.8, s: { ripple: true, ripX: 1270, ripY: 620 } },
+    { t: 52.3, s: { ripple: false, costModal: true, breakHot: false, cbFocus: 1, curX: 700, curY: 290 } },
+    { t: 52.9, s: { vFreight: "2,650" } },
+    { t: 53.5, s: { cbFocus: 2, vFuel: "560", curX: 700, curY: 390 } },
+    { t: 54.1, s: { cbFocus: 3, vOther: "75", saveCbBg: "#4088CF", curX: 480, curY: 620 } },
+    { t: 54.8, s: { ripple: true, ripX: 480, ripY: 620 } },
+    { t: 55.3, s: { ripple: false, costModal: false, cbFocus: 0, submitBg: "#4088CF", curX: 1330, curY: 786 } },
+    { t: 56.1, s: { ripple: true, ripX: 1330, ripY: 786 } },
+    { t: 56.6, s: { ripple: false, bidDone: true, cap: "09 · Submitted — it goes straight back to the shipper" } },
     // 10 · the carrier's emailed copy
-    { t: 55.8, s: { scene: 8, bidDone: false, cap: "10 · The carrier keeps an emailed copy of what they sent", curX: 700, curY: 400 } },
-    { t: 57.4, s: { emailCallout: true } },
+    { t: 58.3, s: { scene: 8, bidDone: false, cap: "10 · The carrier keeps an emailed copy of what they sent", curX: 700, curY: 400 } },
+    { t: 59.9, s: { emailCallout: true } },
     // 11 · shipper notification → message center
-    { t: 59.2, s: { scene: 7, emailCallout: false, badge: true, badgeN: "2", bids: 2, cap: "11 · A badge on the profile icon — a spot quote came back", curX: 1200, curY: 200 } },
-    { t: 60.4, s: { curX: 1390, curY: 26 } },
-    { t: 61.0, s: { ripple: true, ripX: 1390, ripY: 26, menuOpen: true } },
-    { t: 61.6, s: { ripple: false, curX: 1250, curY: 118, cap: "11 · Notifications opens the message center" } },
-    { t: 62.3, s: { ripple: true, ripX: 1250, ripY: 118 } },
-    { t: 62.8, s: { ripple: false, menuOpen: false, msgCenter: true } },
-    { t: 64.2, s: { cap: "11 · The message links straight back to the quote", curX: 1084, curY: 304 } },
-    { t: 65.0, s: { ripple: true, ripX: 1084, ripY: 304 } },
+    { t: 61.7, s: { scene: 7, emailCallout: false, badge: true, badgeN: "2", bids: 2, cap: "11 · A badge on the profile icon — a spot quote came back", curX: 1200, curY: 200 } },
+    { t: 62.9, s: { curX: 1390, curY: 26 } },
+    { t: 63.5, s: { ripple: true, ripX: 1390, ripY: 26, menuOpen: true } },
+    { t: 64.1, s: { ripple: false, curX: 1250, curY: 118, cap: "11 · Notifications opens the message center" } },
+    { t: 64.8, s: { ripple: true, ripX: 1250, ripY: 118 } },
+    { t: 65.3, s: { ripple: false, menuOpen: false, msgCenter: true } },
+    { t: 66.7, s: { cap: "11 · The message links straight back to the quote", curX: 1084, curY: 304 } },
+    { t: 67.5, s: { ripple: true, ripX: 1084, ripY: 304 } },
     // 12 · the bid on the quote
-    { t: 65.8, s: { ripple: false, msgCenter: false, badge: false, scene: 3, selected: 0, cap: "12 · Ridgeline answered — the other two are still pending", curX: 700, curY: 300 } },
-    { t: 68.6, s: { cap: "12 · Compare it against the API rates before you ship" } },
-    { t: 70.4, s: { curX: 1211, curY: 495, noteHot: true } },
-    { t: 71.1, s: { ripple: true, ripX: 1211, ripY: 495 } },
-    { t: 71.6, s: { ripple: false, breakModal: true, noteHot: false, cap: "12 · The carrier-provided cost breakdown" } },
-    { t: 73.8, s: { breakModal: false, bolHot: true, curX: 990, curY: 786, cap: "12 · And a preview of the BOL" } },
-    { t: 74.5, s: { ripple: true, ripX: 990, ripY: 786 } },
-    { t: 75.0, s: { ripple: false, bolModal: true, bolHot: false } },
-    { t: 77.4, s: { bolModal: false, truckHot: true, curX: 1286, curY: 496, cap: "13 · Ship it" } },
-    { t: 78.1, s: { ripple: true, ripX: 1286, ripY: 496 } },
-    { t: 78.6, s: { ripple: false, proModal: true, truckHot: false, curX: 516, curY: 593 } },
-    { t: 79.6, s: { shipItBg: "#1557B0" } },
-    { t: 80.2, s: { ripple: true, ripX: 516, ripY: 593 } },
-    { t: 80.8, s: { ripple: false, proModal: false, scene: 10, cap: "13 · Shipment processed — tracking and BOL generated", curX: 700, curY: 400 } },
-    { t: 82.8, s: { cap: "13 · Then schedule the pickup", curX: 1180, curY: 344, schedHot: true } },
-    { t: 83.6, s: { ripple: true, ripX: 1180, ripY: 344 } },
-    { t: 84.2, s: { ripple: false, schedHot: false, vPickupDate: "08/12/2026", vPickupStatus: "Scheduled" } },
+    { t: 68.3, s: { ripple: false, msgCenter: false, badge: false, scene: 3, selected: 0, cap: "12 · Ridgeline answered — the other two are still pending", curX: 700, curY: 300 } },
+    { t: 71.1, s: { cap: "12 · Compare it against the API rates before you ship" } },
+    { t: 72.9, s: { curX: 1211, curY: 495, noteHot: true } },
+    { t: 73.6, s: { ripple: true, ripX: 1211, ripY: 495 } },
+    { t: 74.1, s: { ripple: false, breakModal: true, noteHot: false, cap: "12 · The carrier-provided cost breakdown" } },
+    { t: 76.3, s: { breakModal: false, bolHot: true, curX: 1122, curY: 786, cap: "12 · And a preview of the BOL" } },
+    { t: 77, s: { ripple: true, ripX: 1122, ripY: 786 } },
+    { t: 77.5, s: { ripple: false, bolModal: true, bolHot: false } },
+    { t: 79.9, s: { bolModal: false, truckHot: true, curX: 1286, curY: 496, cap: "13 · Ship it" } },
+    { t: 80.6, s: { ripple: true, ripX: 1286, ripY: 496 } },
+    { t: 81.1, s: { ripple: false, proModal: true, truckHot: false, curX: 516, curY: 593 } },
+    { t: 82.1, s: { shipItBg: "#1557B0" } },
+    { t: 82.7, s: { ripple: true, ripX: 516, ripY: 593 } },
+    { t: 83.3, s: { ripple: false, proModal: false, scene: 10, cap: "13 · Shipment processed — tracking and BOL generated", curX: 700, curY: 400 } },
+    { t: 85.3, s: { cap: "13 · Then schedule the pickup", curX: 1180, curY: 344, schedHot: true } },
+    { t: 86.1, s: { ripple: true, ripX: 1180, ripY: 344 } },
+    { t: 86.7, s: { ripple: false, schedHot: false, vPickupDate: "08/12/2026", vPickupStatus: "Scheduled" } },
     // 14 · the carrier is told they won
-    { t: 86.0, s: { scene: 11, cap: "14 · The winning carrier is notified automatically", curX: 700, curY: 400 } },
-    { t: 88.2, s: { cap: "14 · Rate, pickup window and the documents they owe you" } },
+    { t: 88.5, s: { scene: 11, cap: "14 · The winning carrier is notified automatically", curX: 700, curY: 400 } },
+    { t: 90.7, s: { cap: "14 · Rate, pickup window and the documents they owe you" } },
     // 15 · the carrier accepts from that email
-    { t: 90.0, s: { cap: "15 · Accept or decline, straight from the email", awardHot: true, curX: 666, curY: 680 } },
-    { t: 91.0, s: { ripple: true, ripX: 666, ripY: 680 } },
-    { t: 91.6, s: { ripple: false, awardHot: false, scene: 12, cap: "15 · Accepting opens their pickup confirmation in the portal", curX: 700, curY: 400 } },
-    { t: 92.8, s: { acceptHot: true, curX: 1330, curY: 786 } },
-    { t: 93.5, s: { ripple: true, ripX: 1330, ripY: 786 } },
-    { t: 94.0, s: { ripple: false, acceptModal: true, acceptHot: false, trkFocus: true, curX: 700, curY: 350, cap: "15 · FreightPOP fills a tracking number in for them" } },
-    { t: 95.4, s: { cap: "15 · The carrier can replace it with their own", acceptSaveBg: "#4088CF", curX: 500, curY: 470 } },
-    { t: 96.4, s: { ripple: true, ripX: 500, ripY: 470 } },
-    { t: 96.9, s: { ripple: false, acceptModal: false, acceptDone: true, vConfirmStatus: "Confirmed", trkFocus: false } },
+    { t: 92.5, s: { cap: "15 · Accept or decline, straight from the email", awardHot: true, curX: 666, curY: 680 } },
+    { t: 93.5, s: { ripple: true, ripX: 666, ripY: 680 } },
+    { t: 94.1, s: { ripple: false, awardHot: false, scene: 12, cap: "15 · Accepting opens their pickup confirmation in the portal", curX: 700, curY: 400 } },
+    { t: 95.3, s: { acceptHot: true, curX: 1330, curY: 786 } },
+    { t: 96, s: { ripple: true, ripX: 1330, ripY: 786 } },
+    { t: 96.5, s: { ripple: false, acceptModal: true, acceptHot: false, trkFocus: true, curX: 700, curY: 350, cap: "15 · FreightPOP fills a tracking number in for them" } },
+    { t: 97.9, s: { cap: "15 · The carrier can replace it with their own", acceptSaveBg: "#4088CF", curX: 500, curY: 470 } },
+    { t: 98.9, s: { ripple: true, ripX: 500, ripY: 470 } },
+    { t: 99.4, s: { ripple: false, acceptModal: false, acceptDone: true, vConfirmStatus: "Confirmed", trkFocus: false } },
     // 16 · every shipping document generated for the shipper
-    { t: 98.6, s: { scene: 13, acceptDone: false, cap: "16 · Every shipment document is generated in FreightPOP", curX: 700, curY: 400 } },
-    { t: 100.4, s: { docZoom: true, cap: "16 · Every document FreightPOP can generate for a shipment", curX: 500, curY: 400 } },
-    { t: 101.4, s: { docScroll: -430, cap: "16 · BOL, labels, manifests, customs forms — generated off the shipment" } },
-    { t: 103.4, s: { docScroll: 0, docZoom: false } },
+    { t: 101.1, s: { scene: 13, acceptDone: false, cap: "16 · Every shipment document is generated in FreightPOP", curX: 700, curY: 400 } },
+    { t: 102.9, s: { docZoom: true, cap: "16 · Every document FreightPOP can generate for a shipment", curX: 500, curY: 400 } },
+    { t: 104.3, s: { docScroll: -430, cap: "16 · BOL, labels, manifests, customs forms — generated off the shipment" } },
+    { t: 106.3, s: { docScroll: 0, docZoom: false } },
     // 17 · carrier-side rankings
-    { t: 104.4, s: { scene: 9, cap: "17 · A high-level pass over the carrier portal", curX: 700, curY: 400 } },
-    { t: 106.4, s: { cap: "17 · Including spot quote rankings — position only, never a competitor's price" } },
+    { t: 107.3, s: { scene: 9, cap: "17 · A high-level pass over the carrier portal", curX: 700, curY: 400 } },
+    { t: 109.3, s: { cap: "17 · Including spot quote rankings — position only, never a competitor's price" } },
   ];
   SETTINGS = [
     ["Require POD Upload for Delivered Status", false],
@@ -1160,8 +1173,8 @@ class Component extends DCLogic {
     ["Pooling Hub 12, Fontana, CA", "Grand Hotel, Anaheim, CA", "2", "861", "#4", "08/03/2026", "08/03/2026", "Submitted", "—"],
     ["Pooling Hub 12, Fontana, CA", "Port of Long Beach 99, Long Beach, CA", "3", "12,324", "#2", "08/11/2026", "08/11/2026", "Submitted", "—"],
     ["Pooling Hub 12, Fontana, CA", "Closter Yard, Closter, NJ", "1", "500", "#1", "07/09/2026", "07/09/2026", "Submitted", "—"],
-    ["LAX Air Cargo, Los Angeles, CA", "John Wayne Airport, Santa Ana, CA", "0", "0", "—", "08/16/2026", "—", "New", "6h 12m"],
-    ["LAX Air Cargo, Los Angeles, CA", "John Wayne Airport, Santa Ana, CA", "0", "0", "—", "08/16/2026", "—", "New", "6h 12m"]
+    ["LAX Air Cargo, Los Angeles, CA", "John Wayne Airport, Santa Ana, CA", "0", "0", "—", "08/11/2026", "—", "New", "6h 12m"],
+    ["LAX Air Cargo, Los Angeles, CA", "John Wayne Airport, Santa Ana, CA", "0", "0", "—", "08/11/2026", "—", "New", "6h 12m"]
   ];
   ORDERS = [
     ["SO-88214", "", "42636850", "13374884", "LTL", true],
@@ -1197,6 +1210,23 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  // Steps = the numbered chapters ("NN · …"): this demo shows several captions per number (51 captions, 17 steps), so a
+  // step starts where its number first appears; captions without a number each count as their own step.
+  _chapters() {
+    if (this._chs) return this._chs;
+    const num = (c) => { const m = String(c || "").match(/^\s*(\d+)\s*·/); return m ? m[1] : null; };
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) {
+      if (!k.s || !k.s.cap) continue;
+      const last = out[out.length - 1].cap;
+      if (k.s.cap === last || (num(k.s.cap) && num(k.s.cap) === num(last))) continue;
+      out.push({ t: k.t, cap: k.s.cap });
+    }
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -1287,7 +1317,7 @@ class Component extends DCLogic {
       truckIcon: "display:flex;padding:4px;border-radius:4px;background:" + (a.truckHot ? "#EAF3FF" : "transparent") + ";",
       bolBtn: "border:1px solid #4088CF;border-radius:4px;padding:9px 13px;color:#4088CF;font-size:10.5px;font-weight:500;letter-spacing:.04em;background:" + (a.bolHot ? "#EAF3FF" : "#fff") + ";",
       schedBtn: "margin-left:auto;color:#4088CF;font-size:11px;font-weight:500;letter-spacing:.05em;padding:4px 8px;border-radius:4px;background:" + (a.schedHot ? "#DCEAFB" : "transparent") + ";",
-      pickupStatusStyle: "color:#0F8A6D;font-weight:500;",
+      pickupStatusStyle: "padding:14px 0 0 12px;font-size:13px;color:#0F8A6D;font-weight:500;",
       confirmStatusStyle: "color:" + (a.vConfirmStatus === "Confirmed" ? "#0F8A6D" : "#C0392B") + ";font-weight:500;",
       acceptBtn: "border-radius:4px;padding:10px 20px;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.04em;background:" + (a.acceptHot ? "#1557B0" : "#4088CF") + ";",
       trkField: this._field(a.trkFocus),
@@ -1357,7 +1387,18 @@ class Component extends DCLogic {
       paused: !a.playing,
       curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
-      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      // the timeline runs at 0.45x (see _tick), so show real playback time at 1x
+      timeLabel: this._fmt(this.t / 0.45) + " / " + this._fmt(this.DUR / 0.45),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(), playing: this.anim.playing,
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>FreightPOP — supply chain animation</title>
+<!-- Self-hosted copy of https://tubular-flan-14267b.netlify.app/embed.html (rive.js 2.39.2, fp_main.riv), added 2026-10-06 so
+     the deck can hear when the tour ends and drive it from the keyboard. Additions are marked "deck bridge". -->
+<style>
+  html,body{margin:0;height:100%;background:#051729;overflow:hidden}
+  #stage{position:fixed;inset:0}
+  /* The runtime paints the artboard's design-time pose for a frame or two before
+     the state machine's entry state takes over. Hold the canvas hidden until it is
+     genuinely running, then fade in, so that pose is never seen. */
+  canvas{display:block;width:100%;height:100%;opacity:0;transition:opacity .3s ease}
+  canvas.ready{opacity:1}
+  #play{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+        background:rgba(5,23,41,.6);border:0;cursor:pointer;color:#3DD6B5;
+        font:500 15px/1 system-ui,sans-serif;letter-spacing:.04em}
+  #err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+       color:#8CA5BE;font:400 14px/1.6 system-ui,sans-serif;text-align:center;padding:24px}
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="c"></canvas></div>
+<button id="play">▶ PLAY</button>
+<div id="err"></div>
+
+<script src="./rive.js"></script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var FILE  = q.get("src") || "./fp_main.riv";
+  var FIT   = q.get("fit") || "contain";      // contain | cover | fill | fitWidth | fitHeight
+  var BG    = q.get("bg");                    // e.g. ?bg=051729  or ?bg=transparent
+  var MAXDPR= parseFloat(q.get("dpr") || "2");
+  var SM    = q.get("sm") || "State Machine 1";
+  // Comma separated view model booleans to switch on once bound, e.g. ?on=autoplay
+  var ON    = (q.get("on") || "").split(",").filter(Boolean);
+  // A view model trigger to fire once the file is bound, e.g. ?fire=stepForward
+  var FIRE  = q.get("fire");
+  // How long to stay hidden after load before fading up, in ms.
+  var SETTLE = parseInt(q.get("settle") || "350", 10);
+
+  if (BG) document.documentElement.style.background =
+    document.body.style.background = (BG === "transparent" ? "transparent" : "#" + BG.replace("#", ""));
+
+  // Serve the WebAssembly from this same site — never a third-party CDN.
+  rive.RuntimeLoader.setWasmUrl("./rive.wasm");
+  try { rive.RuntimeLoader.wasmFallbackURL = "./rive_fallback.wasm"; } catch (e) {}
+
+  var canvas = document.getElementById("c");
+  var errEl  = document.getElementById("err");
+  var playEl = document.getElementById("play");
+  var r = null, started = false, visible = false;
+
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function fail(msg) {
+    errEl.textContent = msg;
+    errEl.style.display = "flex";
+  }
+
+  function sizeSurface() {
+    if (r) r.resizeDrawingSurfaceToCanvas(Math.min(devicePixelRatio || 1, MAXDPR));
+  }
+
+
+  // The first frame the runtime paints is the artboard's design-time pose, before
+  // the state machine's entry state resolves and it restarts properly. Three
+  // animation frames was not a wide enough margin, so hold until the machine has
+  // genuinely advanced AND a settle window has passed, then fade up. Whatever
+  // happens in that window is never on screen.
+  var advances = 0, revealed = false, loadedAt = 0;
+
+  function markReady() {
+    if (revealed) return;
+    revealed = true;
+    canvas.classList.add("ready");
+  }
+
+  function maybeReveal() {
+    if (revealed) return;
+    if (advances >= 6 && Date.now() - loadedAt >= SETTLE) markReady();
+  }
+
+  function startReveal() {
+    loadedAt = Date.now();
+    try {
+      r.on(rive.EventType.Advance, function () { advances++; maybeReveal(); });
+    } catch (e) {}
+    setInterval(maybeReveal, 32);
+    // Belt and braces: if Advance never fires on this runtime build, show it anyway.
+    setTimeout(markReady, Math.max(SETTLE * 3, 1200));
+  }
+
+  function applyViewModelDefaults() {
+    var vmi = r && r.viewModelInstance;
+    if (!vmi) return;
+    ON.forEach(function (name) {
+      try { vmi.boolean(name).value = true; } catch (e) {}
+    });
+    if (FIRE) { try { vmi.trigger(FIRE).trigger(); } catch (e) {} }
+  }
+
+  function boot() {
+    if (started) return;
+    started = true;
+    try {
+      r = new rive.Rive({
+        src: FILE,
+        canvas: canvas,
+        // Name the state machine explicitly. With autoplay alone the runtime
+        // starts the first LINEAR animation instead, which then fights the
+        // state machine for the same properties and the tour stalls.
+        stateMachines: SM,
+        autoplay: !reduced,
+        autoBind: true,                       // this file drives itself from view models
+        fit: rive.Fit[FIT] || rive.Fit.Contain,
+        alignment: rive.Alignment.Center,
+        onLoad: function () {
+          sizeSurface();
+          applyViewModelDefaults();
+          watchForEnd();
+          startReveal();
+          if (reduced) playEl.style.display = "flex";
+        },
+        onLoadError: function (e) { fail("Could not load the animation. " + (e && e.message ? e.message : e)); }
+      });
+    } catch (e) {
+      fail(e.message);
+    }
+  }
+
+
+  // ── deck bridge ─────────────────────────────────────────────────────────────────────────────────────────────────
+  // To the deck (window.parent):  { type: "freightpop:walkthrough", event: "ended" }  when the tour finishes its last
+  //   step (the state machine's "loopToStart"); the tour is paused there so it does not replay behind the menu.
+  //   { type: "freightpop:walkthrough", event: "key", key }  for deck keys pressed while focus is inside this frame.
+  // From the deck: { type: "freightpop:walkthrough", cmd: "toggle" | "next" | "prev" | "restart" | "end" | "play" | "pause" }
+  function vmi() { return r && r.viewModelInstance; }
+  function fire(name) { try { vmi().trigger(name).trigger(); } catch (e) {} }
+  function setAuto(on) { try { vmi().boolean("autoplay").value = on; } catch (e) {} }
+  function getAuto() { try { return vmi().boolean("autoplay").value; } catch (e) { return true; } }
+  function toParent(msg) { try { if (window.parent !== window) window.parent.postMessage(Object.assign({ type: "freightpop:walkthrough" }, msg), "*"); } catch (e) {} }
+  function command(cmd) {
+    if (!r) return;
+    if (cmd === "toggle") setAuto(!getAuto());
+    else if (cmd === "pause") setAuto(false);
+    else if (cmd === "play") { setAuto(true); try { r.play(); } catch (e) {} }
+    else if (cmd === "next") { setAuto(false); fire("stepForward"); }
+    else if (cmd === "prev") { setAuto(false); fire("stepBackward"); }
+    else if (cmd === "restart") { fire("stepToStart"); setAuto(true); }
+    else if (cmd === "end") { setAuto(false); fire("stepToEnd"); }
+  }
+  addEventListener("message", function (e) {
+    var d = e.data;
+    if (e.source === window.parent && d && d.type === "freightpop:walkthrough" && d.cmd) command(d.cmd);
+  });
+  var KEYS = { " ": "toggle", "ArrowRight": "next", "ArrowLeft": "prev", "Home": "restart", "End": "end" };
+  addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (KEYS[k]) { e.preventDefault(); command(KEYS[k]); return; }
+    toParent({ event: "key", key: e.key, shift: e.shiftKey }); // M, H, B, ?, Escape, PageDown … handled by the deck
+  });
+  var prevStep = -99;
+  function watchForEnd() {
+    try {
+      r.on(rive.EventType.StateChange, function (ev) {
+        var names = (ev && ev.data) || [];
+        // "loopToStart" (wrapping to step 25 → start) also fires when the very first manual step is taken, so it only counts
+        // as the end of the tour when the state change before it was on the last step, 24 (measured 2026-10-06, fp_main.riv).
+        var step = -99; try { step = vmi().number("currentStep").value; } catch (e) {}
+        var wasLast = prevStep >= 24; prevStep = step;
+        if (names.indexOf("loopToStart") >= 0 && wasLast) { setAuto(false); toParent({ event: "ended" }); }
+      });
+    } catch (e) {}
+  }
+
+  playEl.addEventListener("click", function () {
+    playEl.style.display = "none";
+    if (r) { r.play(); applyViewModelDefaults(); }
+  });
+
+  // Only run while on screen — this is a heavy animation and it should not
+  // burn CPU in a background tab or below the fold.
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible) { boot(); if (r && started && !reduced) r.play(); }
+      else if (r) r.pause();
+    }, { threshold: 0.05 }).observe(canvas);
+  } else {
+    boot();
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (!r) return;
+    if (document.hidden) r.pause(); else if (visible && !reduced) r.play();
+  });
+
+  addEventListener("resize", sizeSurface);
+  if ("ResizeObserver" in window) new ResizeObserver(sizeSurface).observe(document.getElementById("stage"));
+})();
+</script>
+</body>
+</html>

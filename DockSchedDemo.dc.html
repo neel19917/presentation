@@ -18,8 +18,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#E9EEF5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#E9EEF5;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <sc-if value="{{ inShipper }}" hint-placeholder-val="{{ true }}">
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#0B1A2E;display:flex;align-items:center;gap:18px;padding:0 22px;z-index:5;">
@@ -34,7 +35,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 
   <div style="position:absolute;top:52px;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #E1E7EF;padding:7px 36px 0;z-index:4;display:flex;justify-content:space-between;align-items:flex-start;">
     <div>
-      <div style="font-size:20px;font-weight:500;color:#14263C;">Dock Scheduling — Lake Forest DC · Wed 07/23</div>
+      <div style="font-size:20px;font-weight:500;color:#14263C;">Dock Scheduling — Lake Forest DC · Thu 07/23</div>
       <div style="display:flex;gap:26px;margin-top:5px;font-size:11px;font-weight:500;letter-spacing:.05em;color:#5E7186;"><span style="{{ tabGrid }}">DOCK GRID</span><span>APPOINTMENTS</span><span style="{{ tabGeneral }}">GENERAL</span><span>SETTINGS</span></div>
     </div>
     <span style="border:1px solid #B9CDE8;border-radius:4px;padding:11px 18px;color:#4088CF;font-size:10.5px;font-weight:500;letter-spacing:.05em;margin-top:8px;">SCHEDULING LINK ⧉</span>
@@ -46,10 +47,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     <div style="height:36px;background:#F3F6FA;border-bottom:1px solid #E1E7EF;border-radius:6px 6px 0 0;display:flex;align-items:center;padding:0 16px;font-size:14px;font-weight:500;color:#24354A;">Unscheduled Shipments</div>
     <div style="padding:12px;display:flex;flex-direction:column;gap:10px;">
       <sc-if value="{{ pendOn }}" hint-placeholder-val="{{ true }}">
-        <div style="border:1.5px solid {{ pendBorder }};border-radius:6px;padding:11px 13px;background:{{ pendBg }};transition:all .3s;"><div style="font-size:12.5px;font-weight:500;color:#24354A;">Shipment 14554382 · Pickup</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">XPO Logistics · 10 PLT · 1,500 lb</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">Requested: tomorrow AM</div></div>
+        <div style="border:1.5px solid {{ pendBorder }};border-radius:6px;padding:11px 13px;background:{{ pendBg }};transition:all .3s;"><div style="font-size:12.5px;font-weight:500;color:#24354A;">Shipment 14554382 · Pickup</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">XPO Logistics · 10 PLT · 1,500 lb</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">Requested: today AM</div></div>
       </sc-if>
       <sc-if value="{{ pend2On }}" hint-placeholder-val="{{ true }}">
-      <div style="border:1.5px solid {{ pend2Border }};border-radius:6px;padding:11px 13px;background:{{ pend2Bg }};transition:all .3s;"><div style="font-size:12.5px;font-weight:500;color:#24354A;">Shipment 14554391 · Inbound</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">Old Dominion · 6 PLT · 2,940 lb</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">Requested: Thursday PM</div></div>
+      <div style="border:1.5px solid {{ pend2Border }};border-radius:6px;padding:11px 13px;background:{{ pend2Bg }};transition:all .3s;"><div style="font-size:12.5px;font-weight:500;color:#24354A;">Shipment 14554391 · Inbound</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">Old Dominion · 6 PLT · 2,940 lb</div><div style="font-size:11px;color:#8A97A8;margin-top:3px;">Requested: today PM</div></div>
       </sc-if>
     </div>
     <div style="position:absolute;left:14px;bottom:14px;right:14px;font-size:11.5px;color:#8A97A8;white-space:normal;">Carriers book against your real door capacity — from the shareable scheduling link, no phone calls.</div>
@@ -75,7 +76,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="position:absolute;left:378px;top:164px;width:284px;height:68px;box-sizing:border-box;border:2px dashed #4088CF;border-radius:6px;background:rgba(64,136,207,.06);animation:srFadeUp .3s both;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:500;color:#4088CF;">10:00 – 11:00 available</div>
     </sc-if>
     <sc-if value="{{ selfOn }}" hint-placeholder-val="{{ false }}">
-      <div style="position:absolute;left:678px;top:320px;width:284px;height:68px;box-sizing:border-box;background:#E7F4E4;border:1.5px solid #3B9E4E;border-radius:6px;padding:8px 11px;animation:srFadeUp .35s both;"><div style="font-size:11.5px;font-weight:500;color:#2E5E33;">13:00 – 14:00 · Old Dominion</div><div style="font-size:10.5px;color:#4A6B4E;margin-top:2px;">Inbound · Shipment 14554391 · APPT-2208 · self-booked</div></div>
+      <div style="position:absolute;left:678px;top:320px;width:284px;height:68px;box-sizing:border-box;background:#E7F4E4;border:1.5px solid #3B9E4E;border-radius:6px;padding:8px 11px;animation:srFadeUp .35s both;"><div style="font-size:11.5px;font-weight:500;color:#2E5E33;">13:00 – 14:00 · Old Dominion</div><div style="font-size:10.5px;color:#4A6B4E;margin-top:2px;">Inbound · 14554391 · APPT-2208 · self-booked</div></div>
     </sc-if>
     <sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
       <div style="{{ ghostStyle }}"><div style="font-size:12.5px;font-weight:500;color:#24354A;">Shipment 14554382 · Pickup</div><div style="font-size:11.5px;color:#5E7186;margin-top:3px;">XPO Logistics · 10 PLT · 1,500 lb</div></div>
@@ -125,7 +126,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </div>
         <div style="position:absolute;left:0;right:0;top:50px;height:1px;background:#E4E9EF;"></div>
 
-        <div style="{{ fA }}"><span style="{{ fL }}">Appointment Date</span><span style="{{ fV }}">08/13/2026</span>
+        <div style="{{ fA }}"><span style="{{ fL }}">Appointment Date</span><span style="{{ fV }}">07/23/2026</span>
           <svg width="16" height="16" viewBox="0 0 24 24" style="position:absolute;right:12px;top:16px;"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="#5E7186" stroke-width="1.7"></rect><path d="M3 10 H21 M8 3 V7 M16 3 V7" stroke="#5E7186" stroke-width="1.7" fill="none"></path></svg></div>
         <div style="{{ fB }}"><span style="{{ fL }}">Truck Status</span><span style="{{ fV }}">Scheduled</span><span style="{{ fCar }}">▾</span></div>
 
@@ -166,7 +167,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
   </sc-if>
   <sc-if value="{{ bannerOn }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:30px;top:80px;width:900px;height:42px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;z-index:8;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:500;color:#2E5E33;">{{ bannerText }}</span></div>
+    <div style="position:absolute;left:30px;top:712px;width:900px;height:42px;background:#E7F4E4;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 16px;animation:srFadeUp .35s both;z-index:8;"><svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#3B9E4E"></circle><path d="M7 12.5 L10.5 16 L17 8.5" fill="none" stroke="#fff" stroke-width="2.5"></path></svg><span style="font-size:12.5px;font-weight:500;color:#2E5E33;">{{ bannerText }}</span></div>
   </sc-if>
 
   </sc-if>
@@ -260,22 +261,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   </sc-if>
 
   <!-- ═══ OVERLAYS ═══ -->
-  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
-  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+<sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
     </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
-  </div>
-  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
@@ -283,6 +272,30 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
     <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
   </div>
+</div>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 </x-dc>
@@ -301,63 +314,62 @@ class Component extends DCLogic {
     mailHot: false, bookHot: false, slotModal: false, slotPick: -1, confirmHot: false, portalDone: false, selfOn: false,
     copyHot: false, copied: false, linkStep: 0, bolVal: "", bolHot: false, contHot: false,
     titleOn: true, titleKicker: "Part one", titleText: "Shipper workflow", titleSub: "Booking and moving appointments on your own dock grid" };
-  DUR = 54;
+  DUR = 62;
   KF = [
     { t: 2.4, s: { titleOn: false, cap: "01 · The dock day, at a glance" } },
     { t: 4.0, s: { curX: 200, curY: 250, pendBorder: "#4088CF", pendBg: "#F4F8FE", cap: "02 · One pickup still unscheduled" } },
-    { t: 5.4, s: { ripple: true, ripX: 200, ripY: 250 } },
-    { t: 5.8, s: { ripple: false, dragging: true, pendOn: false, slotGlow: true, cap: "03 · Drag it straight onto an open door and window" } },
-    { t: 6.3, s: { dgX: 378, dgY: 164, curX: 910, curY: 330 } },
-    { t: 7.8, s: { ripple: true, ripX: 910, ripY: 330 } },
-    { t: 8.2, s: { ripple: false, dragging: false, slotGlow: false, apptOn: true, cap: "04 · Dock 2, 10:00 — checked against real capacity" } },
-    { t: 9.0, s: { panelOn: true, cap: "05 · Appointment Details opens on the drop" } },
-    { t: 11.0, s: { cap: "06 · Carrier, date, dock, direction and window are already set" } },
-    { t: 12.8, s: { curX: 1105, curY: 551, cap: "07 · Assign the equipment for that window" } },
-    { t: 13.6, s: { ripple: true, ripX: 1105, ripY: 551 } },
-    { t: 14.0, s: { ripple: false, equipDD: true } },
-    { t: 15.2, s: { curX: 700, curY: 461, equipPick: true } },
-    { t: 15.9, s: { ripple: true, ripX: 700, ripY: 461 } },
-    { t: 16.3, s: { ripple: false, equipDD: false, equipPick: false, equipSel: "1 selected" } },
-    { t: 17.4, s: { curX: 354, curY: 694, saveHot: true } },
-    { t: 18.1, s: { ripple: true, ripX: 354, ripY: 694 } },
-    { t: 18.5, s: { ripple: false, panelOn: false, saveHot: false, equipChip: true, bannerOn: true,
+    { t: 6.4, s: { ripple: true, ripX: 200, ripY: 250 } },
+    { t: 6.8, s: { ripple: false, dragging: true, pendOn: false, slotGlow: true, cap: "03 · Drag it straight onto an open door and window" } },
+    { t: 7.3, s: { dgX: 378, dgY: 164, curX: 910, curY: 330 } },
+    { t: 9.2, s: { ripple: true, ripX: 910, ripY: 330 } },
+    { t: 9.6, s: { ripple: false, dragging: false, slotGlow: false, apptOn: true, cap: "04 · Dock 2, 10:00 — checked against real capacity" } },
+    { t: 12.4, s: { panelOn: true, cap: "05 · Appointment Details opens on the drop" } },
+    { t: 15.2, s: { cap: "06 · Carrier, date, dock, direction and window are already set" } },
+    { t: 18.0, s: { curX: 1105, curY: 551, cap: "07 · Assign the equipment for that window" } },
+    { t: 18.8, s: { ripple: true, ripX: 1105, ripY: 551 } },
+    { t: 19.2, s: { ripple: false, equipDD: true } },
+    { t: 20.4, s: { curX: 700, curY: 461, equipPick: true } },
+    { t: 21.1, s: { ripple: true, ripX: 700, ripY: 461 } },
+    { t: 21.5, s: { ripple: false, equipDD: false, equipPick: false, equipSel: "1 selected" } },
+    { t: 22.6, s: { curX: 354, curY: 694, saveHot: true } },
+    { t: 23.3, s: { ripple: true, ripX: 354, ripY: 694 } },
+    { t: 23.7, s: { ripple: false, panelOn: false, saveHot: false, equipChip: true, bannerOn: true,
       bannerText: "APPT-2207 booked on Dock 2, 10:00 – 11:00 with Forklift #2 held — the carrier is notified automatically.",
       cap: "08 · Saved — dock, window and equipment all held" } },
-    { t: 21.4, s: { bannerOn: false, titleOn: true, titleKicker: "Part two", titleText: "Carrier workflow", titleSub: "Two ways a carrier books their own dock appointment" } },
-    { t: 24.0, s: { titleOn: false, scene: 2, cap: "09 · One: the carrier portal — Book Appointment on eligible shipments", curX: 900, curY: 300 } },
-    { t: 26.4, s: { curX: 1230, curY: 206, bookHot: true } },
-    { t: 27.2, s: { ripple: true, ripX: 1230, ripY: 206 } },
-    { t: 27.6, s: { ripple: false, bookHot: false, slotModal: true, cap: "10 · Live availability — only windows the dock rules allow" } },
-    { t: 30.0, s: { curX: 908, curY: 383, slotPick: 5, cap: "11 · The carrier selects their own time slot" } },
-    { t: 30.8, s: { ripple: true, ripX: 908, ripY: 383 } },
-    { t: 31.2, s: { ripple: false } },
-    { t: 32.0, s: { curX: 530, curY: 544, confirmHot: true } },
-    { t: 32.7, s: { ripple: true, ripX: 530, ripY: 544 } },
-    { t: 33.1, s: { ripple: false, confirmHot: false, slotModal: false, portalDone: true, cap: "12 · Confirmed — and they can reschedule from the portal too" } },
-    { t: 35.6, s: { scene: 3, portalDone: false, slotPick: -1, cap: "13 · Two: a shareable scheduling link — Dock Scheduling → General", curX: 700, curY: 300 } },
-    { t: 38.0, s: { curX: 872, curY: 252, copyHot: true, cap: "14 · Copy it and send it to any carrier" } },
-    { t: 38.8, s: { ripple: true, ripX: 872, ripY: 252 } },
-    { t: 39.2, s: { ripple: false, copyHot: false, copied: true } },
-    { t: 41.2, s: { scene: 4, copied: false, cap: "15 · No login — they validate with a tracking number or BOL", curX: 700, curY: 300 } },
-    { t: 43.2, s: { curX: 700, curY: 268, bolHot: true } },
-    { t: 43.9, s: { ripple: true, ripX: 700, ripY: 268 } },
-    { t: 44.3, s: { ripple: false, bolVal: "BOL-14554391" } },
-    { t: 45.6, s: { curX: 500, curY: 330, contHot: true } },
-    { t: 46.2, s: { ripple: true, ripX: 500, ripY: 330 } },
-    { t: 46.6, s: { ripple: false, contHot: false, linkStep: 1, cap: "16 · Same live availability, same dock rules" } },
-    { t: 48.4, s: { curX: 908, curY: 330, slotPick: 5 } },
-    { t: 49.1, s: { ripple: true, ripX: 908, ripY: 330 } },
-    { t: 49.5, s: { ripple: false } },
-    { t: 50.4, s: { curX: 560, curY: 430, confirmHot: true } },
-    { t: 51.0, s: { ripple: true, ripX: 560, ripY: 430 } },
-    { t: 51.4, s: { ripple: false, confirmHot: false, scene: 0, selfOn: true, pend2On: false, bannerOn: true,
+    { t: 26.6, s: { bannerOn: false, titleOn: true, titleKicker: "Part two", titleText: "Carrier workflow", titleSub: "Two ways a carrier books their own dock appointment" } },
+    { t: 29.2, s: { titleOn: false, scene: 2, cap: "09 · One: the carrier portal — Book Appointment on eligible shipments", curX: 900, curY: 300 } },
+    { t: 31.6, s: { curX: 1230, curY: 206, bookHot: true } },
+    { t: 32.4, s: { ripple: true, ripX: 1230, ripY: 206 } },
+    { t: 32.8, s: { ripple: false, bookHot: false, slotModal: true, cap: "10 · Live availability — only windows the dock rules allow" } },
+    { t: 35.6, s: { curX: 908, curY: 383, slotPick: 5, cap: "11 · The carrier selects their own time slot" } },
+    { t: 36.4, s: { ripple: true, ripX: 908, ripY: 383 } },
+    { t: 36.8, s: { ripple: false } },
+    { t: 37.6, s: { curX: 530, curY: 544, confirmHot: true } },
+    { t: 38.3, s: { ripple: true, ripX: 530, ripY: 544 } },
+    { t: 38.7, s: { ripple: false, confirmHot: false, slotModal: false, portalDone: true, cap: "12 · Confirmed — and they can reschedule from the portal too" } },
+    { t: 41.5, s: { scene: 3, portalDone: false, slotPick: -1, cap: "13 · Two: a shareable scheduling link — Dock Scheduling → General", curX: 700, curY: 300 } },
+    { t: 44.3, s: { curX: 872, curY: 252, copyHot: true, cap: "14 · Copy it and send it to any carrier" } },
+    { t: 45.1, s: { ripple: true, ripX: 872, ripY: 252 } },
+    { t: 45.5, s: { ripple: false, copyHot: false, copied: true } },
+    { t: 47.5, s: { scene: 4, copied: false, cap: "15 · No login — they validate with a tracking number or BOL", curX: 700, curY: 300 } },
+    { t: 49.5, s: { curX: 700, curY: 268, bolHot: true } },
+    { t: 50.2, s: { ripple: true, ripX: 700, ripY: 268 } },
+    { t: 50.6, s: { ripple: false, bolVal: "BOL-14554391" } },
+    { t: 51.9, s: { curX: 500, curY: 330, contHot: true } },
+    { t: 52.5, s: { ripple: true, ripX: 500, ripY: 330 } },
+    { t: 52.9, s: { ripple: false, contHot: false, linkStep: 1, cap: "16 · Same live availability, same dock rules" } },
+    { t: 54.7, s: { curX: 908, curY: 330, slotPick: 5 } },
+    { t: 55.4, s: { ripple: true, ripX: 908, ripY: 330 } },
+    { t: 55.8, s: { ripple: false } },
+    { t: 56.7, s: { curX: 560, curY: 430, confirmHot: true } },
+    { t: 57.3, s: { ripple: true, ripX: 560, ripY: 430 } },
+    { t: 57.7, s: { ripple: false, confirmHot: false, scene: 0, selfOn: true, pend2On: false, bannerOn: true,
       bannerText: "APPT-2208 self-booked by Old Dominion — it lands on Dock 3 at 1:00 PM with no call to your receiving team.",
       cap: "17 · Either way it lands on your dock grid the moment they book", curX: 1100, curY: 480 } },
-    { t: 54.4, s: {} },
   ];
   SLOTS = [
-    ["8:00 AM", "Full", 0], ["9:00 AM", "Full", 0], ["10:00 AM", "2 doors open", 1],
-    ["11:00 AM", "1 door open", 1], ["12:00 PM", "Full", 0], ["1:00 PM", "2 doors open", 1],
+    ["8:00 AM", "Full", 0], ["9:00 AM", "Full", 0], ["10:00 AM", "1 door open", 1],
+    ["11:00 AM", "1 door open", 1], ["12:00 PM", "Full", 0], ["1:00 PM", "1 door open", 1],
     ["2:00 PM", "1 door open", 1], ["3:00 PM", "Full", 0], ["4:00 PM", "1 door open", 1],
   ];
   PORTAL = [
@@ -396,6 +408,16 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); if (!this.anim.playing) { this.anim.playing = true; } this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -454,7 +476,17 @@ class Component extends DCLogic {
       curT: "translate(" + a.curX + "px, " + a.curY + "px)",
       ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
-      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(), playing: this.anim.playing,
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,

@@ -16,8 +16,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;box-sizing:border-box;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <!-- TOP NAV -->
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
@@ -49,7 +50,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
       <div style="position:absolute;left:0;right:0;top:0;height:56px;">
         <div style="position:absolute;left:20px;top:10px;width:250px;height:36px;border:1px solid #C6D0DC;border-radius:3px;display:flex;align-items:center;gap:9px;padding:0 12px;box-sizing:border-box;"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#8A97A8" stroke-width="2.5"></circle><path d="M15.5 15.5 L21 21" stroke="#8A97A8" stroke-width="2.5"></path></svg><span style="color:#9AA7B8;font-size:12px;">Search</span><span style="margin-left:auto;font-size:11px;font-weight:500;letter-spacing:.05em;color:#4A5B70;">GO</span></div>
         <svg width="17" height="17" viewBox="0 0 24 24" style="position:absolute;left:292px;top:20px;"><path d="M3 5 L21 5 L14 13 L14 20 L10 18 L10 13 Z" fill="none" stroke="#5E7186" stroke-width="1.7"></path></svg>
-        <div style="position:absolute;left:790px;top:12px;display:flex;height:32px;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;"><span style="display:flex;align-items:center;padding:0 12px;background:#EDF1F6;font-size:10.5px;font-weight:500;letter-spacing:.05em;color:#24354A;">ORDERS</span><span style="display:flex;align-items:center;padding:0 12px;background:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;color:#5E7186;">ITEMS</span></div>
+        <div style="position:absolute;left:752px;top:12px;display:flex;height:32px;border:1px solid #C6D0DC;border-radius:3px;overflow:hidden;"><span style="display:flex;align-items:center;padding:0 12px;background:#EDF1F6;font-size:10.5px;font-weight:500;letter-spacing:.05em;color:#24354A;">ORDERS</span><span style="display:flex;align-items:center;padding:0 12px;background:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;color:#5E7186;">ITEMS</span></div>
         <span style="position:absolute;left:906px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:500;letter-spacing:.05em;">AUTO DISPATCH</span>
         <span style="position:absolute;left:1046px;top:12px;height:32px;box-sizing:border-box;display:flex;align-items:center;gap:7px;padding:0 14px;border:1px solid #B9CDE8;border-radius:3px;color:#4088CF;font-size:10.5px;font-weight:500;letter-spacing:.05em;">BATCHES <span style="opacity:.6;">ⓘ</span></span>
         <span style="{{ filtersBtn }}"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M3 6 L21 6 M6 12 L18 12 M10 18 L14 18" stroke="#4088CF" stroke-width="2.2"></path></svg> FILTERS</span>
@@ -208,22 +209,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   </sc-if>
 
   <!-- OVERLAYS -->
-  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
-  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
-    </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
-  </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
@@ -231,6 +220,30 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
     <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
   </div>
+</div>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 </x-dc>
@@ -240,7 +253,7 @@ class Component extends DCLogic {
     curX: 700, curY: 640, ripple: false, ripX: 0, ripY: 0,
     panel: false, menu: false, dateOn: false, fromSet: false, toSet: false, allowConsol: false, applied: false, checks: 0, sorted: false, hdrHot: false,
     fBg: "#fff", moreBg: "#fff", applyBg: "#4088CF", createBg: "#4088CF", menuHot: false };
-  DUR = 32;
+  DUR = 34;
   KF = [
     { t: 1.4, s: { curX: 1274, curY: 176 } },
     { t: 2.3, s: { ripple: true, ripX: 1274, ripY: 176, fBg: "#EAF3FF" } },
@@ -313,6 +326,16 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -356,15 +379,25 @@ class Component extends DCLogic {
       moreBtn: "position:absolute;left:1330px;top:12px;width:46px;height:32px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:1px solid #C6D0DC;border-radius:3px;background:" + a.moreBg + ";color:#5E7186;font-size:14px;letter-spacing:.06em;transition:background .2s;",
       applyBtn: "position:absolute;right:26px;bottom:24px;background:" + a.applyBg + ";border-radius:3px;padding:10px 16px;color:#fff;font-size:10.5px;font-weight:500;letter-spacing:.05em;transition:background .2s;",
       menuRow1: "display:flex;align-items:center;height:34px;padding:0 14px;font-size:12px;font-weight:500;color:#24354A;background:" + (a.menuHot ? "#EAF3FF" : "#fff") + ";",
-      allChecked: a.checks >= 4,
-      allCb: "position:absolute;left:24px;top:8px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (a.checks >= 4 ? "#4088CF" : "#B9C3CF") + ";background:" + (a.checks >= 4 ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;",
+      allChecked: a.checks >= 7,
+      allCb: "position:absolute;left:24px;top:8px;width:13px;height:13px;border-radius:2px;border:1.5px solid " + (a.checks >= 7 ? "#4088CF" : "#B9C3CF") + ";background:" + (a.checks >= 7 ? "#4088CF" : "#fff") + ";display:inline-block;transition:all .2s;",
       selBar: a.checks >= 4,
       paused: !a.playing,
       curT: "translate(" + a.curX + "px, " + a.curY + "px)",
       ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
       orderRows,
-      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(), playing: this.anim.playing,
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap,

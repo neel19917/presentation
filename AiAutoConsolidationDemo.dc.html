@@ -19,8 +19,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:52px;background:#122B45;display:flex;align-items:center;gap:16px;padding:0 18px;z-index:5;">
     <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:21px;width:auto;display:block;flex-shrink:0;">
@@ -88,7 +89,7 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
 
     <div style="position:absolute;left:0;right:0;bottom:0;height:44px;border-top:1px solid #E4E9EF;display:flex;align-items:center;justify-content:center;gap:26px;font-size:11.5px;color:#4A5B70;">
-      <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span><span>1–9 of 19</span><span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> ›</span>
+      <span>Results Per Page: <b style="color:#24354A;">50</b> ▾</span><span>1–9 of 9</span><span style="display:flex;align-items:center;gap:14px;color:#8A97A8;">‹ <span style="color:#4088CF;border-bottom:2px solid #4088CF;padding:0 2px;">1</span> ›</span>
     </div>
   </div>
 
@@ -116,19 +117,19 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
         </sc-if>
 
         <sc-if value="{{ showA1 }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:16px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">Read all 9 open sales orders and grouped them by ship-to company and delivery ZIP inside the same required ship date.</div>
+          <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:16px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">Read all 9 open sales orders and grouped the Summit Foods Group orders by ship-to city and required ship date.</div>
         </sc-if>
 
         <sc-if value="{{ showA2 }}" hint-placeholder-val="{{ false }}">
           <div style="background:#F4F5F7;border-radius:6px;padding:13px 15px;margin-top:12px;font-size:13.5px;line-height:1.6;color:#3A4B60;white-space:normal;animation:rsFadeUp .3s both;">
-            Four orders share the same ship-to company and metro on 07/22:
+            Four Summit Foods Group orders ship to Denver on 07/22:
             <div style="margin-top:10px;background:#fff;border:1px solid #E1E7EF;border-radius:5px;padding:10px 12px;">
               <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99120</b> · Denver DC</span><span style="flex-shrink:0;">840 lb</span></div>
               <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99126</b> · Stapleton</span><span style="flex-shrink:0;">410 lb</span></div>
-              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99131</b> · Aurora</span><span style="flex-shrink:0;">900 lb</span></div>
-              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99138</b> · Cmrc City</span><span style="flex-shrink:0;">385 lb</span></div>
+              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;border-bottom:1px solid #EFF2F6;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99131</b> · Green Valley</span><span style="flex-shrink:0;">900 lb</span></div>
+              <div style="display:flex;align-items:baseline;gap:10px;padding:4px 0;font-size:12.5px;white-space:nowrap;"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;"><b>SO-99138</b> · Globeville</span><span style="flex-shrink:0;">385 lb</span></div>
             </div>
-            <div style="margin-top:10px;">Four LTL minimums at <b>$1,872</b> become one 2,535 lb load at <b>$743</b> — <b style="color:#2E5E33;">$1,129 lower</b>.</div>
+            <div style="margin-top:10px;">Four separate LTL shipments at <b>$1,872</b> become one 2,535 lb load at <b>$743</b> — <b style="color:#2E5E33;">$1,129 lower</b>.</div>
           </div>
         </sc-if>
 
@@ -152,22 +153,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
   </div>
 
-  <div style="position:absolute;left:16px;bottom:64px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
-  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
-    </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
-  </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:66px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:rsClick .5s ease-out both;"></div></div>
@@ -175,11 +164,35 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);"><svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg></div>
 
 </div>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
+  </div>
+</div>
+</div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:700},&quot;speed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0.5,&quot;max&quot;:2,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;},&quot;autoPlay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  PROMPT = "find all shipments with the same ship-to address as Summit Foods Group";
+  PROMPT = "find Summit Foods Group orders going to the same city on the same day";
   A0 = { playing: true, cap: "01 · Nine open orders, each headed out on its own",
     curX: 700, curY: 640, ripple: false, ripX: 0, ripY: 0,
     typeStart: null, focus: false, sent: false, thinking: false,
@@ -194,18 +207,18 @@ class Component extends DCLogic {
     { t: 8.4, s: { ripple: true, ripX: 1383, ripY: 673 } },
     { t: 8.8, s: { ripple: false, sent: true, thinking: true, cap: "03 · The assistant reads the whole grid" } },
     { t: 10.6, s: { thinking: false, showA1: true, group: 2 } },
-    { t: 12.2, s: { group: 4, cap: "04 · Four orders share a customer and a metro" } },
+    { t: 12.2, s: { group: 4, cap: "04 · Four orders share a customer and a city" } },
     { t: 13.2, s: { showA2: true } },
     { t: 16.4, s: { showChip: true, cap: "05 · One click to consolidate" } },
     { t: 17.8, s: { curX: 1060, curY: 566, chipHot: true } },
     { t: 18.8, s: { ripple: true, ripX: 1060, ripY: 566 } },
-    { t: 19.2, s: { ripple: false, chipHot: false, showChip: false, showDone: true, consolidated: true, cap: "06 · One consolidated shipment — orders locked and linked", curX: 700, curY: 620 } },
+    { t: 19.2, s: { ripple: false, chipHot: false, showChip: false, showDone: true, consolidated: true, cap: "06 · One consolidated shipment, every order linked to it", curX: 700, curY: 620 } },
   ];
   ORDERS = [
     { num: "SO-99120", otype: "FP", cust: "Summit Foods Group", to: "Denver DC, 4100 Havana St", city: "Denver", state: "CO", zip: "80216", date: "07/22/2026", g: 1 },
     { num: "SO-99126", otype: "FP", cust: "Summit Foods Group", to: "Stapleton, 7550 E 40th Ave", city: "Denver", state: "CO", zip: "80239", date: "07/22/2026", g: 2 },
-    { num: "SO-99131", otype: "FP", cust: "Summit Foods Group", to: "Aurora DC, 1420 Chambers Rd", city: "Aurora", state: "CO", zip: "80011", date: "07/22/2026", g: 3 },
-    { num: "SO-99138", otype: "FP", cust: "Summit Foods Group", to: "Commerce City, 6001 E 64th", city: "Commerce City", state: "CO", zip: "80022", date: "07/22/2026", g: 4 },
+    { num: "SO-99131", otype: "FP", cust: "Summit Foods Group", to: "Green Valley, 4900 Tower Rd", city: "Denver", state: "CO", zip: "80249", date: "07/22/2026", g: 3 },
+    { num: "SO-99138", otype: "FP", cust: "Summit Foods Group", to: "Globeville, 4600 Washington St", city: "Denver", state: "CO", zip: "80216", date: "07/22/2026", g: 4 },
     { num: "SO-99142", otype: "FP", cust: "Baird Electric", to: "Baird Electric, 900 Kalamath", city: "Denver", state: "CO", zip: "80204", date: "07/22/2026" },
     { num: "SO-99147", otype: "Export", cust: "Summit Foods Group", to: "Phoenix DC, 3300 S 35th Ave", city: "Phoenix", state: "AZ", zip: "85009", date: "07/22/2026" },
     { num: "SO-99151", otype: "FP", cust: "Cascade Outfitters", to: "Cascade, 8200 NE Alderwood", city: "Portland", state: "OR", zip: "97218", date: "07/22/2026" },
@@ -224,6 +237,16 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); }
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -251,10 +274,20 @@ class Component extends DCLogic {
       chipStyle: "border:1px solid " + (a.chipHot ? "#4088CF" : "#B9CDE8") + ";background:" + (a.chipHot ? "#EAF1FB" : "#F7FAFE") + ";border-radius:6px;padding:9px 13px;font-size:12.5px;letter-spacing:.08em;color:#4088CF;transition:all .2s;",
       aiChipLabel: a.consolidated ? "1 CONSOLIDATION CREATED" : a.showA2 ? "1 GROUP FOUND" : a.thinking ? "AI WORKING…" : "AI ASSISTANT ON",
       aiChip: "position:absolute;left:330px;top:20px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:10px;padding:4px 10px;border-radius:9px;background:" + (a.showA2 || a.consolidated ? "#EAF3FF" : "#EEF2F7") + ";color:" + (a.showA2 || a.consolidated ? "#1F5FBF" : "#5E7186") + ";",
-      scale: this.scaleVal, wrapH: Math.round(810 * this.scaleVal) + "px", paused: !a.playing,
+      scale: this.scaleVal, wrapH: Math.round(866 * this.scaleVal) + "px", paused: !a.playing,
       curT: "translate(" + a.curX + "px, " + a.curY + "px)", ripT: "translate(" + a.ripX + "px, " + a.ripY + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
-      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR), playing: this.anim.playing,
+      timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(), playing: this.anim.playing,
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap };

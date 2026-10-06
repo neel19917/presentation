@@ -16,8 +16,9 @@ body { margin:0; background:#051729; }
 a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
 </style>
 </helmet>
-<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 810;">
-<div ref="{{ setCanvas }}" onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;transform:scale({{ scale }});transform-origin:top left;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
+<div ref="{{ setWrap }}" style="position:relative;width:100%;overflow:hidden;border-radius:16px;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 64px rgba(61,214,181,.12);background:#0A2540;aspect-ratio:1440 / 866;">
+<div style="position:absolute;top:0;left:0;width:1440px;height:866px;transform:scale({{ scale }});transform-origin:top left;">
+<div ref="{{ setCanvas }}" onClick="{{ togglePlay }}" style="position:absolute;top:0;left:0;width:1440px;height:810px;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;overflow:hidden;white-space:nowrap;">
 
   <div style="position:absolute;top:0;left:0;right:0;height:56px;background:#16324E;display:flex;align-items:center;padding:0 18px;z-index:6;">
     <img src="extracted/25e71771-bccb-4402-bdd9-42e9e67ab502.png" alt="FreightPOP" style="height:20px;width:auto;display:block;">
@@ -243,23 +244,10 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
     </div>
   </sc-if>
 
-  <!-- ══════ OVERLAYS ══════ -->
-  <div style="position:absolute;left:16px;bottom:78px;z-index:40;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:8px;pointer-events:none;">{{ cap }}</div>
-  <div onClick="{{ scrub }}" title="Scrub" style="position:absolute;left:0;right:0;bottom:0;height:12px;z-index:41;background:rgba(5,23,41,.16);cursor:pointer;">
-    <div style="position:absolute;left:0;bottom:0;height:12px;width:{{ progW }};background:#3DD6B5;opacity:.9;pointer-events:none;"></div>
-  </div>
-  <div style="position:absolute;right:22px;bottom:26px;z-index:43;display:flex;align-items:center;gap:10px;background:rgba(5,23,41,.86);border-radius:22px;padding:7px 13px;">
-    <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ back10 }}" title="Back 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
-    <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
-      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
-      <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
-    </div>
-    <div onClick="{{ fwd10 }}" title="Forward 10 seconds" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
-    <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;">{{ timeLabel }}</span>
-  </div>
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;left:16px;bottom:112px;z-index:39;pointer-events:none;background:rgba(5,23,41,.86);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;padding:6px 12px;border-radius:6px;">PAUSED</div>
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    </div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
     <div style="position:absolute;left:-19px;top:-19px;z-index:49;pointer-events:none;transform:{{ ripT }};"><div style="width:38px;height:38px;border-radius:50%;border:3px solid #4088CF;animation:srClick .5s ease-out both;"></div></div>
@@ -267,6 +255,30 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   <div style="position:absolute;left:0;top:0;z-index:50;pointer-events:none;transform:{{ curT }};transition:transform .6s cubic-bezier(.45,.05,.25,1);">
     <svg width="23" height="23" viewBox="0 0 24 24" style="filter:drop-shadow(0 2px 3px rgba(5,20,40,.45));"><path d="M4 1 L4 18 L8.6 14.2 L11.2 20.6 L14 19.4 L11.4 13.2 L17.5 12.8 Z" fill="#fff" stroke="#0B1A2E" stroke-width="1.4"></path></svg>
   </div>
+</div>
+<!-- ═══ PLAYER (below the app, never over it) ═══ -->
+<div style="position:absolute;left:0;top:810px;width:1440px;height:56px;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+  <div onClick="{{ scrub }}" title="Jump to a point" style="position:absolute;left:0;right:0;top:0;height:10px;background:rgba(255,255,255,.08);cursor:pointer;">
+    <div style="position:absolute;left:0;top:0;height:10px;width:{{ progW }};background:#3DD6B5;pointer-events:none;"></div>
+    <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5"><div onClick="{{ c.go }}" title="{{ c.label }}" style="position:absolute;top:0;left:{{ c.left }};width:14px;margin-left:-7px;height:10px;cursor:pointer;display:flex;justify-content:center;"><div style="width:2px;height:10px;background:{{ c.tick }};"></div></div></sc-for>
+  </div>
+  <div style="position:absolute;left:20px;right:20px;top:10px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+      <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ stepCount }}</span>
+      <span style="color:#FFFFFF;font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;">{{ capTitle }}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div onClick="{{ restart }}" title="Back to start" style="{{ tBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ prevStep }}" title="Previous step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+      <div onClick="{{ tPlay }}" title="Play / Pause" style="{{ tBtn }}">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+      </div>
+      <div onClick="{{ nextStep }}" title="Next step" style="{{ tBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+      <span style="color:#8FE8D4;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;margin-left:8px;">{{ timeLabel }}</span>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 </x-dc>
@@ -294,55 +306,56 @@ class Component extends DCLogic {
     a1On: false, a1Lp: "", a1Bin: "", a1Qty: "", a1Lot: "", a1Exp: "", a1BinLabel: "—", a1QtyLabel: "0",
     a2On: false, a2Lp: "", a2Bin: "", a2Qty: "", a2Lot: "", a2Exp: "", a2BinLabel: "—", a2QtyLabel: "0",
     toastOn: false, toastTitle: "", toastBody: "", toastAccent: "#4088CF", toastTop: "60px", extraRow: false };
-  DUR = 48;
+  DUR = 60.6;
   KF = [
-    { t: 2.0, s: { curX: 1392, curY: 100, ripple: true, ripX: 1392, ripY: 100, cap: "02 · Add a new receipt" } },
-    { t: 2.5, s: { ripple: false, modalOn: true } },
-    { t: 4.0, s: { curX: 720, curY: 358, ripple: true, ripX: 720, ripY: 358, poFieldBorder: "#4088CF" } },
-    { t: 4.5, s: { ripple: false, poText: "PO-45131", poTextColor: "#3C4B5C", importBg: "#4088CF", importColor: "#fff", cap: "03 · Import the purchase order" } },
-    { t: 6.4, s: { curX: 496, curY: 425, ripple: true, ripX: 496, ripY: 425 } },
-    { t: 6.9, s: { ripple: false, modalOn: false, gridOn: false, formOn: true, footerOn: true, poFieldBorder: "#CBD5E1",
+    { t: 2.8, s: { curX: 1392, curY: 100, ripple: true, ripX: 1392, ripY: 100, cap: "02 · Add a new receipt" } },
+    { t: 3.3, s: { ripple: false, modalOn: true } },
+    { t: 5.1, s: { curX: 720, curY: 358, ripple: true, ripX: 720, ripY: 358, poFieldBorder: "#4088CF" } },
+    { t: 5.6, s: { ripple: false, poText: "PO-45131", poTextColor: "#3C4B5C", importBg: "#4088CF", importColor: "#fff", cap: "03 · Import the purchase order" } },
+    { t: 7.9, s: { curX: 496, curY: 425, ripple: true, ripX: 496, ripY: 425 } },
+    { t: 8.4, s: { ripple: false, modalOn: false, gridOn: false, formOn: true, footerOn: true, poFieldBorder: "#CBD5E1",
       cap: "04 · Vendor and PO detail pull in — no re-keying" } },
-    { t: 9.6, s: { curX: 1063, curY: 492, carrierBorder: "#4088CF", carrierText: "Old Dominion", cap: "05 · Carrier, tracking and arrival recorded at the door" } },
-    { t: 11.2, s: { curX: 1063, curY: 550, carrierBorder: "#DDE4EC", trackBorder: "#4088CF", trackText: "456522" } },
-    { t: 12.8, s: { curX: 1063, curY: 608, trackBorder: "#DDE4EC", arrivalBorder: "#4088CF", arrivalText: "06/09/2026", arrivalColor: "#3C4B5C" } },
-    { t: 14.4, s: { curX: 983, curY: 778, ripple: true, ripX: 983, ripY: 778, arrivalBorder: "#DDE4EC" } },
-    { t: 14.9, s: { ripple: false, formOn: false, footerOn: false, gridOn: true, extraRow: true,
+    { t: 11.2, s: { curX: 1063, curY: 492, carrierBorder: "#4088CF", carrierText: "Old Dominion", cap: "05 · Carrier, tracking and arrival recorded at the door" } },
+    { t: 12.8, s: { curX: 1063, curY: 550, carrierBorder: "#DDE4EC", trackBorder: "#4088CF", trackText: "456522" } },
+    { t: 14.4, s: { curX: 1063, curY: 608, trackBorder: "#DDE4EC", arrivalBorder: "#4088CF", arrivalText: "06/09/2026", arrivalColor: "#3C4B5C" } },
+    { t: 16.0, s: { curX: 983, curY: 778, ripple: true, ripX: 983, ripY: 778, arrivalBorder: "#DDE4EC" } },
+    { t: 16.5, s: { ripple: false, formOn: false, footerOn: false, gridOn: true, extraRow: true,
       cap: "06 · Saved — the receipt is in the queue, status Open" } },
-    { t: 16.8, s: { curX: 1351, curY: 382, ripple: true, ripX: 1351, ripY: 382, cap: "07 · Open the receipt to start receiving" } },
-    { t: 17.3, s: { ripple: false, gridOn: false, editOn: true, footerOn: true, ap1Bg: "#B7C3CF", ap2Bg: "#B7C3CF" } },
-    { t: 19.0, s: { focus: "scan", cap: "08 · Product details sit on the same receipt — scroll down" } },
-    { t: 20.6, s: { scanBorder: "#4088CF", cap: "09 · Scan the item — expected quantities already known" } },
-    { t: 22.2, s: { focus: "r1Add", ripple: true, scanBorder: "#DDE4EC", cap: "10 · Receive to a bin" } },
-    { t: 22.7, s: { ripple: false, a1On: true } },
-    { t: 23.9, s: { focus: "a1Lp", a1Lp: "FRTPOP84", cap: "11 · Scan the license plate — the pallet, not the pieces" } },
-    { t: 25.1, s: { focus: "a1Bin", a1Bin: "A-1-1", a1BinLabel: "A-1-1" } },
-    { t: 26.1, s: { focus: "a1Qty", a1Qty: "998", a1QtyLabel: "998", r1Received: "998", r1AllocLabel: "1 allocation", r1AllocColor: "#4088CF", r1AllocStyle: "normal" } },
-    { t: 27.3, s: { focus: "a1Lot", a1Lot: "123", a1Exp: "05/21/2026", cap: "12 · Lot and expiration captured at receipt" } },
-    { t: 29.0, s: { focus: "r2Add", ripple: true } },
-    { t: 29.5, s: { ripple: false, a2On: true, cap: "13 · Second line, its own license plate" } },
-    { t: 30.6, s: { focus: "a2Lp", a2Lp: "FRTPOP85" } },
-    { t: 31.6, s: { focus: "a2Bin", a2Bin: "A-1-1", a2BinLabel: "A-1-1" } },
-    { t: 32.5, s: { focus: "a2Qty", a2Qty: "500", a2QtyLabel: "500", r2Received: "500", r2AllocLabel: "1 allocation", r2AllocColor: "#4088CF", r2AllocStyle: "normal", cap: "13 · Partial receipt — 500 of 998 on this line" } },
-    { t: 33.4, s: { focus: "a2Lot", a2Lot: "123", a2Exp: "05/21/2026", submitBg: "#4088CF", submitColor: "#fff", submitBorder: "#4088CF" } },
-    { t: 34.8, s: { focus: null, curX: 878, curY: 778, ripple: true, ripX: 878, ripY: 778, cap: "14 · Submit for approval" } },
-    { t: 35.3, s: { ripple: false, statusLabel: "Submitted", statusBg: "#FDF3E3", statusColor: "#9A6B12", ap1Bg: "#4088CF", scrollTo: 0, rowStatus: "Submitted",
+    { t: 19.3, s: { curX: 1351, curY: 382, ripple: true, ripX: 1351, ripY: 382, cap: "07 · Open the receipt to start receiving" } },
+    { t: 19.8, s: { ripple: false, gridOn: false, editOn: true, footerOn: true, ap1Bg: "#B7C3CF", ap2Bg: "#B7C3CF" } },
+    { t: 22.1, s: { focus: "scan", cap: "08 · Product details sit on the same receipt — scroll down" } },
+    { t: 24.9, s: { scanBorder: "#4088CF", cap: "09 · Scan the item — expected quantities already known" } },
+    { t: 27.7, s: { focus: "r1Add", ripple: true, scanBorder: "#DDE4EC", cap: "10 · Receive to a bin" } },
+    { t: 28.2, s: { ripple: false, a1On: true } },
+    { t: 30.5, s: { focus: "a1Lp", a1Lp: "FRTPOP84", cap: "11 · Scan the license plate — the pallet, not the pieces" } },
+    { t: 31.7, s: { focus: "a1Bin", a1Bin: "A-1-1", a1BinLabel: "A-1-1" } },
+    { t: 32.7, s: { focus: "a1Qty", a1Qty: "998", a1QtyLabel: "998", r1Received: "998", r1AllocLabel: "1 allocation", r1AllocColor: "#4088CF", r1AllocStyle: "normal" } },
+    { t: 33.9, s: { focus: "a1Lot", a1Lot: "123", a1Exp: "06/30/2027", cap: "12 · Lot and expiration captured at receipt" } },
+    { t: 36.2, s: { focus: "r2Add", ripple: true } },
+    { t: 36.7, s: { ripple: false, a2On: true, cap: "13 · Second line, its own license plate" } },
+    { t: 37.8, s: { focus: "a2Lp", a2Lp: "FRTPOP85" } },
+    { t: 38.8, s: { focus: "a2Bin", a2Bin: "A-1-1", a2BinLabel: "A-1-1" } },
+    { t: 39.7, s: { focus: "a2Qty", a2Qty: "500", a2QtyLabel: "500", r2Received: "500", r2AllocLabel: "1 allocation", r2AllocColor: "#4088CF", r2AllocStyle: "normal", cap: "14 · Partial receipt — 500 of 998 on this line" } },
+    { t: 40.6, s: { focus: "a2Lot", a2Lot: "123", a2Exp: "06/30/2027", submitBg: "#4088CF", submitColor: "#fff", submitBorder: "#4088CF" } },
+    { t: 42.5, s: { focus: null, curX: 878, curY: 778, ripple: true, ripX: 878, ripY: 778, cap: "15 · Submit for approval" } },
+    { t: 43.0, s: { ripple: false, statusLabel: "Submitted", statusBg: "#FDF3E3", statusColor: "#9A6B12", ap1Bg: "#4088CF", scrollTo: 0, rowStatus: "Submitted",
       submitBg: "#fff", submitColor: "#9AA7B8", submitBorder: "#E3E7EC",
       toastOn: true, toastAccent: "#E38A00", toastTitle: "Sent to the receiving manager",
       toastBody: "The receipt is locked for approval. The manager gets the email and approves without opening the floor app." } },
-    { t: 37.4, s: { editOn: false, gridOn: true, footerOn: false, toastOn: false, curX: 700, curY: 500,
-      cap: "15 · Submitting returns to the receipts queue" } },
-    { t: 39.4, s: { toastOn: true, toastTop: "430px", toastAccent: "#3B9E4E", toastTitle: "Approved by the receiving manager",
-      toastBody: "Nothing hits inventory until someone with authority says so.", cap: "16 · Approved while the receipt sits in the queue" } },
-    { t: 41.0, s: { curX: 1351, curY: 382, ripple: true, ripX: 1351, ripY: 382, cap: "17 · Reopen the receipt to post it" } },
-    { t: 41.5, s: { ripple: false, gridOn: false, editOn: true, footerOn: true, toastOn: false,
+    { t: 45.3, s: { editOn: false, gridOn: true, footerOn: false, toastOn: false, curX: 700, curY: 500,
+      cap: "16 · Submitting returns to the receipts queue" } },
+    { t: 48.1, s: { toastOn: true, toastTop: "430px", toastAccent: "#3B9E4E", toastTitle: "Approved by the receiving manager",
+      toastBody: "Nothing hits inventory until someone with authority says so.", cap: "17 · Approved while the receipt sits in the queue" } },
+    { t: 50.9, s: { curX: 1351, curY: 382, cap: "18 · Reopen the receipt to post it" } },
+    { t: 53.2, s: { ripple: true, ripX: 1351, ripY: 382 } },
+    { t: 53.7, s: { ripple: false, gridOn: false, editOn: true, footerOn: true, toastOn: false,
       statusLabel: "Approved", statusBg: "#E7F4E4", statusColor: "#2E5E33", ap2Bg: "#3B9E4E", toastTop: "60px",
-      postBg: "#4088CF", postColor: "#fff", cap: "18 · Approved — POST is now available" } },
-    { t: 43.4, s: { curX: 772, curY: 778, ripple: true, ripX: 772, ripY: 778 } },
-    { t: 43.9, s: { ripple: false, statusLabel: "Posted", toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Posted to the ERP",
+      postBg: "#4088CF", postColor: "#fff", cap: "19 · Approved — POST is now available" } },
+    { t: 56.0, s: { curX: 772, curY: 778, ripple: true, ripX: 772, ripY: 778 } },
+    { t: 56.5, s: { ripple: false, statusLabel: "Posted", toastOn: true, toastAccent: "#3B9E4E", toastTitle: "Posted to the ERP",
       toastBody: "1,498 units land in bin A-1-1 under lot 123 — line 2 stays open for the balance. The receipt, the inventory and the ERP agree.",
-      cap: "19 · Posted — inventory and ERP in step" } },
-    { t: 47.5, s: {} }
+      cap: "20 · Posted — inventory and ERP in step" } },
+    { t: 60.1, s: {} }
   ];
   anim = { ...this.A0 };
   _renderedScroll = 0; _renderedCur = [0, 0];
@@ -399,6 +412,16 @@ class Component extends DCLogic {
   togglePlay = () => { this.anim.playing = !this.anim.playing; if (this.anim.playing) this._start(); this.forceUpdate(); this._settle(); };
   restart = (e) => { if (e) e.stopPropagation(); this.seek(0); this.anim.playing = true; this._start(); this.forceUpdate(); this._settle(); };
   _seekAbs(t) { const p = this.anim.playing; this.seek(Math.max(0, Math.min(this.DUR - 0.05, t))); this.anim.playing = p; if (p) this._start(); this.forceUpdate(); this._settle(); }
+  // Steps = every distinct caption in the timeline (A0.cap at t=0, then each keyframe that sets cap).
+  _chapters() {
+    if (this._chs) return this._chs;
+    const out = [{ t: 0, cap: this.A0.cap }];
+    for (const k of this.KF) if (k.s && k.s.cap && k.s.cap !== out[out.length - 1].cap) out.push({ t: k.t, cap: k.s.cap });
+    return (this._chs = out);
+  }
+  _chapterIdx() { const ch = this._chapters(); let i = 0; for (let j = 0; j < ch.length; j++) if (this.t + 0.05 >= ch[j].t) i = j; return i; }
+  prevStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); const back = this.t - ch[i].t > 1.5 ? i : Math.max(0, i - 1); this._seekAbs(ch[back].t); };
+  nextStep = (e) => { if (e) e.stopPropagation(); const ch = this._chapters(), i = this._chapterIdx(); if (i + 1 < ch.length) this._seekAbs(ch[i + 1].t); };
   back10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t - 10); };
   fwd10 = (e) => { if (e) e.stopPropagation(); this._seekAbs(this.t + 10); };
   tPlay = (e) => { if (e) e.stopPropagation(); this.togglePlay(); };
@@ -406,7 +429,7 @@ class Component extends DCLogic {
   _fmt(s) { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
   renderVals() {
     const a = this.anim;
-    const rows = a.extraRow ? this.BASE_ROWS.concat([{ id: "RCT00004201", po: "PO-45131", created: "06/09/2026 09:12", submitted: "—", vendorId: "19024690", vendor: "Avnet", by: "D. Henriquez", status: a.rowStatus, bg: "#F4F8FE" }]) : this.BASE_ROWS;
+    const rows = a.extraRow ? this.BASE_ROWS.concat([{ id: "RCT00004201", po: "PO-45131", created: "06/09/2026 09:12", submitted: a.rowStatus === "Open" ? "—" : "06/09/2026 09:41", vendorId: "19024690", vendor: "Avnet", by: "D. Henriquez", status: a.rowStatus, bg: "#F4F8FE" }]) : this.BASE_ROWS;
     const sc = this._scrollPx(); this._lastScroll = sc;
     const [cx, cy] = this._cursor(sc);
     this._renderedScroll = sc; this._renderedCur = [cx, cy];
@@ -417,6 +440,16 @@ class Component extends DCLogic {
       ripT: "translate(" + rx + "px, " + ry + "px)",
       progW: Math.min(100, (this.t / this.DUR) * 100).toFixed(2) + "%",
       timeLabel: this._fmt(this.t) + " / " + this._fmt(this.DUR),
+      ...(() => {
+        const ch = this._chapters(), i = this._chapterIdx();
+        const m = String(a.cap || "").match(/^\s*(\d+)\s*·\s*(.*)$/);
+        return {
+          prevStep: this.prevStep, nextStep: this.nextStep,
+          stepCount: "Step " + (i + 1) + " of " + ch.length,
+          capTitle: m ? m[2] : a.cap,
+          chapters: ch.map((c, k) => ({ label: c.cap, left: ((c.t / this.DUR) * 100).toFixed(2) + "%", tick: k <= i ? "#051729" : "rgba(255,255,255,.45)", go: (e) => { if (e) e.stopPropagation(); this._seekAbs(c.t); } })),
+        };
+      })(),
       tBtn: "display:flex;align-items:center;justify-content:center;width:24px;height:24px;cursor:pointer;",
       back10: this.back10, fwd10: this.fwd10, tPlay: this.tPlay, scrub: this.scrub,
       togglePlay: this.togglePlay, restart: this.restart, setWrap: this.setWrap, setCanvas: this.setCanvas, setCol: this.setCol
