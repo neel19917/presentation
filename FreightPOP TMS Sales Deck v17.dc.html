@@ -569,10 +569,22 @@
                   <div style="display:flex;align-items:flex-end;gap:4px;padding:6px 8px 0;background:#071E33;border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:5;flex:none;">
                     <sc-for list="{{ liveTabs }}" as="t" hint-placeholder-count="1"><div onclick="{{ t.onClick }}" style="{{ t.style }}" title="{{ t.label }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;">{{ t.label }}</span><sc-if value="{{ liveTabsMany }}" hint-placeholder-val="{{ false }}"><span onclick="{{ t.onClose }}" title="Close tab" style="margin-left:4px;opacity:.6;cursor:pointer;font-size:11px;">✕</span></sc-if></div></sc-for>
                     <sc-if value="{{ liveCanAdd }}" hint-placeholder-val="{{ true }}"><div onclick="{{ liveMenuToggle }}" title="Open another FreightPOP page in a new deck tab" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:2px;border-radius:8px;border:1px dashed rgba(61,214,181,.5);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap;">＋ New tab</div></sc-if>
-                    <sc-if value="{{ liveMenuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;left:8px;z-index:60;min-width:300px;max-height:380px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
-                      <div style="padding:6px 12px 8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;">Open in a new deck tab</div>
-                      <sc-for list="{{ livePages }}" as="p" hint-placeholder-count="8"><div onclick="{{ p.onClick }}" style="{{ p.style }}" style-hover="background:rgba(255,255,255,.08);">{{ p.label }}</div></sc-for>
-                      <div onclick="{{ liveTabPrompt }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#B5CDE0;cursor:pointer;">Paste a URL…</div>
+                    <div onclick="{{ livePresetsToggle }}" title="Saved sets of Live Site tabs — yours, synced to your Sales OS account" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:2px;margin-left:auto;border-radius:8px;border:1px solid rgba(255,255,255,.18);color:#B5CDE0;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap;">☰ Presets</div>
+                    <sc-if value="{{ liveMenuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;left:8px;z-index:60;width:340px;max-height:440px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
+                      <div style="padding:6px 12px 6px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;">Page library · open in a new deck tab</div>
+                      <input ref="{{ setLiveLibSearch }}" oninput="{{ liveLibSearch }}" onkeydown="{{ liveLibSearchKey }}" type="text" spellcheck="false" autocomplete="off" placeholder="Search pages…" style="margin:0 6px 6px;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#E6F0F7;font:13px 'DM Sans',sans-serif;outline:none;">
+                      <sc-for list="{{ livePages }}" as="p" hint-placeholder-count="8"><sc-if value="{{ p.isHead }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px 4px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#3DD6B5;">{{ p.label }}</div></sc-if><sc-if value="{{ p.isItem }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:6px;"><div onclick="{{ p.onClick }}" title="{{ p.url }}" style="{{ p.style }}flex:1;min-width:0;" style-hover="background:rgba(255,255,255,.08);">{{ p.label }}</div><sc-if value="{{ p.canDel }}" hint-placeholder-val="{{ false }}"><span onclick="{{ p.onDel }}" title="Remove from my library" style="padding:4px 8px;color:#7E97AC;cursor:pointer;font-size:12px;">✕</span></sc-if></div></sc-if></sc-for>
+                      <sc-if value="{{ livePagesNone }}" hint-placeholder-val="{{ false }}"><div style="padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#7E97AC;">No page matches — paste a URL below.</div></sc-if>
+                      <div onclick="{{ liveSavePage }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#3DD6B5;cursor:pointer;">★ Save this page to my library</div>
+                      <div onclick="{{ liveTabPrompt }}" style="padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#B5CDE0;cursor:pointer;">Paste a URL…</div>
+                      <div style="padding:2px 12px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#7E97AC;">{{ liveLibStatus }}</div>
+                    </div></sc-if>
+                    <sc-if value="{{ livePresetsOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;right:8px;z-index:60;width:320px;max-height:420px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
+                      <div style="padding:6px 12px 8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;">My presets · open a saved set of tabs</div>
+                      <sc-for list="{{ livePresets }}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:6px;"><div onclick="{{ r.onClick }}" title="{{ r.title }}" style="flex:1;min-width:0;padding:8px 12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:#E6F0F7;" style-hover="background:rgba(255,255,255,.08);">{{ r.label }} <span style="color:#7E97AC;font-size:12px;">· {{ r.count }}</span></div><span onclick="{{ r.onDel }}" title="Delete this preset" style="padding:4px 8px;color:#7E97AC;cursor:pointer;font-size:12px;">✕</span></div></sc-for>
+                      <sc-if value="{{ livePresetsNone }}" hint-placeholder-val="{{ true }}"><div style="padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#7E97AC;">No presets yet. Open the tabs you want, then save them here.</div></sc-if>
+                      <div onclick="{{ liveSavePreset }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#3DD6B5;cursor:pointer;">＋ Save current tabs as a preset…</div>
+                      <div style="padding:2px 12px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#7E97AC;">{{ liveLibStatus }}</div>
                     </div></sc-if>
                   </div>
                   <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:#0A2540;border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:4;flex:none;">
@@ -919,10 +931,22 @@
                   <div style="display:flex;align-items:flex-end;gap:4px;padding:6px 8px 0;background:#071E33;border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:5;flex:none;">
                     <sc-for list="{{ liveTabs }}" as="t" hint-placeholder-count="1"><div onclick="{{ t.onClick }}" style="{{ t.style }}" title="{{ t.label }}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;">{{ t.label }}</span><sc-if value="{{ liveTabsMany }}" hint-placeholder-val="{{ false }}"><span onclick="{{ t.onClose }}" title="Close tab" style="margin-left:4px;opacity:.6;cursor:pointer;font-size:11px;">✕</span></sc-if></div></sc-for>
                     <sc-if value="{{ liveCanAdd }}" hint-placeholder-val="{{ true }}"><div onclick="{{ liveMenuToggle }}" title="Open another FreightPOP page in a new deck tab" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:2px;border-radius:8px;border:1px dashed rgba(61,214,181,.5);color:#3DD6B5;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap;">＋ New tab</div></sc-if>
-                    <sc-if value="{{ liveMenuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;left:8px;z-index:60;min-width:300px;max-height:380px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
-                      <div style="padding:6px 12px 8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;">Open in a new deck tab</div>
-                      <sc-for list="{{ livePages }}" as="p" hint-placeholder-count="8"><div onclick="{{ p.onClick }}" style="{{ p.style }}" style-hover="background:rgba(255,255,255,.08);">{{ p.label }}</div></sc-for>
-                      <div onclick="{{ liveTabPrompt }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#B5CDE0;cursor:pointer;">Paste a URL…</div>
+                    <div onclick="{{ livePresetsToggle }}" title="Saved sets of Live Site tabs — yours, synced to your Sales OS account" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;margin-bottom:2px;margin-left:auto;border-radius:8px;border:1px solid rgba(255,255,255,.18);color:#B5CDE0;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap;">☰ Presets</div>
+                    <sc-if value="{{ liveMenuOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;left:8px;z-index:60;width:340px;max-height:440px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
+                      <div style="padding:6px 12px 6px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;">Page library · open in a new deck tab</div>
+                      <input ref="{{ setLiveLibSearch }}" oninput="{{ liveLibSearch }}" onkeydown="{{ liveLibSearchKey }}" type="text" spellcheck="false" autocomplete="off" placeholder="Search pages…" style="margin:0 6px 6px;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#E6F0F7;font:13px 'DM Sans',sans-serif;outline:none;">
+                      <sc-for list="{{ livePages }}" as="p" hint-placeholder-count="8"><sc-if value="{{ p.isHead }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px 4px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#3DD6B5;">{{ p.label }}</div></sc-if><sc-if value="{{ p.isItem }}" hint-placeholder-val="{{ true }}"><div style="display:flex;align-items:center;gap:6px;"><div onclick="{{ p.onClick }}" title="{{ p.url }}" style="{{ p.style }}flex:1;min-width:0;" style-hover="background:rgba(255,255,255,.08);">{{ p.label }}</div><sc-if value="{{ p.canDel }}" hint-placeholder-val="{{ false }}"><span onclick="{{ p.onDel }}" title="Remove from my library" style="padding:4px 8px;color:#7E97AC;cursor:pointer;font-size:12px;">✕</span></sc-if></div></sc-if></sc-for>
+                      <sc-if value="{{ livePagesNone }}" hint-placeholder-val="{{ false }}"><div style="padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#7E97AC;">No page matches — paste a URL below.</div></sc-if>
+                      <div onclick="{{ liveSavePage }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#3DD6B5;cursor:pointer;">★ Save this page to my library</div>
+                      <div onclick="{{ liveTabPrompt }}" style="padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#B5CDE0;cursor:pointer;">Paste a URL…</div>
+                      <div style="padding:2px 12px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#7E97AC;">{{ liveLibStatus }}</div>
+                    </div></sc-if>
+                    <sc-if value="{{ livePresetsOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:100%;right:8px;z-index:60;width:320px;max-height:420px;overflow:auto;background:#0A2540;border:1px solid rgba(255,255,255,.18);border-radius:12px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:8px;display:flex;flex-direction:column;gap:2px;">
+                      <div style="padding:6px 12px 8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7E97AC;">My presets · open a saved set of tabs</div>
+                      <sc-for list="{{ livePresets }}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:6px;"><div onclick="{{ r.onClick }}" title="{{ r.title }}" style="flex:1;min-width:0;padding:8px 12px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:#E6F0F7;" style-hover="background:rgba(255,255,255,.08);">{{ r.label }} <span style="color:#7E97AC;font-size:12px;">· {{ r.count }}</span></div><span onclick="{{ r.onDel }}" title="Delete this preset" style="padding:4px 8px;color:#7E97AC;cursor:pointer;font-size:12px;">✕</span></div></sc-for>
+                      <sc-if value="{{ livePresetsNone }}" hint-placeholder-val="{{ true }}"><div style="padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#7E97AC;">No presets yet. Open the tabs you want, then save them here.</div></sc-if>
+                      <div onclick="{{ liveSavePreset }}" style="margin-top:4px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.12);font-family:'DM Sans',sans-serif;font-size:13px;color:#3DD6B5;cursor:pointer;">＋ Save current tabs as a preset…</div>
+                      <div style="padding:2px 12px 6px;font-family:'DM Sans',sans-serif;font-size:11px;color:#7E97AC;">{{ liveLibStatus }}</div>
                     </div></sc-if>
                   </div>
                   <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:#0A2540;border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:4;flex:none;">
@@ -2876,7 +2900,92 @@ class Component extends DCLogic {
   });
   liveTabSelect = (i) => this.setState({ liveTab: i, liveMenu: false });
   liveTabClose = (i) => this.setState((s) => { const all = this._liveTabs(); const tabs = all.filter((_, j) => j !== i); const cur = s.liveTab || 0; return { liveTabs: tabs, liveTab: Math.max(0, Math.min(cur > i ? cur - 1 : cur, tabs.length - 1)), liveMenu: false }; });
-  liveMenuToggle = () => this.setState((s) => ({ liveMenu: !s.liveMenu }));
+  liveMenuToggle = () => { this._liveLibLoad(); this.setState((s) => ({ liveMenu: !s.liveMenu, livePresets: false, liveLibQ: "" }), () => { const el = this._libSearchEl; if (el && el.isConnected && this.state.liveMenu) { el.value = ""; try { el.focus(); } catch (e) {} } }); };
+  // ── Live Site library: per-rep presets (saved sets of tabs) + saved pages (docs/deck-live-site-presets.md in SalesOS) ──
+  // Synced to the rep's Sales OS account (/api/deck-live via the ec2-proxy, authenticated by the fp_deck_rep cookie = the
+  // rep's Supabase token). A browser copy (localStorage) makes the library instant and keeps it working offline, in the
+  // offline kit, or when the rep is not signed in — then items stay in this browser and the menus say so.
+  LIVE_LIB_API = "/.netlify/functions/ec2-proxy?p=";
+  _liveRepToken = () => { try { const m = document.cookie.match(/(?:^|;\s*)fp_deck_rep=([^;]+)/); return m ? decodeURIComponent(m[1]) : null; } catch (e) { return null; } };
+  _liveRepEmail = () => { const t = this._liveRepToken(); if (!t) return null; try { const p = JSON.parse(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))); return p && p.email ? String(p.email).toLowerCase() : null; } catch (e) { return null; } };
+  _liveLibKey = () => "fp_live_lib:" + (this._liveRepEmail() || "browser");
+  _liveLibRead = () => { try { const v = JSON.parse(localStorage.getItem(this._liveLibKey()) || "null"); if (v && Array.isArray(v.presets) && Array.isArray(v.pages)) return v; } catch (e) {} return { presets: [], pages: [] }; };
+  _liveLibWrite = (lib) => { try { localStorage.setItem(this._liveLibKey(), JSON.stringify({ presets: lib.presets, pages: lib.pages })); } catch (e) {} };
+  _liveApi = async (method, path, body) => {
+    const tok = this._liveRepToken(); if (!tok) throw new Error("not signed in");
+    const r = await fetch(this.LIVE_LIB_API + encodeURIComponent("/api/deck-live" + (path || "")), { method, headers: { authorization: "Bearer " + tok, "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+    const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || ("HTTP " + r.status)); return j;
+  };
+  _liveLibLoad = (force) => {
+    if (this._libLoading || (this._libLoaded && !force)) return;
+    const local = this._liveLibRead(); this.setState({ liveLib: local, liveLibSync: this._liveRepToken() ? "loading" : "browser" });
+    if (!this._liveRepToken()) { this._libLoaded = true; return; }
+    this._libLoading = true;
+    this._liveApi("GET").then((j) => {
+      const lib = { presets: (j.presets || []).map((r) => ({ id: r.id, name: r.name, tabs: (r.payload && r.payload.tabs) || [] })), pages: (j.pages || []).map((r) => ({ id: r.id, name: r.name, url: r.payload && r.payload.url, label: (r.payload && r.payload.label) || r.name, group: (r.payload && r.payload.group) || "My pages" })) };
+      // items saved while offline / signed out (no id) are pushed up once
+      const pend = local.presets.filter((p) => !p.id && !lib.presets.some((x) => x.name === p.name)).map((p) => ({ kind: "preset", name: p.name, payload: { tabs: p.tabs } }))
+        .concat(local.pages.filter((p) => !p.id && !lib.pages.some((x) => x.name === p.name)).map((p) => ({ kind: "page", name: p.name, payload: { url: p.url, label: p.label, group: p.group } })));
+      this._liveLibWrite(lib); this.setState({ liveLib: lib, liveLibSync: "account" }); this._libLoaded = true;
+      if (pend.length) Promise.all(pend.map((b) => this._liveApi("POST", "", b).catch(() => null))).then(() => { this._libLoaded = false; this._libLoading = false; this._liveLibLoad(); });
+    }).catch(() => { this.setState({ liveLibSync: "browser" }); this._libLoaded = true; }).finally(() => { this._libLoading = false; });
+  };
+  _liveLibSave = (kind, name, payload) => {
+    const lib = this.state.liveLib || this._liveLibRead();
+    const list = kind === "preset" ? lib.presets : lib.pages;
+    const old = list.find((x) => x.name === name);
+    const item = kind === "preset" ? { id: old && old.id, name, tabs: payload.tabs } : { id: old && old.id, name, url: payload.url, label: payload.label, group: payload.group || "My pages" };
+    const next = kind === "preset" ? { presets: [item].concat(lib.presets.filter((x) => x.name !== name)), pages: lib.pages } : { presets: lib.presets, pages: lib.pages.filter((x) => x.name !== name).concat([item]) };
+    this._liveLibWrite(next); this.setState({ liveLib: next });
+    if (!this._liveRepToken()) { this.setState({ liveLibSync: "browser" }); return; }
+    this._liveApi("POST", "", { kind, name, payload }).then((j) => {
+      const id = j.item && j.item.id; const cur = this.state.liveLib || next;
+      const upd = kind === "preset" ? { presets: cur.presets.map((x) => (x.name === name ? Object.assign({}, x, { id }) : x)), pages: cur.pages } : { presets: cur.presets, pages: cur.pages.map((x) => (x.name === name ? Object.assign({}, x, { id }) : x)) };
+      this._liveLibWrite(upd); this.setState({ liveLib: upd, liveLibSync: "account" });
+    }).catch((e) => this.setState({ liveLibSync: "error:" + (e && e.message ? e.message : "save failed") }));
+  };
+  _liveLibDelete = (kind, item) => {
+    const lib = this.state.liveLib || this._liveLibRead();
+    const next = kind === "preset" ? { presets: lib.presets.filter((x) => x.name !== item.name), pages: lib.pages } : { presets: lib.presets, pages: lib.pages.filter((x) => x.name !== item.name) };
+    this._liveLibWrite(next); this.setState({ liveLib: next });
+    if (item.id && this._liveRepToken()) this._liveApi("DELETE", "/" + item.id).catch((e) => this.setState({ liveLibSync: "error:" + (e && e.message ? e.message : "delete failed") }));
+  };
+  livePresetsToggle = () => { this._liveLibLoad(); this.setState((s) => ({ livePresets: !s.livePresets, liveMenu: false })); };
+  liveSavePreset = () => {
+    const tabs = this._liveTabs().map((t) => ({ url: t.url, label: t.label })); if (!tabs.length) return;
+    const n = ((this.state.liveLib || {}).presets || []).length + 1;
+    let name = ""; try { name = window.prompt("Save these " + tabs.length + " tab" + (tabs.length === 1 ? "" : "s") + " as a preset — name it (saving under an existing name replaces it)", tabs.map((t) => t.label).slice(0, 2).join(" + ") || ("Preset " + n)) || ""; } catch (e) {}
+    name = name.trim().replace(/\s+/g, " ").slice(0, 80); if (!name) return;
+    this._liveLibSave("preset", name, { tabs });
+  };
+  liveApplyPreset = (p) => {
+    const tabs = (p.tabs || []).slice(0, this.LIVE_SLOTS).map((t) => ({ url: t.url, label: t.label || this._liveLabel(t.url), hist: [t.url], hi: 0 }));
+    if (!tabs.length) return; this.setState({ liveTabs: tabs, liveTab: 0, livePresets: false, liveMenu: false }, () => this._liveBounce(0));
+  };
+  liveSavePage = () => {
+    const { t } = this._liveCur(); if (!t) return;
+    let name = ""; try { name = window.prompt("Save this page to your library — name it", t.label || this._liveLabel(t.url)) || ""; } catch (e) {}
+    name = name.trim().replace(/\s+/g, " ").slice(0, 80); if (!name) return;
+    this._liveLibSave("page", name, { url: t.url, label: name, group: "My pages" });
+  };
+  setLiveLibSearch = (el) => { this._libSearchEl = el; };
+  liveLibSearch = (e) => { const v = (e && e.target && e.target.value) || ""; if (v !== this.state.liveLibQ) this.setState({ liveLibQ: v }); };
+  liveLibSearchKey = (e) => { if (!e) return; if (e.key === "Escape") { e.preventDefault(); this.setState({ liveMenu: false }); return; } if (e.key === "Enter") { const first = this._livePageRows().find((r) => r.isItem); if (first) { e.preventDefault(); this._liveOpen(first.url); } } };
+  _livePageGroup = (url) => { const k = this._liveKey(url); if (/^wms/.test(k)) return "WMS"; if (/^(order-management|product-and-packaging)/.test(k)) return "OMS"; if (/^company/.test(k)) return "Settings"; return "TMS"; };
+  // Library rows: built-in pages grouped TMS / OMS / WMS / Settings, then the rep's own pages; filtered by the search box.
+  _livePageRows = () => {
+    const q = String(this.state.liveLibQ || "").trim().toLowerCase();
+    const hit = (label, url) => !q || String(label).toLowerCase().includes(q) || String(url).toLowerCase().includes(q);
+    const groups = { TMS: [], OMS: [], WMS: [], Settings: [] };
+    const known = new Set(this._livePages().map((p) => p.url));
+    for (const url of Object.keys(this.LIVE_PAGE_NAMES).map((k) => "https://app.freightpop.com/app/#/" + k)) known.add(url);
+    for (const url of known) { const label = this._liveLabel(url); if (hit(label, url)) (groups[this._livePageGroup(url)] || groups.TMS).push({ url, label, own: null }); }
+    const mine = ((this.state.liveLib || {}).pages || []).filter((p) => p.url && hit(p.label || p.name, p.url));
+    const rows = [];
+    for (const g of ["TMS", "OMS", "WMS", "Settings"]) if (groups[g].length) { rows.push({ isHead: true, label: g }); for (const it of groups[g].sort((a, b) => a.label.localeCompare(b.label))) rows.push(Object.assign({ isItem: true }, it)); }
+    if (mine.length) { rows.push({ isHead: true, label: "My pages" }); for (const p of mine) rows.push({ isItem: true, url: p.url, label: p.label || p.name, own: p }); }
+    return rows;
+  };
   liveTabPrompt = () => { let u = ""; try { u = window.prompt("Open in a new deck tab — paste a FreightPOP page URL", "https://app.freightpop.com/app/#/") || ""; } catch (e) {} u = u.trim(); if (/^https?:\/\//i.test(u)) this._liveOpen(u); else this.setState({ liveMenu: false }); };
   liveOpenInBrowser = () => { try { const tabs = this._liveTabs(); const cur = tabs[Math.min(this.state.liveTab || 0, tabs.length - 1)]; if (cur) window.open(cur.url, "_blank", "noopener"); } catch (e) {} };
   // ── Live Site browser chrome: address bar + back / forward / reload ──────────────────────────────────────────
@@ -3350,7 +3459,13 @@ class Component extends DCLogic {
           liveTabs: tabs.map((x, i) => ({ label: x.label, style: TAB + (i === cur ? "background:#fff;color:#0A2540;" : "background:rgba(255,255,255,.06);color:#B5CDE0;"), onClick: () => this.liveTabSelect(i), onClose: (e) => { try { e.stopPropagation(); } catch (err) {} this.liveTabClose(i); } })),
           liveTabsMany: tabs.length > 1, liveCanAdd: tabs.length < this.LIVE_SLOTS, liveActiveLabel: (tabs[cur] || {}).label || "", liveActiveUrl: (tabs[cur] || {}).url || "", liveActiveBadge: (() => { const x = tabs[cur] || {}; let h = ""; try { h = new URL(x.url).host; } catch (e) {} return h && x.label && x.label !== h ? h + " · " + x.label : (h || x.label || ""); })(),
           liveMenuOpen: !!this.state.liveMenu, liveMenuToggle: this.liveMenuToggle, liveTabPrompt: this.liveTabPrompt, liveOpenInBrowser: this.liveOpenInBrowser,
-          livePages: this._livePages().map(p => ({ label: p.label, onClick: () => this._liveOpen(p.url), style: PAGE + (tabs.some(x => x.url === p.url) ? "color:#3DD6B5;background:rgba(61,214,181,.08);" : "color:#E6F0F7;") })),
+          livePages: this._livePageRows().map((r) => r.isHead ? { isHead: true, isItem: false, label: r.label } : { isHead: false, isItem: true, label: r.label, url: r.url, canDel: !!r.own, onDel: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this._liveLibDelete("page", r.own); }, onClick: () => this._liveOpen(r.url), style: PAGE + (tabs.some(x => x.url === r.url) ? "color:#3DD6B5;background:rgba(61,214,181,.08);" : "color:#E6F0F7;") }),
+          livePagesNone: !this._livePageRows().some((r) => r.isItem),
+          livePresetsOpen: !!this.state.livePresets, livePresetsToggle: this.livePresetsToggle, liveSavePreset: this.liveSavePreset, liveSavePage: this.liveSavePage,
+          setLiveLibSearch: this.setLiveLibSearch, liveLibSearch: this.liveLibSearch, liveLibSearchKey: this.liveLibSearchKey,
+          livePresets: (((this.state.liveLib || {}).presets) || []).map((p) => ({ label: p.name, count: (p.tabs || []).length + " tab" + ((p.tabs || []).length === 1 ? "" : "s"), title: (p.tabs || []).map((t) => t.label || t.url).join(" · "), onClick: () => this.liveApplyPreset(p), onDel: (e) => { if (e && e.stopPropagation) e.stopPropagation(); let ok = true; try { ok = window.confirm("Delete the preset \u201c" + p.name + "\u201d?"); } catch (err) {} if (ok) this._liveLibDelete("preset", p); } })),
+          livePresetsNone: !(((this.state.liveLib || {}).presets) || []).length,
+          liveLibStatus: (() => { const s = this.state.liveLibSync || ""; if (s === "account") return "Synced to " + (this._liveRepEmail() || "your Sales OS account"); if (s === "loading") return "Loading your library…"; if (s.indexOf("error:") === 0) return "Saved in this browser — couldn't sync (" + s.slice(6) + ")"; return "Saved in this browser only — open the deck from Sales OS while signed in to sync it to your account"; })(),
           liveBack: this.liveBack, liveFwd: this.liveFwd, liveReload: this.liveReload, liveReset: this.liveReset, liveResetStyle: "display:flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:#B5CDE0;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex:none;", liveAddrGo: this.liveAddrGo, liveAddrKeep: this.liveAddrKeep, liveAddrKey: this.liveAddrKey, liveAddrFocus: this.liveAddrFocus, liveAddrBlur: this.liveAddrBlur, setLiveAddrEl: this.setLiveAddrEl,
           liveNavBtn: NAVB + "color:#B5CDE0;", liveBackStyle: NAVB + (canBack ? "color:#E6F0F7;" : "color:rgba(181,205,224,.3);cursor:default;"), liveFwdStyle: NAVB + (canFwd ? "color:#E6F0F7;" : "color:rgba(181,205,224,.3);cursor:default;"),
         };
