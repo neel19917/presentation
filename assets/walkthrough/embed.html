@@ -98,6 +98,9 @@
   function applyViewModelDefaults() {
     var vmi = r && r.viewModelInstance;
     if (!vmi) return;
+    // deck bridge: inside the deck the deck draws the player (below this frame); the tour's own controls sat under the
+    // deck's Fullscreen pill and the Online badge. ?controls=1 keeps them.
+    if (window.parent !== window && q.get("controls") !== "1") { try { vmi.boolean("hideControls").value = true; } catch (e) {} }
     ON.forEach(function (name) {
       try { vmi.boolean(name).value = true; } catch (e) {}
     });
@@ -144,8 +147,16 @@
   function setAuto(on) { try { vmi().boolean("autoplay").value = on; } catch (e) {} }
   function getAuto() { try { return vmi().boolean("autoplay").value; } catch (e) { return true; } }
   function toParent(msg) { try { if (window.parent !== window) window.parent.postMessage(Object.assign({ type: "freightpop:walkthrough" }, msg), "*"); } catch (e) {} }
+  var lastSent = "";
+  function report() {
+    var st = -2; try { st = vmi().number("currentStep").value; } catch (e) {}
+    var msg = { event: "state", step: st, first: -2, last: 24, playing: getAuto() };
+    var key = JSON.stringify(msg); if (key !== lastSent) { lastSent = key; toParent(msg); }
+  }
+  setInterval(report, 400);
   function command(cmd) {
     if (!r) return;
+    setTimeout(report, 60);
     if (cmd === "toggle") setAuto(!getAuto());
     else if (cmd === "pause") setAuto(false);
     else if (cmd === "play") { setAuto(true); try { r.play(); } catch (e) {} }

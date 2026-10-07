@@ -372,19 +372,34 @@
   <!-- ═══════════ INTERACTIVE WALKTHROUGH (embedded netlify) ═══════════ -->
   <sc-if value="{{ isExplore }}" hint-placeholder-val="{{ false }}">
     <section data-screen-label="Interactive Walkthrough" ref="{{ setSectionFs }}" style="position:absolute;inset:0;z-index:20;background:#051729;padding-top:53px;">
-      <iframe src="{{ startUrl }}" title="FreightPOP Interactive" allow="fullscreen" style="width:100%;height:100%;border:0;display:block;background:#051729;"></iframe>
+      <iframe src="{{ startUrl }}" title="FreightPOP Interactive" allow="fullscreen" style="width:100%;height:calc(100% - 56px);border:0;display:block;background:#051729;"></iframe>
       <div ref="{{ setHotWrap }}" style="{{ hotWrapStyle }}">
         <sc-for list="{{ hotspots }}" as="h" hint-placeholder-count="4">
           <div onclick="{{ h.onClick }}" title="{{ h.label }}" style="{{ h.boxStyle }}"></div>
         </sc-for>
       </div>
-      <sc-if value="{{ showMainMenuCta }}" hint-placeholder-val="{{ true }}">
-      <div onclick="{{ goMainMenu }}" style="position:absolute;bottom:26px;right:26px;z-index:150;display:inline-flex;align-items:center;gap:12px;padding:15px 26px;background:#3DD6B5;border-radius:999px;color:#051729;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 10px 30px rgba(61,214,181,.35);">
-        <span style="display:flex;flex-direction:column;line-height:1.1;"><span style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;">Next section</span>Main Menu</span>
-        <svg width="22" height="13" viewBox="0 0 26 14" fill="none"><path d="M1 7h22M18 1l6 6-6 6" stroke="#051729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+
+      <!-- Walkthrough player: below the tour, never over it (the tour's own controls are hidden inside the deck) -->
+      <div style="position:absolute;left:0;right:0;bottom:0;height:56px;z-index:150;background:#051729;border-top:1px solid rgba(255,255,255,.10);font-family:'DM Sans',sans-serif;white-space:nowrap;">
+        <div style="position:absolute;left:0;right:0;top:0;height:4px;background:rgba(255,255,255,.08);"><div style="height:4px;width:{{ wtProgW }};background:#3DD6B5;transition:width .3s;"></div></div>
+        <div style="position:absolute;left:190px;right:20px;top:4px;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px;"><!-- left 190px: the offline badge ("Online · saved · N to sync") sits at the bottom-left of the page -->
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <span style="color:#7A96B0;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;">{{ wtStepLabel }}</span>
+            <span style="color:#FFFFFF;font-weight:500;font-size:15px;">Interactive walkthrough</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <div onclick="{{ wtRestart }}" title="Back to start (Home)" style="{{ wtBtn }}"><svg width="15" height="15" viewBox="0 0 24 24"><rect x="4" y="4" width="2.6" height="16" fill="#3DD6B5"></rect><path d="M20 4 L20 20 L8.5 12 Z" fill="#3DD6B5"></path></svg></div>
+            <div onclick="{{ wtPrev }}" title="Previous step (←)" style="{{ wtBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M11.5 5 L11.5 19 L2 12 Z" fill="#3DD6B5"></path><path d="M22 5 L22 19 L12.5 12 Z" fill="#3DD6B5"></path></svg></div>
+            <div onclick="{{ wtToggle }}" title="Play / Pause (Space)" style="{{ wtBtn }}">
+              <sc-if value="{{ wtPaused }}" hint-placeholder-val="{{ false }}"><span style="width:0;height:0;border-left:12px solid #3DD6B5;border-top:8px solid transparent;border-bottom:8px solid transparent;display:block;margin-left:3px;"></span></sc-if>
+              <sc-if value="{{ wtPlaying }}" hint-placeholder-val="{{ true }}"><span style="display:flex;gap:3px;"><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span><span style="width:4px;height:15px;background:#3DD6B5;display:block;"></span></span></sc-if>
+            </div>
+            <div onclick="{{ wtNext }}" title="Next step (→)" style="{{ wtBtn }}"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M2 5 L2 19 L11.5 12 Z" fill="#3DD6B5"></path><path d="M12.5 5 L12.5 19 L22 12 Z" fill="#3DD6B5"></path></svg></div>
+            <sc-if value="{{ showFsPills }}" hint-placeholder-val="{{ true }}"><div onclick="{{ sectionFs }}" title="Fullscreen (F)" style="margin-left:10px;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);color:#fff;font-size:13px;font-weight:500;cursor:pointer;">⛶ Fullscreen</div></sc-if>
+            <sc-if value="{{ showMainMenuCta }}" hint-placeholder-val="{{ true }}"><div onclick="{{ goMainMenu }}" title="Main Menu (PgDn)" style="margin-left:6px;display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:#3DD6B5;color:#051729;font-size:13px;font-weight:500;cursor:pointer;">Main Menu <svg width="16" height="10" viewBox="0 0 26 14" fill="none"><path d="M1 7h22M18 1l6 6-6 6" stroke="#051729" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></sc-if>
+          </div>
+        </div>
       </div>
-      </sc-if>
-          <sc-if value="{{ showFsPills }}" hint-placeholder-val="{{ true }}"><div onclick="{{ sectionFs }}" style="position:absolute;bottom:26px;left:26px;z-index:150;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(5,23,41,.82);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;">⛶ Fullscreen</div></sc-if>
     </section>
   </sc-if>
 
@@ -953,7 +968,7 @@
 
   <!-- ═══════════ LIVE SITE HELPER NOTICE (until the extension announces itself or the rep dismisses it) ═══════════ -->
   <sc-if value="{{ showHelperNotice }}" hint-placeholder-val="{{ false }}">
-    <div style="position:fixed;right:26px;bottom:26px;z-index:600;width:340px;background:#0A2540;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:18px 20px;box-shadow:0 18px 48px rgba(0,0,0,.45);font-family:'DM Sans',sans-serif;color:#E6F0F7;animation:fpFadeIn .3s ease both;">
+    <div style="position:fixed;right:26px;bottom:{{ helperBottom }};z-index:600;width:340px;background:#0A2540;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:18px 20px;box-shadow:0 18px 48px rgba(0,0,0,.45);font-family:'DM Sans',sans-serif;color:#E6F0F7;animation:fpFadeIn .3s ease both;">
       <div style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#3DD6B5;margin-bottom:6px;">Live Site helper</div>
       <div style="font-family:'Manrope',sans-serif;font-weight:500;font-size:18px;line-height:1.2;color:#fff;margin-bottom:8px;">Keep FreightPOP inside the deck.</div>
       <div style="font-size:13px;line-height:1.5;color:#B5CDE0;margin-bottom:14px;">Install the browser extension once and in-app links — History’s truck icon, exports — open as deck tabs instead of leaving the presentation.</div>
@@ -2751,6 +2766,7 @@ class Component extends DCLogic {
     this._wtMsg = (e) => {
       const d = e && e.data; if (!d || d.type !== "freightpop:walkthrough" || !this._wtFrame() || e.source !== this._wtFrame().contentWindow) return;
       if (d.event === "ended" && this.state.view === "explore") this.goMainMenu();
+      else if (d.event === "state") { const wt = { step: Number(d.step), first: Number(d.first), last: Number(d.last), playing: !!d.playing }; const o = this.state.wt || {}; if (o.step !== wt.step || o.playing !== wt.playing) this.setState({ wt }); }
       else if (d.event === "key" && d.key) { try { this._onKey({ key: d.key, shiftKey: !!d.shift, target: document.body, preventDefault() {}, stopPropagation() {} }); } catch (err) {} }
     };
     window.addEventListener("message", this._wtMsg);
@@ -3376,7 +3392,16 @@ class Component extends DCLogic {
       slidePrev: this.slidePrev, slideNext: this.slideNext, slPrevStyle: sp > 0 ? "opacity:1;cursor:pointer;" : "opacity:.3;cursor:default;", slNextStyle: sp < sPages.length - 1 ? "opacity:1;cursor:pointer;" : "opacity:.3;cursor:default;",
       setRoot: this.setRoot, setHeroWrap: this.setHeroWrap, setHeroFrame: this.setHeroFrame, setHotWrap: this.setHotWrap,
       introStyle, startUrl, showMarquee, mainMenuUrl: CS.mainMenuUrl || "https://idyllic-elf-b22a7e.netlify.app/",
-      hotWrapStyle: "position:absolute;left:0;right:0;top:53px;bottom:0;z-index:120;pointer-events:none;",
+      ...(() => {
+        const wt = this.state.wt || { step: -2, first: -2, last: 24, playing: true };
+        const n = wt.last - wt.first + 1, k = Math.min(n, Math.max(1, wt.step - wt.first + 1));
+        const cmd = (c) => (e) => { if (e && e.stopPropagation) e.stopPropagation(); this._wtSend(c); };
+        return { wtStepLabel: "Step " + k + " of " + n, wtProgW: ((k / n) * 100).toFixed(1) + "%", wtPlaying: wt.playing, wtPaused: !wt.playing,
+          wtToggle: cmd("toggle"), wtPrev: cmd("prev"), wtNext: cmd("next"), wtRestart: cmd("restart"),
+          wtBtn: "display:flex;align-items:center;justify-content:center;width:28px;height:28px;cursor:pointer;" };
+      })(),
+      helperBottom: this.state.view === "explore" ? "82px" : "26px", // clear the Walkthrough player strip
+      hotWrapStyle: "position:absolute;left:0;right:0;top:53px;bottom:56px;z-index:120;pointer-events:none;", // over the tour frame only (the player strip takes the bottom 56px)
       hotspots: hsList.map((h, i) => ({ key: h.key,
         label: h.label,
         onClick: (h.key === "tms" ? this.goTms : h.key === "wms" ? this.goWms : h.key === "oms" ? this.goOms : this.goErp),
