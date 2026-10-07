@@ -920,12 +920,14 @@ const DATA = [
     tags: ["Company"] },
 
   { cat: "recognition", stars: 0, label: "Best in support — G2 and Capterra",
+    cover: { v: "Best support", k: "G2 and Capterra badges, earned on verified reviews" },
     title: "Recognized for support, not just software",
     body: "Badged for support quality on both G2 and Capterra, earned from verified customer reviews rather than analyst opinion.",
     who: "G2 · Capterra", meta: "Awarded on customer reviews",
     tags: ["Company", "Support", "Onboarding"] },
 
   { cat: "recognition", stars: 0, label: "EY Entrepreneur Of The Year",
+    cover: { v: "Winner", k: "EY Entrepreneur Of The Year · 2026 finalist" },
     title: "EY Entrepreneur Of The Year — winner, and a 2026 finalist",
     body: "Founder and CEO Kurt Johnson has won EY Entrepreneur Of The Year, and is a finalist again for the 2026 Pacific Southwest award.",
     who: "Ernst & Young US", meta: "Finalist, 2026",
@@ -933,48 +935,56 @@ const DATA = [
 
   // ——— Platform facts ———
   { cat: "facts", badge: "Platform", stars: 0, label: "Uptime monitored against a published target",
+    cover: { v: "Uptime", k: "monitored against a published availability target" },
     title: "Uptime monitored against a published target",
     body: "The platform your shipping runs on stays up. Every integration is monitored, and outages are measured against the published availability target.",
     who: "FreightPOP", meta: "Confirm whether 99.99% is a contractual SLA or an internal measurement",
     tags: ["Company"] },
 
   { cat: "facts", badge: "Platform", stars: 0, label: "SOC 2 compliant",
+    cover: { v: "SOC 2", k: "independently audited controls" },
     title: "SOC 2 compliant",
     body: "Independently audited controls covering security, availability and confidentiality — the answer to the security review your IT team will run before signing.",
     who: "Third-party audit", meta: "Confirm type and current period before sharing externally",
     tags: ["Company"] },
 
   { cat: "facts", badge: "Case study", stars: 0, label: "One platform for air, ocean, LTL and parcel",
+    cover: { v: "4 modes", k: "air, ocean, LTL and parcel on one platform" },
     title: "A single-mode TMS could not see the whole chain",
     body: "A leading US plastics distributor serving airline and aerospace ran a TMS that only supported outbound LTL, with no way to compare parcel and LTL rates together. FreightPOP replaced it across every US location with air, ocean, LTL, parcel, inbound and outbound on one platform, and PO-linked pre-alerts keeping sales and purchasing in sync. Reported result: immediate cost savings and optimized inbound and outbound shipping through the COVID-19 demand spike.",
     who: "US plastics distributor case study", meta: "Customer-reported, no published figure",
     tags: ["Rate Shopping", "Parcel Shipping", "Inbound Order Management", "Tracking & Notifications", "Multi-Leg Shipments"] },
 
   { cat: "facts", badge: "Platform", stars: 0, label: "Integrations built and maintained in-house",
+    cover: { v: "In-house", k: "every integration built and maintained by FreightPOP" },
     title: "No middleware between you and your ERP",
     body: "Every connection is built and maintained by FreightPOP engineers. There is no third-party integration layer to license, no second vendor to call when something breaks, and no waiting on someone else's roadmap.",
     who: "FreightPOP", meta: "Platform architecture",
     tags: ["ERP Integration", "Carrier Management", "Onboarding", "Support"] },
 
   { cat: "facts", badge: "Platform", stars: 0, label: "Engineers who came from freight",
+    cover: { v: "From freight", k: "a product team that has run freight, not just software" },
     title: "Built by people who have run freight",
     body: "The team building the product came out of logistics, not just software. It shows up in the details — the edge cases that only matter if you have actually had to tender a load or fight a chargeback.",
     who: "FreightPOP", meta: "Team background",
     tags: ["Company", "Support"] },
 
   { cat: "facts", badge: "Platform", stars: 0, label: "AI built in, not bolted on",
+    cover: { v: "AI inside", k: "rate shopping, dispatch, tracking and freight audit" },
     title: "AI in the workflow, not beside it",
     body: "Copilot assistance and background agents work inside rate shopping, dispatch, tracking and freight audit — the same screens your team already uses, rather than a separate AI product to adopt.",
     who: "FreightPOP", meta: "Product architecture",
     tags: ["Company", "Rate Shopping", "Freight Invoice Audit", "Tracking & Notifications"] },
 
   { cat: "facts", badge: "Platform", stars: 0, label: "Dedicated implementation manager",
+    cover: { v: "1 owner", k: "a dedicated implementation manager for your go-live" },
     title: "One named person owns your go-live",
     body: "Every account gets a dedicated implementation manager through onboarding — a single point of contact who knows your integration, not a ticket queue.",
     who: "FreightPOP", meta: "Standard onboarding",
     tags: ["Onboarding", "Support", "ERP Integration"] },
 
   { cat: "facts", badge: "Platform", stars: 0, label: "1,500+ connections, built in-house",
+    cover: { v: "1,500+", k: "carriers, ERPs and systems" },
     title: "1,500+ carrier and system connections",
     figures: [{ v: "1,500+", k: "carriers, ERPs and systems" }],
     body: "Built with our own API technology rather than resold through an aggregator. Verifiable in the integrations catalog during the demo.",
@@ -1396,7 +1406,7 @@ class Component extends DCLogic {
       tagRowH: "22px",
       wonCards: !isGrid ? [] : shown.map((x, n) => {
         const art = x.thumb || x.logo || "";
-        const fig = !art && x.figures && x.figures[0];
+        const fig = !art && (x.cover || (x.figures && x.figures[0])); // cover: preview-only headline for items with no page, logo or stat
         return {
         company: x.company || x.title || x.label,
         erp: x.erp || "",
@@ -1413,7 +1423,7 @@ class Component extends DCLogic {
         wellH: fit.wellH + "px",
         figSize: Math.max(20, Math.min(46, Math.round(Math.min(fit.wellH * 0.42, (fit.cardW - 36) / Math.max(3, String((fig && fig.v) || "").length) * 1.7)))) + "px",
         figKSize: (fit.wellH < 110 ? 9 : 10) + "px",
-        showTitle: !fig,
+        showTitle: !fig || !!x.cover,
         sub: (fit.showSub ? (fig ? (x.who || "") : (x.industry || x.who || "")) : "") || "",
         industry: x.industry || x.who || "",
         sheetSrc: x.sheet || "",
