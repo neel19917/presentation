@@ -579,6 +579,7 @@
                     <div onclick="{{ liveBack }}" title="Back — the previous page opened in this tab" style="{{ liveBackStyle }}">←</div>
                     <div onclick="{{ liveFwd }}" title="Forward" style="{{ liveFwdStyle }}">→</div>
                     <div onclick="{{ liveReload }}" title="Reload this tab" style="{{ liveNavBtn }}">⟳</div>
+                    <div onclick="{{ liveReset }}" title="Reset the Live Site: close the extra tabs and go back to this module's page (R)" style="{{ liveResetStyle }}">↺ Reset</div>
                     <div style="flex:1;display:flex;align-items:center;gap:8px;min-width:0;height:32px;padding:0 6px 0 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3DD6B5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
                       <input ref="{{ setLiveAddrEl }}" onkeydown="{{ liveAddrKey }}" onfocus="{{ liveAddrFocus }}" onblur="{{ liveAddrBlur }}" type="text" spellcheck="false" autocomplete="off" placeholder="Type a FreightPOP route (wms/receipts) or any URL · Enter opens a new tab · ⇧Enter replaces this tab" style="flex:1;min-width:0;background:transparent;border:0;outline:none;color:#E6F0F7;font:13px 'DM Mono',monospace;">
@@ -928,6 +929,7 @@
                     <div onclick="{{ liveBack }}" title="Back — the previous page opened in this tab" style="{{ liveBackStyle }}">←</div>
                     <div onclick="{{ liveFwd }}" title="Forward" style="{{ liveFwdStyle }}">→</div>
                     <div onclick="{{ liveReload }}" title="Reload this tab" style="{{ liveNavBtn }}">⟳</div>
+                    <div onclick="{{ liveReset }}" title="Reset the Live Site: close the extra tabs and go back to this module's page (R)" style="{{ liveResetStyle }}">↺ Reset</div>
                     <div style="flex:1;display:flex;align-items:center;gap:8px;min-width:0;height:32px;padding:0 6px 0 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3DD6B5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
                       <input ref="{{ setLiveAddrEl }}" onkeydown="{{ liveAddrKey }}" onfocus="{{ liveAddrFocus }}" onblur="{{ liveAddrBlur }}" type="text" spellcheck="false" autocomplete="off" placeholder="Type a FreightPOP route (wms/receipts) or any URL · Enter opens a new tab · ⇧Enter replaces this tab" style="flex:1;min-width:0;background:transparent;border:0;outline:none;color:#E6F0F7;font:13px 'DM Mono',monospace;">
@@ -2710,6 +2712,7 @@ class Component extends DCLogic {
           if (lk === "k" && CTk.showCopyLink !== false) { e.preventDefault(); this.copyLink(); return; }
           if (lk === "f") { e.preventDefault(); try { if (this.state.view === "feature" && this.state.step === 2 && !this.state.liveOn) this._toggleExpand(); else this._sectionFs(); } catch (err) {} return; } // demo step: Expand the demo; embedded screens: browser fullscreen
           if ((lk === "t" || k === "/") && live && this._addrEl && this._addrEl.isConnected) { e.preventDefault(); this._addrEl.focus(); return; }
+          if (lk === "r" && live) { e.preventDefault(); this.liveReset(); return; }
           if ((k === "[" || k === "]") && live) { e.preventDefault(); const tabs = this._liveTabs(); const cur = Math.min(this.state.liveTab || 0, tabs.length - 1); this.liveTabSelect((cur + (k === "]" ? 1 : tabs.length - 1)) % tabs.length); return; }
           if (/^[1-4]$/.test(k) && this.state.view === "feature") { e.preventDefault(); this.setStep(Number(k) - 1); return; }
         }
@@ -2902,6 +2905,9 @@ class Component extends DCLogic {
   liveBack = () => this._liveStep(-1);
   liveFwd = () => this._liveStep(1);
   liveReload = () => { const { i, t } = this._liveCur(); if (t) this._liveBounce(i); };
+  // Reset: one tab, back on the module's own page (or the Live Site's start page), freshly loaded — clears whatever the
+  // rep clicked into during the demo. Button in both Live Site toolbars; hotkey R while the Live Site is showing.
+  liveReset = () => { const url = this._liveCtxUrl(); this.setState({ liveTabs: [{ url, label: this._liveLabel(url), hist: [url], hi: 0 }], liveTab: 0, liveMenu: false }, () => this._liveBounce(0)); };
   setLiveAddrEl = (el) => { if (el) { this._addrEl = el; this._liveSyncAddr(); } };
   _liveSyncAddr = () => { const el = this._addrEl; if (!el || !el.isConnected || el.__editing) return; const { t } = this._liveCur(); const v = t ? t.url : ""; if (el.value !== v) el.value = v; };
   liveAddrFocus = (e) => { const el = e.target; el.__editing = true; setTimeout(() => { try { el.select(); } catch (err) {} }, 0); };
@@ -2938,7 +2944,7 @@ class Component extends DCLogic {
     return null;
   };
   _wtSend = (cmd) => { const f = this._wtFrame(); if (!f || !f.contentWindow) return false; try { if (new URL(f.src, location.href).origin !== location.origin) return false; f.contentWindow.postMessage({ type: "freightpop:walkthrough", cmd }, location.origin); return true; } catch (err) { return false; } };
-  HOTKEYS = [["?", "Show / hide this list"], ["← →", "Previous / next screen or step · Walkthrough: previous / next step"], ["Space", "Pause / play the recording or the Walkthrough"], [",  .", "Recording: previous / next step (arrows in Expand and Theater)"], ["0", "Recording: back to start"], ["Home  End", "Walkthrough: back to start / last step"], ["PgDn", "Walkthrough: skip to the Main Menu"], ["1 – 4", "Problem · Benefit · Live Demo · Validation"], ["V", "Intro hero video on / off"], ["M", "Jump-to menu"], ["H", "Main menu"], ["B", "Back"], ["L", "Live Site, full screen"], ["F", "Expand the demo · fullscreen an embedded screen"], ["T  or  /", "Focus the Live Site address bar"], ["[  ]", "Previous / next Live Site tab"], ["K", "Copy a link to this screen"], ["Esc", "Close / back"]];
+  HOTKEYS = [["?", "Show / hide this list"], ["← →", "Previous / next screen or step · Walkthrough: previous / next step"], ["Space", "Pause / play the recording or the Walkthrough"], [",  .", "Recording: previous / next step (arrows in Expand and Theater)"], ["0", "Recording: back to start"], ["Home  End", "Walkthrough: back to start / last step"], ["PgDn", "Walkthrough: skip to the Main Menu"], ["1 – 4", "Problem · Benefit · Live Demo · Validation"], ["V", "Intro hero video on / off"], ["M", "Jump-to menu"], ["H", "Main menu"], ["B", "Back"], ["L", "Live Site, full screen"], ["F", "Expand the demo · fullscreen an embedded screen"], ["T  or  /", "Focus the Live Site address bar"], ["[  ]", "Previous / next Live Site tab"], ["R", "Reset the Live Site to the module's page"], ["K", "Copy a link to this screen"], ["Esc", "Close / back"]];
   _heroOn = () => ((this.cfg && this.cfg.controls) || {}).heroVideo !== false && !this.state.heroOff;
   _applyHero = () => {
     const show = this._heroOn(); const play = show && this.state.view === "intro";
@@ -3335,7 +3341,7 @@ class Component extends DCLogic {
           liveTabsMany: tabs.length > 1, liveCanAdd: tabs.length < this.LIVE_SLOTS, liveActiveLabel: (tabs[cur] || {}).label || "", liveActiveUrl: (tabs[cur] || {}).url || "", liveActiveBadge: (() => { const x = tabs[cur] || {}; let h = ""; try { h = new URL(x.url).host; } catch (e) {} return h && x.label && x.label !== h ? h + " · " + x.label : (h || x.label || ""); })(),
           liveMenuOpen: !!this.state.liveMenu, liveMenuToggle: this.liveMenuToggle, liveTabPrompt: this.liveTabPrompt, liveOpenInBrowser: this.liveOpenInBrowser,
           livePages: this._livePages().map(p => ({ label: p.label, onClick: () => this._liveOpen(p.url), style: PAGE + (tabs.some(x => x.url === p.url) ? "color:#3DD6B5;background:rgba(61,214,181,.08);" : "color:#E6F0F7;") })),
-          liveBack: this.liveBack, liveFwd: this.liveFwd, liveReload: this.liveReload, liveAddrGo: this.liveAddrGo, liveAddrKeep: this.liveAddrKeep, liveAddrKey: this.liveAddrKey, liveAddrFocus: this.liveAddrFocus, liveAddrBlur: this.liveAddrBlur, setLiveAddrEl: this.setLiveAddrEl,
+          liveBack: this.liveBack, liveFwd: this.liveFwd, liveReload: this.liveReload, liveReset: this.liveReset, liveResetStyle: "display:flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:#B5CDE0;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex:none;", liveAddrGo: this.liveAddrGo, liveAddrKeep: this.liveAddrKeep, liveAddrKey: this.liveAddrKey, liveAddrFocus: this.liveAddrFocus, liveAddrBlur: this.liveAddrBlur, setLiveAddrEl: this.setLiveAddrEl,
           liveNavBtn: NAVB + "color:#B5CDE0;", liveBackStyle: NAVB + (canBack ? "color:#E6F0F7;" : "color:rgba(181,205,224,.3);cursor:default;"), liveFwdStyle: NAVB + (canFwd ? "color:#E6F0F7;" : "color:rgba(181,205,224,.3);cursor:default;"),
         };
         for (let i = 0; i < this.LIVE_SLOTS; i++) { const x = tabs[i]; o["ls" + i] = !!x && this.state.liveHide !== i; o["lu" + i] = x ? x.url : "about:blank"; o["lf" + i] = "position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;display:" + (i === cur ? "block" : "none") + ";"; }
