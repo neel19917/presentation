@@ -2923,6 +2923,10 @@ class Component extends DCLogic {
   // Self-hosted copy of the Rive tour (was https://tubular-flan-14267b.netlify.app/embed.html) — same origin, so it can tell
   // the deck when it ends and take keyboard commands. settings.startUrl in the admin still overrides it.
   WALKTHROUGH_URL = "assets/walkthrough/embed.html";
+  // Which animation the self-hosted tour plays (files in assets/walkthrough/; same Rive contract — State Machine 1, steps
+  // -2..24, currentStep / autoplay / hideControls, step triggers). Editable: admin → Settings → "Walkthrough animation"
+  // (settings.walkthroughSrc). Brand = blue ring + bold call-outs, matching the Main Menu (chosen 2026-10-07).
+  WALKTHROUGH_SRC = "fp_main_brand.riv";
   // Click a control of the recording on screen (every demo's player strip uses these titles; AI clips are same-origin
   // iframes with the same strip). Returns false when the recording has no such control (e.g. no steps).
   _demoCtl = (title) => {
@@ -3229,8 +3233,9 @@ class Component extends DCLogic {
   renderVals() {
     const { view, fi, step, menuOpen } = this.state;
     const CS = this.cfg.settings || {}, UI = this.cfg.ui, CT = this.cfg.controls, LB = this.cfg.labels, PG = this.cfg.pages;
-    const legacyWt = (u) => !u || /tubular-flan-14267b\.netlify\.app/.test(u); // the old external host of the same tour → use the self-hosted copy
-    const startUrl = (!legacyWt(CS.startUrl) && CS.startUrl) || (!legacyWt(this.props.startUrl) && this.props.startUrl) || this.WALKTHROUGH_URL;
+    const legacyWt = (u) => !u || /tubular-flan-14267b\.netlify\.app/.test(u) || /^(\.\/)?assets\/walkthrough\/embed\.html$/.test(u); // the old external host, or the bare self-hosted default → self-hosted copy + the chosen animation
+    const wtSrc = String(CS.walkthroughSrc || this.WALKTHROUGH_SRC).replace(/[^\w.-]/g, ""); // a file name in assets/walkthrough/ only
+    const startUrl = (!legacyWt(CS.startUrl) && CS.startUrl) || (!legacyWt(this.props.startUrl) && this.props.startUrl) || (this.WALKTHROUGH_URL + (wtSrc ? "?src=" + encodeURIComponent(wtSrc) : ""));
     const showMarquee = CS.showMarquee !== undefined ? CS.showMarquee !== false : this.props.showMarquee !== false;
     const hsList = this.state.hs || this._loadHs();
     const feats = this.curFeats();
