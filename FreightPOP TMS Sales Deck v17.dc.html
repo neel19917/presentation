@@ -2769,7 +2769,7 @@ class Component extends DCLogic {
     this._wtMsg = (e) => {
       const d = e && e.data; if (!d || d.type !== "freightpop:walkthrough" || !this._wtFrame() || e.source !== this._wtFrame().contentWindow) return;
       if (d.event === "ended" && this.state.view === "explore") this.goMainMenu();
-      else if (d.event === "state") { const wt = { step: Number(d.step), first: Number(d.first), last: Number(d.last), playing: !!d.playing }; const o = this.state.wt || {}; if (o.step !== wt.step || o.playing !== wt.playing) this.setState({ wt }); }
+      else if (d.event === "state") { const wt = { step: Number(d.step), first: Number(d.first), last: Number(d.last), playing: !!d.playing }; const o = this.state.wt || {}; if (o.step !== wt.step || o.playing !== wt.playing) this.setState({ wt }); if (this.state.view === "explore" && wt.step >= this._wtCutAt()) this.goMainMenu(); }
       else if (d.event === "key" && d.key) { try { this._onKey({ key: d.key, shiftKey: !!d.shift, target: document.body, preventDefault() {}, stopPropagation() {} }); } catch (err) {} }
     };
     window.addEventListener("message", this._wtMsg);
@@ -2927,6 +2927,11 @@ class Component extends DCLogic {
   // -2..24, currentStep / autoplay / hideControls, step triggers). Editable: admin → Settings → "Walkthrough animation"
   // (settings.walkthroughSrc). Brand = blue ring + bold call-outs, matching the Main Menu (chosen 2026-10-07).
   WALKTHROUGH_SRC = "fp_main_brand.riv";
+  // Hand-off to the real Main Menu (blue ring): when the tour reaches this step it cuts there. Tour step 0 = the first frame of
+  // its own TMS/WMS/OMS/ERP ring (shown as "Step 3"), so by default only the two intro steps play (chosen 2026-10-07).
+  // admin → Settings → "Walkthrough cut-off step" (settings.walkthroughCutAt): a tour step number (-2..24), or "end" for the full tour.
+  WALKTHROUGH_CUT_AT = 0;
+  _wtCutAt = () => { const v = ((this.cfg && this.cfg.settings) || {}).walkthroughCutAt; if (v === undefined || v === null || v === "") return this.WALKTHROUGH_CUT_AT; const n = Number(v); return Number.isFinite(n) ? n : Infinity; };
   // Click a control of the recording on screen (every demo's player strip uses these titles; AI clips are same-origin
   // iframes with the same strip). Returns false when the recording has no such control (e.g. no steps).
   _demoCtl = (title) => {
@@ -3405,7 +3410,8 @@ class Component extends DCLogic {
       introStyle, startUrl, showMarquee, mainMenuUrl: CS.mainMenuUrl || "https://idyllic-elf-b22a7e.netlify.app/",
       ...(() => {
         const wt = this.state.wt || { step: -2, first: -2, last: 24, playing: true };
-        const n = wt.last - wt.first + 1, k = Math.min(n, Math.max(1, wt.step - wt.first + 1));
+        const last = Math.min(wt.last, this._wtCutAt() - 1); // the strip counts only the steps that play before the hand-off
+        const n = Math.max(1, last - wt.first + 1), k = Math.min(n, Math.max(1, wt.step - wt.first + 1));
         const cmd = (c) => (e) => { if (e && e.stopPropagation) e.stopPropagation(); this._wtSend(c); };
         return { wtStepLabel: "Step " + k + " of " + n, wtProgW: ((k / n) * 100).toFixed(1) + "%", wtPlaying: wt.playing, wtPaused: !wt.playing,
           wtToggle: cmd("toggle"), wtPrev: cmd("prev"), wtNext: cmd("next"), wtRestart: cmd("restart"),
