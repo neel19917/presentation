@@ -371,7 +371,7 @@ class Component extends DCLogic {
     (this._settleTimers || []).forEach(clearTimeout);
     this._settleTimers = [0, 30, 90, 240, 760].map((d) => setTimeout(() => this.forceUpdate(), d));
   }
-  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); cancelAnimationFrame(this._settleRaf); }
+  componentWillUnmount() { window.removeEventListener("resize", this._onResize); cancelAnimationFrame(this._raf); (this._settleTimers || []).forEach(clearTimeout); }
   setWrap = (el) => { this._wrap = el; this._measure(); };
   setCanvas = (el) => { this._canvas = el; };
   setCol = (el) => { this._col = el; };
