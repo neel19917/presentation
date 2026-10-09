@@ -168,6 +168,60 @@ Verified headless (Playwright, Chromium 1234, app stubbed): module 02 live → b
 ⇧Enter `track` → second tab; bare-host and full-URL forms; arrows/Esc inside the bar leave the deck where it is; ⟳ keeps
 2 frames; clicking a tab updates the bar; Live Site pill view shows the same tabs plus the module's page, one address bar.
 
+## Integrations tab (2026-10-06)
+
+**Audit.** The tab was a static overlay outside the deck app (`#fpErpGuide`, lines ≈1235–1551): 54 hardcoded rows, Google-favicon
+logos, 16 hand-written detail pages + 5 generic category texts, its own search/filters/Esc handling. Not editable in Sales OS, not
+deep-linkable below `?go=erp`, invisible to tracked-link screen events and to deck versions. The nav said "54 connected systems" but
+counted editions of one system as systems (5 Dynamics rows, 3 SAP, 2 QuickBooks, 2 Epicor). ShipLink (on the public partner page) was
+missing. Content was otherwise consistent with freightpop.com/integration-partners and the FPPricer ERP integration analyses.
+
+**Now.** A deck-native screen rendered from `integrations` in the config (admin → Integrations): `{ eyebrow, h1, lede, footnote,
+apiUrl, partnersUrl, categories[], depths[], implementationPartners[], featured[], generic{category}, items[] }`. Each item:
+`id, name, category, editions[] (strings; append " · legacy" / " · roadmap" to flag), depth (native | bilateral | api | edi | ipaas |
+hardware), tags[], logoDomain | logo, status (live | request | roadmap), blurb, inFlows[], outFlows[], methods[], proofUrl, demoGo`.
+Versions of one system are editions on one card — 47 systems · 59 editions. Verified enrichments: NetSuite SuiteApp; Acumatica native
+plug-in / Plug N Play / custom API with native auto-select targeted for 2025 R2 (roadmap chip); Dynamics 365 BC + F&O on Microsoft
+AppSource, GP/AX/NAV marked legacy; Sage X3 bi-directional; SAP B1 / ECC / S/4HANA; partner pages and customer stories as proof links.
+Screen: category + "how it connects" chips, search (`/`), stat chips, 3-column cards with edition chips and a depth badge, a detail
+drawer (editions, into / back-to flows, methods, "See it in the deck →" to a module demo, proof link, copy link), implementation-partner
+strip, API / partner-directory links. Deep links: `?go=erp` or `?go=integrations`, `?go=erp/<id>` opens the drawer (ids in the admin);
+the Link button and tracked-link `screen` events carry the id. Esc closes the drawer, then leaves the tab. Nav subtitle and lede
+substitute `{systems}` / `{editions}` (the legacy "54 connected systems" string is mapped automatically). **Deck versions:**
+`overlay.integrations.featured` (ids) pins those systems first with a ★ and adds a "★ Your stack" filter — set under Deck versions →
+Your stack. Logos: an approved `logo` URL wins; otherwise the vendor favicon, hidden on error (no inline handlers — the runtime passes
+`onerror` attributes through literally). Still unverified in the catalog (kept, not asserted beyond the generic text): Oracle ERP, Fox ERP,
+ERP One, Direct Response, Tharstern, Lighthouse SyteLine, Four51, Invetrak. The Carriers tab is still a static overlay (`#fpCarrierGuide`).
+
+### Integration scope · Detailed API view · visibility (2026-10-07)
+
+Some integration detail is not ready to share, so visibility is per system, per section, and gated by one control:
+
+- **`visible`** (per system, default true). Off = the system stays in the catalog (admin) but never renders: not in tiles, stats, the
+  nav count, search, or `?go=erp/<id>` (the deep link falls back to the tab).
+- **`scope`** (per system): `{ objects[], triggers[], frequency, auth, api[] ("METHOD /path — purpose"), mapping, limits[] }`. Seeded
+  from verified docs for NetSuite, Acumatica, Dynamics, Sage X3 and Cubiscan; `auth` and `api` are empty everywhere because no
+  per-system endpoint or auth detail is confirmed — the admin fills them in. Top level: `apiSurface[]` (the public API page's
+  capabilities) and `apiNote`.
+- **`scopeVisibility`** (per system): `public` → the "Integration scope" block (objects, triggers, frequency, auth) shows in every deck;
+  `internal` (default) → only when the Detailed API view is on; `hidden` → never.
+- **`controls.detailedApiView`** (default **off**). On: the drawer shows the scope for `internal` systems plus a **Detailed API view**
+  button that opens a panel with the FreightPOP API surface, endpoints, mapping / implementation notes and limits. Per link `?c=api` /
+  `?c=noapi`; per deck version under Deck versions → Presentation; deep link `?go=erp/<id>/api` opens the panel directly (the `/api`
+  suffix is ignored while the control is off, and the Link button only writes it when the panel is on).
+
+**Layer 2 (2026-10-07).** Per system: `useCases[] { title, in[], out[], note }` (public — product capability, no names),
+`customers[] { name, status live|implementing|churned|unknown, approved, note }` with `customersVisibility` (public → only *approved*
+names on the card as "Also running on FreightPOP"; internal (default) → every name with status in the Detailed API view; hidden → never),
+`tickets[] { key, summary, status, url, why }` + `ticketsAsOf` (Detailed API view, "In flight & known issues"). Seeded from the Sales OS
+RAG store and Snowflake by five analysts — 118 use cases, 343 customer links (none approved), 95 open tickets; proposals for the public
+cards in `docs/integrations-proposals-2026-10-07.md`. Internal Ops view: Sales OS `/sales-ops/integrations`.
+
+Reminder: everything in `/api/config` is public, including `internal` scope, customer names, tickets and hidden systems — the gate is in the deck, not the API.
+Keep anything truly confidential out of the config; the control hides it from prospects, not from someone reading the JSON.
+Admin: Integrations → each system has Visible, Scope visibility, the scope fields and two preview links ("Open in deck",
+"Detailed API view") pointing at `freightpopsales.com/deck/view`; Presentation controls → "Detailed API view (Integrations)".
+
 ## Hotkeys · hero video · helper notice (2026-10-05)
 
 **Hotkeys.** Press **?** anywhere in the deck for the list. Letters are gated by `controls.hotkeys` (admin → Presentation controls →

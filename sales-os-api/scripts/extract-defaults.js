@@ -47,7 +47,7 @@ const defaults = {
     { key: 'oms', label: 'OMS', sub: 'Order capability library', enabled: true },
     { key: 'workflows', label: 'Workflows', sub: '8 common customer flows', enabled: true },
     { key: 'carriers', label: 'Carriers', sub: 'Every mode · one network', enabled: true },
-    { key: 'erp', label: 'Integrations', sub: '54 connected systems', enabled: true },
+    { key: 'erp', label: 'Integrations', sub: '{systems} systems · {editions} editions', enabled: true },
     { key: 'roadmap', label: 'Roadmap', sub: 'AI · platform direction', enabled: true },
     { key: 'onboarding', label: 'Onboarding', sub: 'What to expect', enabled: true },
     { key: 'ai', label: 'FreightPOP AI', sub: 'Intelligence layer', enabled: true },
@@ -72,11 +72,12 @@ const defaults = {
   controls: {
     startView: 'intro', keyboardNav: true, showStepDots: true, showPagingArrows: true, showFullscreenPills: true, showLiveSitePill: true, showMenuButton: true, showBreadcrumb: true,
     showAiDemoTab: true, showLiveSiteTab: true, showExpandTab: true, showTheaterTab: true, demoAutoPlay: true, demoSpeed: 1, showValidationLibrary: true, showCopyLink: true,
-    hotkeys: true, heroVideo: true, showHelperNotice: true
+    hotkeys: true, heroVideo: true, showHelperNotice: true, detailedApiView: false
   },
   roadmap: { ai: c.roadmapAI.map(r => ({ ...r })), platform: c.roadmapPlatform.map(r => ({ ...r })) },
   onboarding: c.onboardingSteps.map(s => ({ num: s.num, label: s.label, lines: s.lines.slice() })),
-  workflows: c.workflows.map(w => ({ num: w.num, title: w.title, tag: w.tag, src: w.src, enabled: true }))
+  workflows: c.workflows.map(w => ({ num: w.num, title: w.title, tag: w.tag, src: w.src, enabled: true })),
+  integrations: JSON.parse(JSON.stringify(c.integrationsMeta))
 };
 const out = path.join(__dirname, '..', 'defaults.json');
 fs.writeFileSync(out, JSON.stringify(defaults, null, 2) + '\n');

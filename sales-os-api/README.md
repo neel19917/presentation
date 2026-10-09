@@ -18,6 +18,7 @@ Config API + admin panel for the FreightPOP sales deck. Runs on Railway (project
 | Labels & text | Step tab names + eyebrows, button labels, demo tab labels, card link text |
 | Page headings | Eyebrow / H1 / lede for the TMS, WMS, OMS hubs and the Workflows, Roadmap, Onboarding pages |
 | TMS / WMS / OMS modules | Enable/disable, reorder; every piece of copy per module: name, card title, tagline, problem, benefit bullets, demo caption / key / AI key / live URL, ROI stat, label, grade, proof, quote, source |
+| Integrations | The Integrations tab: headings, categories, every system (name, id, editions/versions, how it connects, status, blurb, into / back-to flows, methods, tags, proof link, demo deep link), implementation partners; deck versions pin a prospect's stack. Per system: **Visible in the deck**, **Scope visibility** (public / detailed view only / hidden) and the integration scope (objects, triggers, frequency, auth, endpoints, mapping notes, limits); the **Detailed API view** control (Presentation controls, default off; `?c=api`, `?go=erp/<id>/api`) gates the internal detail; per system also use cases (ins/outs, public), customers (visibility + approved switch) and a Jira ticket snapshot (detailed view only). Note: the API itself is public — the gate is in the deck |
 | Roadmap · Onboarding · Workflows | Add / remove / reorder / edit items; enable/disable workflows |
 | History & reset | Every publish is a revision (last 200, `KEEP_REVISIONS`; each is logged on the server); restore any; reset a section or everything to the deck defaults |
 
@@ -31,7 +32,7 @@ Every screen has a URL. The deck keeps the address bar in sync as you present (s
 
 | Param | Example | Meaning |
 |---|---|---|
-| `go` | `?go=tms/03-rate-shopping/demo` · `?go=wms/02/benefit` · `?go=workflows/04-ltl-freight` · `?go=roadmap` · `?go=menu` | Where to open. Modules by number or name slug; step = `problem` / `benefit` / `demo` / `validation`; add `/ai` or `/live` on the demo step. Slide decks from a version open by their id (`?go=why-acme/2`). |
+| `go` | `?go=tms/03-rate-shopping/demo` · `?go=wms/02/benefit` · `?go=workflows/04-ltl-freight` · `?go=erp/netsuite` · `?go=roadmap` · `?go=menu` | Where to open. Modules by number or name slug; step = `problem` / `benefit` / `demo` / `validation`; add `/ai` or `/live` on the demo step. Slide decks from a version open by their id (`?go=why-acme/2`). |
 | `tabs` | `?tabs=tms,wms,workflows` | Only these tabs exist for the viewer (top bar, Jump-to, walkthrough hotspots, arrow keys). `intro`, `explore`, `mainmenu` count as tabs. |
 | `hide` | `?hide=roi,ai` | Remove these tabs instead. |
 | `lock` | `?go=tms/03/demo&lock=1` | Gate to the linked tab only and drop the Menu button — the viewer stays where the link put them. |
