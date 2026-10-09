@@ -166,8 +166,8 @@ a { color:#3DD6B5; } a:hover { color:#8FE8D4; }
   </sc-if>
 
   <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
-    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-      <div style="width:76px;height:76px;border-radius:50%;background:rgba(5,23,41,.85);display:flex;align-items:center;justify-content:center;"><div style="width:0;height:0;border-left:22px solid #3DD6B5;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px;"></div></div>
+    <div style="position:absolute;inset:0;z-index:44;display:flex;align-items:flex-end;justify-content:flex-end;padding:16px;pointer-events:none;">
+      <div title="Paused — click the demo or press Space to resume" style="display:flex;align-items:center;gap:7px;height:28px;padding:0 11px 0 9px;border-radius:999px;background:rgba(5,23,41,.58);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(4px);opacity:.82;"><div style="width:0;height:0;border-left:8px solid #3DD6B5;border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px;"></div><span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.05em;color:#DCE6F2;">Paused</span></div>
     </div>
   </sc-if>
   <sc-if value="{{ ripple }}" hint-placeholder-val="{{ false }}">
